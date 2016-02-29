@@ -1,3 +1,24 @@
+/*
+ * nedb-lite.js
+ *
+ * standalone, single-script version of nedb
+ * that runs in both browser and nodejs with zero npm-dependencies
+ *
+ * browser example:
+ *     <script src="nedb-lite.js"></script>
+ *     <script>
+ *     var collection = new window.Nedb();
+ *     collection.insert({ field1: 'hello', field2: 'world'}, console.log.bind(console));
+ *     </script>
+ *
+ * node example:
+ *     var Nedb = require('./nedb-lite.js');
+ *     var collection = new Nedb();
+ *     collection.insert({ field1: 'hello', field2: 'world'}, console.log.bind(console));
+ */
+
+
+
 /* istanbul ignore all */
 /*jslint
     browser: true,
@@ -49,14 +70,26 @@
                 };
             case 'mkdirp':
                 return function (dir, onError) {
+                /*
+                 * simple, portable mkdirp code using fs.exists and child_process.spawnSync
+                 */
+                    // for performance reasons,
+                    // only spawn the mkdir process if the dir does not exist
                     local.require('fs').exists(dir, function (exists) {
+                        // warning - no checks to see if the dir is a directory
+                        // (versus a file or a link)
                         if (!exists) {
                             try {
-                                local.child_process.spawnSync('mkdir', ['-p', dir], {
-                                    stdio: ['ignore', 1, 2]
-                                });
-                            } catch (error) {
-                                onError(error);
+                                local.child_process.spawnSync(
+                                    'mkdir',
+                                    process.platform === 'win32'
+                                        // windows mkdir implies the '-p' option
+                                        ? [dir]
+                                        : ['-p', dir],
+                                    { stdio: ['ignore', 1, 2] }
+                                );
+                            } catch (errorCaught) {
+                                onError(errorCaught);
                                 return;
                             }
                         }

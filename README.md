@@ -1,8 +1,31 @@
 nedb-lite
 ==============
-standalone, single-script version of nedb that runs in both browser and nodejs
+standalone, single-script version of [nedb](https://www.npmjs.com/package/nedb) that runs in both browser and nodejs, with zero npm-dependencies
 
 [![NPM](https://img.shields.io/npm/v/nedb-lite.svg?style=flat-square)](https://www.npmjs.com/package/nedb-lite) [![NPM](https://img.shields.io/npm/dm/nedb-lite.svg?style=flat-square)](https://www.npmjs.com/package/nedb-lite)
+
+
+
+# todo
+- none
+
+
+
+# change since efb3057b
+- npm publish 2016.1.2
+- add cdn file-download link
+- add nodejs win32 support
+- add simple github test-server
+- rename index.js to nedb-lite.js
+- none
+
+
+
+# cdn download
+- [http://kaizhu256.github.io/node-nedb-lite/build/app/nedb-lite.js](http://kaizhu256.github.io/node-nedb-lite/build/app/nedb-lite.js)
+- [http://kaizhu256.github.io/node-nedb-lite/build/app/nedb-lite.min.js](http://kaizhu256.github.io/node-nedb-lite/build/app/nedb-lite.min.js)
+
+[![github.com cdn-download](https://kaizhu256.github.io/node-nedb-lite/build/screen-capture.githubDeploy.browser._2Fnode-nedb-lite_2Fbuild..alpha..travis-ci.org_2Fapp_2Fnedb-lite.js.png)](http://kaizhu256.github.io/node-nedb-lite/build/app/nedb-lite.js)
 
 
 
@@ -11,6 +34,7 @@ standalone, single-script version of nedb that runs in both browser and nodejs
 
 | git-branch : | [master](https://github.com/kaizhu256/node-nedb-lite/tree/master) | [beta](https://github.com/kaizhu256/node-nedb-lite/tree/beta) | [alpha](https://github.com/kaizhu256/node-nedb-lite/tree/alpha)|
 |--:|:--|:--|:--|
+| test-server : | [![github.com test-server](https://kaizhu256.github.io/node-nedb-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-nedb-lite/build..master..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-nedb-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-nedb-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-nedb-lite/build..alpha..travis-ci.org/app/index.html)|
 | build-artifacts : | [![build-artifacts](https://kaizhu256.github.io/node-nedb-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-nedb-lite/tree/gh-pages/build..master..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-nedb-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-nedb-lite/tree/gh-pages/build..beta..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-nedb-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-nedb-lite/tree/gh-pages/build..alpha..travis-ci.org)|
 
 #### master branch
@@ -29,13 +53,12 @@ standalone, single-script version of nedb that runs in both browser and nodejs
 
 
 # documentation
-#### this package requires
-- darwin or linux os
-
 #### this package is derived from
-- nedb @ 1.8.0
+- [nedb @ 1.8.0](https://www.npmjs.com/package/nedb)
 
-#### [api-doc](https://kaizhu256.github.io/node-nedb-lite/build/doc.api.html)
+#### api-doc
+- [https://kaizhu256.github.io/node-nedb-lite/build/doc.api.html](https://kaizhu256.github.io/node-nedb-lite/build/doc.api.html)
+
 [![api-doc](https://kaizhu256.github.io/node-nedb-lite/build/screen-capture.docApiCreate.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-nedb-lite_2Ftmp_2Fbuild_2Fdoc.api.html.png)](https://kaizhu256.github.io/node-nedb-lite/build/doc.api.html)
 
 
@@ -55,11 +78,12 @@ standalone, single-script version of nedb that runs in both browser and nodejs
 {
     "author": "kai zhu <kaizhu256@gmail.com>",
     "description": "standalone, single-script version of nedb \
-that runs in both browser and nodejs",
+that runs in both browser and nodejs, with zero npm-dependencies",
     "devDependencies": {
-        "electron-lite": "2015.12.3",
+        "electron-lite": "2015.12.4",
         "utility2": "2016.1.5"
     },
+    "engines": { "node": ">=4.2" },
     "keywords": [
         "browser",
         "db",
@@ -70,6 +94,7 @@ that runs in both browser and nodejs",
         "standalone"
     ],
     "license": "MIT",
+    "main": "nedb-lite.js",
     "name": "nedb-lite",
     "os": ["darwin", "linux"],
     "repository": {
@@ -81,11 +106,11 @@ that runs in both browser and nodejs",
         "build-doc": "MODE_LINENO=0 \
 utility2 shRun shReadmeExportFile package.json package.json && \
 utility2 shRun shDocApiCreate \"module.exports={ \
-exampleFileList:['README.md','test.js','index.js'], \
+exampleFileList:['README.md','test.js','nedb-lite.js'], \
 moduleDict:{ \
-Nedb:{exports:require('./index.js')}, \
+Nedb:{exports:require('./nedb-lite.js')}, \
 'Nedb.prototype':{aliasList:['collection'], \
-exports:require('./index.js').prototype} \
+exports:require('./nedb-lite.js').prototype} \
 } \
 }\"",
         "test": "export MODE_LINENO=0 && \
@@ -94,20 +119,9 @@ utility2 shRun shReadmeExportFile package.json package.json && \
 export PORT=$(utility2 shServerPortRandom) && \
 utility2 test node test.js"
     },
-    "version": "2016.1.1"
+    "version": "2016.1.2"
 }
 ```
-
-
-
-# todo
-- none
-
-
-
-# change since 9fe8c225
-- npm publish 2016.1.1
-- none
 
 
 
@@ -143,6 +157,17 @@ shBuild() {(set -e
 
     # if running legacy-node, then do not continue
     [ "$(node --version)" \< "v5.0" ] && exit || true
+
+    if [ "$CI_BRANCH" = alpha ] ||
+        [ "$CI_BRANCH" = beta ] ||
+        [ "$CI_BRANCH" = master ]
+    then
+        TEST_URL="https://$(printf "$GITHUB_REPO" | \
+            sed 's/\//.github.io\//')/build..$CI_BRANCH..travis-ci.org/app/nedb-lite.js"
+        # deploy app to gh-pages
+        (export npm_config_file_test_report_merge="$npm_config_dir_build/test-report.json" &&
+            shGithubDeploy)
+    fi
     )
 
     # save exit-code

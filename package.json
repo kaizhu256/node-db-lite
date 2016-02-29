@@ -1,11 +1,12 @@
 {
     "author": "kai zhu <kaizhu256@gmail.com>",
-    "description": "standalone, single-script version of nedb that runs in both browser and nodejs",
+    "description": "standalone, single-script version of nedb that runs in both browser and nodejs, with zero npm-dependencies",
 
     "devDependencies": {
-        "electron-lite": "2015.12.3",
+        "electron-lite": "2015.12.4",
         "utility2": "2016.1.5"
     },
+    "engines": { "node": ">=4.2" },
     "keywords": [
         "browser",
         "db",
@@ -16,6 +17,7 @@
         "standalone"
     ],
     "license": "MIT",
+    "main": "nedb-lite.js",
     "name": "nedb-lite",
     "os": ["darwin", "linux"],
     "repository": {
@@ -24,7 +26,7 @@
     },
     "scripts": {
         "build-ci": "utility2 shRun shReadmeBuild",
-        "build-doc": "MODE_LINENO=0 utility2 shRun shReadmeExportFile package.json package.json && utility2 shRun shDocApiCreate \"module.exports={ exampleFileList:['README.md','test.js','index.js'], moduleDict:{ Nedb:{exports:require('./index.js')}, 'Nedb.prototype':{aliasList:['collection'], exports:require('./index.js').prototype} } }\"",
+        "build-doc": "MODE_LINENO=0 utility2 shRun shReadmeExportFile package.json package.json && utility2 shRun shDocApiCreate \"module.exports={ exampleFileList:['README.md','test.js','nedb-lite.js'], moduleDict:{ Nedb:{exports:require('./nedb-lite.js')}, 'Nedb.prototype':{aliasList:['collection'], exports:require('./nedb-lite.js').prototype} } }\"",
 
 
 
@@ -40,5 +42,5 @@
 
 
     },
-    "version": "2016.1.1"
+    "version": "2016.1.2"
 }
