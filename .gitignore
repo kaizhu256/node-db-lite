@@ -1,0 +1,7 @@
+*.log
+*~
+.*
+example.js
+external
+node_modules
+tmp

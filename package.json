@@ -1,0 +1,44 @@
+{
+    "author": "kai zhu <kaizhu256@gmail.com>",
+    "description": "standalone, single-script version of nedb that runs in both browser and nodejs",
+
+    "devDependencies": {
+        "electron-lite": "2015.12.3",
+        "utility2": "2016.1.5"
+    },
+    "keywords": [
+        "browser",
+        "db",
+        "embed", "embedded",
+        "lite", "lightweight",
+        "minimal", "mongo", "mongodb",
+        "nedb",
+        "standalone"
+    ],
+    "license": "MIT",
+    "name": "nedb-lite",
+    "os": ["darwin", "linux"],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kaizhu256/node-nedb-lite.git"
+    },
+    "scripts": {
+        "build-ci": "utility2 shRun shReadmeBuild",
+        "build-doc": "MODE_LINENO=0 utility2 shRun shReadmeExportFile package.json package.json && utility2 shRun shDocApiCreate \"module.exports={ exampleFileList:['README.md','test.js','index.js'], moduleDict:{ Nedb:{exports:require('./index.js')}, 'Nedb.prototype':{aliasList:['collection'], exports:require('./index.js').prototype} } }\"",
+
+
+
+
+
+
+
+
+
+        "test": "export MODE_LINENO=0 && export NODE_ENV=test && utility2 shRun shReadmeExportFile package.json package.json && export PORT=$(utility2 shServerPortRandom) && utility2 test node test.js"
+
+
+
+
+    },
+    "version": "2016.1.1"
+}
