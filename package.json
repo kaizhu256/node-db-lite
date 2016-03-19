@@ -4,7 +4,7 @@
 
     "devDependencies": {
         "electron-lite": "2015.12.4",
-        "utility2": "2016.1.5"
+        "utility2": "2016.1.9"
     },
     "engines": { "node": ">=4.2" },
     "keywords": [
@@ -26,7 +26,7 @@
     },
     "scripts": {
         "build-ci": "utility2 shRun shReadmeBuild",
-        "build-doc": "MODE_LINENO=0 utility2 shRun shReadmeExportFile package.json package.json && utility2 shRun shDocApiCreate \"module.exports={ exampleFileList:['README.md','test.js','nedb-lite.js'], moduleDict:{ Nedb:{exports:require('./nedb-lite.js')}, 'Nedb.prototype':{aliasList:['collection'], exports:require('./nedb-lite.js').prototype} } }\"",
+        "build-doc": "MODE_LINENO=0 utility2 shRun shReadmeExportFile package.json package.json && utility2 shRun shDocApiCreate \"module.exports={ exampleFileList:['README.md','test.js','nedb-lite.js'], moduleDict:{ Nedb:{exports:require('./nedb-lite.js')}, 'Nedb.prototype':{aliasList:['collection'],exports:require('./nedb-lite.js').prototype}, 'Nedb.storage':{aliasList:['storage'],exports:require('./nedb-lite.js').storage} } }\"",
 
 
 
@@ -36,11 +36,12 @@
 
 
 
-        "test": "export MODE_LINENO=0 && export NODE_ENV=test && utility2 shRun shReadmeExportFile package.json package.json && export PORT=$(utility2 shServerPortRandom) && utility2 test node test.js"
+        "test": "export MODE_LINENO=0 && export NODE_ENV=test && utility2 shRun shReadmeExportFile package.json package.json && export PORT=$(utility2 shServerPortRandom) && utility2 test node test.js",
 
 
 
 
+        "test-published": "utility2 shRun shNpmTestPublished"
     },
-    "version": "2016.1.2"
+    "version": "2016.1.3"
 }

@@ -1,8 +1,8 @@
 /*
  * nedb-lite.js
  *
- * standalone, single-script version of nedb
- * that runs in both browser and nodejs with zero npm-dependencies
+ * standalone, single-script version of nedb that runs in both browser and nodejs,
+ * with zero npm-dependencies
  *
  * browser example:
  *     <script src="nedb-lite.js"></script>
@@ -255,7 +255,7 @@ module.exports = storage;
 
 // init lib nedb
 /* jslint-ignore-begin */
-// replace 'storage = require('./storage')' with 'storage = local.storage || require('./storage')'
+// replace 'storage = require('./storage')' with 'storage = local.storage = local.storage || require('./storage')'
 // https://github.com/louischatriot/nedb/blob/08f37b9cc21a357f7d39c2533f696fea751cda8f/browser-version/out/nedb.js
 (function(e){if("function"==typeof bootstrap)bootstrap("nedb",e);else if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else if("undefined"!=typeof ses){if(!ses.ok())return;ses.makeNedb=e}else"undefined"!=typeof window?window.Nedb=e():global.Nedb=e()})(function(){var define,ses,bootstrap,module,exports;
 return (function(e,t,n){function i(n,s){if(!t[n]){if(!e[n]){var o=typeof require=="function"&&require;if(!s&&o)return o(n,!0);if(r)return r(n,!0);throw new Error("Cannot find module '"+n+"'")}var u=t[n]={exports:{}};e[n][0].call(u.exports,function(t){var r=e[n][1][t];return i(r?r:t)},u,u.exports)}return t[n].exports}var r=typeof require=="function"&&require;for(var s=0;s<n.length;s++)i(n[s]);return i})({1:[function(require,module,exports){
@@ -3248,7 +3248,7 @@ var process=require("__browserify_process");/**
  * * Persistence.persistNewState(newDocs, callback) where newDocs is an array of documents and callback has signature err
  */
 
-var storage = local.storage || require('./storage')
+var storage = local.storage = local.storage || require('./storage')
   , path = require('path')
   , model = require('./model')
   , async = require('async')
@@ -9680,6 +9680,53 @@ return /******/ (function(modules) { // webpackBootstrap
         // export __dirname
         module.exports.__dirname = __dirname;
     }
+    // init Nedb
+    local.Nedb = local.modeJs === 'browser'
+        ? window.Nedb
+        : module.exports;
+    // export locsl to Nedb
+    Object.keys(local).forEach(function (key) {
+        local.Nedb[key] = local[key];
+    });
+    // init Nedb.fileDict
+    local.Nedb.fileDict = {};
+    [
+        'appendFile',
+        'crashSafeWriteFile',
+        'ensureDatafileIntegrity',
+        'readFile',
+        'rename',
+        'writeFile'
+    ].forEach(function (key) {
+        local.Nedb.storage['_' + key] = local.Nedb.storage[key];
+        local.Nedb.storage[key] = function (file1, file2) {
+            local.Nedb.fileDict[file1] = true;
+            if (key === 'rename') {
+                local.Nedb.fileDict[file2] = true;
+            }
+            local.Nedb.storage['_' + key].apply(local.Nedb.storage, arguments);
+        };
+    });
+    local.Nedb.fileReset = function (callback) {
+    /*
+     * this function will reset nedb's file-state
+     */
+        var onParallel;
+        onParallel = function () {
+            onParallel.counter -= 1;
+            if (onParallel.counter === 0) {
+                callback();
+            }
+        };
+        onParallel.counter = 0;
+        onParallel.counter += 1;
+        Object.keys(local.Nedb.fileDict).forEach(function (file) {
+            delete local.Nedb.fileDict[file];
+            onParallel.counter += 1;
+            local.Nedb.storage.unlink(file, onParallel);
+        });
+        onParallel();
+    };
 }({
     // init modeJs
     modeJs: (function () {

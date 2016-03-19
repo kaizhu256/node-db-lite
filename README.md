@@ -11,12 +11,10 @@ standalone, single-script version of [nedb](https://www.npmjs.com/package/nedb) 
 
 
 
-# change since efb3057b
-- npm publish 2016.1.2
-- add cdn file-download link
-- add nodejs win32 support
-- add simple github test-server
-- rename index.js to nedb-lite.js
+# change since b0c73d37
+- npm publish 2016.1.3
+- add function Nedb.fileReset
+- add property Nedb.fileDict, Nedb.storage
 - none
 
 
@@ -81,7 +79,7 @@ standalone, single-script version of [nedb](https://www.npmjs.com/package/nedb) 
 that runs in both browser and nodejs, with zero npm-dependencies",
     "devDependencies": {
         "electron-lite": "2015.12.4",
-        "utility2": "2016.1.5"
+        "utility2": "2016.1.9"
     },
     "engines": { "node": ">=4.2" },
     "keywords": [
@@ -109,17 +107,18 @@ utility2 shRun shDocApiCreate \"module.exports={ \
 exampleFileList:['README.md','test.js','nedb-lite.js'], \
 moduleDict:{ \
 Nedb:{exports:require('./nedb-lite.js')}, \
-'Nedb.prototype':{aliasList:['collection'], \
-exports:require('./nedb-lite.js').prototype} \
+'Nedb.prototype':{aliasList:['collection'],exports:require('./nedb-lite.js').prototype}, \
+'Nedb.storage':{aliasList:['storage'],exports:require('./nedb-lite.js').storage} \
 } \
 }\"",
         "test": "export MODE_LINENO=0 && \
 export NODE_ENV=test && \
 utility2 shRun shReadmeExportFile package.json package.json && \
 export PORT=$(utility2 shServerPortRandom) && \
-utility2 test node test.js"
+utility2 test node test.js",
+        "test-published": "utility2 shRun shNpmTestPublished"
     },
-    "version": "2016.1.2"
+    "version": "2016.1.3"
 }
 ```
 
@@ -138,62 +137,40 @@ utility2 test node test.js"
 
 # this shell script will run the build for this package
 
-shBuild() {(set -e
+shBuildCiTestPre() {(set -e
+# this function will run the pre-test build
+    exit
+)}
+
+shBuildCiTestPost() {(set -e
+# this function will run the post-test build
+    # if running legacy-node, then exit
+    [ "$(node --version)" \< "v5.0" ] && exit || true
+    # if branch is not alpha, beta, or master, then exit
+    if !([ "$CI_BRANCH" = alpha ] ||
+        [ "$CI_BRANCH" = beta ] ||
+        [ "$CI_BRANCH" = master ])
+    then
+        exit
+    fi
+    TEST_URL="https://$(printf "$GITHUB_REPO" | \
+        sed 's/\//.github.io\//')/build..$CI_BRANCH..travis-ci.org/app/nedb-lite.js"
+    # deploy app to gh-pages
+    (export npm_config_file_test_report_merge="$npm_config_dir_build/test-report.json" &&
+        shGithubDeploy)
+)}
+
+shBuild() {
 # this function will run the main build
+    set -e
     # init env
     . node_modules/.bin/utility2 && shInit
-
-    (set -e
-    # run npm-test on published package
-    (export npm_config_mode_coverage=1 &&
-        shNpmTestPublished)
-
-    # run npm-test
-    (export MODE_BUILD=npmTest &&
-        shRunScreenCapture npm test --mode-coverage)
-
-    # create api-doc
-    npm run-script build-doc
-
-    # if running legacy-node, then do not continue
-    [ "$(node --version)" \< "v5.0" ] && exit || true
-
-    if [ "$CI_BRANCH" = alpha ] ||
-        [ "$CI_BRANCH" = beta ] ||
-        [ "$CI_BRANCH" = master ]
-    then
-        TEST_URL="https://$(printf "$GITHUB_REPO" | \
-            sed 's/\//.github.io\//')/build..$CI_BRANCH..travis-ci.org/app/nedb-lite.js"
-        # deploy app to gh-pages
-        (export npm_config_file_test_report_merge="$npm_config_dir_build/test-report.json" &&
-            shGithubDeploy)
-    fi
-    )
-
-    # save exit-code
-    EXIT_CODE=$?
-
-    # create package-listing
-    (export MODE_BUILD=gitLsTree &&
-        shRunScreenCapture shGitLsTree)
-
-    # create recent changelog of last 50 commits
-    (export MODE_BUILD=gitLog &&
-        shRunScreenCapture git log -50 --pretty="%ai\u000a%B")
-
-    # if running legacy-node, then do not continue
-    [ "$(node --version)" \< "v5.0" ] && exit || true
-
-    # cleanup remote build dir
+    # cleanup github-gh-pages dir
     # export BUILD_GITHUB_UPLOAD_PRE_SH="rm -fr build"
-
-    # upload build-artifacts to github, and if number of commits > 16, then squash older commits
-    (export COMMIT_LIMIT=16 &&
-        export MODE_BUILD=githubUpload &&
-        shBuildGithubUpload)
-
-    # exit exit-code
-    exit "$EXIT_CODE"
-)}
+    # init github-gh-pages commit-limit
+    export COMMIT_LIMIT=16
+    # run default build
+    shBuildCiDefault
+}
 shBuild
 ```
