@@ -1,8 +1,8 @@
 /*
  * nedb-lite.js
  *
- * standalone, single-script version of nedb that runs in both browser and nodejs,
- * with zero npm-dependencies
+ * this package is a standalone, single-script version of nedb @ 1.8.0
+ * that runs in both browser and nodejs, with zero npm-dependencies
  *
  * browser example:
  *     <script src="nedb-lite.js"></script>
@@ -255,10 +255,11 @@ module.exports = storage;
 
 // init lib nedb
 /* jslint-ignore-begin */
+// https://github.com/louischatriot/nedb/blob/cadf4ef434e517e47c4e9ca1db5b89e892ff5981/browser-version/out/nedb.js
+// replace 'return i(r?r:t)' with 'return local[t] = i(r?r:t)'
 // replace 'storage = require('./storage')' with 'storage = local.storage = local.storage || require('./storage')'
-// https://github.com/louischatriot/nedb/blob/08f37b9cc21a357f7d39c2533f696fea751cda8f/browser-version/out/nedb.js
 (function(e){if("function"==typeof bootstrap)bootstrap("nedb",e);else if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else if("undefined"!=typeof ses){if(!ses.ok())return;ses.makeNedb=e}else"undefined"!=typeof window?window.Nedb=e():global.Nedb=e()})(function(){var define,ses,bootstrap,module,exports;
-return (function(e,t,n){function i(n,s){if(!t[n]){if(!e[n]){var o=typeof require=="function"&&require;if(!s&&o)return o(n,!0);if(r)return r(n,!0);throw new Error("Cannot find module '"+n+"'")}var u=t[n]={exports:{}};e[n][0].call(u.exports,function(t){var r=e[n][1][t];return i(r?r:t)},u,u.exports)}return t[n].exports}var r=typeof require=="function"&&require;for(var s=0;s<n.length;s++)i(n[s]);return i})({1:[function(require,module,exports){
+return (function(e,t,n){function i(n,s){if(!t[n]){if(!e[n]){var o=typeof require=="function"&&require;if(!s&&o)return o(n,!0);if(r)return r(n,!0);throw new Error("Cannot find module '"+n+"'")}var u=t[n]={exports:{}};e[n][0].call(u.exports,function(t){var r=e[n][1][t];return local[t] = i(r?r:t)},u,u.exports)}return t[n].exports}var r=typeof require=="function"&&require;for(var s=0;s<n.length;s++)i(n[s]);return i})({1:[function(require,module,exports){
 var process=require("__browserify_process");if (!process.EventEmitter) process.EventEmitter = function () {};
 
 var EventEmitter = exports.EventEmitter = process.EventEmitter;
@@ -1574,7 +1575,7 @@ Datastore.prototype.updateIndexes = function (oldDoc, newDoc) {
  *
  * @param {Query} query
  * @param {Boolean} dontExpireStaleDocs Optional, defaults to false, if true don't remove stale docs. Useful for the remove function which shouldn't be impacted by expirations
- * @param {Function} callback Signature err, docs
+ * @param {Function} callback Signature err, candidates
  */
 Datastore.prototype.getCandidates = function (query, dontExpireStaleDocs, callback) {
   var indexNames = Object.keys(this.indexes)
@@ -1585,6 +1586,7 @@ Datastore.prototype.getCandidates = function (query, dontExpireStaleDocs, callba
     callback = dontExpireStaleDocs;
     dontExpireStaleDocs = false;
   }
+
 
   async.waterfall([
   // STEP 1: get candidates list by checking indexes from most to least frequent usecase

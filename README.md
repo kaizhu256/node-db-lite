@@ -1,21 +1,24 @@
 nedb-lite
 ==============
-standalone, single-script version of [nedb](https://www.npmjs.com/package/nedb) that runs in both browser and nodejs, with zero npm-dependencies
+this package is a standalone, single-script version of nedb @ 1.8.0 that runs in both browser and nodejs, with zero npm-dependencies
 
-[![NPM](https://img.shields.io/npm/v/nedb-lite.svg?style=flat-square)](https://www.npmjs.com/package/nedb-lite) [![NPM](https://img.shields.io/npm/dm/nedb-lite.svg?style=flat-square)](https://www.npmjs.com/package/nedb-lite)
+[![NPM](https://img.shields.io/npm/v/nedb-lite.svg?style=flat-square)](https://www.npmjs.com/package/nedb-lite) [![NPM](https://img.shields.io/npm/dm/nedb-lite.svg?style=flat-square)](https://www.npmjs.com/package/nedb-lite) [![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-nedb-lite.svg)](https://travis-ci.org/kaizhu256/node-nedb-lite)
 
 
 
-# todo
+# documentation
+#### todo
 - none
 
-
-
-# change since b0c73d37
-- npm publish 2016.1.3
-- add function Nedb.fileReset
-- add property Nedb.fileDict, Nedb.storage
+#### change since ccf0a403
+- npm publish 2016.4.2
+- expose and document nedb's internal modules
 - none
+
+#### api-doc
+- [https://kaizhu256.github.io/node-nedb-lite/build/doc.api.html](https://kaizhu256.github.io/node-nedb-lite/build/doc.api.html)
+
+[![api-doc](https://kaizhu256.github.io/node-nedb-lite/build/screen-capture.docApiCreate.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-nedb-lite_2Ftmp_2Fbuild_2Fdoc.api.html.png)](https://kaizhu256.github.io/node-nedb-lite/build/doc.api.html)
 
 
 
@@ -50,17 +53,6 @@ standalone, single-script version of [nedb](https://www.npmjs.com/package/nedb) 
 
 
 
-# documentation
-#### this package is derived from
-- [nedb @ 1.8.0](https://www.npmjs.com/package/nedb)
-
-#### api-doc
-- [https://kaizhu256.github.io/node-nedb-lite/build/doc.api.html](https://kaizhu256.github.io/node-nedb-lite/build/doc.api.html)
-
-[![api-doc](https://kaizhu256.github.io/node-nedb-lite/build/screen-capture.docApiCreate.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-nedb-lite_2Ftmp_2Fbuild_2Fdoc.api.html.png)](https://kaizhu256.github.io/node-nedb-lite/build/doc.api.html)
-
-
-
 # npm-dependencies
 - none
 
@@ -74,22 +66,25 @@ standalone, single-script version of [nedb](https://www.npmjs.com/package/nedb) 
 # package.json
 ```json
 {
+    "package.json": true,
     "author": "kai zhu <kaizhu256@gmail.com>",
-    "description": "standalone, single-script version of nedb \
+    "description": "this package is a standalone, single-script version of nedb @ 1.8.0 \
 that runs in both browser and nodejs, with zero npm-dependencies",
     "devDependencies": {
-        "electron-lite": "2015.12.4",
-        "utility2": "2016.1.9"
+        "electron-lite": "2016.3.3",
+        "utility2": "2016.3.5"
     },
     "engines": { "node": ">=4.2" },
     "keywords": [
         "browser",
         "db",
         "embed", "embedded",
-        "lite", "lightweight",
+        "indexeddb",
+        "light", "lightweight", "lite", "localstorage",
         "minimal", "mongo", "mongodb",
-        "nedb",
-        "standalone"
+        "nedb", "no-sql", "nosql",
+        "standalone",
+        "web-sql", "websql"
     ],
     "license": "MIT",
     "main": "nedb-lite.js",
@@ -101,8 +96,9 @@ that runs in both browser and nodejs, with zero npm-dependencies",
     },
     "scripts": {
         "build-ci": "utility2 shRun shReadmeBuild",
-        "build-doc": "MODE_LINENO=0 \
-utility2 shRun shReadmeExportFile package.json package.json && \
+        "build-doc": ". node_modules/.bin/utility2 && \
+shReadmeExportScripts && \
+cp $(shFileTrimLeft tmp/README.package.json) package.json && \
 utility2 shRun shDocApiCreate \"module.exports={ \
 exampleFileList:['README.md','test.js','nedb-lite.js'], \
 moduleDict:{ \
@@ -111,14 +107,14 @@ Nedb:{exports:require('./nedb-lite.js')}, \
 'Nedb.storage':{aliasList:['storage'],exports:require('./nedb-lite.js').storage} \
 } \
 }\"",
-        "test": "export MODE_LINENO=0 && \
-export NODE_ENV=test && \
-utility2 shRun shReadmeExportFile package.json package.json && \
+        "test": ". node_modules/.bin/utility2 && \
+shReadmeExportScripts && \
+cp $(shFileTrimLeft tmp/README.package.json) package.json && \
 export PORT=$(utility2 shServerPortRandom) && \
 utility2 test node test.js",
         "test-published": "utility2 shRun shNpmTestPublished"
     },
-    "version": "2016.1.3"
+    "version": "2016.4.2"
 }
 ```
 
@@ -146,13 +142,6 @@ shBuildCiTestPost() {(set -e
 # this function will run the post-test build
     # if running legacy-node, then exit
     [ "$(node --version)" \< "v5.0" ] && exit || true
-    # if branch is not alpha, beta, or master, then exit
-    if !([ "$CI_BRANCH" = alpha ] ||
-        [ "$CI_BRANCH" = beta ] ||
-        [ "$CI_BRANCH" = master ])
-    then
-        exit
-    fi
     TEST_URL="https://$(printf "$GITHUB_REPO" | \
         sed 's/\//.github.io\//')/build..$CI_BRANCH..travis-ci.org/app/nedb-lite.js"
     # deploy app to gh-pages
@@ -160,17 +149,21 @@ shBuildCiTestPost() {(set -e
         shGithubDeploy)
 )}
 
-shBuild() {
+shBuild() {(set -e
 # this function will run the main build
-    set -e
     # init env
     . node_modules/.bin/utility2 && shInit
     # cleanup github-gh-pages dir
     # export BUILD_GITHUB_UPLOAD_PRE_SH="rm -fr build"
     # init github-gh-pages commit-limit
     export COMMIT_LIMIT=16
-    # run default build
-    shBuildCiDefault
-}
+    # if branch is alpha, beta, or master, then run default build
+    if [ "$CI_BRANCH" = alpha ] ||
+        [ "$CI_BRANCH" = beta ] ||
+        [ "$CI_BRANCH" = master ]
+    then
+        shBuildCiDefault
+    fi
+)}
 shBuild
 ```
