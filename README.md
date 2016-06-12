@@ -10,9 +10,9 @@ this package is a standalone, single-script version of nedb @ 1.8.0 that runs in
 #### todo
 - none
 
-#### change since ccf0a403
-- npm publish 2016.4.2
-- expose and document nedb's internal modules
+#### change since 88f7b702
+- npm publish 2016.5.1
+- add rollup compatibility
 - none
 
 #### api-doc
@@ -36,6 +36,8 @@ this package is a standalone, single-script version of nedb @ 1.8.0 that runs in
 | git-branch : | [master](https://github.com/kaizhu256/node-nedb-lite/tree/master) | [beta](https://github.com/kaizhu256/node-nedb-lite/tree/beta) | [alpha](https://github.com/kaizhu256/node-nedb-lite/tree/alpha)|
 |--:|:--|:--|:--|
 | test-server : | [![github.com test-server](https://kaizhu256.github.io/node-nedb-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-nedb-lite/build..master..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-nedb-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-nedb-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-nedb-lite/build..alpha..travis-ci.org/app/index.html)|
+| test-report : | [![test-report](https://kaizhu256.github.io/node-nedb-lite/build..master..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-nedb-lite/build..master..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-nedb-lite/build..alpha..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-nedb-lite/build..alpha..travis-ci.org/test-report.html)|
+| coverage : | [![istanbul coverage](https://kaizhu256.github.io/node-nedb-lite/build..master..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-nedb-lite/build..master..travis-ci.org/coverage.html/index.html) | [![istanbul coverage](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/coverage.html/index.html) | [![istanbul coverage](https://kaizhu256.github.io/node-nedb-lite/build..alpha..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-nedb-lite/build..alpha..travis-ci.org/coverage.html/index.html)|
 | build-artifacts : | [![build-artifacts](https://kaizhu256.github.io/node-nedb-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-nedb-lite/tree/gh-pages/build..master..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-nedb-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-nedb-lite/tree/gh-pages/build..beta..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-nedb-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-nedb-lite/tree/gh-pages/build..alpha..travis-ci.org)|
 
 #### master branch
@@ -71,10 +73,11 @@ this package is a standalone, single-script version of nedb @ 1.8.0 that runs in
     "description": "this package is a standalone, single-script version of nedb @ 1.8.0 \
 that runs in both browser and nodejs, with zero npm-dependencies",
     "devDependencies": {
-        "electron-lite": "2016.3.3",
-        "utility2": "2016.3.5"
+        "electron-lite": "kaizhu256/node-electron-lite#alpha",
+        "utility2": "kaizhu256/node-utility2#alpha"
     },
     "engines": { "node": ">=4.2" },
+    "homepage": "https://github.com/kaizhu256/node-nedb-lite",
     "keywords": [
         "browser",
         "db",
@@ -95,26 +98,17 @@ that runs in both browser and nodejs, with zero npm-dependencies",
         "url": "https://github.com/kaizhu256/node-nedb-lite.git"
     },
     "scripts": {
+        "build-app": "npm test --mode-test-case=testCase_build_app",
         "build-ci": "utility2 shRun shReadmeBuild",
-        "build-doc": ". node_modules/.bin/utility2 && \
-shReadmeExportScripts && \
-cp $(shFileTrimLeft tmp/README.package.json) package.json && \
-utility2 shRun shDocApiCreate \"module.exports={ \
-exampleFileList:['README.md','test.js','nedb-lite.js'], \
-moduleDict:{ \
-Nedb:{exports:require('./nedb-lite.js')}, \
-'Nedb.prototype':{aliasList:['collection'],exports:require('./nedb-lite.js').prototype}, \
-'Nedb.storage':{aliasList:['storage'],exports:require('./nedb-lite.js').storage} \
-} \
-}\"",
-        "test": ". node_modules/.bin/utility2 && \
-shReadmeExportScripts && \
+        "build-doc": "npm test --mode-test-case=testCase_build_doc",
+        "test": "\
+. node_modules/.bin/utility2 && shInit && shReadmeExportScripts && \
 cp $(shFileTrimLeft tmp/README.package.json) package.json && \
 export PORT=$(utility2 shServerPortRandom) && \
 utility2 test node test.js",
         "test-published": "utility2 shRun shNpmTestPublished"
     },
-    "version": "2016.4.2"
+    "version": "2016.5.1"
 }
 ```
 
@@ -127,7 +121,6 @@ utility2 test node test.js",
 
 # internal build-script
 - build.sh
-
 ```shell
 # build.sh
 
@@ -145,7 +138,7 @@ shBuildCiTestPost() {(set -e
     TEST_URL="https://$(printf "$GITHUB_REPO" | \
         sed 's/\//.github.io\//')/build..$CI_BRANCH..travis-ci.org/app/nedb-lite.js"
     # deploy app to gh-pages
-    (export npm_config_file_test_report_merge="$npm_config_dir_build/test-report.json" &&
+    (export MODE_BUILD=githubTest &&
         shGithubDeploy)
 )}
 
@@ -154,7 +147,7 @@ shBuild() {(set -e
     # init env
     . node_modules/.bin/utility2 && shInit
     # cleanup github-gh-pages dir
-    # export BUILD_GITHUB_UPLOAD_PRE_SH="rm -fr build"
+    export BUILD_GITHUB_UPLOAD_PRE_SH="rm -fr build"
     # init github-gh-pages commit-limit
     export COMMIT_LIMIT=16
     # if branch is alpha, beta, or master, then run default build

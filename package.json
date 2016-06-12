@@ -4,10 +4,11 @@
     "description": "this package is a standalone, single-script version of nedb @ 1.8.0 that runs in both browser and nodejs, with zero npm-dependencies",
 
     "devDependencies": {
-        "electron-lite": "2016.3.3",
-        "utility2": "2016.3.5"
+        "electron-lite": "kaizhu256/node-electron-lite#alpha",
+        "utility2": "kaizhu256/node-utility2#alpha"
     },
     "engines": { "node": ">=4.2" },
+    "homepage": "https://github.com/kaizhu256/node-nedb-lite",
     "keywords": [
         "browser",
         "db",
@@ -28,24 +29,15 @@
         "url": "https://github.com/kaizhu256/node-nedb-lite.git"
     },
     "scripts": {
+        "build-app": "npm test --mode-test-case=testCase_build_app",
         "build-ci": "utility2 shRun shReadmeBuild",
-        "build-doc": ". node_modules/.bin/utility2 && shReadmeExportScripts && cp $(shFileTrimLeft tmp/README.package.json) package.json && utility2 shRun shDocApiCreate \"module.exports={ exampleFileList:['README.md','test.js','nedb-lite.js'], moduleDict:{ Nedb:{exports:require('./nedb-lite.js')}, 'Nedb.prototype':{aliasList:['collection'],exports:require('./nedb-lite.js').prototype}, 'Nedb.storage':{aliasList:['storage'],exports:require('./nedb-lite.js').storage} } }\"",
-
-
-
-
-
-
-
-
-
-
-        "test": ". node_modules/.bin/utility2 && shReadmeExportScripts && cp $(shFileTrimLeft tmp/README.package.json) package.json && export PORT=$(utility2 shServerPortRandom) && utility2 test node test.js",
+        "build-doc": "npm test --mode-test-case=testCase_build_doc",
+        "test": ". node_modules/.bin/utility2 && shInit && shReadmeExportScripts && cp $(shFileTrimLeft tmp/README.package.json) package.json && export PORT=$(utility2 shServerPortRandom) && utility2 test node test.js",
 
 
 
 
         "test-published": "utility2 shRun shNpmTestPublished"
     },
-    "version": "2016.4.2"
+    "version": "2016.5.1"
 }

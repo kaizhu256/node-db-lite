@@ -23,7 +23,7 @@
 
     // run node js-env code - function
     (function () {
-        local.testCase_build_assets = function (options, onError) {
+        local.testCase_build_app = function (options, onError) {
         /*
          * this function will test build's asset handling-behavior
          */
@@ -59,6 +59,65 @@
             });
             onParallel();
         };
+
+        local.testCase_build_doc = function (options, onError) {
+        /*
+         * this function will test build's doc handling-behavior
+         */
+            var modeNext, onNext;
+            modeNext = 0;
+            onNext = function (error) {
+                local.utility2.tryCatchOnError(function () {
+                    // validate no error occurred
+                    local.utility2.assert(!error, error);
+                    modeNext += 1;
+                    switch (modeNext) {
+                    case 1:
+                        options = {};
+                        options.example = [
+                            'README.md',
+                            'test.js',
+                            'nedb-lite.js'
+                        ].map(function (file) {
+                            return '\n\n\n\n\n\n\n\n' +
+                                local.fs.readFileSync(file, 'utf8') +
+                                '\n\n\n\n\n\n\n\n';
+                        }).join('');
+                        options.moduleDict = {
+                            Nedb: {
+                                aliasList: [],
+                                exports: local.nedb
+                            },
+                            'Nedb.prototype': {
+                                aliasList: ['self', 'this'],
+                                exports: local.nedb.prototype
+                            },
+                            'Nedb.storage': {
+                                aliasList: [],
+                                exports: local.nedb.storage
+                            }
+                        };
+                        // create doc.api.html
+                        local.utility2.fsWriteFileWithMkdirp(
+                            local.utility2.envDict.npm_config_dir_build + '/doc.api.html',
+                            local.utility2.docApiCreate(options),
+                            onNext
+                        );
+                        break;
+                    case 2:
+                        local.utility2.browserTest({
+                            modeBrowserTest: 'screenCapture',
+                            url: 'file://' + local.utility2.envDict.npm_config_dir_build +
+                                '/doc.api.html'
+                        }, onNext);
+                        break;
+                    default:
+                        onError(error);
+                    }
+                }, onError);
+            };
+            onNext();
+        };
     }());
 
 
@@ -67,6 +126,7 @@
     (function () {
         // require modules
         local.fs = require('fs');
+        local.nedb = require('./nedb-lite.js');
         local.path = require('path');
         local.utility2 = require('utility2');
         // run server-test

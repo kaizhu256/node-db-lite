@@ -75,7 +75,7 @@
                  */
                     // for performance reasons,
                     // only spawn the mkdir process if the dir does not exist
-                    local.require('fs').exists(dir, function (exists) {
+                    local.require2('fs').exists(dir, function (exists) {
                         // warning - no checks to see if the dir is a directory
                         // (versus a file or a link)
                         if (!exists) {
@@ -97,7 +97,7 @@
                     });
                 };
             default:
-                return local.require(key);
+                return local.require2(key);
             }
         };
         self = local;
@@ -9681,6 +9681,7 @@ return /******/ (function(modules) { // webpackBootstrap
     if (local.modeJs === 'node') {
         // export __dirname
         module.exports.__dirname = __dirname;
+        module['nedb-lite'] = module.exports;
     }
     // init Nedb
     local.Nedb = local.modeJs === 'browser'
@@ -9729,26 +9730,30 @@ return /******/ (function(modules) { // webpackBootstrap
         });
         onParallel();
     };
-}({
-    // init modeJs
-    modeJs: (function () {
+}(
+    (function () {
         'use strict';
-        try {
-            return typeof navigator.userAgent === 'string' &&
-                typeof document.querySelector('body') === 'object' &&
-                typeof XMLHttpRequest.prototype.open === 'function' &&
-                'browser';
-        } catch (errorCaughtBrowser) {
-            return module.exports &&
-                typeof process.versions.node === 'string' &&
-                typeof require('http').createServer === 'function' &&
-                'node';
+        var local;
+        // init local
+        local = {};
+        // init modeJs
+        local.modeJs = (function () {
+            try {
+                return typeof navigator.userAgent === 'string' &&
+                    typeof document.querySelector('body') === 'object' &&
+                    typeof XMLHttpRequest.prototype.open === 'function' &&
+                    'browser';
+            } catch (errorCaughtBrowser) {
+                return module.exports &&
+                    typeof process.versions.node === 'string' &&
+                    typeof require('http').createServer === 'function' &&
+                    'node';
+            }
+        }());
+        // init module
+        if (local.modeJs === 'node') {
+            local.require2 = require;
         }
-    }()),
-    process: typeof process === 'object'
-        ? process
-        : null,
-    require: typeof require === 'function'
-        ? require
-        : null
-}));
+        return local;
+    }())
+));
