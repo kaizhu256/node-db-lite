@@ -1,8 +1,7 @@
 {
     "package.json": true,
     "author": "kai zhu <kaizhu256@gmail.com>",
-    "description": "this package is a standalone, single-script version of nedb @ 1.8.0 that runs in both browser and nodejs, with zero npm-dependencies",
-
+    "description": "this package will run a standalone, browser-compatible version of the nedb v1.8.0 database with zero npm-dependencies",
     "devDependencies": {
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
         "utility2": "kaizhu256/node-utility2#alpha"
@@ -12,16 +11,14 @@
     "keywords": [
         "browser",
         "db",
-        "embed", "embedded",
         "indexeddb",
-        "light", "lightweight", "lite", "localstorage",
-        "minimal", "mongo", "mongodb",
+        "localstorage",
+        "mongo", "mongodb",
         "nedb", "no-sql", "nosql",
-        "standalone",
-        "web-sql", "websql"
+        "persistence", "persistent",
+        "web", "web-sql", "websql"
     ],
     "license": "MIT",
-    "main": "nedb-lite.js",
     "name": "nedb-lite",
     "os": ["darwin", "linux"],
     "repository": {
@@ -29,15 +26,12 @@
         "url": "https://github.com/kaizhu256/node-nedb-lite.git"
     },
     "scripts": {
-        "build-app": "npm test --mode-test-case=testCase_build_app",
         "build-ci": "utility2 shRun shReadmeBuild",
-        "build-doc": "npm test --mode-test-case=testCase_build_doc",
-        "test": ". node_modules/.bin/utility2 && shInit && shReadmeExportScripts && cp $(shFileTrimLeft tmp/README.package.json) package.json && export PORT=$(utility2 shServerPortRandom) && utility2 test node test.js",
+        "start": "export PORT=${PORT:-8080} && export npm_config_mode_auto_restart=1 && utility2 shRun shIstanbulCover test.js",
 
 
 
-
-        "test-published": "utility2 shRun shNpmTestPublished"
+        "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
     },
-    "version": "2016.5.1"
+    "version": "2016.8.1"
 }

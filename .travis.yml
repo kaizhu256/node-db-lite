@@ -16,8 +16,8 @@ env:
 language:
     - node_js
 node_js:
-    - "4.2"
-    - "node"
+    # - 4
+    - node
 script:
     - npm run-script build-ci
 # http://docs.travis-ci.com/user/workers/container-based-infrastructure

@@ -1,25 +1,25 @@
 /*
- * nedb-lite.js
+ * assets.nedb-lite.js
  *
- * this package is a standalone, single-script version of nedb @ 1.8.0
- * that runs in both browser and nodejs, with zero npm-dependencies
+ * this package will run a standalone, browser-compatible version of the nedb v1.8.0 database
+ * with zero npm-dependencies
  *
  * browser example:
- *     <script src="nedb-lite.js"></script>
+ *     <script src="assets.nedb-lite.js"></script>
  *     <script>
- *     var collection = new window.Nedb();
- *     collection.insert({ field1: 'hello', field2: 'world'}, console.log.bind(console));
+ *     var table = new window.Nedb();
+ *     table.insert({ field1: 'hello', field2: 'world'}, console.log.bind(console));
  *     </script>
  *
  * node example:
- *     var Nedb = require('./nedb-lite.js');
- *     var collection = new Nedb();
- *     collection.insert({ field1: 'hello', field2: 'world'}, console.log.bind(console));
+ *     var Nedb = require('./assets.nedb-lite.js');
+ *     var table = new Nedb();
+ *     table.insert({ field1: 'hello', field2: 'world'}, console.log.bind(console));
  */
 
 
 
-/* istanbul ignore all */
+/* istanbul instrument in package nedb-lite */
 /*jslint
     browser: true,
     maxerr: 8,
@@ -31,11 +31,11 @@
 */
 (function (local) {
     'use strict';
-    var nop, require, self;
+    var nop, require;
 
 
 
-    // run shared js-env code - init
+    // run shared js-env code - pre-init
     (function () {
         nop = function () {
         /*
@@ -44,7 +44,11 @@
             return;
         };
         // jslint-hack
-        nop(require, self);
+        nop(require);
+        // init global
+        local.global = local.modeJs === 'browser'
+            ? window
+            : global;
         require = function (key) {
             switch (key) {
             case 'async':
@@ -71,40 +75,29 @@
             case 'mkdirp':
                 return function (dir, onError) {
                 /*
-                 * simple, portable mkdirp code using fs.exists and child_process.spawnSync
+                 * this function will mkdirp the dir
                  */
-                    // for performance reasons,
-                    // only spawn the mkdir process if the dir does not exist
-                    local.require2('fs').exists(dir, function (exists) {
-                        // warning - no checks to see if the dir is a directory
-                        // (versus a file or a link)
-                        if (!exists) {
-                            try {
-                                local.child_process.spawnSync(
-                                    'mkdir',
-                                    process.platform === 'win32'
-                                        // windows mkdir implies the '-p' option
-                                        ? [dir]
-                                        : ['-p', dir],
-                                    { stdio: ['ignore', 1, 2] }
-                                );
-                            } catch (errorCaught) {
-                                onError(errorCaught);
-                                return;
-                            }
+                    var error;
+                    try {
+                        if (!local.fs.existsSync(dir)) {
+                            local.child_process.spawnSync('mkdir', ['-p', dir], {
+                                stdio: ['ignore', 1, 2]
+                            });
                         }
-                        onError();
-                    });
+                    } catch (errorCaught) {
+                        error = errorCaught;
+                    }
+                    onError(error);
                 };
             default:
                 return local.require2(key);
             }
         };
-        self = local;
     }());
 
 
 
+    /* istanbul ignore next */
     // init lib nedb.storage
     (function () {
         if (local.modeJs === 'node') {
@@ -253,11 +246,14 @@ module.exports = storage;
 
 
 
+/* istanbul ignore next */
 // init lib nedb
 /* jslint-ignore-begin */
 // https://github.com/louischatriot/nedb/blob/cadf4ef434e517e47c4e9ca1db5b89e892ff5981/browser-version/out/nedb.js
 // replace 'return i(r?r:t)' with 'return local[t] = i(r?r:t)'
 // replace 'storage = require('./storage')' with 'storage = local.storage = local.storage || require('./storage')'
+// insert into Persistence.prototype.persistCachedDatabase '  return toPersist;\n'
+// replace 'seen = {}' with 'seen = local'
 (function(e){if("function"==typeof bootstrap)bootstrap("nedb",e);else if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else if("undefined"!=typeof ses){if(!ses.ok())return;ses.makeNedb=e}else"undefined"!=typeof window?window.Nedb=e():global.Nedb=e()})(function(){var define,ses,bootstrap,module,exports;
 return (function(e,t,n){function i(n,s){if(!t[n]){if(!e[n]){var o=typeof require=="function"&&require;if(!s&&o)return o(n,!0);if(r)return r(n,!0);throw new Error("Cannot find module '"+n+"'")}var u=t[n]={exports:{}};e[n][0].call(u.exports,function(t){var r=e[n][1][t];return local[t] = i(r?r:t)},u,u.exports)}return t[n].exports}var r=typeof require=="function"&&require;for(var s=0;s<n.length;s++)i(n[s]);return i})({1:[function(require,module,exports){
 var process=require("__browserify_process");if (!process.EventEmitter) process.EventEmitter = function () {};
@@ -3384,6 +3380,7 @@ Persistence.prototype.persistCachedDatabase = function (cb) {
     self.db.emit('compaction.done');
     return callback(null);
   });
+  return toPersist;
 };
 
 
@@ -5675,7 +5672,7 @@ var process=require("__browserify_process"),global=self;/*!
 var define, requireModule, require, requirejs;
 
 (function() {
-  var registry = {}, seen = {};
+  var registry = {}, seen = local;
 
   define = function(name, deps, callback) {
     registry[name] = { deps: deps, callback: callback };
@@ -9678,58 +9675,273 @@ return /******/ (function(modules) { // webpackBootstrap
 });
 ;
 /* jslint-ignore-end */
-    if (local.modeJs === 'node') {
-        // export __dirname
-        module.exports.__dirname = __dirname;
-        module['nedb-lite'] = module.exports;
+    switch (local.modeJs) {
+
+
+
+    // run browser js-env code - post-init
+    case 'browser':
+        // init exports
+        local.Nedb = local.global.utility2_nedb = local.global.Nedb;
+        local.Nedb.NODE_ENV = 'undefined';
+        break;
+
+
+
+    // run node js-env code - post-init
+    case 'node':
+        // init exports
+        local.Nedb = module['./lib.nedb.js'] = module['nedb-lite'] = module.exports;
+        local.Nedb.__dirname = __dirname;
+        local.Nedb.NODE_ENV = process.env.NODE_ENV;
+        // require modules
+        local.child_process = require('child_process');
+        local.fs = require('fs');
+        break;
     }
-    // init Nedb
-    local.Nedb = local.modeJs === 'browser'
-        ? window.Nedb
-        : module.exports;
-    // export locsl to Nedb
-    Object.keys(local).forEach(function (key) {
-        local.Nedb[key] = local[key];
-    });
-    // init Nedb.fileDict
-    local.Nedb.fileDict = {};
-    [
-        'appendFile',
-        'crashSafeWriteFile',
-        'ensureDatafileIntegrity',
-        'readFile',
-        'rename',
-        'writeFile'
-    ].forEach(function (key) {
-        local.Nedb.storage['_' + key] = local.Nedb.storage[key];
-        local.Nedb.storage[key] = function (file1, file2) {
-            local.Nedb.fileDict[file1] = true;
-            if (key === 'rename') {
-                local.Nedb.fileDict[file2] = true;
-            }
-            local.Nedb.storage['_' + key].apply(local.Nedb.storage, arguments);
-        };
-    });
-    local.Nedb.fileReset = function (callback) {
-    /*
-     * this function will reset nedb's file-state
-     */
-        var onParallel;
-        onParallel = function () {
-            onParallel.counter -= 1;
-            if (onParallel.counter === 0) {
-                callback();
-            }
-        };
-        onParallel.counter = 0;
-        onParallel.counter += 1;
-        Object.keys(local.Nedb.fileDict).forEach(function (file) {
-            delete local.Nedb.fileDict[file];
-            onParallel.counter += 1;
-            local.Nedb.storage.unlink(file, onParallel);
+
+
+
+    // run shared js-env code - post-init
+    (function () {
+        // re-init local
+        local.Nedb.Nedb = local.Nedb.local = local.Nedb;
+        Object.keys(local).forEach(function (key) {
+            local.Nedb[key.replace((/.*\//), '')] = local[key];
         });
-        onParallel();
-    };
+        local = local.Nedb;
+        local.assert = function (passed, message) {
+        /*
+         * this function will assert passed is truthy, else throw the error message
+         */
+            var error;
+            if (passed) {
+                return;
+            }
+            error = message && message.message
+                // if message is an error-object, then leave it as is
+                ? message
+                : new Error(typeof message === 'string'
+                    // if message is a string, then leave it as is
+                    ? message
+                    // else JSON.stringify message
+                    : JSON.stringify(message));
+            throw error;
+        };
+        local.dbExport = function () {
+        /*
+         * this function will export the database as a serialized tableList
+         */
+            return Object.keys(local.dbTableDict).map(function (key) {
+                return local.dbTableDict[key].export();
+            }).join('\n\n');
+        };
+        local.dbImport = function (tableList, onError) {
+        /*
+         * this function will import the serialized tableList
+         */
+            var onParallel;
+            onParallel = function () {
+                onParallel.counter -= 1;
+                if (onParallel.counter === 0) {
+                    onError();
+                }
+            };
+            onParallel.counter = 0;
+            onParallel.counter += 1;
+            tableList.trim().split('\n\n').forEach(function (table) {
+                onParallel.counter += 1;
+                local.dbTableCreate({
+                    persistenceData: table,
+                    name: JSON.parse((/.*/).exec(table)[0])
+                }, onParallel);
+            });
+            onParallel();
+        };
+        local.dbReset = function (onError) {
+        /*
+         * this function will reset nedb's persistence
+         */
+            var onParallel;
+            onParallel = function () {
+                onParallel.counter -= 1;
+                if (onParallel.counter === 0) {
+                    onError();
+                }
+            };
+            onParallel.counter = 0;
+            onParallel.counter += 1;
+            // drop all tables
+            Object.keys(local.dbTableDict).forEach(function (key) {
+                onParallel.counter += 1;
+                local.dbTableDrop({ name: key }, onParallel);
+            });
+            // https://developer.mozilla.org/en-US/docs/Web/API/IDBFactory/deleteDatabase
+            if (local.modeJs === 'browser') {
+                onParallel.counter += 1;
+                window.indexedDB.deleteDatabase('NeDB');
+                setTimeout(onParallel);
+            } else {
+                onParallel.counter += 1;
+                local.fs.readdir(local.fsDir(), function (error, fileList) {
+                    // validate no error occurred
+                    local.assert(!error, error);
+                    fileList.forEach(function (file) {
+                        onParallel.counter += 1;
+                        local.fs.unlink(local.fsDir() + '/' + file, onParallel);
+                    });
+                    onParallel();
+                });
+            }
+            onParallel();
+        };
+        local.dbTableCreate = function (options, onError) {
+            var data, modeNext, onNext, self;
+            modeNext = 0;
+            onNext = function (error) {
+                modeNext = error
+                    ? Infinity
+                    : modeNext + 1;
+                switch (modeNext) {
+                case 1:
+                    self = local.dbTableDict[options.name];
+                    if (!self) {
+                        self = local.dbTableDict[options.name] = new local.Nedb({
+                            filename: local.fsDir() + '/' + options.name,
+                            timestampData: true
+                        });
+                        self.name = String(options.name);
+                    }
+                    onError = onError || function (error) {
+                        // validate no error occurred
+                        local.assert(!error, error);
+                    };
+                    data = (options.persistenceData || '').trim();
+                    if (options.reset) {
+                        data = 'undefined';
+                    }
+                    if (!data) {
+                        onNext();
+                        return;
+                    }
+                    self.isLoaded = null;
+                    data += '\n';
+                    data = data.slice(data.indexOf('\n') + 1);
+                    local.storage.writeFile(self.filename, data, onNext);
+                    break;
+                case 2:
+                    if (self.isLoaded) {
+                        onNext();
+                        return;
+                    }
+                    self.isLoaded = true;
+                    self.loadDatabase(onNext);
+                    break;
+                default:
+                    onError(error, self);
+                }
+            };
+            onNext(options.error);
+            return self;
+        };
+        local.dbTableDict = {};
+        local.dbTableDrop = function (options, onError) {
+        /*
+         * this function will drop the table with the given options.name
+         */
+            var table;
+            table = local.dbTableDict[options.name];
+            if (!table) {
+                onError();
+                return;
+            }
+            delete local.dbTableDict[options.name];
+            table.persistence = table.prototype = table;
+            table.persistCachedDatabase = table.persistNewState = function () {
+                var ii;
+                for (ii = 0; ii < arguments.length; ii += 1) {
+                    if (typeof arguments[ii] === 'function') {
+                        arguments[ii]();
+                        return;
+                    }
+                }
+            };
+            local.storage.unlink(table.filename, function () {
+                onError();
+            });
+        };
+        local.fsDir = function () {
+        /*
+         * this function will return the persistence-dir
+         */
+            // https://github.com/louischatriot/nedb/issues/134
+            // bug workaround - Error creating index when db does not exist #134
+            if (local.modeJs === 'node' && !local.fsDirInitialized) {
+                // init nedb-dir
+                local.storage.mkdirp('tmp/nedb.persistence.' + local.NODE_ENV, nop);
+            }
+            local.fsDirInitialized = true;
+            return 'tmp/nedb.persistence.' + local.NODE_ENV;
+        };
+        local.jsonStringifyOrdered = function (element, replacer, space) {
+        /*
+         * this function will JSON.stringify the element,
+         * with object-keys sorted and circular-references removed
+         */
+            var circularList, stringify, tmp;
+            stringify = function (element) {
+            /*
+             * this function will recursively JSON.stringify the element,
+             * with object-keys sorted and circular-references removed
+             */
+                // if element is an object, then recurse its items with object-keys sorted
+                if (element &&
+                        typeof element === 'object' &&
+                        typeof element.toJSON !== 'function') {
+                    // ignore circular-reference
+                    if (circularList.indexOf(element) >= 0) {
+                        return;
+                    }
+                    circularList.push(element);
+                    // if element is an array, then recurse its elements
+                    if (Array.isArray(element)) {
+                        return '[' + element.map(function (element) {
+                            tmp = stringify(element);
+                            return typeof tmp === 'string'
+                                ? tmp
+                                : 'null';
+                        }).join(',') + ']';
+                    }
+                    return '{' + Object.keys(element)
+                        // sort object-keys
+                        .sort()
+                        .map(function (key) {
+                            tmp = stringify(element[key]);
+                            return typeof tmp === 'string'
+                                ? JSON.stringify(key) + ':' + tmp
+                                : undefined;
+                        })
+                        .filter(function (element) {
+                            return typeof element === 'string';
+                        })
+                        .join(',') + '}';
+                }
+                // else JSON.stringify as normal
+                return JSON.stringify(element);
+            };
+            circularList = [];
+            return JSON.stringify(element && typeof element === 'object'
+                ? JSON.parse(stringify(element))
+                : element, replacer, space);
+        };
+        local.prototype.export = function () {
+        /*
+         * this function will export the table as serialized-text
+         */
+            return (JSON.stringify(String(this.name)) + '\n' +
+                (this.persistence.persistCachedDatabase() || '').trim()).trim();
+        };
+    }());
 }(
     (function () {
         'use strict';
