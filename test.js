@@ -132,9 +132,14 @@
             options = {};
             options.name = 'testCase_dbExport_default';
             options.table = local.dbTableCreate(options);
+            options.table.ensureIndex({
+                fieldName: 'id',
+                unique: true
+            }, local.utility2.onErrorDefault);
             options.data = local.dbExport();
             // validate data
-            local.utility2.assertJsonEqual(options.data, '"testCase_dbExport_default"');
+            local.utility2.assertJsonEqual(options.data, '"testCase_dbExport_default"\n' +
+                '{"$$indexCreated":{"fieldName":"id","unique":true,"sparse":false}}');
             onError();
         };
 
@@ -187,7 +192,7 @@
             options.table = local.dbTableCreate(options);
             local.dbTableDrop(options.table, onError);
             // test undefined-table handling-behavior
-            local.dbTableDrop(options.table, local.utility2.nop);
+            local.dbTableDrop(options.table, local.utility2.onErrorDefault);
         };
 
         local.testCase_jsonStringifyOrdered_default = function (options, onError) {
@@ -253,7 +258,9 @@
             }, {
                 file: '/assets.' + local.utility2.envDict.npm_package_name + '.min.js',
                 transform: function (data) {
-                    return local.utility2.uglify(local.utility2.bufferToString(data));
+                    return local.utility2.uglifyIfProduction(
+                        local.utility2.bufferToString(data)
+                    );
                 },
                 url: '/assets.' + local.utility2.envDict.npm_package_name + '.js'
             }, {

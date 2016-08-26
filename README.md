@@ -19,12 +19,11 @@ this package will run a standalone, browser-compatible version of the nedb v1.8.
 
 # documentation
 #### todo
-- fix test on published package in build
 - none
 
-#### change since c2ad975d
-- npm publish 2016.8.2
-- disable test on published package in build
+#### change since 3ea735ed
+- npm publish 2016.8.3
+- fix npm-test for published package
 - none
 
 #### this package requires
@@ -443,7 +442,7 @@ export npm_config_mode_auto_restart=1 && \
 utility2 shRun shIstanbulCover test.js",
         "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
     },
-    "version": "2016.8.2"
+    "version": "2016.8.3"
 }
 ```
 
@@ -466,9 +465,12 @@ shBuildCiTestPre() {(set -e
     # test example.js
     (export MODE_BUILD=testExampleJs &&
         shRunScreenCapture shReadmeTestJs example.js) || return $?
-    #!! # test published-package
-    #!! (export MODE_BUILD=npmTestPublished &&
-        #!! shRunScreenCapture shNpmTestPublished) || return $?
+    # test published-package
+    (export MODE_BUILD=npmTestPublished &&
+        shRunScreenCapture shNpmTestPublished) || return $?
+    # coverage-hack - reset mock persistence
+    mkdir -p tmp/nedb.persistence.test
+    touch tmp/nedb.persistence.test/undefined
 )}
 
 shBuildCiTestPost() {(set -e

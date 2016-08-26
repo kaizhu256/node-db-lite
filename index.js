@@ -78,6 +78,11 @@
                  * this function will mkdirp the dir
                  */
                     var error;
+                    // optimization - do not re-mkdirp fsDirInitialized
+                    if (dir && dir === local.fsDirInitialized) {
+                        onError();
+                        return;
+                    }
                     try {
                         if (!local.fs.existsSync(dir)) {
                             local.child_process.spawnSync('mkdir', ['-p', dir], {
@@ -252,7 +257,6 @@ module.exports = storage;
 // https://github.com/louischatriot/nedb/blob/cadf4ef434e517e47c4e9ca1db5b89e892ff5981/browser-version/out/nedb.js
 // replace 'return i(r?r:t)' with 'return local[t] = i(r?r:t)'
 // replace 'storage = require('./storage')' with 'storage = local.storage = local.storage || require('./storage')'
-// insert into Persistence.prototype.persistCachedDatabase '  return toPersist;\n'
 // replace 'seen = {}' with 'seen = local'
 (function(e){if("function"==typeof bootstrap)bootstrap("nedb",e);else if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else if("undefined"!=typeof ses){if(!ses.ok())return;ses.makeNedb=e}else"undefined"!=typeof window?window.Nedb=e():global.Nedb=e()})(function(){var define,ses,bootstrap,module,exports;
 return (function(e,t,n){function i(n,s){if(!t[n]){if(!e[n]){var o=typeof require=="function"&&require;if(!s&&o)return o(n,!0);if(r)return r(n,!0);throw new Error("Cannot find module '"+n+"'")}var u=t[n]={exports:{}};e[n][0].call(u.exports,function(t){var r=e[n][1][t];return local[t] = i(r?r:t)},u,u.exports)}return t[n].exports}var r=typeof require=="function"&&require;for(var s=0;s<n.length;s++)i(n[s]);return i})({1:[function(require,module,exports){
@@ -3380,7 +3384,6 @@ Persistence.prototype.persistCachedDatabase = function (cb) {
     self.db.emit('compaction.done');
     return callback(null);
   });
-  return toPersist;
 };
 
 
@@ -9874,14 +9877,16 @@ return /******/ (function(modules) { // webpackBootstrap
         /*
          * this function will return the persistence-dir
          */
+            var tmp;
+            tmp = 'tmp/nedb.persistence.' + local.NODE_ENV;
             // https://github.com/louischatriot/nedb/issues/134
             // bug workaround - Error creating index when db does not exist #134
-            if (local.modeJs === 'node' && !local.fsDirInitialized) {
+            if (local.modeJs === 'node' && tmp !== local.fsDirInitialized) {
                 // init nedb-dir
-                local.storage.mkdirp('tmp/nedb.persistence.' + local.NODE_ENV, nop);
+                local.storage.mkdirp(tmp, nop);
             }
-            local.fsDirInitialized = true;
-            return 'tmp/nedb.persistence.' + local.NODE_ENV;
+            local.fsDirInitialized = tmp;
+            return tmp;
         };
         local.jsonStringifyOrdered = function (element, replacer, space) {
         /*
@@ -9938,8 +9943,23 @@ return /******/ (function(modules) { // webpackBootstrap
         /*
          * this function will export the table as serialized-text
          */
-            return (JSON.stringify(String(this.name)) + '\n' +
-                (this.persistence.persistCachedDatabase() || '').trim()).trim();
+            var data, self;
+            data = JSON.stringify(String(this.name)) + '\n';
+            self = this;
+            self.getAllData().forEach(function (doc) {
+                data += local.model.serialize(doc) + '\n';
+            });
+            Object.keys(self.indexes).forEach(function (fieldName) {
+                if (fieldName === "_id") {
+                    return;
+                }
+                data += local.model.serialize({ $$indexCreated: {
+                    fieldName: fieldName,
+                    unique: self.indexes[fieldName].unique,
+                    sparse: self.indexes[fieldName].sparse
+                } }) + '\n';
+            });
+            return data.trim();
         };
     }());
 }(
