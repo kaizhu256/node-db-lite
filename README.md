@@ -10,7 +10,7 @@ this package will run a standalone, browser-compatible version of the nedb v1.8.
 
 
 
-# live test-server
+# live demo
 - [https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/app/index.html](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/app/index.html)
 
 [![github.com test-server](https://kaizhu256.github.io/node-nedb-lite/build/screen-capture.githubDeploy.browser._2Fnode-nedb-lite_2Fbuild..alpha..travis-ci.org_2Fapp_2Findex.html.png)](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/app/index.html)
@@ -21,9 +21,15 @@ this package will run a standalone, browser-compatible version of the nedb v1.8.
 #### todo
 - none
 
-#### change since 3ea735ed
-- npm publish 2016.8.3
-- fix npm-test for published package
+#### change since c6fd675c
+- npm publish 2016.9.1
+- make db always persistent
+- removed support for native-datetime (automatically converted to iso-string)
+- tables automatically includes createdAt and updatedAt fields
+- remove async dependency
+- remove localForage dependency
+- remove underscore dependency
+- remove util dependency
 - none
 
 #### this package requires
@@ -31,6 +37,14 @@ this package will run a standalone, browser-compatible version of the nedb v1.8.
 
 #### additional info
 - nedb derived from https://github.com/louischatriot/nedb/blob/cadf4ef434e517e47c4e9ca1db5b89e892ff5981/browser-version/out/nedb.js
+
+#### differences from original nedb @ https://github.com/louischatriot/nedb
+- shared js-env - removed options afterSerialization, beforeSerialization, corruptAlertThreshold, inMemoryOnly
+- shared js-env - removed support for native-datetime (automatically converted to iso-string)
+- shared js-env - removed support for promises (callbacks only)
+- shared js-env - tables always have the timestamp-fields createdAt and updatedAt
+- browser js-env - removed support for persistence in localStorage and web-sql (persistence requires indexedDB)
+- node js-env - removed support for ms-windows platform
 
 #### api-doc
 - [https://kaizhu256.github.io/node-nedb-lite/build/doc.api.html](https://kaizhu256.github.io/node-nedb-lite/build/doc.api.html)
@@ -44,8 +58,8 @@ this package will run a standalone, browser-compatible version of the nedb v1.8.
 
 | git-branch : | [master](https://github.com/kaizhu256/node-nedb-lite/tree/master) | [beta](https://github.com/kaizhu256/node-nedb-lite/tree/beta) | [alpha](https://github.com/kaizhu256/node-nedb-lite/tree/alpha)|
 |--:|:--|:--|:--|
-| test-server 1 : | [![github.com test-server](https://kaizhu256.github.io/node-nedb-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-nedb-lite/build..master..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-nedb-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-nedb-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-nedb-lite/build..alpha..travis-ci.org/app/index.html)|
-| test-server 2 : | [![heroku.com test-server](https://kaizhu256.github.io/node-nedb-lite/heroku-logo.75x25.png)](https://hrku01-nedb-lite-master.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-nedb-lite/heroku-logo.75x25.png)](https://hrku01-nedb-lite-beta.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-nedb-lite/heroku-logo.75x25.png)](https://hrku01-nedb-lite-alpha.herokuapp.com)|
+| test-server-1 : | [![github.com test-server](https://kaizhu256.github.io/node-nedb-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-nedb-lite/build..master..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-nedb-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-nedb-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-nedb-lite/build..alpha..travis-ci.org/app/index.html)|
+| test-server-2 : | [![heroku.com test-server](https://kaizhu256.github.io/node-nedb-lite/heroku-logo.75x25.png)](https://hrku01-nedb-lite-master.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-nedb-lite/heroku-logo.75x25.png)](https://hrku01-nedb-lite-beta.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-nedb-lite/heroku-logo.75x25.png)](https://hrku01-nedb-lite-alpha.herokuapp.com)|
 | test-report : | [![test-report](https://kaizhu256.github.io/node-nedb-lite/build..master..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-nedb-lite/build..master..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-nedb-lite/build..alpha..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-nedb-lite/build..alpha..travis-ci.org/test-report.html)|
 | coverage : | [![istanbul coverage](https://kaizhu256.github.io/node-nedb-lite/build..master..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-nedb-lite/build..master..travis-ci.org/coverage.html/index.html) | [![istanbul coverage](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/coverage.html/index.html) | [![istanbul coverage](https://kaizhu256.github.io/node-nedb-lite/build..alpha..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-nedb-lite/build..alpha..travis-ci.org/coverage.html/index.html)|
 | build-artifacts : | [![build-artifacts](https://kaizhu256.github.io/node-nedb-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-nedb-lite/tree/gh-pages/build..master..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-nedb-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-nedb-lite/tree/gh-pages/build..beta..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-nedb-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-nedb-lite/tree/gh-pages/build..alpha..travis-ci.org)|
@@ -74,7 +88,7 @@ this package will run a standalone, browser-compatible version of the nedb v1.8.
 /*
 example.js
 
-this script will will run a browser version of nedb
+this script will will demo the browser-version of nedb
 
 instruction
     1. save this script as example.js
@@ -233,6 +247,7 @@ instruction
 <html lang="en">\n\
 <head>\n\
 <meta charset="UTF-8">\n\
+<meta name="viewport" content="width=device-width, initial-scale=1">\n\
 <title>\n\
 {{envDict.npm_package_name}} v{{envDict.npm_package_version}}\n\
 </title>\n\
@@ -247,7 +262,7 @@ instruction
 }\n\
 body {\n\
     background-color: #fff;\n\
-    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;\n\
+    font-family: Arial, Helvetica, sans-serif;\n\
 }\n\
 body > * {\n\
     margin-bottom: 1rem;\n\
@@ -311,19 +326,16 @@ utility2-comment -->\n\
         >eval</a>\n\
     </label>\n\
 <textarea class="onkeyup" id="inputTextarea1">\n\
-window.table = new window.Nedb();\n\
-table.insert({ field1: "hello", field2: "world"}, console.log.bind(console));\n\
-\n\
-window.persistentTable1 = window.Nedb.dbTableCreate({ name: "persistentTable1" });\n\
-persistentTable1.insert({ field1: "hello", field2: "world"}, function () {\n\
+window.table1 = window.Nedb.dbTableCreate({ name: "table1" });\n\
+table1.insert({ field1: "hello", field2: "world"}, function () {\n\
     console.log();\n\
-    console.log(persistentTable1.export());\n\
+    console.log(table1.export());\n\
 });\n\
 \n\
-window.persistentTable2 = window.Nedb.dbTableCreate({ name: "persistentTable2" });\n\
-persistentTable2.insert({ field1: "hello", field2: "world"}, function () {\n\
+window.table2 = window.Nedb.dbTableCreate({ name: "table2" });\n\
+table2.insert({ field1: "hello", field2: "world"}, function () {\n\
     console.log();\n\
-    console.log(persistentTable2.export());\n\
+    console.log(table2.export());\n\
 });\n\
 </textarea>\n\
     <label>stderr and stdout</label>\n\
@@ -442,7 +454,7 @@ export npm_config_mode_auto_restart=1 && \
 utility2 shRun shIstanbulCover test.js",
         "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
     },
-    "version": "2016.8.3"
+    "version": "2016.9.1"
 }
 ```
 

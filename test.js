@@ -69,6 +69,15 @@
 
     // run shared js-env code - function
     (function () {
+        local.crudOptionsSetDefault = function (options, defaults) {
+        /*
+         * this function will set default-values for options
+         */
+            options = local.utility2.objectSetDefault(options, defaults);
+            options.table = local.dbTableDict.TestCrud;
+            return options;
+        };
+
         local.testCase_assertXxx_default = function (options, onError) {
         /*
          * this function will test assertXxx's default handling-behavior
@@ -138,8 +147,11 @@
             }, local.utility2.onErrorDefault);
             options.data = local.dbExport();
             // validate data
-            local.utility2.assertJsonEqual(options.data, '"testCase_dbExport_default"\n' +
-                '{"$$indexCreated":{"fieldName":"id","unique":true,"sparse":false}}');
+            local.utility2.assert(options.data.indexOf('"testCase_dbExport_default"\n' +
+                '{"$$indexCreated":{"fieldName":"createdAt","unique":false,"sparse":false}}\n' +
+                '{"$$indexCreated":{"fieldName":"updatedAt","unique":false,"sparse":false}}\n' +
+                '{"$$indexCreated":{"fieldName":"id","unique":true,"sparse":false}}')
+                >= 0, options.data);
             onError();
         };
 
@@ -149,7 +161,7 @@
          */
             // jslint-hack
             local.utility2.nop(options);
-            local.dbImport('"undefined"\n{"id":0}', onError);
+            local.dbImport('"testCase_dbImport_default"\n{"id":0}', onError);
         };
 
         local.testCase_dbTableCreate_default = function (options, onError) {
@@ -175,11 +187,9 @@
             options.error = local.utility2.errorDefault;
             options.name = 'testCase_dbTableCreate_error';
             options.table = local.dbTableCreate(options, function (error) {
-                local.utility2.tryCatchOnError(function () {
-                    // validate error occurred
-                    local.utility2.assert(error, error);
-                    onError();
-                }, onError);
+                // validate error occurred
+                local.utility2.assert(error, error);
+                onError();
             });
         };
 
@@ -193,6 +203,64 @@
             local.dbTableDrop(options.table, onError);
             // test undefined-table handling-behavior
             local.dbTableDrop(options.table, local.utility2.onErrorDefault);
+        };
+
+        local.testCase_dbTableFindOneById_default = function (options, onError) {
+        /*
+         * this function will test dbTableFindOneById's default handling-behavior
+         */
+            options = {};
+            local.utility2.onNext(options, function (error, data) {
+                switch (options.modeNext) {
+                case 1:
+                    options = local.crudOptionsSetDefault(options, {
+                        id: '00_test_dbTableFindOneById'
+                    });
+                    options.table.findOne({ id: options.id }, options.onNext);
+                    break;
+                case 2:
+                    // validate data
+                    local.utility2.assertJsonEqual(data.id, options.id);
+                    options.onNext();
+                    break;
+                default:
+                    onError(error);
+                }
+            });
+            options.modeNext = 0;
+            options.onNext();
+        };
+
+        local.testCase_dbTableRemoveOneById_default = function (options, onError) {
+        /*
+         * this function will test dbTableRemoveOneById's default handling-behavior
+         */
+            options = {};
+            local.utility2.onNext(options, function (error, data) {
+                switch (options.modeNext) {
+                case 1:
+                    options = local.crudOptionsSetDefault(options, {
+                        id: '00_test_dbTableRemoveOneById'
+                    });
+                    local.testCase_dbTableFindOneById_default(options, options.onNext);
+                    break;
+                case 2:
+                    options.table.remove({ id: options.id }, options.onNext);
+                    break;
+                case 3:
+                    options.table.findOne({ id: options.id }, options.onNext);
+                    break;
+                case 4:
+                    // validate data was removed
+                    local.utility2.assertJsonEqual(data, null);
+                    options.onNext();
+                    break;
+                default:
+                    onError(error, data);
+                }
+            });
+            options.modeNext = 0;
+            options.onNext();
         };
 
         local.testCase_jsonStringifyOrdered_default = function (options, onError) {
@@ -291,12 +359,10 @@
                             options.file
                         );
                         // validate no error occurred
-                        local.utility2.tryCatchOnError(function () {
-                            local.utility2.assert(
-                                !local.utility2.jslint.errorText,
-                                local.utility2.jslint.errorText
-                            );
-                        }, onError);
+                        local.utility2.assert(
+                            !local.utility2.jslint.errorText,
+                            local.utility2.jslint.errorText
+                        );
                         break;
                     }
                     local.utility2.fsWriteFileWithMkdirp(
@@ -313,119 +379,69 @@
         /*
          * this function will test build's doc handling-behavior
          */
-            var modeNext, onNext;
-            modeNext = 0;
-            onNext = function (error) {
-                local.utility2.tryCatchOnError(function () {
-                    // validate no error occurred
-                    local.utility2.assert(!error, error);
-                    modeNext += 1;
-                    switch (modeNext) {
-                    case 1:
-                        options = {};
-                        options.moduleDict = {
-                            Nedb: {
-                                exampleList: [],
-                                exports: local.Nedb
-                            },
-                            'Nedb.customUtils': {
-                                exampleList: [],
-                                exports: local.Nedb.customUtils
-                            },
-                            'Nedb.model': {
-                                exampleList: [],
-                                exports: local.Nedb.model
-                            },
-                            'Nedb.persistence': {
-                                exampleList: [],
-                                exports: local.Nedb.persistence
-                            },
-                            'Nedb.persistence.prototype': {
-                                exampleList: [],
-                                exports: local.Nedb.persistence.prototype
-                            },
-                            'Nedb.prototype': {
-                                exampleList: [],
-                                exports: local.Nedb.prototype
-                            },
-                            'Nedb.storage': {
-                                exampleList: [],
-                                exports: local.Nedb.storage
-                            }
-                        };
-                        Object.keys(options.moduleDict).forEach(function (key) {
-                            options.moduleDict[key].example = [
-                                'README.md',
-                                'test.js',
-                                'index.js'
-                            ]
-                                .concat(options.moduleDict[key].exampleList)
-                                .map(function (file) {
-                                    return '\n\n\n\n\n\n\n\n' +
-                                        local.fs.readFileSync(file, 'utf8') +
-                                        '\n\n\n\n\n\n\n\n';
-                                }).join('');
-                        });
-                        // create doc.api.html
-                        local.utility2.fsWriteFileWithMkdirp(
-                            local.utility2.envDict.npm_config_dir_build + '/doc.api.html',
-                            local.utility2.docApiCreate(options),
-                            onNext
-                        );
-                        break;
-                    case 2:
-                        local.utility2.browserTest({
-                            modeBrowserTest: 'screenCapture',
-                            url: 'file://' + local.utility2.envDict.npm_config_dir_build +
-                                '/doc.api.html'
-                        }, onNext);
-                        break;
-                    default:
-                        onError(error);
-                    }
-                }, onError);
-            };
-            onNext();
-        };
-
-        local.testCase_mkdirp_default = function (options, onError) {
-        /*
-         * this function will test mkdirp's default handling-behavior
-         */
-            var onParallel;
-            onParallel = local.utility2.onParallel(onError);
-            onParallel.counter += 1;
-            options = ['-r', 'tmp/aa/bb'];
-            local.child_process.spawnSync('rm', options, {
-                stdio: ['ignore', 1, 2]
+            options = {};
+            local.utility2.onNext(options, function (error) {
+                switch (options.modeNext) {
+                case 1:
+                    options.moduleDict = {
+                        Nedb: {
+                            exampleList: [],
+                            exports: local.Nedb
+                        },
+                        'Nedb.customUtils': {
+                            exampleList: [],
+                            exports: local.Nedb.customUtils
+                        },
+                        'Nedb.model': {
+                            exampleList: [],
+                            exports: local.Nedb.model
+                        },
+                        'Nedb.persistence': {
+                            exampleList: [],
+                            exports: local.Nedb.persistence
+                        },
+                        'Nedb.persistence.prototype': {
+                            exampleList: [],
+                            exports: local.Nedb.persistence.prototype
+                        },
+                        'Nedb.prototype': {
+                            exampleList: [],
+                            exports: local.Nedb.prototype
+                        }
+                    };
+                    Object.keys(options.moduleDict).forEach(function (key) {
+                        options.moduleDict[key].example = [
+                            'README.md',
+                            'test.js',
+                            'index.js'
+                        ]
+                            .concat(options.moduleDict[key].exampleList)
+                            .map(function (file) {
+                                return '\n\n\n\n\n\n\n\n' +
+                                    local.fs.readFileSync(file, 'utf8') +
+                                    '\n\n\n\n\n\n\n\n';
+                            }).join('');
+                    });
+                    // create doc.api.html
+                    local.utility2.fsWriteFileWithMkdirp(
+                        local.utility2.envDict.npm_config_dir_build + '/doc.api.html',
+                        local.utility2.docApiCreate(options),
+                        options.onNext
+                    );
+                    break;
+                case 2:
+                    local.utility2.browserTest({
+                        modeBrowserTest: 'screenCapture',
+                        url: 'file://' + local.utility2.envDict.npm_config_dir_build +
+                            '/doc.api.html'
+                    }, options.onNext);
+                    break;
+                default:
+                    onError(error);
+                }
             });
-            // test no-dir-exists handling-behavior
-            onParallel.counter += 1;
-            local.storage.mkdirp('tmp/aa/bb', onParallel);
-            // test dir-exists handling-behavior
-            onParallel.counter += 1;
-            local.storage.mkdirp('tmp/aa/bb', onParallel);
-            onParallel();
-        };
-
-        local.testCase_mkdirp_error = function (options, onError) {
-        /*
-         * this function will test mkdirp's error handling-behavior
-         */
-            options = [
-                [local.fs, { existsSync: function () {
-                    throw local.utility2.errorDefault;
-                } }]
-            ];
-            local.utility2.testMock(options, function (onError) {
-                local.storage.mkdirp('', function (error) {
-                    local.utility2.tryCatchOnError(function () {
-                        // validate error occurred
-                        local.utility2.assert(error, error);
-                        onError();
-                    }, onError);
-                });
-            }, onError);
+            options.modeNext = 0;
+            options.onNext();
         };
 
         local.testCase_webpage_default = function (options, onError) {
@@ -440,6 +456,27 @@
         };
         break;
     }
+
+
+
+    // run shared js-env code - post-init
+    (function () {
+        // init dbSeedList
+        local.utility2.dbSeedList = local.utility2.dbSeedList.concat([{
+            dbRowList: [{
+                id: '00_test_dbTableFindOneById'
+            }, {
+                id: '00_test_dbTableRemoveOneById'
+            }],
+            ensureIndexList: [{
+                expireAfterSeconds: 30,
+                fieldName: 'field1',
+                sparse: true,
+                unique: true
+            }],
+            name: 'TestCrud'
+        }]);
+    }());
     switch (local.modeJs) {
 
 
