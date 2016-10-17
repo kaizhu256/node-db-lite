@@ -1,13 +1,13 @@
 {
     "package.json": true,
     "author": "kai zhu <kaizhu256@gmail.com>",
-    "description": "this package will run a standalone, browser-compatible version of the nedb v1.8.0 database with zero npm-dependencies",
+    "description": "this package will run a persistent, in-browser database with zero npm-dependencies",
     "devDependencies": {
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
-        "utility2": "kaizhu256/node-utility2#alpha"
+        "utility2": "2016.10.1"
     },
-    "engines": { "node": ">=4.2" },
-    "homepage": "https://github.com/kaizhu256/node-nedb-lite",
+    "engines": { "node": ">=4.0" },
+    "homepage": "https://github.com/kaizhu256/node-db-lite",
     "keywords": [
         "browser",
         "db",
@@ -19,11 +19,11 @@
         "web", "web-sql", "websql"
     ],
     "license": "MIT",
-    "name": "nedb-lite",
+    "name": "db-lite",
     "os": ["darwin", "linux"],
     "repository": {
         "type": "git",
-        "url": "https://github.com/kaizhu256/node-nedb-lite.git"
+        "url": "https://github.com/kaizhu256/node-db-lite.git"
     },
     "scripts": {
         "build-ci": "utility2 shRun shReadmeBuild",
@@ -33,5 +33,5 @@
 
         "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
     },
-    "version": "2016.9.1"
+    "version": "2016.10.1"
 }

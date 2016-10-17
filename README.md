@@ -1,19 +1,19 @@
-nedb-lite
+db-lite
 =========
-this package will run a standalone, browser-compatible version of the nedb v1.8.0 database with zero npm-dependencies
+this package will run a persistent, in-browser database with zero npm-dependencies
 
-[![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-nedb-lite.svg)](https://travis-ci.org/kaizhu256/node-nedb-lite)
+[![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-db-lite.svg)](https://travis-ci.org/kaizhu256/node-db-lite)
 
-[![NPM](https://nodei.co/npm/nedb-lite.png?downloads=true)](https://www.npmjs.com/package/nedb-lite)
+[![NPM](https://nodei.co/npm/db-lite.png?downloads=true)](https://www.npmjs.com/package/db-lite)
 
-[![package-listing](https://kaizhu256.github.io/node-nedb-lite/build/screen-capture.gitLsTree.svg)](https://github.com/kaizhu256/node-nedb-lite)
+[![package-listing](https://kaizhu256.github.io/node-db-lite/build/screen-capture.gitLsTree.svg)](https://github.com/kaizhu256/node-db-lite)
 
 
 
 # live demo
-- [https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/app/index.html](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/app/index.html)
+- [https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/index.html](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/index.html)
 
-[![github.com test-server](https://kaizhu256.github.io/node-nedb-lite/build/screen-capture.githubDeploy.browser._2Fnode-nedb-lite_2Fbuild..alpha..travis-ci.org_2Fapp_2Findex.html.png)](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/app/index.html)
+[![github.com test-server](https://kaizhu256.github.io/node-db-lite/build/screen-capture.githubDeploy.browser._2Fnode-db-lite_2Fbuild..alpha..travis-ci.org_2Fapp_2Findex.html.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/index.html)
 
 
 
@@ -21,48 +21,36 @@ this package will run a standalone, browser-compatible version of the nedb v1.8.
 #### todo
 - none
 
-#### change since c6fd675c
-- npm publish 2016.9.1
-- make db always persistent
-- removed support for native-datetime (automatically converted to iso-string)
-- tables automatically includes createdAt and updatedAt fields
-- remove async dependency
-- remove localForage dependency
-- remove underscore dependency
-- remove util dependency
+#### change since 3e821f9c
+- npm publish 2016.10.1
+- migrate to db-lite
+- insert will auto-create missing non-sparse unique-keys
+- row-update always returns updated row
+- add integer parameter to dbIndex
+- add eval button to demo
+- add 'hide internal test' button to demo
 - none
 
 #### this package requires
 - darwin or linux os
 
-#### additional info
-- nedb derived from https://github.com/louischatriot/nedb/blob/cadf4ef434e517e47c4e9ca1db5b89e892ff5981/browser-version/out/nedb.js
-
-#### differences from original nedb @ https://github.com/louischatriot/nedb
-- shared js-env - removed options afterSerialization, beforeSerialization, corruptAlertThreshold, inMemoryOnly
-- shared js-env - removed support for native-datetime (automatically converted to iso-string)
-- shared js-env - removed support for promises (callbacks only)
-- shared js-env - tables always have the timestamp-fields createdAt and updatedAt
-- browser js-env - removed support for persistence in localStorage and web-sql (persistence requires indexedDB)
-- node js-env - removed support for ms-windows platform
-
 #### api-doc
-- [https://kaizhu256.github.io/node-nedb-lite/build/doc.api.html](https://kaizhu256.github.io/node-nedb-lite/build/doc.api.html)
+- [https://kaizhu256.github.io/node-db-lite/build/doc.api.html](https://kaizhu256.github.io/node-db-lite/build/doc.api.html)
 
-[![api-doc](https://kaizhu256.github.io/node-nedb-lite/build/screen-capture.docApiCreate.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-nedb-lite_2Ftmp_2Fbuild_2Fdoc.api.html.png)](https://kaizhu256.github.io/node-nedb-lite/build/doc.api.html)
+[![api-doc](https://kaizhu256.github.io/node-db-lite/build/screen-capture.docApiCreate.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-db-lite_2Ftmp_2Fbuild_2Fdoc.api.html.png)](https://kaizhu256.github.io/node-db-lite/build/doc.api.html)
 
 
 
-# build-status [![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-nedb-lite.svg)](https://travis-ci.org/kaizhu256/node-nedb-lite)
-[![build commit status](https://kaizhu256.github.io/node-nedb-lite/build/build.badge.svg)](https://travis-ci.org/kaizhu256/node-nedb-lite)
+# build-status [![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-db-lite.svg)](https://travis-ci.org/kaizhu256/node-db-lite)
+[![build commit status](https://kaizhu256.github.io/node-db-lite/build/build.badge.svg)](https://travis-ci.org/kaizhu256/node-db-lite)
 
-| git-branch : | [master](https://github.com/kaizhu256/node-nedb-lite/tree/master) | [beta](https://github.com/kaizhu256/node-nedb-lite/tree/beta) | [alpha](https://github.com/kaizhu256/node-nedb-lite/tree/alpha)|
+| git-branch : | [master](https://github.com/kaizhu256/node-db-lite/tree/master) | [beta](https://github.com/kaizhu256/node-db-lite/tree/beta) | [alpha](https://github.com/kaizhu256/node-db-lite/tree/alpha)|
 |--:|:--|:--|:--|
-| test-server-1 : | [![github.com test-server](https://kaizhu256.github.io/node-nedb-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-nedb-lite/build..master..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-nedb-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-nedb-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-nedb-lite/build..alpha..travis-ci.org/app/index.html)|
-| test-server-2 : | [![heroku.com test-server](https://kaizhu256.github.io/node-nedb-lite/heroku-logo.75x25.png)](https://hrku01-nedb-lite-master.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-nedb-lite/heroku-logo.75x25.png)](https://hrku01-nedb-lite-beta.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-nedb-lite/heroku-logo.75x25.png)](https://hrku01-nedb-lite-alpha.herokuapp.com)|
-| test-report : | [![test-report](https://kaizhu256.github.io/node-nedb-lite/build..master..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-nedb-lite/build..master..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-nedb-lite/build..alpha..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-nedb-lite/build..alpha..travis-ci.org/test-report.html)|
-| coverage : | [![istanbul coverage](https://kaizhu256.github.io/node-nedb-lite/build..master..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-nedb-lite/build..master..travis-ci.org/coverage.html/index.html) | [![istanbul coverage](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-nedb-lite/build..beta..travis-ci.org/coverage.html/index.html) | [![istanbul coverage](https://kaizhu256.github.io/node-nedb-lite/build..alpha..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-nedb-lite/build..alpha..travis-ci.org/coverage.html/index.html)|
-| build-artifacts : | [![build-artifacts](https://kaizhu256.github.io/node-nedb-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-nedb-lite/tree/gh-pages/build..master..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-nedb-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-nedb-lite/tree/gh-pages/build..beta..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-nedb-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-nedb-lite/tree/gh-pages/build..alpha..travis-ci.org)|
+| test-server-1 : | [![github.com test-server](https://kaizhu256.github.io/node-db-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-db-lite/build..master..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-db-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-db-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-db-lite/build..alpha..travis-ci.org/app/index.html)|
+| test-server-2 : | [![heroku.com test-server](https://kaizhu256.github.io/node-db-lite/heroku-logo.75x25.png)](https://hrku01-db-lite-master.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-db-lite/heroku-logo.75x25.png)](https://hrku01-db-lite-beta.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-db-lite/heroku-logo.75x25.png)](https://hrku01-db-lite-alpha.herokuapp.com)|
+| test-report : | [![test-report](https://kaizhu256.github.io/node-db-lite/build..master..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-db-lite/build..master..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-db-lite/build..alpha..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-db-lite/build..alpha..travis-ci.org/test-report.html)|
+| coverage : | [![istanbul coverage](https://kaizhu256.github.io/node-db-lite/build..master..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-db-lite/build..master..travis-ci.org/coverage.html/index.html) | [![istanbul coverage](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/coverage.html/index.html) | [![istanbul coverage](https://kaizhu256.github.io/node-db-lite/build..alpha..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-db-lite/build..alpha..travis-ci.org/coverage.html/index.html)|
+| build-artifacts : | [![build-artifacts](https://kaizhu256.github.io/node-db-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-db-lite/tree/gh-pages/build..master..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-db-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-db-lite/tree/gh-pages/build..beta..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-db-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-db-lite/tree/gh-pages/build..alpha..travis-ci.org)|
 
 #### master branch
 - stable branch
@@ -80,25 +68,25 @@ this package will run a standalone, browser-compatible version of the nedb v1.8.
 
 
 # quickstart web example
-![screen-capture](https://kaizhu256.github.io/node-nedb-lite/build/screen-capture.testExampleJs.browser..png)
+![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.testExampleJs.browser..png)
 
 #### to run this example, follow the instruction in the script below
-- [example.js](https://kaizhu256.github.io/node-nedb-lite/build/example.js)
+- [example.js](https://kaizhu256.github.io/node-db-lite/build/example.js)
 ```javascript
 /*
 example.js
 
-this script will will demo the browser-version of nedb
+this script will will demo the browser-version of db
 
 instruction
     1. save this script as example.js
     2. run the shell command:
-        $ npm install nedb-lite && export PORT=8081 && node example.js
+        $ npm install db-lite && export PORT=8081 && node example.js
     3. open a browser to http://localhost:8081
     4. edit or paste script in browser to eval
 */
 
-/* istanbul instrument in package nedb-lite */
+/* istanbul instrument in package db-lite */
 /*jslint
     bitwise: true,
     browser: true,
@@ -136,14 +124,10 @@ instruction
         /* istanbul ignore next */
         // re-init local
         local = local.modeJs === 'browser'
-            ? window.Nedb.local
+            ? window.db_lite.local
             : module.isRollup
             ? module
-            : require('nedb-lite').local;
-        // init global
-        local.global = local.modeJs === 'browser'
-            ? window
-            : global;
+            : require('db-lite').local;
         // export local
         local.global.local = local;
     }());
@@ -161,7 +145,7 @@ instruction
                     Array.prototype.slice.call(arguments).map(function (arg) {
                         return typeof arg === 'string'
                             ? arg
-                            : local.Nedb.jsonStringifyOrdered(arg, null, 4);
+                            : local.db.jsonStringifyOrdered(arg, null, 4);
                     }).join(' ') + '\n';
             };
         });
@@ -169,42 +153,48 @@ instruction
         local.testRun = function (event) {
             var reader, tmp;
             switch (event && event.currentTarget.id) {
-            case 'nedbExportButton1':
-                tmp = window.URL.createObjectURL(new window.Blob([local.Nedb.dbExport()]));
-                document.querySelector('#nedbExportA1').href = tmp;
-                document.querySelector('#nedbExportA1').click();
+            case 'dbExportButton1':
+                tmp = window.URL.createObjectURL(new window.Blob([local.db.dbExport()]));
+                document.querySelector('#dbExportA1').href = tmp;
+                document.querySelector('#dbExportA1').click();
                 setTimeout(function () {
                     window.URL.revokeObjectURL(tmp);
                 }, 30000);
                 break;
-            case 'nedbImportButton1':
-                document.querySelector('#nedbImportInput1').click();
+            case 'dbImportButton1':
+                document.querySelector('#dbImportInput1').click();
                 break;
-            case 'nedbImportInput1':
+            case 'dbImportInput1':
                 document.querySelector('#outputTextarea1').value = '';
-                console.log('importing nedb-database ...');
+                console.log('importing db-database ...');
                 reader = new window.FileReader();
-                tmp = document.querySelector('#nedbImportInput1').files[0];
+                tmp = document.querySelector('#dbImportInput1').files[0];
                 if (!tmp) {
                     return;
                 }
                 reader.addEventListener('load', function () {
-                    local.Nedb.dbImport(reader.result, function () {
-                        console.log('... imported nedb-database');
-                    });
+                    local.db.dbImport(reader.result);
+                    console.log('... imported db-database');
                 });
                 reader.readAsText(tmp);
                 break;
-            case 'nedbResetButton1':
+            case 'dbResetButton1':
                 document.querySelector('#outputTextarea1').value = '';
-                console.log('resetting nedb-database ...');
-                local.Nedb.dbReset(function () {
-                    console.log('... resetted nedb-database');
+                console.log('resetting db-database ...');
+                local.db.dbClear(function () {
+                    console.log('... resetted db-database');
                 });
                 break;
             case 'testRunButton1':
-                local.modeTest = true;
-                local.utility2.testRun(local);
+                if (document.querySelector('.testReportDiv').style.display === 'none') {
+                    document.querySelector('.testReportDiv').style.display = 'block';
+                    document.querySelector('#testRunButton1').innerText = 'hide internal test';
+                    local.modeTest = true;
+                    local.utility2.testRun(local);
+                } else {
+                    document.querySelector('.testReportDiv').style.display = 'none';
+                    document.querySelector('#testRunButton1').innerText = 'run internal test';
+                }
                 break;
             default:
                 document.querySelector('#outputTextarea1').value = '';
@@ -217,15 +207,13 @@ instruction
             }
         };
         // init event-handling
-        ['change', 'click', 'keyup'].forEach(function (event) {
+        ['change', 'click'].forEach(function (event) {
             Array.prototype.slice.call(
                 document.querySelectorAll('.on' + event)
             ).forEach(function (element) {
                 element.addEventListener(event, local.testRun);
             });
         });
-        // run tests
-        local.testRun();
         break;
 
 
@@ -301,11 +289,6 @@ utility2-comment -->\n\
 <!-- utility2-comment\n\
         </a>\n\
 utility2-comment -->\n\
-<!-- utility2-comment\n\
-        {{#if envDict.NODE_ENV}}\n\
-        (NODE_ENV={{envDict.NODE_ENV}})\n\
-        {{/if envDict.NODE_ENV}}\n\
-utility2-comment -->\n\
     </h1>\n\
     <h3>{{envDict.npm_package_description}}</h3>\n\
 <!-- utility2-comment\n\
@@ -314,30 +297,32 @@ utility2-comment -->\n\
     <div class="testReportDiv" style="display: none;"></div>\n\
 utility2-comment -->\n\
 \n\
-    <button class="onclick" id="nedbResetButton1">reset nedb-database</button><br>\n\
-    <button class="onclick" id="nedbExportButton1">save nedb-database to file</button><br>\n\
-    <a download="nedb.persistence.json" href="" id="nedbExportA1"></a>\n\
-    <button class="onclick" id="nedbImportButton1">load nedb-database from file</button><br>\n\
-    <input class="onchange zeroPixel" type="file" id="nedbImportInput1">\n\
+    <button class="onclick" id="dbResetButton1">reset db-database</button><br>\n\
+    <button class="onclick" id="dbExportButton1">save db-database to file</button><br>\n\
+    <a download="db.persistence.json" href="" id="dbExportA1"></a>\n\
+    <button class="onclick" id="dbImportButton1">load db-database from file</button><br>\n\
+    <input class="onchange zeroPixel" type="file" id="dbImportInput1">\n\
     <label>edit or paste script below to\n\
         <a\n\
-            href="https://kaizhu256.github.io/node-nedb-lite/build/doc.api.html"\n\
+            href="https://kaizhu256.github.io/node-db-lite/build/doc.api.html"\n\
             target="_blank"\n\
         >eval</a>\n\
     </label>\n\
-<textarea class="onkeyup" id="inputTextarea1">\n\
-window.table1 = window.Nedb.dbTableCreate({ name: "table1" });\n\
-table1.insert({ field1: "hello", field2: "world"}, function () {\n\
+<textarea id="inputTextarea1">\n\
+window.dbTable1 = window.db_lite.dbTableCreate({ name: "dbTable1" });\n\
+dbTable1.crudInsertMany([{ field1: "hello", field2: "world"}], function () {\n\
     console.log();\n\
-    console.log(table1.export());\n\
+    console.log(dbTable1.dbTableExport());\n\
 });\n\
 \n\
-window.table2 = window.Nedb.dbTableCreate({ name: "table2" });\n\
-table2.insert({ field1: "hello", field2: "world"}, function () {\n\
+window.dbTable2 = window.db_lite.dbTableCreate({ name: "dbTable2" });\n\
+dbTable2.dbIndexCreate({ fieldName: "field2" });\n\
+dbTable2.crudInsertMany([{ field1: "hello", field2: "world"}], function () {\n\
     console.log();\n\
-    console.log(table2.export());\n\
+    console.log(dbTable2.dbTableExport());\n\
 });\n\
 </textarea>\n\
+    <button class="onclick" id="dbEvalButton1">eval script</button><br>\n\
     <label>stderr and stdout</label>\n\
     <textarea id="outputTextarea1" readonly></textarea>\n\
 <!-- utility2-comment\n\
@@ -347,7 +332,7 @@ table2.insert({ field1: "hello", field2: "world"}, function () {\n\
 utility2-comment -->\n\
     <script src="assets.utility2.rollup.js"></script>\n\
     <script src="jsonp.utility2.stateInit?callback=window.utility2.stateInit"></script>\n\
-    <script src="assets.nedb-lite.js"></script>\n\
+    <script src="assets.db-lite.js"></script>\n\
     <script src="assets.example.js"></script>\n\
     <script src="assets.test.js"></script>\n\
 <!-- utility2-comment\n\
@@ -377,8 +362,8 @@ utility2-comment -->\n\
             local['/assets.example.js'] = local.fs.readFileSync(__filename, 'utf8');
         } catch (ignore) {
         }
-        local['/assets.nedb-lite.js'] = local.fs.readFileSync(
-            local.Nedb.__dirname + '/index.js',
+        local['/assets.db-lite.js'] = local.fs.readFileSync(
+            local.db.__dirname + '/index.js',
             'utf8'
         );
         // run the cli
@@ -391,7 +376,7 @@ utility2-comment -->\n\
             switch (local.url.parse(request.url).pathname) {
             case '/':
             case '/assets.example.js':
-            case '/assets.nedb-lite.js':
+            case '/assets.db-lite.js':
             case '/assets.test.js':
                 response.end(local[local.url.parse(request.url).pathname]);
                 break;
@@ -410,10 +395,10 @@ utility2-comment -->\n\
 ```
 
 #### output from electron
-![screen-capture](https://kaizhu256.github.io/node-nedb-lite/build/screen-capture.testExampleJs.browser..png)
+![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.testExampleJs.browser..png)
 
 #### output from shell
-![screen-capture](https://kaizhu256.github.io/node-nedb-lite/build/screen-capture.testExampleJs.svg)
+![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.testExampleJs.svg)
 
 
 
@@ -425,10 +410,10 @@ utility2-comment -->\n\
     "description": "{{packageJson.description}}",
     "devDependencies": {
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
-        "utility2": "kaizhu256/node-utility2#alpha"
+        "utility2": "2016.10.1"
     },
-    "engines": { "node": ">=4.2" },
-    "homepage": "https://github.com/kaizhu256/node-nedb-lite",
+    "engines": { "node": ">=4.0" },
+    "homepage": "https://github.com/kaizhu256/node-db-lite",
     "keywords": [
         "browser",
         "db",
@@ -440,11 +425,11 @@ utility2-comment -->\n\
         "web", "web-sql", "websql"
     ],
     "license": "MIT",
-    "name": "nedb-lite",
+    "name": "db-lite",
     "os": ["darwin", "linux"],
     "repository": {
         "type": "git",
-        "url": "https://github.com/kaizhu256/node-nedb-lite.git"
+        "url": "https://github.com/kaizhu256/node-db-lite.git"
     },
     "scripts": {
         "build-ci": "utility2 shRun shReadmeBuild",
@@ -454,14 +439,14 @@ export npm_config_mode_auto_restart=1 && \
 utility2 shRun shIstanbulCover test.js",
         "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
     },
-    "version": "2016.9.1"
+    "version": "2016.10.1"
 }
 ```
 
 
 
 # changelog of last 50 commits
-[![screen-capture](https://kaizhu256.github.io/node-nedb-lite/build/screen-capture.gitLog.svg)](https://github.com/kaizhu256/node-nedb-lite/commits)
+[![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.gitLog.svg)](https://github.com/kaizhu256/node-db-lite/commits)
 
 
 
@@ -481,8 +466,8 @@ shBuildCiTestPre() {(set -e
     (export MODE_BUILD=npmTestPublished &&
         shRunScreenCapture shNpmTestPublished) || return $?
     # coverage-hack - reset mock persistence
-    mkdir -p tmp/nedb.persistence.test
-    touch tmp/nedb.persistence.test/undefined
+    mkdir -p tmp/db.persistence.test
+    touch tmp/db.persistence.test/undefined
 )}
 
 shBuildCiTestPost() {(set -e

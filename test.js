@@ -1,5 +1,6 @@
-/* istanbul instrument in package nedb-lite */
+/* istanbul instrument in package db-lite */
 /*jslint
+    bitwise: true,
     browser: true,
     maxerr: 8,
     maxlen: 96,
@@ -17,7 +18,7 @@
     // run shared js-env code - pre-init
     (function () {
         // init Error.stackTraceLimit
-        Error.stackTraceLimit = Infinity;
+        Error.stackTraceLimit = 20;
         // init local
         local = {};
         // init modeJs
@@ -44,10 +45,9 @@
         case 'node':
             local = (module.utility2 || require('utility2')).requireExampleJsFromReadme({
                 __dirname: __dirname,
-                module: module,
-                moduleExports: __dirname + '/index.js',
-                moduleName: 'nedb-lite'
+                module: module
             });
+            local.db = local[local.utility2.envDict.npm_package_name];
             /* istanbul ignore next */
             if (module.isRollup) {
                 local = module;
@@ -56,13 +56,27 @@
             break;
         }
         // require modules
-        local.utility2.Nedb = local;
-        local.utility2.assert = local.assert;
-        local.utility2.dbExport = local.dbExport;
-        local.utility2.dbImport = local.dbImport;
-        local.utility2.dbTableCreate = local.dbTableCreate;
-        local.utility2.dbTableDrop = local.dbTableDrop;
-        local.utility2.jsonStringifyOrdered = local.jsonStringifyOrdered;
+        local.utility2.db = local.utility2.local.db = local.db;
+        [
+            'assert',
+            'jsonCopy',
+            'jsonStringifyOrdered',
+            'objectSetDefault',
+            'onErrorDefault',
+            'onNext',
+            'onParallel'
+        ].forEach(function (key) {
+            local.utility2[key] = local.db[key];
+            [
+                'testCase_' + key + '_default',
+                'testCase_' + key + '_error',
+                'testCase_' + key + 'Xxx_default'
+            ].forEach(function (key2) {
+                if (local.utility2.testCaseDict[key2]) {
+                    local[key2] = local.utility2.testCaseDict[key2];
+                }
+            });
+        });
     }());
 
 
@@ -74,94 +88,109 @@
          * this function will set default-values for options
          */
             options = local.utility2.objectSetDefault(options, defaults);
-            options.table = local.dbTableDict.TestCrud;
-            return options;
+            options.dbTable = local.db.dbTableDict.TestCrud;
+            // shallow-copy options
+            return local.utility2.objectSetDefault({}, options);
         };
 
-        local.testCase_assertXxx_default = function (options, onError) {
+        local.testCase_consoleLog_default = function (options, onError) {
         /*
-         * this function will test assertXxx's default handling-behavior
+         * this function will test consoleLog's default handling-behavior
          */
             options = {};
-            // test assertion passed
-            local.utility2.assert(true, true);
-            // test assertion failed with undefined message
-            local.utility2.tryCatchOnError(function () {
-                local.utility2.assert(false);
-            }, function (error) {
-                // validate error occurred
-                local.utility2.assert(error, error);
-                // validate error-message
-                local.utility2.assertJsonEqual(error.message, '');
-            });
-            // test assertion failed with string message
-            local.utility2.tryCatchOnError(function () {
-                local.utility2.assert(false, 'hello');
-            }, function (error) {
-                // validate error occurred
-                local.utility2.assert(error, error);
-                // validate error-message
-                local.utility2.assertJsonEqual(error.message, 'hello');
-            });
-            // test assertion failed with error object
-            local.utility2.tryCatchOnError(function () {
-                local.utility2.assert(false, local.utility2.errorDefault);
-            }, function (error) {
-                // validate error occurred
-                local.utility2.assert(error, error);
-            });
-            // test assertion failed with json object
-            local.utility2.tryCatchOnError(function () {
-                local.utility2.assert(false, { aa: 1 });
-            }, function (error) {
-                // validate error occurred
-                local.utility2.assert(error, error);
-                // validate error-message
-                local.utility2.assertJsonEqual(error.message, '{"aa":1}');
-            });
-            options.list = ['', 0, false, null, undefined];
-            options.list.forEach(function (aa, ii) {
-                options.list.forEach(function (bb, jj) {
-                    if (ii === jj) {
-                        // test assertJsonEqual's handling-behavior
-                        local.utility2.assertJsonEqual(aa, bb);
-                    } else {
-                        // test assertJsonNotEqual's handling-behavior
-                        local.utility2.assertJsonNotEqual(aa, bb);
-                    }
-                });
-            });
+            options.data = null;
+            console.log(options.data);
+            options.data = '\n';
+            console.log(options.data);
             onError();
         };
 
-        local.testCase_dbExport_default = function (options, onError) {
+        local.testCase_dbExportImport_default = function (options, onError) {
         /*
-         * this function will test dbExport's default handling-behavior
+         * this function will test dbExportImport's default handling-behavior
          */
             options = {};
-            options.name = 'testCase_dbExport_default';
-            options.table = local.dbTableCreate(options);
-            options.table.ensureIndex({
-                fieldName: 'id',
-                unique: true
-            }, local.utility2.onErrorDefault);
-            options.data = local.dbExport();
+            options.name = 'testCase_dbExportImport_default';
+            options.dbTable = local.db.dbTableCreate(options);
+            options.dbTable.dbIndexCreate({ fieldName: 'field2' });
+            options.dbTable.crudInsertMany([
+                { field1: 'aa', field2: 'bb'}
+            ], local.utility2.onErrorDefault);
+            // test dbExport handling-behavior
+            options.data = local.db.dbExport();
             // validate data
-            local.utility2.assert(options.data.indexOf('"testCase_dbExport_default"\n' +
-                '{"$$indexCreated":{"fieldName":"createdAt","unique":false,"sparse":false}}\n' +
-                '{"$$indexCreated":{"fieldName":"updatedAt","unique":false,"sparse":false}}\n' +
-                '{"$$indexCreated":{"fieldName":"id","unique":true,"sparse":false}}')
-                >= 0, options.data);
+            local.utility2.assert(options.data.indexOf('####\n' +
+                '{"name":"testCase_dbExportImport_default"}\n' +
+                '#\n' +
+                '{"fieldName":"field2"}\n' +
+                '#\n' +
+                '{"field1":"aa","field2":"bb"') >= 0, options.data);
+            // test dbTableClear handling-behavior
+            options.dbTable.dbTableClear();
+            options.data = local.db.dbExport();
+            // validate data
+            local.utility2.assert(options.data.indexOf('####\n' +
+                '{"name":"testCase_dbExportImport_default"}\n' +
+                '#\n' +
+                '{"fieldName":"field2"}\n' +
+                '#\n' +
+                '{"field1":"aa","field2":"bb"') < 0, options.data);
+            // test dbImport handling-behavior
+            local.db.dbImport('####\n' +
+                '{"name":"testCase_dbExportImport_default"}\n' +
+                '#\n' +
+                '{"fieldName":"field2"}\n' +
+                '#\n' +
+                '{"field1":"aa","field2":"bb"}\n' +
+                '####');
+            options.data = options.dbTable.dbTableExport();
+            // validate data
+            local.utility2.assert(options.data.indexOf('####\n' +
+                '{"name":"testCase_dbExportImport_default"}\n' +
+                '#\n' +
+                '{"fieldName":"field2"}\n' +
+                '#\n' +
+                '{"field1":"aa","field2":"bb"') === 0, options.data);
             onError();
         };
 
-        local.testCase_dbImport_default = function (options, onError) {
+        local.testCase_dbStorageXxx_misc = function (options, onError) {
         /*
-         * this function will test dbImport's default handling-behavior
+         * this function will test dbStorageXxx's misc handling-behavior
          */
+            var onParallel;
             // jslint-hack
             local.utility2.nop(options);
-            local.dbImport('"testCase_dbImport_default"\n{"id":0}', onError);
+            onParallel = local.utility2.onParallel(onError);
+            onParallel.counter += 1;
+            onParallel.counter += 1;
+            // test dbStorageInit's re-init handling-behavior
+            local.db.dbStorageInit();
+            // test dbStorageKey's handling-behavior
+            local.db.dbStorageKeys(function () {
+                local.utility2.tryCatchOnError(function () {
+                    // test dbStorageDefer's done handling-behavior
+                    local.db._debugDbStorageRequest.onerror(local.utility2.errorDefault);
+                }, local.utility2.nop);
+                onParallel();
+            });
+            onParallel.counter += 1;
+            // test dbStorageLength's handling-behavior
+            local.db.dbStorageLength(onParallel);
+            onParallel();
+        };
+
+        local.testCase_dbTableClear_default = function (options, onError) {
+        /*
+         * this function will test dbTableDrop's default handling-behavior
+         */
+            options = {};
+            options.name = 'testCase_dbTableClear_default';
+            options.dbTable = local.db.dbTableCreate(options);
+            options.dbTable.dbTableClear();
+            // test multiple-clear handling-behavior
+            options.dbTable.dbTableClear();
+            onError();
         };
 
         local.testCase_dbTableCreate_default = function (options, onError) {
@@ -170,57 +199,30 @@
          */
             options = {};
             options.name = 'testCase_dbTableCreate_default';
-            options.table = local.dbTableCreate(options);
+            options.dbTable = local.db.dbTableCreate(options);
             // test re-create handling-behavior
-            options.table = local.dbTableCreate(options);
-            // test reset handling-behavior
-            options.reset = true;
-            options.table = local.dbTableCreate(options);
+            options.dbTable = local.db.dbTableCreate(options);
+            options.dbTable = local.db.dbTableCreate(options);
             onError();
         };
 
-        local.testCase_dbTableCreate_error = function (options, onError) {
+        local.testCase_dbTableCrudCountMany_default = function (options, onError) {
         /*
-         * this function will test dbTableCreate's error handling-behavior
+         * this function will test dbTableCountMany's default handling-behavior
          */
-            options = {};
-            options.error = local.utility2.errorDefault;
-            options.name = 'testCase_dbTableCreate_error';
-            options.table = local.dbTableCreate(options, function (error) {
-                // validate error occurred
-                local.utility2.assert(error, error);
-                onError();
+            options = local.crudOptionsSetDefault(options, {
+                id: 'testCase_dbTableCrudCountMany_default'
             });
-        };
-
-        local.testCase_dbTableDrop_default = function (options, onError) {
-        /*
-         * this function will test dbTableDrop's default handling-behavior
-         */
-            options = {};
-            options.name = 'testCase_dbTableDrop_default';
-            options.table = local.dbTableCreate(options);
-            local.dbTableDrop(options.table, onError);
-            // test undefined-table handling-behavior
-            local.dbTableDrop(options.table, local.utility2.onErrorDefault);
-        };
-
-        local.testCase_dbTableFindOneById_default = function (options, onError) {
-        /*
-         * this function will test dbTableFindOneById's default handling-behavior
-         */
-            options = {};
             local.utility2.onNext(options, function (error, data) {
                 switch (options.modeNext) {
                 case 1:
-                    options = local.crudOptionsSetDefault(options, {
-                        id: '00_test_dbTableFindOneById'
-                    });
-                    options.table.findOne({ id: options.id }, options.onNext);
+                    options.dbTable.crudCountMany({
+                        query: { id: options.id }
+                    }, options.onNext);
                     break;
                 case 2:
                     // validate data
-                    local.utility2.assertJsonEqual(data.id, options.id);
+                    local.utility2.assertJsonEqual(data, 1);
                     options.onNext();
                     break;
                 default:
@@ -231,24 +233,54 @@
             options.onNext();
         };
 
-        local.testCase_dbTableRemoveOneById_default = function (options, onError) {
+        local.testCase_dbTableCrudFindOne_default = function (options, onError) {
         /*
-         * this function will test dbTableRemoveOneById's default handling-behavior
+         * this function will test dbTableFindOne's default handling-behavior
          */
-            options = {};
+            options = local.crudOptionsSetDefault(options, {
+                id: 'testCase_dbTableCrudFindOne_default'
+            });
             local.utility2.onNext(options, function (error, data) {
                 switch (options.modeNext) {
                 case 1:
-                    options = local.crudOptionsSetDefault(options, {
-                        id: '00_test_dbTableRemoveOneById'
-                    });
-                    local.testCase_dbTableFindOneById_default(options, options.onNext);
+                    options.dbTable.crudFindOne({
+                        query: { id: options.id }
+                    }, options.onNext);
                     break;
                 case 2:
-                    options.table.remove({ id: options.id }, options.onNext);
+                    // validate data
+                    local.utility2.assertJsonEqual(data && data.id, options.id);
+                    options.onNext();
+                    break;
+                default:
+                    onError(error);
+                }
+            });
+            options.modeNext = 0;
+            options.onNext();
+        };
+
+        local.testCase_dbTableCrudRemoveOne_default = function (options, onError) {
+        /*
+         * this function will test dbTableRemoveOne's default handling-behavior
+         */
+            options = local.crudOptionsSetDefault(options, {
+                id: 'testCase_dbTableCrudRemoveOne_default'
+            });
+            local.utility2.onNext(options, function (error, data) {
+                switch (options.modeNext) {
+                case 1:
+                    local.testCase_dbTableCrudFindOne_default(options, options.onNext);
+                    break;
+                case 2:
+                    options.dbTable.crudRemoveOne({
+                        query: { id: options.id }
+                    }, options.onNext);
                     break;
                 case 3:
-                    options.table.findOne({ id: options.id }, options.onNext);
+                    options.dbTable.crudFindOne({
+                        query: { id: options.id }
+                    }, options.onNext);
                     break;
                 case 4:
                     // validate data was removed
@@ -263,33 +295,188 @@
             options.onNext();
         };
 
-        local.testCase_jsonStringifyOrdered_default = function (options, onError) {
+        local.testCase_dbTableExportImport_default = function (options, onError) {
         /*
-         * this function will test jsonStringifyOrdered's default handling-behavior
+         * this function will test dbTableExportImport's default handling-behavior
          */
             options = {};
-            // test data-type handling-behavior
-            [undefined, null, false, true, 0, 1, 1.5, 'a', {}, []].forEach(function (data) {
-                options.aa = local.utility2.jsonStringifyOrdered(data);
-                options.bb = JSON.stringify(data);
-                local.utility2.assertJsonEqual(options.aa, options.bb);
+            options.dbTable = local.db.dbTableCreate({
+                name: 'testCase_dbTableExportImport_default'
             });
-            // test data-ordering handling-behavior
-            options = {
-                // test nested dict handling-behavior
-                ff: { hh: 2, gg: 1},
-                // test nested array handling-behavior
-                ee: [1, null, undefined],
-                dd: local.utility2.nop,
-                cc: undefined,
-                bb: null,
-                aa: 1
-            };
-            // test circular-reference handling-behavior
-            options.zz = options;
+            options.dbTable.crudInsertMany([
+                { field1: 'aa', field2: 'bb'}
+            ], local.utility2.onErrorDefault);
+            options.dbTable.dbIndexCreate({ fieldName: 'field2' });
+            // test dbTableExport handling-behavior
+            options.data = options.dbTable.dbTableExport();
+            // validate data
+            local.utility2.assert(options.data.indexOf('####\n' +
+                '{"name":"testCase_dbTableExportImport_default"}\n' +
+                '#\n' +
+                '{"fieldName":"field2"}\n' +
+                '#\n' +
+                '{"field1":"aa","field2":"bb"') === 0, options.data);
+            // test dbTableClear handling-behavior
+            options.dbTable.dbTableClear();
+            options.data = options.dbTable.dbTableExport();
+            // validate data
+            local.utility2.assert(options.data.indexOf('####\n' +
+                '{"name":"testCase_dbTableExportImport_default"}\n' +
+                '#\n' +
+                '{"fieldName":"field2"}\n' +
+                '#\n' +
+                '####') === 0, options.data);
+            // test dbTableImport handling-behavior
+            options.dbTable.dbTableImport('####\n' +
+                '{"name":"testCase_dbTableExportImport_default"}\n' +
+                '#\n' +
+                '{"fieldName":"field2"}\n' +
+                '#\n' +
+                '{"field1":"aa","field2":"bb"}\n' +
+                '####');
+            options.data = options.dbTable.dbTableExport();
+            // validate data
+            local.utility2.assert(options.data.indexOf('####\n' +
+                '{"name":"testCase_dbTableExportImport_default"}\n' +
+                '#\n' +
+                '{"fieldName":"field2"}\n' +
+                '#\n' +
+                '{"field1":"aa","field2":"bb"') === 0, options.data);
+            onError();
+        };
+
+        local.testCase_queryCompare_default = function (options, onError) {
+        /*
+         * this function will test queryCompare's default handling-behavior
+         */
+            options = [
+                // $elemMatch
+                ['$elemMatch', undefined, undefined, false],
+                ['$elemMatch', [undefined], undefined, false],
+                // $eq
+                ['$eq', undefined, undefined, true],
+                ['$eq', null, undefined, true],
+                ['$eq', NaN, NaN, true],
+                // $exists
+                ['$exists', false, undefined, true],
+                ['$exists', true, undefined, false],
+                // $gt
+                ['$gt', undefined, undefined, false],
+                ['$gt', undefined, undefined, false],
+                // $gte
+                ['$gte', undefined, undefined, true],
+                // $in
+                ['$in', undefined, undefined, false],
+                ['$in', undefined, [undefined], true],
+                // $lt
+                ['$lt', undefined, undefined, false],
+                // $lte
+                ['$lte', undefined, undefined, true],
+                // $ne
+                ['$ne', undefined, undefined, false],
+                // $nin
+                ['$nin', undefined, undefined, false],
+                ['$nin', undefined, [undefined], false],
+                // $regex
+                ['$regex', undefined, undefined, false],
+                // $size
+                ['$size', undefined, undefined, false],
+                ['$size', [undefined], undefined, false],
+                [undefined, undefined, undefined, false]
+            ];
+            options.forEach(function (element) {
+                local.utility2.assertJsonEqual(
+                    [
+                        element[0],
+                        element[1],
+                        element[2],
+                        local.db.queryCompare(element[0], element[1], element[2])
+                    ],
+                    element
+                );
+            });
+            onError();
+        };
+
+        local.testCase_dbTree_default = function (options, onError) {
+        /*
+         * this function will test dbTree's default handling-behavior
+         */
+            var dbRow, ii;
+            options = {};
+            options.dbTree = new local.db._DbTree({});
+            // test null-case delete handling-behavior
+            local.utility2.assert(
+                options.dbTree.delete(null, {}) === options.dbTree
+            );
+            // test null-case search handling-behavior
             local.utility2.assertJsonEqual(
-                options,
-                { aa: 1, bb: null, ee: [ 1, null, null ], ff: { gg: 1, hh: 2 } }
+                options.dbTree.search(null),
+                []
+            );
+            // test insert-null-item handling-behavior
+            options.dbTree = options.dbTree.insert(null, { key: null });
+            // test insert-undefined-item handling-behavior
+            options.dbTree = options.dbTree.insert(undefined, { key: undefined });
+            // test insert handling-behavior
+            for (ii = 0; ii < 0x100; ii += 1) {
+                dbRow = { key: Math.random() };
+                options.dbTree = options.dbTree.insert(dbRow.key, dbRow);
+                local.testCase_dbTree_sort(options);
+            }
+            // validate null-item
+            local.utility2.assertJsonEqual(options.data[options.data.length - 2], {
+                key: null
+            });
+            // validate undefined-item
+            local.utility2.assertJsonEqual(options.data[options.data.length - 1], {});
+            options.length = options.dbTree.length();
+            local.utility2.listShuffle(options.data).forEach(function (dbRow) {
+                // test search handling-behavior
+                local.utility2.assert(options.dbTree.search(dbRow.key).length >= 1, dbRow);
+                // test delete handling-behavior
+                options.dbTree = options.dbTree.delete(dbRow.key, dbRow);
+                // test re-delete handling-behavior
+                local.utility2.assert(
+                    options.dbTree.delete(dbRow.key || 'undefined', dbRow) === options.dbTree
+                );
+                options.length -= 1;
+                local.utility2.assertJsonEqual(options.dbTree.length(), options.length);
+                local.testCase_dbTree_sort(options);
+            });
+            onError();
+        };
+
+        local.testCase_dbTree_sort = function (options, onError) {
+        /*
+         * this function will test dbTree's insert handling-behavior
+         */
+            options = local.utility2.objectSetDefault(options, {
+                dbTree: new local.db._DbTree({})
+            });
+            options.data = options.dbTree.list();
+            // validate sort
+            options.data.forEach(function (aa, bb) {
+                local.utility2.assert(local.db.sortCompare(aa.key, bb.key) <= 0, [aa, bb]);
+            });
+            if (onError) {
+                onError();
+            }
+        };
+
+        local.testCase_sortCompare_default = function (options, onError) {
+        /*
+         * this function will test sortCompare's default handling-behavior
+         */
+            options = {};
+            options.data = [undefined, null, false, 0, '', true, 1, 'a', local.utility2.nop];
+            local.utility2.assertJsonEqual(
+                options.data.sort(local.db.sortCompare),
+                [false, true, 0, 1, '', 'a', null, null, null]
+            );
+            local.utility2.assertJsonEqual(
+                options.data.reverse().sort(local.db.sortCompare),
+                [false, true, 0, 1, '', 'a', null, null, null]
             );
             onError();
         };
@@ -384,29 +571,21 @@
                 switch (options.modeNext) {
                 case 1:
                     options.moduleDict = {
-                        Nedb: {
+                        'db-lite': {
                             exampleList: [],
-                            exports: local.Nedb
+                            exports: local.db
                         },
-                        'Nedb.customUtils': {
+                        'db-lite._DbIndex.prototype': {
                             exampleList: [],
-                            exports: local.Nedb.customUtils
+                            exports: local.db._DbIndex.prototype
                         },
-                        'Nedb.model': {
+                        'db-lite._DbTable.prototype': {
                             exampleList: [],
-                            exports: local.Nedb.model
+                            exports: local.db._DbTable.prototype
                         },
-                        'Nedb.persistence': {
+                        'db-lite._DbTree.prototype': {
                             exampleList: [],
-                            exports: local.Nedb.persistence
-                        },
-                        'Nedb.persistence.prototype': {
-                            exampleList: [],
-                            exports: local.Nedb.persistence.prototype
-                        },
-                        'Nedb.prototype': {
-                            exampleList: [],
-                            exports: local.Nedb.prototype
+                            exports: local.db._DbTree.prototype
                         }
                     };
                     Object.keys(options.moduleDict).forEach(function (key) {
@@ -463,16 +642,18 @@
     (function () {
         // init dbSeedList
         local.utility2.dbSeedList = local.utility2.dbSeedList.concat([{
-            dbRowList: [{
-                id: '00_test_dbTableFindOneById'
-            }, {
-                id: '00_test_dbTableRemoveOneById'
-            }],
-            ensureIndexList: [{
+            dbIndexCreateList: [{
                 expireAfterSeconds: 30,
                 fieldName: 'field1',
                 sparse: true,
                 unique: true
+            }],
+            dbRowList: [{
+                id: 'testCase_dbTableCrudCountMany_default'
+            }, {
+                id: 'testCase_dbTableCrudFindOne_default'
+            }, {
+                id: 'testCase_dbTableCrudRemoveOne_default'
             }],
             name: 'TestCrud'
         }]);
@@ -484,7 +665,9 @@
     // run browser js-env code - post-init
     case 'browser':
         // run tests
-        local.utility2.testRun(local);
+        local.utility2.nop(
+            local.utility2.modeTest && document.querySelector('#testRunButton1').click()
+        );
         break;
 
 
@@ -505,7 +688,7 @@
             'header',
             '/assets.utility2.rollup.js',
             'local.utility2.stateInit',
-            '/assets.nedb-lite.js',
+            '/assets.db-lite.js',
             '/assets.example.js',
             '/assets.test.js'
         ].map(function (key) {
