@@ -20,9 +20,11 @@ this package will run a persistent, in-browser database with zero npm-dependenci
 # documentation
 #### todo
 - npm publish 2016.10.2
+- generalize dbTable.crudInsertOrReplaceMany to all unique keys
 - none
 
 #### change since 6c1363ea
+- fix function dbStorageGetItem in node js-env
 - add function dbTable.crudInsertOrReplaceMany
 - none
 

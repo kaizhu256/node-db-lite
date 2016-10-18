@@ -202,9 +202,12 @@
             case 'node':
                 switch (options.action) {
                 case 'clear':
-                    local.child_process.spawn('sh', ['-c', 'rm ' + local.db.dbStorage + '/*'], {
-                        stdio: ['ignore', 1, 2]
-                    }).once('exit', function () {
+                    local.child_process.spawn(
+                        'sh',
+                        ['-c', 'rm -f ' + local.db.dbStorage + '/*'],
+                        { stdio: ['ignore', 1, 2] }
+                    // ignore error
+                    ).once('exit', function () {
                         onError();
                     });
                     break;
@@ -214,8 +217,8 @@
                         local.db.dbStorage + '/' + encodeURIComponent(options.key),
                         'utf8',
                         // ignore error
-                        function () {
-                            onError();
+                        function (error, data) {
+                            onError(error && null, data || '');
                         }
                     );
                     break;
@@ -2884,9 +2887,11 @@
          * Insert or Replace a new dbRow
          * @param {Function} onError - callback, signature: error, insertedDoc
          */
+            var self;
+            self = this;
             dbRowList.forEach(function (dbRow) {
                 if (!local.db.isNullOrUndefined(dbRow._id)) {
-                    this.crudRemoveOne({
+                    self.crudRemoveOne({
                         query: { _id: dbRow._id }
                     }, function (error) {
                         // validate no error occurred
@@ -2894,7 +2899,7 @@
                     });
                 }
             });
-            this.crudInsertMany(dbRowList, onError);
+            self.crudInsertMany(dbRowList, onError);
         };
 
         local.db._DbTable.prototype.crudSetMany = function (dbRowList, onError) {
