@@ -1392,6 +1392,7 @@
                 return true;
             });
         };
+
         // Interface
         /*
          * Handle models (i.e. docs)
@@ -1418,73 +1419,10 @@
             this.data = options.hasOwnProperty('value')
                 ? [options.value]
                 : [];
-
         };
         // ============================================
         // Methods used to actually work on the tree
         // ============================================
-
-        local.db._DbTree.prototype.insert = function (key, value) {
-        /*
-         * Insert a key, value pair in the tree while maintaining the DbTree height constraint
-         * Return a pointer to the root node, which may have changed
-         */
-            var nodeCurrent, pathList;
-            // validate value
-            local.db.assert(value, value);
-            nodeCurrent = this;
-            pathList = [];
-            // coerce undefined to null
-            if (key === undefined) {
-                key = null;
-            }
-            // Empty tree, insert as root
-            if (!this.hasOwnProperty('key')) {
-                this.key = key;
-                this.data.push(value);
-                this.height = 1;
-                return this;
-            }
-            // Insert new leaf at the right place
-            while (true) {
-                // Same key: no change in the tree structure
-                if (local.db.sortCompare(nodeCurrent.key, key) === 0) {
-                    local.db.assert(
-                        !nodeCurrent.unique,
-                        'insert - unique-key ' + key + ' already exists'
-                    );
-                    nodeCurrent.data.push(value);
-                    return this;
-                }
-                pathList.push(nodeCurrent);
-                if (local.db.sortCompare(key, nodeCurrent.key) < 0) {
-                    if (!nodeCurrent.left) {
-                        nodeCurrent.left = new local.db._DbTree({
-                            key: key,
-                            parent: nodeCurrent,
-                            unique: nodeCurrent.unique,
-                            value: value
-                        });
-                        pathList.push(nodeCurrent.left);
-                        break;
-                    }
-                    nodeCurrent = nodeCurrent.left;
-                } else {
-                    if (!nodeCurrent.right) {
-                        nodeCurrent.right = new local.db._DbTree({
-                            key: key,
-                            parent: nodeCurrent,
-                            unique: nodeCurrent.unique,
-                            value: value
-                        });
-                        pathList.push(nodeCurrent.right);
-                        break;
-                    }
-                    nodeCurrent = nodeCurrent.right;
-                }
-            }
-            return this.rebalanceAlongPath(pathList);
-        };
 
         local.db._DbTree.prototype.delete = function (key, value) {
         /*
@@ -1599,16 +1537,66 @@
             return this.rebalanceAlongPath(pathList);
         };
 
-        local.db._DbTree.prototype.list = function () {
+        local.db._DbTree.prototype.insert = function (key, value) {
         /*
-         * this function will return the list of all values in dbTree
+         * Insert a key, value pair in the tree while maintaining the DbTree height constraint
+         * Return a pointer to the root node, which may have changed
          */
-            var result;
-            result = [];
-            this.some(function (dbRow) {
-                result.push(dbRow);
-            });
-            return result;
+            var nodeCurrent, pathList;
+            // validate value
+            local.db.assert(value, value);
+            nodeCurrent = this;
+            pathList = [];
+            // coerce undefined to null
+            if (key === undefined) {
+                key = null;
+            }
+            // Empty tree, insert as root
+            if (!this.hasOwnProperty('key')) {
+                this.key = key;
+                this.data.push(value);
+                this.height = 1;
+                return this;
+            }
+            // Insert new leaf at the right place
+            while (true) {
+                // Same key: no change in the tree structure
+                if (local.db.sortCompare(nodeCurrent.key, key) === 0) {
+                    local.db.assert(
+                        !nodeCurrent.unique,
+                        'insert - unique-key ' + key + ' already exists'
+                    );
+                    nodeCurrent.data.push(value);
+                    return this;
+                }
+                pathList.push(nodeCurrent);
+                if (local.db.sortCompare(key, nodeCurrent.key) < 0) {
+                    if (!nodeCurrent.left) {
+                        nodeCurrent.left = new local.db._DbTree({
+                            key: key,
+                            parent: nodeCurrent,
+                            unique: nodeCurrent.unique,
+                            value: value
+                        });
+                        pathList.push(nodeCurrent.left);
+                        break;
+                    }
+                    nodeCurrent = nodeCurrent.left;
+                } else {
+                    if (!nodeCurrent.right) {
+                        nodeCurrent.right = new local.db._DbTree({
+                            key: key,
+                            parent: nodeCurrent,
+                            unique: nodeCurrent.unique,
+                            value: value
+                        });
+                        pathList.push(nodeCurrent.right);
+                        break;
+                    }
+                    nodeCurrent = nodeCurrent.right;
+                }
+            }
+            return this.rebalanceAlongPath(pathList);
         };
 
         local.db._DbTree.prototype.length = function () {
@@ -1621,6 +1609,113 @@
                 result += 1;
             });
             return result;
+        };
+
+        local.db._DbTree.prototype.list = function () {
+        /*
+         * this function will return the list of all values in dbTree
+         */
+            var result;
+            result = [];
+            this.some(function (dbRow) {
+                result.push(dbRow);
+            });
+            return result;
+        };
+
+        local.db._DbTree.prototype.rotateLeft = function () {
+        /*
+         * Perform a left rotation of the tree if possible
+         * and return the root of the resulting tree
+         * The resulting tree's nodes' heights are also updated
+         */
+            var bb, pp, qq;
+            pp = this;
+            qq = this.right;
+            // No change
+            if (!qq) {
+                return this;
+            }
+            bb = qq.left;
+            // Alter tree structure
+            if (pp.parent) {
+                qq.parent = pp.parent;
+                if (pp.parent.left === pp) {
+                    pp.parent.left = qq;
+                } else {
+                    pp.parent.right = qq;
+                }
+            } else {
+                qq.parent = null;
+            }
+            qq.left = pp;
+            pp.parent = qq;
+            pp.right = bb;
+            if (bb) {
+                bb.parent = pp;
+            }
+            // Update heights
+            pp.height = Math.max((pp.left && pp.left.height) || 0, (bb && bb.height) || 0) + 1;
+            qq.height = Math.max((qq.right && qq.right.height) || 0, pp.height) + 1;
+            return qq;
+        };
+
+        local.db._DbTree.prototype.rotateRight = function () {
+        /*
+         * Perform a right rotation of the tree if possible
+         * and return the root of the resulting tree
+         * The resulting tree's nodes' heights are also updated
+         */
+            var bb, pp, qq;
+            pp = this.left;
+            qq = this;
+            // No change
+            if (!pp) {
+                return this;
+            }
+            bb = pp.right;
+            // Alter tree structure
+            if (qq.parent) {
+                pp.parent = qq.parent;
+                if (qq.parent.left === qq) {
+                    qq.parent.left = pp;
+                } else {
+                    qq.parent.right = pp;
+                }
+            } else {
+                pp.parent = null;
+            }
+            pp.right = qq;
+            qq.parent = pp;
+            qq.left = bb;
+            if (bb) {
+                bb.parent = qq;
+            }
+            // Update heights
+            qq.height = Math.max((bb && bb.height) || 0, (qq.right && qq.right.height) || 0) +
+                1;
+            pp.height = Math.max((pp.left && pp.left.height) || 0, qq.height) + 1;
+            return pp;
+        };
+
+        local.db._DbTree.prototype.prettyPrint = function (printData, spacing) {
+        /*
+         * this function will prettyPrint the dbTree
+         */
+            spacing = spacing || "";
+            console.log(spacing + "* " + this.key);
+            if (printData) { console.log(spacing + "* " + this.data); }
+            if (!this.left && !this.right) { return; }
+            if (this.left) {
+                this.left.prettyPrint(printData, spacing + "  ");
+            } else {
+                console.log(spacing + "  *");
+            }
+            if (this.right) {
+                this.right.prettyPrint(printData, spacing + "  ");
+            } else {
+                console.log(spacing + "  *");
+            }
         };
 
         local.db._DbTree.prototype.search = function (key) {
@@ -1646,6 +1741,7 @@
             }
             return [];
         };
+
         local.db._DbTree.prototype.getLowerBoundMatcher = function (query) {
         /*
          * Return a function that tells whether a given key matches a lower bound
@@ -1784,80 +1880,6 @@
                 ((this.right && this.right.height) || 0);
         };
 
-        local.db._DbTree.prototype.rightRotation = function () {
-        /*
-         * Perform a right rotation of the tree if possible
-         * and return the root of the resulting tree
-         * The resulting tree's nodes' heights are also updated
-         */
-            var bb, pp, qq;
-            pp = this.left;
-            qq = this;
-            // No change
-            if (!pp) {
-                return this;
-            }
-            bb = pp.right;
-            // Alter tree structure
-            if (qq.parent) {
-                pp.parent = qq.parent;
-                if (qq.parent.left === qq) {
-                    qq.parent.left = pp;
-                } else {
-                    qq.parent.right = pp;
-                }
-            } else {
-                pp.parent = null;
-            }
-            pp.right = qq;
-            qq.parent = pp;
-            qq.left = bb;
-            if (bb) {
-                bb.parent = qq;
-            }
-            // Update heights
-            qq.height = Math.max((bb && bb.height) || 0, (qq.right && qq.right.height) || 0) +
-                1;
-            pp.height = Math.max((pp.left && pp.left.height) || 0, qq.height) + 1;
-            return pp;
-        };
-        local.db._DbTree.prototype.leftRotation = function () {
-        /*
-         * Perform a left rotation of the tree if possible
-         * and return the root of the resulting tree
-         * The resulting tree's nodes' heights are also updated
-         */
-            var bb, pp, qq;
-            pp = this;
-            qq = this.right;
-            // No change
-            if (!qq) {
-                return this;
-            }
-            bb = qq.left;
-            // Alter tree structure
-            if (pp.parent) {
-                qq.parent = pp.parent;
-                if (pp.parent.left === pp) {
-                    pp.parent.left = qq;
-                } else {
-                    pp.parent.right = qq;
-                }
-            } else {
-                qq.parent = null;
-            }
-            qq.left = pp;
-            pp.parent = qq;
-            pp.right = bb;
-            if (bb) {
-                bb.parent = pp;
-            }
-            // Update heights
-            pp.height = Math.max((pp.left && pp.left.height) || 0, (bb && bb.height) || 0) + 1;
-            qq.height = Math.max((qq.right && qq.right.height) || 0, pp.height) + 1;
-            return qq;
-        };
-
         local.db._DbTree.prototype.rightTooSmall = function () {
         /*
          * Modify the tree if its right subtree is too small compared to the left
@@ -1868,10 +1890,10 @@
             } // Right is not too small, don't change
 
             if (this.left.balanceFactor() < 0) {
-                this.left.leftRotation();
+                this.left.rotateLeft();
             }
 
-            return this.rightRotation();
+            return this.rotateRight();
         };
 
         local.db._DbTree.prototype.leftTooSmall = function () {
@@ -1884,10 +1906,10 @@
             } // Left is not too small, don't change
 
             if (this.right.balanceFactor() > 0) {
-                this.right.rightRotation();
+                this.right.rotateRight();
             }
 
-            return this.leftRotation();
+            return this.rotateLeft();
         };
 
         local.db._DbTree.prototype.rebalanceAlongPath = function (path) {
@@ -2689,9 +2711,7 @@
                 dbIndex.insert(self.dbRowList());
             });
             // insert data
-            self.dbIndexList().forEach(function (dbIndex) {
-                dbIndex.insert(data[2]);
-            });
+            self.crudInsertOrReplaceMany(data[2], local.db.onErrorDefault);
         };
 
         local.db._DbTable.prototype.dbTablePersist = function () {
@@ -2838,8 +2858,6 @@
         /*
          * Insert a new dbRow
          * @param {Function} onError - callback, signature: error, insertedDoc
-         *
-         * @api private Use Datastore.crudInsertMany which has the same signature
          */
             var self, timeNow;
             self = this;
@@ -2859,6 +2877,24 @@
                 self.dbTablePersist();
                 onError(null, local.db.jsonCopy(dbRowList));
             }, 10);
+        };
+
+        local.db._DbTable.prototype.crudInsertOrReplaceMany = function (dbRowList, onError) {
+        /*
+         * Insert or Replace a new dbRow
+         * @param {Function} onError - callback, signature: error, insertedDoc
+         */
+            dbRowList.forEach(function (dbRow) {
+                if (!local.db.isNullOrUndefined(dbRow._id)) {
+                    this.crudRemoveOne({
+                        query: { _id: dbRow._id }
+                    }, function (error) {
+                        // validate no error occurred
+                        local.db.assert(!error, error);
+                    });
+                }
+            });
+            this.crudInsertMany(dbRowList, onError);
         };
 
         local.db._DbTable.prototype.crudSetMany = function (dbRowList, onError) {

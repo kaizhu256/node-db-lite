@@ -19,16 +19,11 @@ this package will run a persistent, in-browser database with zero npm-dependenci
 
 # documentation
 #### todo
+- npm publish 2016.10.2
 - none
 
-#### change since 3e821f9c
-- npm publish 2016.10.1
-- migrate to db-lite
-- insert will auto-create missing non-sparse unique-keys
-- row-update always returns updated row
-- add integer parameter to dbIndex
-- add eval button to demo
-- add 'hide internal test' button to demo
+#### change since 6c1363ea
+- add function dbTable.crudInsertOrReplaceMany
 - none
 
 #### this package requires
@@ -439,7 +434,7 @@ export npm_config_mode_auto_restart=1 && \
 utility2 shRun shIstanbulCover test.js",
         "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
     },
-    "version": "2016.10.1"
+    "version": "2016.10.2"
 }
 ```
 
