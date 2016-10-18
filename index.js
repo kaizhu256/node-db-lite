@@ -2349,6 +2349,7 @@
         /*
          * this function will create a dbTable
          */
+            this.imported = this.imported || options.imported;
             this.name = options.name;
             // validate name
             local.db.assert(
@@ -2646,6 +2647,7 @@
             var self;
             self = this;
             delete self.timerDbTableSave;
+            self.imported = true;
             self.dbIndexList().forEach(function (dbIndex) {
                 dbIndex.dbTree = new local.db._DbTree({ unique: dbIndex.unique });
             });
