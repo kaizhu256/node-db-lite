@@ -20,13 +20,13 @@ this package will run a persistent, in-browser database with zero npm-dependenci
 # documentation
 #### todo
 - npm publish 2016.10.2
-- generalize dbTable.crudInsertOrReplaceMany to all unique keys
+- force all dbIndexes to be sparse
 - none
 
 #### change since 6c1363ea
+- add function dbTable.crudInsertOrReplaceOne
 - fix function dbClear
 - fix function dbStorageGetItem in node js-env
-- add function dbTable.crudInsertOrReplaceMany
 - none
 
 #### this package requires
@@ -308,14 +308,14 @@ utility2-comment -->\n\
     </label>\n\
 <textarea id="inputTextarea1">\n\
 window.dbTable1 = window.db_lite.dbTableCreate({ name: "dbTable1" });\n\
-dbTable1.crudInsertMany([{ field1: "hello", field2: "world"}], function () {\n\
+dbTable1.crudInsertOrReplaceMany([{ field1: "hello", field2: "world"}], function () {\n\
     console.log();\n\
     console.log(dbTable1.dbTableExport());\n\
 });\n\
 \n\
 window.dbTable2 = window.db_lite.dbTableCreate({ name: "dbTable2" });\n\
 dbTable2.dbIndexCreate({ fieldName: "field2" });\n\
-dbTable2.crudInsertMany([{ field1: "hello", field2: "world"}], function () {\n\
+dbTable2.crudInsertOrReplaceMany([{ field1: "hello", field2: "world"}], function () {\n\
     console.log();\n\
     console.log(dbTable2.dbTableExport());\n\
 });\n\

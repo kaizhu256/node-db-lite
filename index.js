@@ -8,13 +8,13 @@
  *     <script src="assets.db-lite.js"></script>
  *     <script>
  *     var dbTable1 = window.db_lite.dbTableCreate({ name: "dbTable1" });
- *     dbTable1.crudInsertMany([{ field1: 'hello', field2: 'world'}], console.log.bind(console));
+ *     dbTable1.crudInsertOrReplaceMany([{ field1: 'hello', field2: 'world'}], console.log.bind(console));
  *     </script>
  *
  * node example:
  *     var db = require('./assets.db-lite.js');
  *     var dbTable1 = window.db_lite.dbTableCreate({ name: "dbTable1" });
- *     dbTable1.crudInsertMany([{ field1: 'hello', field2: 'world'}], console.log.bind(console));
+ *     dbTable1.crudInsertOrReplaceMany([{ field1: 'hello', field2: 'world'}], console.log.bind(console));
  */
 
 
@@ -121,6 +121,62 @@
             });
         };
 
+        local.db.dbRowGetItem = function (dbRow, key) {
+        /*
+         * this function will get the item with the given key from dbRow
+         */
+            var value;
+            local.db.assert(typeof key === 'string');
+            value = dbRow;
+            key.split('.').some(function (element) {
+                if (!(value && typeof value === 'object')) {
+                    return true;
+                }
+                value = value[element];
+            });
+            return local.db.dbValueNormalize(value);
+        };
+
+        local.db.dbRowRemoveItem = function (dbRow, key) {
+        /*
+         * this function will remove the item with the given key from dbRow
+         */
+            local.db.assert(typeof key === 'string');
+            key = key.split('.');
+            // if item doesn't exist, then do nothing
+            if (key.slice(0, -1).some(function (element) {
+                    dbRow = dbRow[element];
+                    if (!(dbRow && typeof dbRow === 'object')) {
+                        return true;
+                    }
+                })) {
+                return;
+            }
+            // delete item
+            delete dbRow[key[key.length - 1]];
+        };
+
+        local.db.dbRowSetItem = function (dbRow, key, value) {
+        /*
+         * this function will set the item with the given key and value to dbRow
+         */
+            var tmp;
+            local.db.assert(typeof key === 'string');
+            if (local.db.dbValueNormalize(value) === null) {
+                local.db.dbRowRemoveItem(dbRow, key);
+                return;
+            }
+            key = key.split('.');
+            key.slice(0, -1).forEach(function (element) {
+                tmp = dbRow[element];
+                if (!(tmp && typeof tmp === 'object')) {
+                    dbRow[element] = {};
+                }
+                dbRow = tmp;
+            });
+            dbRow[key[key.length - 1]] = value;
+        };
+
         local.db.dbStorageClear = function (onError) {
         /*
          * this function will clear dbStorage
@@ -156,13 +212,13 @@
                 case 'removeItem':
                 case 'setItem':
                     objectStore = local.db.dbStorage
-                        .transaction('db', 'readwrite')
-                        .objectStore('db');
+                        .transaction('db-lite', 'readwrite')
+                        .objectStore('db-lite');
                     break;
                 default:
                     objectStore = local.db.dbStorage
-                        .transaction('db', 'readonly')
-                        .objectStore('db');
+                        .transaction('db-lite', 'readonly')
+                        .objectStore('db-lite');
                 }
                 switch (options.action) {
                 case 'clear':
@@ -283,7 +339,7 @@
                 // validate no error occurred
                 local.db.assert(!error, error);
                 if (local.modeJs === 'browser') {
-                    local.db.dbStorage = local.global.db_storage;
+                    local.db.dbStorage = local.global.db_lite_dbStorage;
                 }
                 switch (options.modeNext) {
                 case 1:
@@ -295,15 +351,15 @@
                     case 'browser':
                         // init indexedDB
                         try {
-                            request = local.global.indexedDB.open('db');
+                            request = local.global.indexedDB.open('db-lite');
                             request.onerror = options.onNext;
                             request.onsuccess = function () {
-                                local.global.db_storage = request.result;
+                                local.global.db_lite_dbStorage = request.result;
                                 options.onNext();
                             };
                             request.onupgradeneeded = function () {
-                                if (!request.result.objectStoreNames.contains('db')) {
-                                    request.result.createObjectStore('db');
+                                if (!request.result.objectStoreNames.contains('db-lite')) {
+                                    request.result.createObjectStore('db-lite');
                                 }
                             };
                         } catch (ignore) {
@@ -397,6 +453,16 @@
         };
 
         local.db.dbTableDict = {};
+
+        local.db.dbValueNormalize = function (dbValue) {
+        /*
+         * this function will normalize the dbValue to a json-object
+         */
+            return dbValue === undefined ||
+                (typeof dbValue === 'number' && !Number.isFinite(dbValue))
+                ? null
+                : dbValue;
+        };
 
         local.db.isNullOrUndefined = function (arg) {
         /*
@@ -575,70 +641,63 @@
             return self;
         };
 
-        local.db.queryCompare = function (operator, aa, bb) {
+        local.db.operatorTest = function (operator, aa, bb) {
         /*
-         * this function will query-compare aa vs bb
+         * this function will operator-test aa vs bb
          */
-            return local.db.tryCatchOnError(function () {
-                switch (operator) {
-                case '$elemMatch':
-                    // If match for array element, return true
-                    return (Array.isArray(aa)
-                        ? aa
-                        : []).some(function (element) {
-                        return local.db.queryMatch(element, bb);
-                    });
-                case '$eq':
-                    return local.db.sortCompare(aa, bb) === 0;
-                case '$exists':
-                    return !((!aa) ^ (!bb));
-                case '$gt':
-                    return local.db.sortCompare(aa, bb) > 0;
-                case '$gte':
-                    return local.db.sortCompare(aa, bb) >= 0;
-                case '$in':
-                    return Array.isArray(bb) && bb.some(function (cc) {
-                        return local.db.sortCompare(aa, cc) === 0;
-                    });
-                case '$lt':
-                    return local.db.sortCompare(aa, bb) < 0;
-                case '$lte':
-                    return local.db.sortCompare(aa, bb) <= 0;
-                case '$ne':
-                    return local.db.sortCompare(aa, bb) !== 0;
-                case '$nin':
-                    return Array.isArray(bb) && bb.every(function (cc) {
-                        return local.db.sortCompare(aa, cc) !== 0;
-                    });
-                case '$regex':
-                    return bb.test(aa);
-                case '$size':
-                    return (Array.isArray(aa) && aa.length === bb);
-                default:
-                    return false;
+            aa = local.db.dbValueNormalize(aa);
+            bb = local.db.dbValueNormalize(bb);
+            switch (operator) {
+            case '$elemMatch':
+                return !!(bb && typeof bb.some === 'function' && bb.some(function (element) {
+                    return local.db.sortCompare(aa, element) === 0;
+                }));
+            case '$eq':
+                return local.db.sortCompare(aa, bb) === 0;
+            case '$exists':
+                return !(!aa ^ local.db.isNullOrUndefined(bb));
+            case '$gt':
+                return local.db.sortCompare(aa, bb) > 0;
+            case '$gte':
+                return local.db.sortCompare(aa, bb) >= 0;
+            case '$in':
+                return !!(aa && typeof aa.some === 'function' && aa.some(function (element) {
+                    return local.db.sortCompare(element, bb) === 0;
+                }));
+            case '$lt':
+                return local.db.sortCompare(aa, bb) < 0;
+            case '$lte':
+                return local.db.sortCompare(aa, bb) <= 0;
+            case '$ne':
+                return local.db.sortCompare(aa, bb) !== 0;
+            case '$nin':
+                return !!(aa && typeof aa.every === 'function' && aa.every(function (element) {
+                    return local.db.sortCompare(element, bb) !== 0;
+                }));
+            case '$regex':
+                if (!(aa && typeof aa.test === 'function')) {
+                    aa = new RegExp(aa);
                 }
-            }, function (error) {
-                local.db.onErrorDefault(error);
+                return aa.test(bb);
+            case '$size':
+                return local.db.sortCompare(aa, bb) === 0;
+            default:
                 return false;
-            });
+            }
         };
 
         local.db.sortCompare = function (aa, bb) {
         /*
          * this function will sort-compare aa vs bb
          */
-            var type1, type2;
-            if (aa === undefined) {
-                aa = null;
-            }
-            if (bb === undefined) {
-                bb = null;
-            }
-            // compare equal
+            var typeof1, typeof2;
+            aa = local.db.dbValueNormalize(aa);
+            bb = local.db.dbValueNormalize(bb);
+            // simple compare
             if (aa === bb) {
                 return 0;
             }
-            // reverse compare null
+            // null compare
             if (aa === null) {
                 return 1;
             }
@@ -646,34 +705,33 @@
                 return -1;
             }
             // compare different-types
-            type1 = typeof aa;
-            type2 = typeof bb;
-            if (type1 !== type2) {
-                if (type1 === 'boolean') {
+            typeof1 = typeof aa;
+            typeof2 = typeof bb;
+            if (typeof1 !== typeof2) {
+                if (typeof1 === 'boolean') {
                     return -1;
                 }
-                if (type2 === 'boolean') {
+                if (typeof2 === 'boolean') {
                     return 1;
                 }
-                if (type1 === 'number') {
+                if (typeof1 === 'number') {
                     return -1;
                 }
-                if (type2 === 'number') {
+                if (typeof2 === 'number') {
                     return 1;
                 }
-                if (type1 === 'string') {
-                    return -1;
-                }
-                if (type2 === 'string') {
-                    return 1;
-                }
+                return typeof1 === 'string'
+                    ? -1
+                    : 1;
             }
-            // default compare
+            // object compare
+            if (typeof1 === 'object') {
+                return 0;
+            }
+            // simple compare
             return aa < bb
                 ? -1
-                : aa > bb
-                ? 1
-                : 0;
+                : 1;
         };
 
         local.db.tryCatchOnError = function (fnc, onError) {
@@ -823,191 +881,12 @@
          */
             obj[field] = value;
         };
+
         lastStepModifierFunctions.$unset = function (obj, field) {
         /*
          * Unset a field
          */
             delete obj[field];
-        };
-        lastStepModifierFunctions.$push = function (obj, field, value) {
-        /*
-         * Push an element to the end of an array field
-         * Optional modifier $each instead of value to push several values
-         * Optional modifier $slice to slice the resulting array,
-         * see https://docs.mongodb.org/manual/reference/operator/update/slice/
-         * Différeence with MongoDB:
-         * if $slice is specified and not $each, we act as if value is an empty array
-         */
-            // Create the array if it doesn't exist
-            if (!obj.hasOwnProperty(field)) {
-                obj[field] = [];
-            }
-
-            if (!Array.isArray(obj[field])) {
-                throw new Error("Can't $push an element on non-array values");
-            }
-
-            if (value !== null &&
-                    typeof value === 'object' &&
-                    value.$slice &&
-                    value.$each === undefined) {
-                value.$each = [];
-            }
-
-            if (value !== null && typeof value === 'object' && value.$each) {
-                if (Object.keys(value).length >= 3 ||
-                        (Object.keys(value).length === 2 &&
-                        value.$slice === undefined)) {
-                    throw new Error(
-                        'Can only use $slice in cunjunction with $each when $push to array'
-                    );
-                }
-                if (!Array.isArray(value.$each)) {
-                    throw new Error('$each requires an array value');
-                }
-
-                value.$each.forEach(function (value) {
-                    obj[field].push(value);
-                });
-
-                if (value.$slice === undefined || typeof value.$slice !== 'number') {
-                    return;
-                }
-
-                if (value.$slice === 0) {
-                    obj[field] = [];
-                } else {
-                    var start, end, n = obj[field].length;
-                    if (value.$slice < 0) {
-                        start = Math.max(0, n + value.$slice);
-                        end = n;
-                    } else if (value.$slice > 0) {
-                        start = 0;
-                        end = Math.min(n, value.$slice);
-                    }
-                    obj[field] = obj[field].slice(start, end);
-                }
-            } else {
-                obj[field].push(value);
-            }
-        };
-        lastStepModifierFunctions.$addToSet = function (obj, field, value) {
-        /*
-         * Add an element to an array field only if it is not already in it
-         * No modification if the element is already in the array
-         * Note that it doesn't check whether the original array contains duplicates
-         */
-            var addToSet = true;
-
-            // Create the array if it doesn't exist
-            if (!obj.hasOwnProperty(field)) {
-                obj[field] = [];
-            }
-
-            if (!Array.isArray(obj[field])) {
-                throw new Error("Can't $addToSet an element on non-array values");
-            }
-
-            if (value !== null && typeof value === 'object' && value.$each) {
-                if (Object.keys(value).length > 1) {
-                    throw new Error("Can't use another field in conjunction with $each");
-                }
-                if (!Array.isArray(value.$each)) {
-                    throw new Error('$each requires an array value');
-                }
-
-                value.$each.forEach(function (value) {
-                    lastStepModifierFunctions.$addToSet(obj, field, value);
-                });
-            } else {
-                obj[field].forEach(function (value) {
-                    if (local.db.sortCompare(value, value) === 0) {
-                        addToSet = false;
-                    }
-                });
-                if (addToSet) {
-                    obj[field].push(value);
-                }
-            }
-        };
-        lastStepModifierFunctions.$pop = function (obj, field, value) {
-        /*
-         * Remove the first or last element of an array
-         */
-            if (!Array.isArray(obj[field])) {
-                throw new Error("Can't $pop an element from non-array values");
-            }
-            if (typeof value !== 'number') {
-                throw new Error(value + " isn't an integer, can't use it with $pop");
-            }
-            if (value === 0) {
-                return;
-            }
-
-            if (value > 0) {
-                obj[field] = obj[field].slice(0, obj[field].length - 1);
-            } else {
-                obj[field] = obj[field].slice(1);
-            }
-        };
-        lastStepModifierFunctions.$pull = function (obj, field, value) {
-        /*
-         * Removes all instances of a value from an existing array
-         */
-            var arr, ii;
-
-            if (!Array.isArray(obj[field])) {
-                throw new Error("Can't $pull an element from non-array values");
-            }
-
-            arr = obj[field];
-            for (ii = arr.length - 1; ii >= 0; ii -= 1) {
-                if (local.db.queryMatch(arr[ii], value)) {
-                    arr.splice(ii, 1);
-                }
-            }
-        };
-        lastStepModifierFunctions.$inc = function (obj, field, value) {
-        /*
-         * Increment a numeric field's value
-         */
-            if (typeof value !== 'number') {
-                throw new Error(value + ' must be a number');
-            }
-
-            if (typeof obj[field] !== 'number') {
-                if (!obj.hasOwnProperty(field)) {
-                    obj[field] = value;
-                } else {
-                    throw new Error("Don't use the $inc modifier on non-number fields");
-                }
-            } else {
-                obj[field] += value;
-            }
-        };
-
-        lastStepModifierFunctions.$max = function (obj, field, value) {
-        /*
-         * Updates the value of the field,
-         * only if specified field is greater than the current value of the field
-         */
-            if (obj[field] === undefined) {
-                obj[field] = value;
-            } else if (value > obj[field]) {
-                obj[field] = value;
-            }
-        };
-
-        lastStepModifierFunctions.$min = function (obj, field, value) {
-        /*
-         * Updates the value of the field,
-         * only if specified field is smaller than the current value of the field
-         */
-            if (obj[field] === undefined) {
-                obj[field] = value;
-            } else if (value < obj[field]) {
-                obj[field] = value;
-            }
         };
 
         // Given its name, create the complete modifier function
@@ -1101,53 +980,6 @@
         // Finding dbRow's
         // ==============================================================
 
-        local.db.queryGetDotValue = function (obj, field) {
-        /*
-         * Get a value from object with dot notation
-         * @param {Object} obj
-         * @param {String} field
-         */
-            var ii, objs;
-            field = typeof field === 'string'
-                ? field.split('.')
-                : field;
-
-            // field cannot be empty so that means we should return undefined
-            // so that nothing can match
-            if (!obj) {
-                return undefined;
-            }
-
-            if (field.length === 0) {
-                return obj;
-            }
-
-            if (field.length === 1) {
-                return obj[field[0]];
-            }
-
-            if (Array.isArray(obj[field[0]])) {
-                // If the next field is an integer, return only this item of the array
-                ii = parseInt(field[1], 10);
-                if (typeof ii === 'number' && !isNaN(ii)) {
-                    return local.db.queryGetDotValue(
-                        obj[field[0]][ii],
-                        field.slice(2)
-                    );
-                }
-
-                // Return the array of values
-                objs = [];
-                for (ii = 0; ii < obj[field[0]].length; ii += 1) {
-                    objs.push(local.db.queryGetDotValue(
-                        obj[field[0]][ii],
-                        field.slice(1)
-                    ));
-                }
-                return objs;
-            }
-            return local.db.queryGetDotValue(obj[field[0]], field.slice(1));
-        };
         function areThingsEqual(aa, bb) {
         /*
          * Check whether 'things' are equal
@@ -1215,7 +1047,7 @@
             }
 
             for (ii = 0; ii < query.length; ii += 1) {
-                if (local.db.queryMatch(obj, query[ii])) {
+                if (local.db.queryTest(query[ii], obj)) {
                     return true;
                 }
             }
@@ -1235,7 +1067,7 @@
             }
 
             for (ii = 0; ii < query.length; ii += 1) {
-                if (!local.db.queryMatch(obj, query[ii])) {
+                if (!local.db.queryTest(query[ii], obj)) {
                     return false;
                 }
             }
@@ -1248,7 +1080,7 @@
          * @param {Model} obj
          * @param {Query} query
          */
-            return !local.db.queryMatch(obj, query);
+            return !local.db.queryTest(query, obj);
         };
         logicalOperators.$where = function (obj, fnc) {
         /*
@@ -1269,13 +1101,13 @@
 
             return result;
         };
-        local.db.queryMatch = function (obj, query) {
+        local.db.queryTest = function (query, dbRow) {
         /*
          * Tell if a given dbRow matches a query
-         * @param {Object} obj dbRow to check
+         * @param {Object} dbRow to check
          * @param {Object} query
          */
-            function matchQueryPart(obj, queryKey, queryValue, treatObjAsValue) {
+            function matchQueryPart(dbRow, queryKey, queryValue, treatObjAsValue) {
             /*
              * Match an object against a specific { key: value } part of a query
              * if the treatObjAsValue flag is set, don't try to match every part separately,
@@ -1283,13 +1115,13 @@
              */
                 var objValue, ii, keys, firstChars, dollarFirstChars, tmp;
 
-                objValue = local.db.queryGetDotValue(obj, queryKey);
+                objValue = local.db.dbRowGetItem(dbRow, queryKey);
 
                 // Check if the value is an array if we don't force a treatment as value
                 if (Array.isArray(objValue) && !treatObjAsValue) {
                     // If the queryValue is an array, try to perform an exact match
                     if (Array.isArray(queryValue)) {
-                        return matchQueryPart(obj, queryKey, queryValue, true);
+                        return matchQueryPart(dbRow, queryKey, queryValue, true);
                     }
 
                     // Check if we are using an array-specific comparison function
@@ -1300,7 +1132,7 @@
                             switch (key) {
                             case '$elemMatch':
                             case '$size':
-                                return matchQueryPart(obj, queryKey, queryValue, true);
+                                return matchQueryPart(dbRow, queryKey, queryValue, true);
                             }
                         });
                         if (tmp) {
@@ -1308,7 +1140,7 @@
                         }
                     }
 
-                    // If not, treat it as an array of { obj, query }
+                    // If not, treat it as an array of { dbRow, query }
                     // where there needs to be at least one match
                     for (ii = 0; ii < objValue.length; ii += 1) {
                         if (matchQueryPart({
@@ -1344,14 +1176,9 @@
                     // { $comparisonOperator1: value1, ... }
                     if (dollarFirstChars.length > 0) {
                         return keys.every(function (key) {
-                            return local.db.queryCompare(key, objValue, queryValue[key]);
+                            return local.db.operatorTest(key, queryValue[key], objValue);
                         });
                     }
-                }
-
-                // Using regular expressions with basic querying
-                if (local.db.isRegExp(queryValue)) {
-                    return local.db.queryCompare('$regex', objValue, queryValue);
                 }
 
                 // queryValue is either a native value or a normal object
@@ -1367,17 +1194,13 @@
             // This is a bit of a hack since we construct an object with an arbitrary key
             // only to dereference it later
             // But I don't have time for a cleaner implementation now
-            if (local.db.isNullOrUndefined(obj) ||
-                    typeof obj === 'boolean' ||
-                    typeof obj === 'number' ||
-                    typeof obj === 'string' ||
-                    Array.isArray(obj) ||
-                    local.db.isNullOrUndefined(query) ||
-                    typeof query === 'boolean' ||
-                    typeof query === 'number' ||
-                    typeof query === 'string' ||
-                    Array.isArray(query)) {
-                return matchQueryPart({ needAKey: obj }, 'needAKey', query);
+            if (local.db.isNullOrUndefined(query) ||
+                    typeof query !== 'object' ||
+                    Array.isArray(query) ||
+                    local.db.isNullOrUndefined(dbRow) ||
+                    typeof dbRow !== 'object' ||
+                    Array.isArray(dbRow)) {
+                return matchQueryPart({ needAKey: dbRow }, 'needAKey', query);
             }
 
             // Normal query
@@ -1386,10 +1209,10 @@
                     if (!logicalOperators[key]) {
                         throw new Error('Unknown logical operator ' + key);
                     }
-                    if (!logicalOperators[key](obj, query[key])) {
+                    if (!logicalOperators[key](dbRow, query[key])) {
                         return;
                     }
-                } else if (!matchQueryPart(obj, key, query[key])) {
+                } else if (!matchQueryPart(dbRow, key, query[key])) {
                     return;
                 }
                 return true;
@@ -1782,6 +1605,7 @@
                 return local.db.sortCompare(key, query.$gte) >= 0;
             };
         };
+
         local.db._DbTree.prototype.getUpperBoundMatcher = function (query) {
         /*
          * Return a function that tells whether a given key matches an upper bound
@@ -1819,6 +1643,7 @@
                 return local.db.sortCompare(key, query.$lte) <= 0;
             };
         };
+
         // Append all elements in toAppend to array
         function append(array, toAppend) {
             var ii;
@@ -2010,7 +1835,7 @@
                 return;
             }
 
-            key = local.db.queryGetDotValue(dbRow, self.fieldName);
+            key = local.db.dbRowGetItem(dbRow, self.fieldName);
 
             // We don't index dbRow's that don't contain the field if the index is sparse
             if (self.sparse && local.db.isNullOrUndefined(key)) {
@@ -2018,7 +1843,7 @@
             }
 
             // auto-create keyUnique
-            if (self.unique && !(key === 0 || key) && self.fieldName.indexOf('.') < 0) {
+            if (self.unique && !(key === 0 || key)) {
                 while (true) {
                     key = self.integer
                         ? Math.floor(Math.random() * 0x20000000000000)
@@ -2029,7 +1854,7 @@
                         break;
                     }
                 }
-                dbRow[self.fieldName] = key;
+                local.db.dbRowSetItem(dbRow, self.fieldName, key);
             }
 
             if (!Array.isArray(key)) {
@@ -2101,7 +1926,7 @@
                 return;
             }
 
-            key = local.db.queryGetDotValue(dbRow, self.fieldName);
+            key = local.db.dbRowGetItem(dbRow, self.fieldName);
 
             if (self.sparse && local.db.isNullOrUndefined(key)) {
                 return;
@@ -2228,7 +2053,7 @@
                         $set: {}
                     };
                     keys.forEach(function (key) {
-                        toPush.$set[key] = local.db.queryGetDotValue(candidate, key);
+                        toPush.$set[key] = local.db.dbRowGetItem(candidate, key);
                         if (toPush.$set[key] === undefined) {
                             delete toPush.$set[key];
                         }
@@ -2279,7 +2104,7 @@
 
                 try {
                     candidates.some(function (element) {
-                        if (local.db.queryMatch(element, self.query)) {
+                        if (local.db.queryTest(self.query, element)) {
                             // If a sort is defined, wait for the results to be sorted
                             // before applying limit and skip
                             if (!self._sort) {
@@ -2317,8 +2142,8 @@
                         for (ii = 0; ii < criteria.length; ii += 1) {
                             criterion = criteria[ii];
                             compare = criterion.direction * local.db.sortCompare(
-                                local.db.queryGetDotValue(aa, criterion.key),
-                                local.db.queryGetDotValue(bb, criterion.key)
+                                local.db.dbRowGetItem(aa, criterion.key),
+                                local.db.dbRowGetItem(bb, criterion.key)
                             );
                             if (compare !== 0) {
                                 return compare;
@@ -2389,7 +2214,7 @@
                     break;
                 case 2:
                     data.forEach(function (dbRow) {
-                        if (local.db.queryMatch(dbRow, options.query)) {
+                        if (local.db.queryTest(options.query, dbRow)) {
                             result += 1;
                         }
                     });
@@ -2436,7 +2261,7 @@
                         limit = options.limit;
                         skip = options.skip;
                         data.some(function (dbRow) {
-                            if (!local.db.queryMatch(dbRow, options.query)) {
+                            if (!local.db.queryTest(options.query, dbRow)) {
                                 return;
                             }
                             skip -= 1;
@@ -2455,13 +2280,13 @@
                     // sort
                     result = data;
                     result = result.filter(function (dbRow) {
-                        return local.db.queryMatch(dbRow, options.query);
+                        return local.db.queryTest(options.query, dbRow);
                     });
                     result = result.sort(function (aa, bb) {
                         sort.some(function (element) {
                             tmp = element.direction * local.db.sortCompare(
-                                local.db.queryGetDotValue(aa, element.key),
-                                local.db.queryGetDotValue(bb, element.key)
+                                local.db.dbRowGetItem(aa, element.key),
+                                local.db.dbRowGetItem(bb, element.key)
                             );
                             return tmp;
                         });
@@ -2525,7 +2350,7 @@
         /*
          * this function will remove many dbRow's in dbTable with the given options
          */
-            var removedList, result, self;
+            var result, self;
             self = this;
             options = local.db.objectSetDefault({}, options);
             options = local.db.objectSetDefault(options, { query: {} });
@@ -2533,18 +2358,13 @@
                 data = data || [];
                 switch (options.modeNext) {
                 case 1:
-                    removedList = [];
                     result = 0;
                     self.dbIndexCullMany(options.query, options.onNext);
                     break;
                 case 2:
                     data.some(function (dbRow) {
-                        if (local.db.queryMatch(dbRow, options.query)) {
+                        if (local.db.queryTest(options.query, dbRow)) {
                             result += 1;
-                            removedList.push({
-                                $$deleted: true,
-                                _id: dbRow._id
-                            });
                             self.dbIndexList().forEach(function (dbIndex) {
                                 dbIndex.remove(dbRow);
                             });
@@ -2767,17 +2587,14 @@
                 // from most to least frequent usecase
                 case 1:
                     // For a basic match
-                    usableQueryKeys = [];
-                    Object.keys(query).forEach(function (key) {
-                        if (typeof query[key] === 'string' ||
+                    usableQueryKeys = Object.keys(query).filter(function (key) {
+                        if (self.dbIndexDict.hasOwnProperty(key) &&
+                                (typeof query[key] === 'string' ||
                                 typeof query[key] === 'number' ||
                                 typeof query[key] === 'boolean' ||
-                                query[key] === null) {
-                            usableQueryKeys.push(key);
+                                query[key] === null)) {
+                            return true;
                         }
-                    });
-                    usableQueryKeys = usableQueryKeys.filter(function (element) {
-                        return self.dbIndexDict.hasOwnProperty(element);
                     });
                     if (usableQueryKeys.length > 0) {
                         return options.onNext(null, self.dbIndexDict[usableQueryKeys[0]]
@@ -2859,31 +2676,6 @@
             options.onNext();
         };
 
-        local.db._DbTable.prototype.crudInsertMany = function (dbRowList, onError) {
-        /*
-         * Insert a new dbRow
-         * @param {Function} onError - callback, signature: error, insertedDoc
-         */
-            var self, timeNow;
-            self = this;
-            timeNow = new Date().toISOString();
-            dbRowList = dbRowList.map(function (dbRow) {
-                dbRow = local.db.jsonCopy(dbRow);
-                dbRow.createdAt = dbRow.createdAt || timeNow;
-                dbRow.updatedAt = dbRow.updatedAt || timeNow;
-                local.db.dbRowValidate(dbRow);
-                return dbRow;
-            });
-            // add to indexes
-            self.dbIndexList().forEach(function (dbIndex) {
-                dbIndex.insert(dbRowList);
-            });
-            setTimeout(function () {
-                self.dbTablePersist();
-                onError(null, local.db.jsonCopy(dbRowList));
-            }, 10);
-        };
-
         local.db._DbTable.prototype.crudInsertOrReplaceMany = function (dbRowList, onError) {
         /*
          * Insert or Replace a new dbRow
@@ -2891,41 +2683,75 @@
          */
             var self;
             self = this;
-            dbRowList.forEach(function (dbRow) {
-                if (!local.db.isNullOrUndefined(dbRow._id)) {
-                    self.crudRemoveOne({
-                        query: { _id: dbRow._id }
-                    }, function (error) {
-                        // validate no error occurred
-                        local.db.assert(!error, error);
-                    });
-                }
-            });
-            self.crudInsertMany(dbRowList, onError);
-        };
-
-        local.db._DbTable.prototype.crudSetMany = function (dbRowList, onError) {
-        /*
-         * this function will set many dbRow's into dbTable
-         */
-            var self, timeNow;
-            self = this;
-            timeNow = new Date().toISOString();
             dbRowList = dbRowList.map(function (dbRow) {
-                dbRow = local.db.jsonCopy(dbRow);
-                dbRow.createdAt = dbRow.createdAt || timeNow;
-                dbRow.updatedAt = dbRow.updatedAt || timeNow;
-                local.db.dbRowValidate(dbRow);
-                return dbRow;
-            });
-            // add to indexes
-            self.dbIndexList().forEach(function (dbIndex) {
-                dbIndex.insert(dbRowList);
+                return self.crudInsertOrReplaceOne(dbRow, local.db.nop);
             });
             setTimeout(function () {
                 self.dbTablePersist();
-                onError(null, local.db.jsonCopy(dbRowList));
-            }, 10);
+                onError(null, dbRowList);
+            });
+        };
+
+        local.db._DbTable.prototype.crudInsertOrReplaceOne = function (dbRow, onError) {
+        /*
+         * this function will insert or replace the dbRow in dbTable
+         */
+            var dbRowNormalize, self, value;
+            self = this;
+            // normalize dbRow
+            dbRowNormalize = function (dbRow) {
+            /*
+             * this function will normalize dbRow by recursively removing invalid properties
+             */
+                if (Array.isArray(dbRow)) {
+                    // recurse
+                    dbRow.forEach(dbRowNormalize);
+                } else if (dbRow && typeof dbRow === 'object') {
+                    Object.keys(dbRow).forEach(function (key) {
+                        if (key[0] === '$' || dbRow[key] === null) {
+                            // remove invalid property
+                            delete dbRow[key];
+                            return;
+                        }
+                        // recurse
+                        dbRowNormalize(dbRow[key]);
+                    });
+                }
+                return dbRow;
+            };
+            dbRow = local.db.jsonCopy(dbRowNormalize(local.db.jsonCopy(dbRow)));
+            // init timestamp
+            value = new Date().toISOString();
+            dbRow.createdAt = dbRow.createdAt || value;
+            dbRow.updatedAt = dbRow.updatedAt || value;
+            self.dbIndexList().forEach(function (dbIndex) {
+                if (!dbIndex.unique) {
+                    return;
+                }
+                value = local.db.dbRowGetItem(dbRow, dbIndex.fieldName);
+                if (value === null) {
+                    return;
+                }
+                // remove all dbRow's in dbIndex with unique-constraint conflict
+                dbIndex.dbTree.search(value).forEach(function (dbRow) {
+                    self.dbIndexList().forEach(function (dbIndex) {
+                        value = local.db.dbRowGetItem(dbRow, dbIndex.fieldName);
+                        if (value === null) {
+                            return;
+                        }
+                        dbIndex.dbTree = dbIndex.dbTree.remove(value);
+                    });
+                });
+            });
+            // add to indexes
+            self.dbIndexList().forEach(function (dbIndex) {
+                dbIndex.insert(dbRow);
+            });
+            setTimeout(function () {
+                self.dbTablePersist();
+                onError(null, dbRow);
+            });
+            return dbRow;
         };
 
         local.db._DbTable.prototype.crudUpdate = function (
@@ -3006,12 +2832,15 @@
 
                         toBeInserted = [toBeInserted];
                         local.db.assert(!toBeInserted[0] || !Array.isArray(toBeInserted[0]));
-                        return self.crudInsertMany(toBeInserted, function (error, newDoc) {
-                            if (error) {
-                                return onError(error);
+                        return self.crudInsertOrReplaceMany(
+                            toBeInserted,
+                            function (error, newDoc) {
+                                if (error) {
+                                    return onError(error);
+                                }
+                                return onError(null, 1, newDoc, true);
                             }
-                            return onError(null, 1, newDoc, true);
-                        });
+                        );
                     });
                     break;
                 default:
@@ -3027,7 +2856,7 @@
                         // the in-memory indexes are affected)
                         try {
                             for (ii = 0; ii < dbRowList.length; ii += 1) {
-                                if (local.db.queryMatch(dbRowList[ii], query) &&
+                                if (local.db.queryTest(query, dbRowList[ii]) &&
                                         (multi ||
                                         numReplaced === 0)) {
                                     numReplaced += 1;
