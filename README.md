@@ -20,10 +20,10 @@ this package will run a persistent, in-browser database with zero npm-dependenci
 # documentation
 #### todo
 - npm publish 2016.10.2
-- force all dbIndexes to be sparse
 - none
 
 #### change since 6c1363ea
+- force all dbIndexes to be sparse
 - add function dbTable.crudInsertOrReplaceOne
 - fix function dbClear
 - fix function dbStorageGetItem in node js-env

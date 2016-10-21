@@ -1811,12 +1811,10 @@
          * (can use dot notation to index on sub fields)
          * @param {Boolean} options.unique Optional,
          * enforce a unique constraint (default: false)
-         * @param {Boolean} options.sparse Optional, allow a sparse index
          * (we can have dbRow's for which fieldName is undefined) (default: false)
          */
             this.fieldName = options.fieldName;
             this.integer = options.integer;
-            this.sparse = options.sparse;
             this.unique = options.unique;
             // init dbTree
             this.dbTree = new local.db._DbTree({ unique: this.unique });
@@ -1837,11 +1835,6 @@
 
             key = local.db.dbRowGetItem(dbRow, self.fieldName);
 
-            // We don't index dbRow's that don't contain the field if the index is sparse
-            if (self.sparse && local.db.isNullOrUndefined(key)) {
-                return;
-            }
-
             // auto-create keyUnique
             if (self.unique && !(key === 0 || key)) {
                 while (true) {
@@ -1855,6 +1848,11 @@
                     }
                 }
                 local.db.dbRowSetItem(dbRow, self.fieldName, key);
+            }
+
+            // We don't index dbRow's that don't contain the field if the index is sparse
+            if (local.db.isNullOrUndefined(key)) {
+                return;
             }
 
             if (!Array.isArray(key)) {
@@ -1928,7 +1926,8 @@
 
             key = local.db.dbRowGetItem(dbRow, self.fieldName);
 
-            if (self.sparse && local.db.isNullOrUndefined(key)) {
+            // We don't index dbRow's that don't contain the field if the index is sparse
+            if (local.db.isNullOrUndefined(key)) {
                 return;
             }
 
@@ -2403,7 +2402,6 @@
          * We use an async API for consistency with the rest of the code
          * @param {String} options.fieldName
          * @param {Boolean} options.unique
-         * @param {Boolean} options.sparse
          * @param {Number} options.expireAfterSeconds - Optional, if set this index
          *     becomes a TTL index (only works on Date fields, not arrays of Date)
          * @param {Function} onError - callback, signature: error
@@ -2494,8 +2492,7 @@
                 data += JSON.stringify({
                     fieldName: dbIndex.fieldName,
                     integer: dbIndex.integer,
-                    unique: dbIndex.unique,
-                    sparse: dbIndex.sparse
+                    unique: dbIndex.unique
                 }) + '\n';
             });
             data += '#\n';
@@ -2723,7 +2720,7 @@
             // init timestamp
             value = new Date().toISOString();
             dbRow.createdAt = dbRow.createdAt || value;
-            dbRow.updatedAt = dbRow.updatedAt || value;
+            dbRow.updatedAt = value;
             self.dbIndexList().forEach(function (dbIndex) {
                 if (!dbIndex.unique) {
                     return;
@@ -2732,18 +2729,22 @@
                 if (value === null) {
                     return;
                 }
-                // remove all dbRow's in dbIndex with unique-constraint conflict
-                dbIndex.dbTree.search(value).forEach(function (dbRow) {
+                // remove existing dbRow2 from dbIndex with keyUnique conflict
+                dbIndex.dbTree.search(value).forEach(function (dbRow2) {
+                    // update timestamp
+                    if (dbRow2.createdAt < dbRow.createdAt) {
+                        dbRow.createdAt = dbRow2.createdAt;
+                    }
                     self.dbIndexList().forEach(function (dbIndex) {
-                        value = local.db.dbRowGetItem(dbRow, dbIndex.fieldName);
-                        if (value === null) {
-                            return;
+                        value = local.db.dbRowGetItem(dbRow2, dbIndex.fieldName);
+                        // remove existing dbRow2
+                        if (value !== null) {
+                            dbIndex.dbTree = dbIndex.dbTree.remove(value);
                         }
-                        dbIndex.dbTree = dbIndex.dbTree.remove(value);
                     });
                 });
             });
-            // add to indexes
+            // insert dbRow into dbIndex
             self.dbIndexList().forEach(function (dbIndex) {
                 dbIndex.insert(dbRow);
             });
