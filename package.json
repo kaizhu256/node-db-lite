@@ -4,7 +4,7 @@
     "description": "this package will run a persistent, in-browser database with zero npm-dependencies",
     "devDependencies": {
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
-        "utility2": "2016.10.1"
+        "utility2": "kaizhu256/node-utility2#alpha"
     },
     "engines": { "node": ">=4.0" },
     "homepage": "https://github.com/kaizhu256/node-db-lite",

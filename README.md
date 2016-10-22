@@ -20,11 +20,12 @@ this package will run a persistent, in-browser database with zero npm-dependenci
 # documentation
 #### todo
 - npm publish 2016.10.2
+- make crud operations synchronous
 - none
 
 #### change since 6c1363ea
 - force all dbIndexes to be sparse
-- add function dbTable.crudInsertOrReplaceOne
+- add function dbTable.crudInsertOrReplaceOne, dbTable.crudUpdateMany, dbTable.crudUpdateOne
 - fix function dbClear
 - fix function dbStorageGetItem in node js-env
 - none
@@ -408,7 +409,7 @@ utility2-comment -->\n\
     "description": "{{packageJson.description}}",
     "devDependencies": {
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
-        "utility2": "2016.10.1"
+        "utility2": "kaizhu256/node-utility2#alpha"
     },
     "engines": { "node": ">=4.0" },
     "homepage": "https://github.com/kaizhu256/node-db-lite",

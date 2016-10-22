@@ -229,7 +229,7 @@
                     break;
                 case 2:
                     // validate data
-                    local.utility2.assertJsonEqual(data && data.id, options.id);
+                    local.utility2.assertJsonEqual(data[0].id, options.id);
                     options.onNext();
                     break;
                 default:
@@ -264,7 +264,7 @@
                     break;
                 case 4:
                     // validate data was removed
-                    local.utility2.assertJsonEqual(data, null);
+                    local.utility2.assertJsonEqual(data, []);
                     options.onNext();
                     break;
                 default:

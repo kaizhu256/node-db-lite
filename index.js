@@ -697,9 +697,7 @@
                     if (!self.imported) {
                         self.dbTableImport(data);
                     }
-                    if (onError) {
-                        onError(error, self);
-                    }
+                    local.db.setTimeoutOnError(onError, error, self);
                 }
             });
             options.modeNext = 0;
@@ -751,6 +749,17 @@
                 return local.db.sortCompare(aa, bb) === 0;
             default:
                 return false;
+            }
+        };
+
+        local.db.setTimeoutOnError = function (onError, error, data) {
+        /*
+         * this function will asynchronously call onError
+         */
+            if (typeof onError === 'function') {
+                setTimeout(function () {
+                    onError(error, data);
+                });
             }
         };
 
@@ -1916,7 +1925,8 @@
             // init dbTree
             this.dbTree = new local.db._DbTree({ unique: this.unique });
         };
-        local.db._DbIndex.prototype.insert = function (dbRow) {
+
+        local.db._DbIndex.prototype.insertOne = function (dbRow) {
         /*
          * Insert a new dbRow in the index
          * If an array is passed, we insert all its elements
@@ -1925,25 +1935,17 @@
          */
             var key, keys, ii, failingI, error, self = this;
 
-            if (Array.isArray(dbRow)) {
-                self.insertMultipleDocs(dbRow);
-                return;
-            }
-
             key = local.db.dbRowGetItem(dbRow, self.fieldName);
 
             // auto-create keyUnique
             if (self.unique && !(key === 0 || key)) {
-                while (true) {
+                do {
                     key = self.integer
                         ? Math.floor(Math.random() * 0x20000000000000)
                         : ('a' +
                             Math.random().toString(36).slice(2) +
                             Math.random().toString(36).slice(2)).slice(0, 16);
-                    if (!self.getMatching(key).length) {
-                        break;
-                    }
-                }
+                } while (self.getMatching(key).length);
                 local.db.dbRowSetItem(dbRow, self.fieldName, key);
             }
 
@@ -1978,33 +1980,7 @@
                 }
             }
         };
-        local.db._DbIndex.prototype.insertMultipleDocs = function (dbRowList) {
-        /*
-         * Insert an array of dbRow's in the index
-         * If a constraint is violated, the changes should be rolled back and an error thrown
-         *
-         * @API private
-         */
-            var ii, error, failingI;
 
-            for (ii = 0; ii < dbRowList.length; ii += 1) {
-                try {
-                    this.insert(dbRowList[ii]);
-                } catch (errorCaught) {
-                    error = errorCaught;
-                    failingI = ii;
-                    break;
-                }
-            }
-
-            if (error) {
-                for (ii = 0; ii < failingI; ii += 1) {
-                    this.remove(dbRowList[ii]);
-                }
-
-                throw error;
-            }
-        };
         local.db._DbIndex.prototype.remove = function (dbRow) {
         /*
          * Remove a dbRow from the index
@@ -2036,44 +2012,7 @@
                 });
             }
         };
-        local.db._DbIndex.prototype.updateMultipleDocs = function (pairs) {
-        /*
-         * Update multiple dbRow's in the index
-         * If a constraint is violated, the changes need to be rolled back
-         * and an error thrown
-         * @param {Array of oldDoc, newDoc pairs} pairs
-         *
-         * @API private
-         */
-            var ii, failingI, error;
 
-            for (ii = 0; ii < pairs.length; ii += 1) {
-                this.remove(pairs[ii].oldDoc);
-            }
-
-            for (ii = 0; ii < pairs.length; ii += 1) {
-                try {
-                    this.insert(pairs[ii].newDoc);
-                } catch (errorCaught) {
-                    error = errorCaught;
-                    failingI = ii;
-                    break;
-                }
-            }
-
-            // If an error was raised, roll back changes in the inverse order
-            if (error) {
-                for (ii = 0; ii < failingI; ii += 1) {
-                    this.remove(pairs[ii].newDoc);
-                }
-
-                for (ii = 0; ii < pairs.length; ii += 1) {
-                    this.insert(pairs[ii].oldDoc);
-                }
-
-                throw error;
-            }
-        };
         local.db._DbIndex.prototype.getMatching = function (value) {
         /*
          * Get all dbRow's in index whose key match value (if it is a Thing)
@@ -2096,174 +2035,6 @@
             });
 
             return res;
-        };
-        local.db.Cursor = function (db, query, onError) {
-        /*
-         * Create a new cursor for this dbTable
-         * @param {Datastore} db - The datastore this cursor is bound to
-         * @param {Query} query - The query this cursor will operate on
-         * @param {Function} onError - Handler to be executed after cursor has found
-         * the results and before the callback passed to find/findOne/update/remove
-         */
-            this.db = db;
-            this.query = query || {};
-            if (onError) {
-                this.onError = onError;
-            }
-        };
-        local.db.Cursor.prototype.limit = function (limit) {
-        /*
-         * Set a limit to the number of results
-         */
-            this._limit = limit;
-            return this;
-        };
-        local.db.Cursor.prototype.project = function (candidates) {
-        /*
-         * Apply the projection
-         */
-            var res = [], self = this, keepId, action, keys;
-
-            if (self._projection === undefined || Object.keys(self._projection).length === 0) {
-                return candidates;
-            }
-
-            keepId = self._projection._id === 0 ? false : true;
-
-            // Check for consistency
-            keys = Object.keys(self._projection).filter(function (key) {
-                return key !== '_id';
-            });
-            keys.forEach(function (key) {
-                if (action !== undefined && self._projection[key] !== action) {
-                    throw new Error("Can't both keep and omit fields except for _id");
-                }
-                action = self._projection[key];
-            });
-
-            // Do the actual projection
-            candidates.forEach(function (candidate) {
-                var toPush;
-                if (action === 1) { // pick-type projection
-                    toPush = {
-                        $set: {}
-                    };
-                    keys.forEach(function (key) {
-                        toPush.$set[key] = local.db.dbRowGetItem(candidate, key);
-                        if (toPush.$set[key] === undefined) {
-                            delete toPush.$set[key];
-                        }
-                    });
-                    toPush = local.db.dbRowModify({}, toPush);
-                } else { // omit-type projection
-                    toPush = {
-                        $unset: {}
-                    };
-                    keys.forEach(function (key) {
-                        toPush.$unset[key] = true;
-                    });
-                    toPush = local.db.dbRowModify(candidate, toPush);
-                }
-                if (keepId) {
-                    toPush._id = candidate._id;
-                } else {
-                    delete toPush._id;
-                }
-                res.push(toPush);
-            });
-
-            return res;
-        };
-        local.db.Cursor.prototype._exec = function (_onError) {
-        /*
-         * Get all matching elements
-         * Will return pointers to matched elements (shallow copies),
-         * returning full copies is the role of find or findOne
-         * This is an internal function, use exec which uses the executor
-         *
-         * @param {Function} onError - Signature: error, results
-         */
-            var res = [], added = 0, skipped = 0, self = this;
-
-            function onError(error) {
-                if (self.onError) {
-                    return self.onError(error, res, _onError);
-                }
-                return _onError(error, res);
-            }
-
-            self.db.dbIndexCullMany(self.query, function (error, candidates) {
-                var criteria, limit, skip;
-                if (error) {
-                    return onError(error);
-                }
-
-                try {
-                    candidates.some(function (element) {
-                        if (local.db.queryTest(self.query, element)) {
-                            // If a sort is defined, wait for the results to be sorted
-                            // before applying limit and skip
-                            if (!self._sort) {
-                                if (self._skip && self._skip > skipped) {
-                                    skipped += 1;
-                                } else {
-                                    res.push(element);
-                                    added += 1;
-                                    if (self._limit && self._limit <= added) {
-                                        return true;
-                                    }
-                                }
-                            } else {
-                                res.push(element);
-                            }
-                        }
-                    });
-                } catch (errorCaught) {
-                    return onError(errorCaught);
-                }
-
-                // Apply all sorts
-                if (self._sort) {
-
-                    // Sorting
-                    criteria = [];
-                    Object.keys(self._sort).forEach(function (key) {
-                        criteria.push({
-                            key: key,
-                            direction: self._sort[key]
-                        });
-                    });
-                    res.sort(function (aa, bb) {
-                        var criterion, compare, ii;
-                        for (ii = 0; ii < criteria.length; ii += 1) {
-                            criterion = criteria[ii];
-                            compare = criterion.direction * local.db.sortCompare(
-                                local.db.dbRowGetItem(aa, criterion.key),
-                                local.db.dbRowGetItem(bb, criterion.key)
-                            );
-                            if (compare !== 0) {
-                                return compare;
-                            }
-                        }
-                        return 0;
-                    });
-
-                    // Applying limit and skip
-                    limit = self._limit || res.length;
-                    skip = self._skip || 0;
-
-                    res = res.slice(skip, skip + limit);
-                }
-
-                // Apply projection
-                try {
-                    res = self.project(res);
-                } catch (errorCaught) {
-                    error = errorCaught;
-                }
-
-                return onError(error);
-            });
         };
 
         local.db._DbTable = function (options) {
@@ -2317,11 +2088,12 @@
                     options.onNext();
                     break;
                 default:
-                    onError(error, result);
+                    local.db.setTimeoutOnError(onError, error, result);
                 }
             });
             options.modeNext = 0;
             options.onNext();
+            return result;
         };
 
         local.db._DbTable.prototype.crudFindMany = function (options, onError) {
@@ -2434,12 +2206,7 @@
         /*
          * this function will find one dbRow in dbTable with the given options
          */
-            this.crudFindMany({
-                limit: 1,
-                query: options.query
-            }, function (error, data) {
-                onError(error, data[0] || null);
-            });
+            this.crudFindMany({ limit: 1, query: options.query }, onError);
         };
 
         local.db._DbTable.prototype.crudRemoveMany = function (options, onError) {
@@ -2486,9 +2253,7 @@
          */
             options = local.db.objectSetDefault({}, options);
             options = local.db.objectSetDefault(options, { one: true });
-            this.crudRemoveMany(options, function (error, data) {
-                onError(error, data[0] || null);
-            });
+            this.crudRemoveMany(options, onError);
         };
 
         local.db._DbTable.prototype.dbIndexCreate = function (options) {
@@ -2518,7 +2283,7 @@
             if (options.expireAfterSeconds !== undefined) {
                 self.dbIndexTtlDict[options.fieldName] = options.expireAfterSeconds;
             }
-            dbIndex.insert(self.dbRowList());
+            self.dbRowList().forEach(dbIndex.insertOne.bind(dbIndex));
             // We may want to force all options to be persisted including defaults,
             // not just the ones passed the index creation function
             self.dbTablePersist();
@@ -2629,7 +2394,7 @@
                 });
             data[1].forEach(function (dbIndex) {
                 dbIndex = self.dbIndexDict[dbIndex.fieldName] = new local.db._DbIndex(dbIndex);
-                dbIndex.insert(self.dbRowList());
+                self.dbRowList().forEach(dbIndex.insertOne.bind(dbIndex));
             });
             // insert data
             self.crudInsertOrReplaceMany(data[2], local.db.onErrorDefault);
@@ -2779,13 +2544,8 @@
          */
             var self;
             self = this;
-            dbRowList = dbRowList.map(function (dbRow) {
-                return self.crudInsertOrReplaceOne(dbRow, local.db.nop);
-            });
-            setTimeout(function () {
-                self.dbTablePersist();
-                onError(null, dbRowList);
-            });
+            dbRowList = dbRowList.map(self.crudInsertOrReplaceOne.bind(self));
+            local.db.setTimeoutOnError(onError, null, dbRowList);
         };
 
         local.db._DbTable.prototype.crudInsertOrReplaceOne = function (dbRow, onError) {
@@ -2816,7 +2576,7 @@
                 return dbRow;
             };
             dbRow = local.db.jsonCopy(dbRowNormalize(local.db.jsonCopy(dbRow)));
-            // init timestamp
+            // update timestamp
             value = new Date().toISOString();
             dbRow.createdAt = dbRow.createdAt || value;
             dbRow.updatedAt = value;
@@ -2838,168 +2598,18 @@
                         value = local.db.dbRowGetItem(dbRow2, dbIndex.fieldName);
                         // remove existing dbRow2
                         if (value !== null) {
-                            dbIndex.dbTree = dbIndex.dbTree.remove(value);
+                            dbIndex.dbTree = dbIndex.dbTree.delete(value);
                         }
                     });
                 });
             });
             // insert dbRow into dbIndex
             self.dbIndexList().forEach(function (dbIndex) {
-                dbIndex.insert(dbRow);
+                dbIndex.insertOne(dbRow);
             });
-            setTimeout(function () {
-                self.dbTablePersist();
-                onError(null, dbRow);
-            });
+            self.dbTablePersist();
+            local.db.setTimeoutOnError(onError, null, [dbRow]);
             return dbRow;
-        };
-
-        local.db._DbTable.prototype.crudUpdate = function (
-            query,
-            updateQuery,
-            options,
-            onError
-        ) {
-        /*
-         * Update all docs matching query
-         * @param {Object} query
-         * @param {Object} updateQuery
-         * @param {Object} options Optional options
-         * options.multi If true, can update multiple dbRow's (defaults to false)
-         * options.upsert If true, dbRow is inserted if the query doesn't match anything
-         * @param {Function} onError - callback, signature:
-         * (error, numAffected, affectedDocuments, upsert)
-         *    If update was an upsert, upsert flag is set to true
-         *    affectedDocuments can be one of the following:
-         *      * For an upsert, the upserted dbRow
-         *      * For an update, the array of updated dbRow's
-         *
-         * WARNING: The API was changed between v1.7.4 and v1.8,
-         * for consistency and readability reasons. Prior and including to v1.7.4,
-         * the onError signature was (error, numAffected, updated)
-         * where updated was the updated dbRow in case of an upsert
-         * or the array of updated dbRow's for an update. That meant that the type of
-         * affectedDocuments in a non multi update depended
-         * on whether there was an upsert or not, leaving only two ways for the
-         * user to check whether an upsert had occured:
-         * checking the type of affectedDocuments or running another find query on
-         * the whole dataset to check its size. Both options being ugly,
-         * the breaking change was necessary.
-         *
-         * @api private Use Datastore.crudUpdate which has the same signature
-         */
-            var self = this, numReplaced = 0, multi, upsert, ii;
-
-            multi = options.multi !== undefined ? options.multi : false;
-            upsert = options.upsert !== undefined ? options.upsert : false;
-
-            options = {};
-            local.db.onNext(options, function () {
-                var cursor, modifiedDoc, modifications, createdAt;
-                switch (options.modeNext) {
-                case 1:
-                    // If upsert option is set, check whether we need to insert the dbRow
-                    if (!upsert) {
-                        return options.onNext();
-                    }
-
-                    // Need to use an internal function not tied to the executor
-                    // to avoid deadlock
-                    cursor = new local.db.Cursor(self, query);
-                    cursor.limit(1)._exec(function (error, docs) {
-                        if (error) {
-                            return onError(error);
-                        }
-                        if (docs.length === 1) {
-                            return options.onNext();
-                        }
-                        var toBeInserted;
-
-                        try {
-                            local.db.dbRowValidate(updateQuery);
-                            // updateQuery is a simple object with no modifier,
-                            // use it as the dbRow to insert
-                            toBeInserted = updateQuery;
-                        } catch (errorCaught) {
-                            // updateQuery contains modifiers, use the find query as the base,
-                            // strip it from all operators and update it
-                            // according to updateQuery
-                            toBeInserted = local.db.dbRowModify(
-                                local.db.dbRowDeepCopy(query, true),
-                                updateQuery
-                            );
-                        }
-
-                        toBeInserted = [toBeInserted];
-                        local.db.assert(!toBeInserted[0] || !Array.isArray(toBeInserted[0]));
-                        return self.crudInsertOrReplaceMany(
-                            toBeInserted,
-                            function (error, newDoc) {
-                                if (error) {
-                                    return onError(error);
-                                }
-                                return onError(null, 1, newDoc, true);
-                            }
-                        );
-                    });
-                    break;
-                default:
-                    // Perform the update
-                    modifications = [];
-
-                    self.dbIndexCullMany(query, function (error, dbRowList) {
-                        if (error) {
-                            return onError(error);
-                        }
-
-                        // Preparing update (if an error is thrown here neither the datafile nor
-                        // the in-memory indexes are affected)
-                        try {
-                            for (ii = 0; ii < dbRowList.length; ii += 1) {
-                                if (local.db.queryTest(query, dbRowList[ii]) &&
-                                        (multi ||
-                                        numReplaced === 0)) {
-                                    numReplaced += 1;
-                                    createdAt = dbRowList[ii].createdAt;
-                                    modifiedDoc = local.db.dbRowModify(
-                                        dbRowList[ii],
-                                        updateQuery
-                                    );
-                                    modifiedDoc.createdAt = createdAt;
-                                    modifiedDoc.updatedAt = new Date().toISOString();
-                                    modifications.push({
-                                        oldDoc: dbRowList[ii],
-                                        newDoc: modifiedDoc
-                                    });
-                                }
-                            }
-                        } catch (errorCaught) {
-                            return onError(errorCaught);
-                        }
-
-                        // Change the docs in memory
-                        // update indexes
-                        self.dbIndexList().forEach(function (dbIndex) {
-                            dbIndex.updateMultipleDocs(modifications);
-                        });
-                        // Update the datafile
-                        var updatedDocs, updatedDocsDC;
-                        updatedDocs = modifications.map(function (element) {
-                            return element.newDoc;
-                        });
-                        updatedDocsDC = [];
-                        updatedDocs.forEach(function (dbRow) {
-                            updatedDocsDC.push(local.db.jsonCopy(dbRow));
-                        });
-                        setTimeout(function () {
-                            self.dbTablePersist();
-                            onError(null, numReplaced, updatedDocsDC);
-                        });
-                    });
-                }
-            });
-            options.modeNext = 0;
-            options.onNext();
         };
 
         local.db._DbTable.prototype.crudUpdateMany = function (options, onError) {
@@ -3018,9 +2628,17 @@
                     break;
                 case 2:
                     result = data;
+                    data = new Date().toISOString();
                     result.forEach(function (dbRow) {
                         local.db.objectSetOverride(dbRow, options.$set, Infinity);
+                        // update timestamp
+                        dbRow.updatedAt = data;
                     });
+                    self.crudInsertOrReplaceMany(result, options.onNext);
+                    break;
+                case 3:
+                    result = data;
+                    options.onNext();
                     break;
                 default:
                     onError(error, result);
@@ -3028,6 +2646,17 @@
             });
             options.modeNext = 0;
             options.onNext();
+        };
+
+        local.db._DbTable.prototype.crudUpdateOne = function (options, onError) {
+        /*
+         * this function will update one dbRow in dbTable with the given options.query
+         */
+            this.crudUpdateMany({
+                $set: options.$set,
+                limit: 1,
+                query: options.query
+            }, onError);
         };
     }());
     switch (local.modeJs) {
