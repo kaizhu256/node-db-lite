@@ -349,7 +349,6 @@
         /*
          * this function will test dbTree's default handling-behavior
          */
-            var dbRow, ii;
             options = {};
             options.dbTree = new local.db._DbTree({});
             // test null-case delete handling-behavior
@@ -366,12 +365,17 @@
             // test insert-undefined-item handling-behavior
             options.dbTree = options.dbTree.insert(undefined, { key: undefined });
             // test insert handling-behavior
-            for (ii = 0; ii < 0x100; ii += 1) {
-                dbRow = { key: Math.random() };
-                options.dbTree = options.dbTree.insert(dbRow.key, dbRow);
-                local.testCase_dbTree_sort(options);
+            for (options.ii = 0; options.ii < 0x100; options.ii += 1) {
+                options.dbRow = { key: Math.random() };
+                options.dbTree = options.dbTree.insert(options.dbRow.key, options.dbRow);
+                // test print handling-behavior
+                if (options.ii === 0x8) {
+                    options.dbTree.print();
+                }
+                options.dbTree.validate();
             }
             // validate null-item
+            options.data = options.dbTree.list();
             local.utility2.assertJsonEqual(options.data[options.data.length - 2], {
                 key: null
             });
@@ -389,26 +393,9 @@
                 );
                 options.length -= 1;
                 local.utility2.assertJsonEqual(options.dbTree.length(), options.length);
-                local.testCase_dbTree_sort(options);
+                options.dbTree.validate();
             });
             onError();
-        };
-
-        local.testCase_dbTree_sort = function (options, onError) {
-        /*
-         * this function will test dbTree's insert handling-behavior
-         */
-            options = local.utility2.objectSetDefault(options, {
-                dbTree: new local.db._DbTree({})
-            });
-            options.data = options.dbTree.list();
-            // validate sort
-            options.data.forEach(function (aa, bb) {
-                local.utility2.assert(local.db.sortCompare(aa.key, bb.key) <= 0, [aa, bb]);
-            });
-            if (onError) {
-                onError();
-            }
         };
 
         local.testCase_operatorTest_default = function (options, onError) {

@@ -134,7 +134,7 @@
                 }
                 value = value[element];
             });
-            return local.db.dbValueNormalize(value);
+            return local.db.valueNormalize(value);
         };
 
         local.db.dbRowRemoveItem = function (dbRow, key) {
@@ -162,7 +162,7 @@
          */
             var tmp;
             local.db.assert(typeof key === 'string');
-            if (local.db.dbValueNormalize(value) === null) {
+            if (local.db.valueNormalize(value) === null) {
                 local.db.dbRowRemoveItem(dbRow, key);
                 return;
             }
@@ -454,16 +454,6 @@
 
         local.db.dbTableDict = {};
 
-        local.db.dbValueNormalize = function (dbValue) {
-        /*
-         * this function will normalize the dbValue to a json-object
-         */
-            return dbValue === undefined ||
-                (typeof dbValue === 'number' && !Number.isFinite(dbValue))
-                ? null
-                : dbValue;
-        };
-
         local.db.isNullOrUndefined = function (arg) {
         /*
          * this function will test if the arg is null or undefined
@@ -643,10 +633,10 @@
 
         local.db.operatorTest = function (operator, aa, bb) {
         /*
-         * this function will operator-test aa vs bb
+         * this function will test the operator with aa and bb
          */
-            aa = local.db.dbValueNormalize(aa);
-            bb = local.db.dbValueNormalize(bb);
+            aa = local.db.valueNormalize(aa);
+            bb = local.db.valueNormalize(bb);
             switch (operator) {
             case '$elemMatch':
                 return !!(bb && typeof bb.some === 'function' && bb.some(function (element) {
@@ -691,8 +681,8 @@
          * this function will sort-compare aa vs bb
          */
             var typeof1, typeof2;
-            aa = local.db.dbValueNormalize(aa);
-            bb = local.db.dbValueNormalize(bb);
+            aa = local.db.valueNormalize(aa);
+            bb = local.db.valueNormalize(bb);
             // simple compare
             if (aa === bb) {
                 return 0;
@@ -746,6 +736,16 @@
                 local.db._debugTryCatchErrorCaught = errorCaught;
                 return onError(errorCaught);
             }
+        };
+
+        local.db.valueNormalize = function (value) {
+        /*
+         * this function will normalize the value to a json-object
+         */
+            return value === undefined ||
+                (typeof value === 'number' && !Number.isFinite(value))
+                ? null
+                : value;
         };
 
         // legacy
@@ -1235,27 +1235,62 @@
          * @param {Node}     options.parent Parent node
          * @param {Boolean}  options.unique Whether to enforce a 'unique' constraint
          * on the key or not
-         * @param {Value}    options.value Initialize this DbTree's data with [value]
+         * @param {Value}    options.dbRow Initialize this DbTree's dbRowList with [value]
          */
             if (options.hasOwnProperty('key')) {
                 this.key = options.key;
             }
             this.parent = options.parent;
             this.unique = options.unique;
-            this.data = options.hasOwnProperty('value')
-                ? [options.value]
+            this.dbRowList = options.hasOwnProperty('dbRow')
+                ? [options.dbRow]
                 : [];
         };
         // ============================================
         // Methods used to actually work on the tree
         // ============================================
 
-        local.db._DbTree.prototype.delete = function (key, value) {
+        local.db._DbTree.prototype.dbRowListSome = function (fnc) {
         /*
-         * Delete a key or just a value and return the new root of the tree
+         * this function will recursively traverse the tree in sorted-order,
+         * and call dbRowList.some(fnc)
+         */
+            if ((this.left && this.left.dbRowListSome(fnc)) ||
+                    this.dbRowList.some(fnc) ||
+                    (this.right && this.right.dbRowListSome(fnc))) {
+                return true;
+            }
+            return false;
+        };
+
+        local.db._DbTree.prototype.dbTreeSome = function (fnc) {
+        /*
+         * this function will recursively traverse some of the tree in sorted-order,
+         * and call fnc(dbTree, depth, ii)
+         */
+            var fnc2, ii, recurse;
+            ii = 0;
+            fnc2 = function (dbTree, depth) {
+                ii += 1;
+                return fnc(dbTree, depth, ii);
+            };
+            recurse = function (dbTree, depth) {
+                if ((dbTree.left && recurse(dbTree.left, depth + 1)) ||
+                        fnc2(dbTree, depth) ||
+                        (dbTree.right && recurse(dbTree.right, depth + 1))) {
+                    return true;
+                }
+                return false;
+            };
+            return recurse(this, 1);
+        };
+
+        local.db._DbTree.prototype.delete = function (key, dbRow) {
+        /*
+         * Delete a key or just a dbRow and return the new root of the tree
          * @param {Key} key
-         * @param {Value} value Optional. If not set, the whole key is deleted.
-         * If set, only this value is deleted
+         * @param {dbRow} dbRow Optional. If not set, the whole key is deleted.
+         * If set, only this dbRow is deleted
          */
             var newData, nodeCurrent, pathList, replaceWith;
             newData = [];
@@ -1285,14 +1320,14 @@
                     }
                 }
             }
-            // Delete only a value (no tree modification)
-            if (nodeCurrent.data.length > 1 && value) {
-                nodeCurrent.data.forEach(function (d) {
-                    if (d !== value) {
+            // Delete only a dbRow (no tree modification)
+            if (nodeCurrent.dbRowList.length > 1 && dbRow) {
+                nodeCurrent.dbRowList.forEach(function (d) {
+                    if (d !== dbRow) {
                         newData.push(d);
                     }
                 });
-                nodeCurrent.data = newData;
+                nodeCurrent.dbRowList = newData;
                 return this;
             }
             // Delete a whole node
@@ -1300,7 +1335,7 @@
             if (!nodeCurrent.left && !nodeCurrent.right) {
                 if (nodeCurrent === this) { // This leaf is also the root
                     delete nodeCurrent.key;
-                    nodeCurrent.data = [];
+                    nodeCurrent.dbRowList = [];
                     delete nodeCurrent.height;
                     return this;
                 }
@@ -1337,7 +1372,7 @@
             // Special case: the in-order predecessor is right below the node to delete
             if (!replaceWith.right) {
                 nodeCurrent.key = replaceWith.key;
-                nodeCurrent.data = replaceWith.data;
+                nodeCurrent.dbRowList = replaceWith.dbRowList;
                 nodeCurrent.left = replaceWith.left;
                 if (replaceWith.left) {
                     replaceWith.left.parent = nodeCurrent;
@@ -1355,7 +1390,7 @@
                 }
             }
             nodeCurrent.key = replaceWith.key;
-            nodeCurrent.data = replaceWith.data;
+            nodeCurrent.dbRowList = replaceWith.dbRowList;
             replaceWith.parent.right = replaceWith.left;
             if (replaceWith.left) {
                 replaceWith.left.parent = replaceWith.parent;
@@ -1363,14 +1398,14 @@
             return this.rebalanceAlongPath(pathList);
         };
 
-        local.db._DbTree.prototype.insert = function (key, value) {
+        local.db._DbTree.prototype.insert = function (key, dbRow) {
         /*
-         * Insert a key, value pair in the tree while maintaining the DbTree height constraint
+         * Insert a key, dbRow pair in the tree while maintaining the DbTree height constraint
          * Return a pointer to the root node, which may have changed
          */
             var nodeCurrent, pathList;
-            // validate value
-            local.db.assert(value, value);
+            // validate dbRow
+            local.db.assert(dbRow, dbRow);
             nodeCurrent = this;
             pathList = [];
             // coerce undefined to null
@@ -1380,7 +1415,7 @@
             // Empty tree, insert as root
             if (!this.hasOwnProperty('key')) {
                 this.key = key;
-                this.data.push(value);
+                this.dbRowList.push(dbRow);
                 this.height = 1;
                 return this;
             }
@@ -1392,7 +1427,7 @@
                         !nodeCurrent.unique,
                         'insert - unique-key ' + key + ' already exists'
                     );
-                    nodeCurrent.data.push(value);
+                    nodeCurrent.dbRowList.push(dbRow);
                     return this;
                 }
                 pathList.push(nodeCurrent);
@@ -1402,7 +1437,7 @@
                             key: key,
                             parent: nodeCurrent,
                             unique: nodeCurrent.unique,
-                            value: value
+                            dbRow: dbRow
                         });
                         pathList.push(nodeCurrent.left);
                         break;
@@ -1414,7 +1449,7 @@
                             key: key,
                             parent: nodeCurrent,
                             unique: nodeCurrent.unique,
-                            value: value
+                            dbRow: dbRow
                         });
                         pathList.push(nodeCurrent.right);
                         break;
@@ -1431,7 +1466,7 @@
          */
             var result;
             result = 0;
-            this.some(function () {
+            this.dbRowListSome(function () {
                 result += 1;
             });
             return result;
@@ -1439,11 +1474,11 @@
 
         local.db._DbTree.prototype.list = function () {
         /*
-         * this function will return the list of all values in dbTree
+         * this function will return the list of all dbRows in dbTree
          */
             var result;
             result = [];
-            this.some(function (dbRow) {
+            this.dbRowListSome(function (dbRow) {
                 result.push(dbRow);
             });
             return result;
@@ -1458,10 +1493,6 @@
             var bb, pp, qq;
             pp = this;
             qq = this.right;
-            // No change
-            if (!qq) {
-                return this;
-            }
             bb = qq.left;
             // Alter tree structure
             if (pp.parent) {
@@ -1495,10 +1526,6 @@
             var bb, pp, qq;
             pp = this.left;
             qq = this;
-            // No change
-            if (!pp) {
-                return this;
-            }
             bb = pp.right;
             // Alter tree structure
             if (qq.parent) {
@@ -1524,36 +1551,29 @@
             return pp;
         };
 
-        local.db._DbTree.prototype.prettyPrint = function (printData, spacing) {
+        local.db._DbTree.prototype.print = function (depth) {
         /*
-         * this function will prettyPrint the dbTree
+         * this function will print the dbTree
          */
-            spacing = spacing || "";
-            console.log(spacing + "* " + this.key);
-            if (printData) { console.log(spacing + "* " + this.data); }
-            if (!this.left && !this.right) { return; }
-            if (this.left) {
-                this.left.prettyPrint(printData, spacing + "  ");
-            } else {
-                console.log(spacing + "  *");
-            }
-            if (this.right) {
-                this.right.prettyPrint(printData, spacing + "  ");
-            } else {
-                console.log(spacing + "  *");
-            }
+            depth = depth || '';
+            console.log(depth + '* ' + JSON.stringify(this.key));
+            [this.left, this.right].forEach(function (self) {
+                if (self) {
+                    self.print(depth + '    ');
+                }
+            });
         };
 
         local.db._DbTree.prototype.search = function (key) {
         /*
-         * Search for all data corresponding to a key
+         * Search for all dbRowList corresponding to a key
          */
             if (!this.hasOwnProperty('key')) {
                 return [];
             }
 
             if (local.db.sortCompare(this.key, key) === 0) {
-                return this.data;
+                return this.dbRowList;
             }
 
             if (local.db.sortCompare(key, this.key) < 0) {
@@ -1568,6 +1588,37 @@
             return [];
         };
 
+        local.db._DbTree.prototype.validate = function () {
+        /*
+         * this function will validate dbTree
+         */
+            var height, keyValue, nn, self, tmp;
+            self = this;
+            keyValue = false;
+            height = -1;
+            nn = 0;
+            self.dbTreeSome(function (dbTree, depth, ii) {
+                // validate sort
+                local.db.assert(
+                    local.db.sortCompare(keyValue, dbTree.key) <= 0,
+                    [keyValue, dbTree.key]
+                );
+                // validate nn
+                nn += 1;
+                local.db.assert(ii === nn, [ii, nn]);
+                height = Math.max(depth, height);
+            });
+            // validate height
+            tmp = Math.log2(nn + 1);
+            local.db.assert(tmp <= height, [tmp, height]);
+            // https://en.wikipedia.org/wiki/AVL_tree#Properties
+            tmp = (1 / Math.log2(0.5 * (1 + Math.sqrt(5))));
+            tmp = tmp * Math.log2(nn + 2) + 0.5 * tmp * Math.log2(5) - 2;
+            tmp *= 1.000000000000001;
+            local.db.assert(height < tmp, [height, tmp]);
+        };
+
+        // legacy
         local.db._DbTree.prototype.getLowerBoundMatcher = function (query) {
         /*
          * Return a function that tells whether a given key matches a lower bound
@@ -1654,7 +1705,7 @@
         }
         local.db._DbTree.prototype.betweenBounds = function (query, lbm, ubm) {
         /*
-         * Get all data for a key between bounds
+         * Get all dbRowList for a key between bounds
          * Return it in key order
          * @param {Object} query Mongo-style query
          * where keys are $lt, $lte, $gt or $gte (other keys are not considered)
@@ -1673,31 +1724,13 @@
                 append(res, this.left.betweenBounds(query, lbm, ubm));
             }
             if (lbm(this.key) && ubm(this.key)) {
-                append(res, this.data);
+                append(res, this.dbRowList);
             }
             if (ubm(this.key) && this.right) {
                 append(res, this.right.betweenBounds(query, lbm, ubm));
             }
 
             return res;
-        };
-
-        local.db._DbTree.prototype.some = function (fnc) {
-        /*
-         * Execute a function on every node of the tree, in key order
-         * @param {Function} fnc Signature: node.
-         * Most useful will probably be node.key and node.data
-         */
-            if (this.left && this.left.some(fnc)) {
-                return true;
-            }
-            if (this.data.some(fnc)) {
-                return true;
-            }
-            if (this.right && this.right.some(fnc)) {
-                return true;
-            }
-            return false;
         };
 
         local.db._DbTree.prototype.balanceFactor = function () {
@@ -2732,7 +2765,7 @@
                 // remove existing dbRow2 from dbIndex with keyUnique conflict
                 dbIndex.dbTree.search(value).forEach(function (dbRow2) {
                     // update timestamp
-                    if (dbRow2.createdAt < dbRow.createdAt) {
+                    if (dbRow2.createdAt && dbRow2.createdAt < dbRow.createdAt) {
                         dbRow.createdAt = dbRow2.createdAt;
                     }
                     self.dbIndexList().forEach(function (dbIndex) {
