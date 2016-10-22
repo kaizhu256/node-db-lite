@@ -57,26 +57,6 @@
         }
         // require modules
         local.utility2.db = local.utility2.local.db = local.db;
-        [
-            'assert',
-            'jsonCopy',
-            'jsonStringifyOrdered',
-            'objectSetDefault',
-            'onErrorDefault',
-            'onNext',
-            'onParallel'
-        ].forEach(function (key) {
-            local.utility2[key] = local.db[key];
-            [
-                'testCase_' + key + '_default',
-                'testCase_' + key + '_error',
-                'testCase_' + key + 'Xxx_default'
-            ].forEach(function (key2) {
-                if (local.utility2.testCaseDict[key2]) {
-                    local[key2] = local.utility2.testCaseDict[key2];
-                }
-            });
-        });
     }());
 
 

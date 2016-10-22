@@ -8,13 +8,19 @@
  *     <script src="assets.db-lite.js"></script>
  *     <script>
  *     var dbTable1 = window.db_lite.dbTableCreate({ name: "dbTable1" });
- *     dbTable1.crudInsertOrReplaceMany([{ field1: 'hello', field2: 'world'}], console.log.bind(console));
+ *     dbTable1.crudInsertOrReplaceMany([{
+ *         field1: 'hello',
+ *         field2: 'world'
+ *     }], console.log.bind(console));
  *     </script>
  *
  * node example:
  *     var db = require('./assets.db-lite.js');
  *     var dbTable1 = window.db_lite.dbTableCreate({ name: "dbTable1" });
- *     dbTable1.crudInsertOrReplaceMany([{ field1: 'hello', field2: 'world'}], console.log.bind(console));
+ *     dbTable1.crudInsertOrReplaceMany([{
+ *         field1: 'hello',
+ *         field2: 'world'
+ *     }], console.log.bind(console));
  */
 
 
@@ -64,9 +70,10 @@
 
 
 
-    // run shared js-env code - function
-    (function () {
-        local.db.assert = function (passed, message) {
+    /* istanbul ignore next */
+    // run shared js-env code - utility2 function
+    (function (local) {
+        local.utility2.assert = function (passed, message) {
         /*
          * this function will throw the error message if passed is falsey
          */
@@ -85,6 +92,255 @@
             throw error;
         };
 
+        local.utility2.isNullOrUndefined = function (arg) {
+        /*
+         * this function will test if the arg is null or undefined
+         */
+            return arg === null || arg === undefined;
+        };
+
+        local.utility2.jsonCopy = function (arg) {
+        /*
+         * this function will return a deep-copy of the JSON-arg
+         */
+            return arg === undefined
+                ? undefined
+                : JSON.parse(JSON.stringify(arg));
+        };
+
+        local.utility2.jsonStringifyOrdered = function (element, replacer, space) {
+        /*
+         * this function will JSON.stringify the element,
+         * with object-keys sorted and circular-references removed
+         */
+            var circularList, stringify, tmp;
+            stringify = function (element) {
+            /*
+             * this function will recursively JSON.stringify the element,
+             * with object-keys sorted and circular-references removed
+             */
+                // if element is an object, then recurse its items with object-keys sorted
+                if (element &&
+                        typeof element === 'object' &&
+                        typeof element.toJSON !== 'function') {
+                    // ignore circular-reference
+                    if (circularList.indexOf(element) >= 0) {
+                        return;
+                    }
+                    circularList.push(element);
+                    // if element is an array, then recurse its elements
+                    if (Array.isArray(element)) {
+                        return '[' + element.map(function (element) {
+                            tmp = stringify(element);
+                            return typeof tmp === 'string'
+                                ? tmp
+                                : 'null';
+                        }).join(',') + ']';
+                    }
+                    return '{' + Object.keys(element)
+                        // sort object-keys
+                        .sort()
+                        .map(function (key) {
+                            tmp = stringify(element[key]);
+                            return typeof tmp === 'string'
+                                ? JSON.stringify(key) + ':' + tmp
+                                : undefined;
+                        })
+                        .filter(function (element) {
+                            return typeof element === 'string';
+                        })
+                        .join(',') + '}';
+                }
+                // else JSON.stringify as normal
+                return JSON.stringify(element);
+            };
+            circularList = [];
+            return JSON.stringify(element && typeof element === 'object'
+                ? JSON.parse(stringify(element))
+                : element, replacer, space);
+        };
+
+        local.utility2.nop = function () {
+        /*
+         * this function will do nothing
+         */
+            return;
+        };
+
+        local.utility2.objectSetDefault = function (arg, defaults, depth) {
+        /*
+         * this function will recursively set defaults for undefined-items in the arg
+         */
+            arg = arg || {};
+            defaults = defaults || {};
+            Object.keys(defaults).forEach(function (key) {
+                var arg2, defaults2;
+                arg2 = arg[key];
+                defaults2 = defaults[key];
+                if (defaults2 === undefined) {
+                    return;
+                }
+                // init arg[key] to default value defaults[key]
+                if (!arg2) {
+                    arg[key] = defaults2;
+                    return;
+                }
+                // if arg2 and defaults2 are both non-null and non-array objects,
+                // then recurse with arg2 and defaults2
+                if (depth > 1 &&
+                        // arg2 is a non-null and non-array object
+                        arg2 &&
+                        typeof arg2 === 'object' &&
+                        !Array.isArray(arg2) &&
+                        // defaults2 is a non-null and non-array object
+                        defaults2 &&
+                        typeof defaults2 === 'object' &&
+                        !Array.isArray(defaults2)) {
+                    local.utility2.objectSetDefault(arg2, defaults2, depth - 1);
+                }
+            });
+            return arg;
+        };
+
+        local.utility2.objectSetOverride = function (arg, overrides, depth) {
+        /*
+         * this function will recursively set overrides for items the arg
+         */
+            arg = arg || {};
+            overrides = overrides || {};
+            Object.keys(overrides).forEach(function (key) {
+                var arg2, overrides2;
+                arg2 = arg[key];
+                overrides2 = overrides[key];
+                if (overrides2 === undefined) {
+                    return;
+                }
+                // if both arg2 and overrides2 are non-null and non-array objects,
+                // then recurse with arg2 and overrides2
+                if (depth > 1 &&
+                        // arg2 is a non-null and non-array object
+                        (arg2 &&
+                        typeof arg2 === 'object' &&
+                        !Array.isArray(arg2)) &&
+                        // overrides2 is a non-null and non-array object
+                        (overrides2 &&
+                        typeof overrides2 === 'object' &&
+                        !Array.isArray(overrides2))) {
+                    local.utility2.objectSetOverride(arg2, overrides2, depth - 1);
+                    return;
+                }
+                // else set arg[key] with overrides[key]
+                arg[key] = arg === local.utility2.envDict
+                    // if arg is envDict, then overrides falsey value with empty string
+                    ? overrides2 || ''
+                    : overrides2;
+            });
+            return arg;
+        };
+
+        local.utility2.onErrorDefault = function (error) {
+        /*
+         * this function will print error.stack or error.message to stderr
+         */
+            // if error is defined, then print error.stack
+            if (error && !local.global.__coverage__) {
+                console.error('\nonErrorDefault - error\n' +
+                    error.message + '\n' + error.stack + '\n');
+            }
+        };
+
+        local.utility2.onErrorWithStack = function (onError) {
+        /*
+         * this function will return a new callback that will call onError,
+         * and append the current stack to any error
+         */
+            var stack;
+            stack = new Error().stack.replace((/(.*?)\n.*?$/m), '$1');
+            return function (error, data, meta) {
+                if (error && String(error.stack).indexOf(stack.split('\n')[2]) < 0) {
+                    // append the current stack to error.stack
+                    error.stack += '\n' + stack;
+                }
+                onError(error, data, meta);
+            };
+        };
+
+        local.utility2.onNext = function (options, onError) {
+        /*
+         * this function will wrap onError inside the recursive function options.onNext,
+         * and append the current stack to any error
+         */
+            options.onNext = local.utility2.onErrorWithStack(function (error, data, meta) {
+                try {
+                    options.modeNext = error
+                        ? Infinity
+                        : options.modeNext + 1;
+                    onError(error, data, meta);
+                } catch (errorCaught) {
+                    // throw errorCaught to break infinite recursion-loop
+                    if (options.errorCaught) {
+                        throw options.errorCaught;
+                    }
+                    options.errorCaught = errorCaught;
+                    options.onNext(errorCaught, data, meta);
+                }
+            });
+            return options;
+        };
+
+        local.utility2.onParallel = function (onError, onDebug) {
+        /*
+         * this function will return a function that will
+         * 1. run async tasks in parallel
+         * 2. if counter === 0 or error occurred, then call onError with error
+         */
+            var self;
+            onError = local.utility2.onErrorWithStack(onError);
+            onDebug = onDebug || local.utility2.nop;
+            self = function (error) {
+                onDebug(error, self);
+                // if previously counter === 0 or error occurred, then return
+                if (self.counter === 0 || self.error) {
+                    return;
+                }
+                // handle error
+                if (error) {
+                    self.error = error;
+                    // ensure counter will decrement to 0
+                    self.counter = 1;
+                }
+                // decrement counter
+                self.counter -= 1;
+                // if counter === 0, then call onError with error
+                if (self.counter === 0) {
+                    onError(error);
+                }
+            };
+            // init counter
+            self.counter = 0;
+            // return callback
+            return self;
+        };
+
+        local.utility2.tryCatchOnError = function (fnc, onError) {
+        /*
+         * this function will try to run the fnc in a try-catch block,
+         * else call onError with the errorCaught
+         */
+            try {
+                local.utility2._debugTryCatchErrorCaught = null;
+                return fnc();
+            } catch (errorCaught) {
+                local.utility2._debugTryCatchErrorCaught = errorCaught;
+                return onError(errorCaught);
+            }
+        };
+    }({ utility2: local.db }));
+
+
+
+    // run shared js-env code - function
+    (function () {
         local.db.dbClear = function (onError) {
         /*
          * this function will clear db and its persistence
@@ -350,7 +606,7 @@
                     switch (local.modeJs) {
                     case 'browser':
                         // init indexedDB
-                        try {
+                        local.db.tryCatchOnError(function () {
                             request = local.global.indexedDB.open('db-lite');
                             request.onerror = options.onNext;
                             request.onsuccess = function () {
@@ -362,8 +618,7 @@
                                     request.result.createObjectStore('db-lite');
                                 }
                             };
-                        } catch (ignore) {
-                        }
+                        }, local.db.nop);
                         break;
                     case 'node':
                         // mkdirp dbStorage
@@ -453,183 +708,6 @@
         };
 
         local.db.dbTableDict = {};
-
-        local.db.isNullOrUndefined = function (arg) {
-        /*
-         * this function will test if the arg is null or undefined
-         */
-            return arg === null || arg === undefined;
-        };
-
-        local.db.jsonCopy = function (arg) {
-        /*
-         * this function will return a deep-copy of the JSON-arg
-         */
-            return arg === undefined
-                ? undefined
-                : JSON.parse(JSON.stringify(arg));
-        };
-
-        local.db.jsonStringifyOrdered = function (element, replacer, space) {
-        /*
-         * this function will JSON.stringify the element,
-         * with object-keys sorted and circular-references removed
-         */
-            var circularList, stringify, tmp;
-            stringify = function (element) {
-            /*
-             * this function will recursively JSON.stringify the element,
-             * with object-keys sorted and circular-references removed
-             */
-                // if element is an object, then recurse its items with object-keys sorted
-                if (element &&
-                        typeof element === 'object' &&
-                        typeof element.toJSON !== 'function') {
-                    // ignore circular-reference
-                    if (circularList.indexOf(element) >= 0) {
-                        return;
-                    }
-                    circularList.push(element);
-                    // if element is an array, then recurse its elements
-                    if (Array.isArray(element)) {
-                        return '[' + element.map(function (element) {
-                            tmp = stringify(element);
-                            return typeof tmp === 'string'
-                                ? tmp
-                                : 'null';
-                        }).join(',') + ']';
-                    }
-                    return '{' + Object.keys(element)
-                        // sort object-keys
-                        .sort()
-                        .map(function (key) {
-                            tmp = stringify(element[key]);
-                            return typeof tmp === 'string'
-                                ? JSON.stringify(key) + ':' + tmp
-                                : undefined;
-                        })
-                        .filter(function (element) {
-                            return typeof element === 'string';
-                        })
-                        .join(',') + '}';
-                }
-                // else JSON.stringify as normal
-                return JSON.stringify(element);
-            };
-            circularList = [];
-            return JSON.stringify(element && typeof element === 'object'
-                ? JSON.parse(stringify(element))
-                : element, replacer, space);
-        };
-
-        local.db.nop = function () {
-        /*
-         * this function will do nothing
-         */
-            return;
-        };
-
-        local.db.objectSetDefault = function (arg, defaults, depth) {
-        /*
-         * this function will recursively set defaults for undefined-items in the arg
-         */
-            arg = arg || {};
-            defaults = defaults || {};
-            Object.keys(defaults).forEach(function (key) {
-                var arg2, defaults2;
-                arg2 = arg[key];
-                defaults2 = defaults[key];
-                if (defaults2 === undefined) {
-                    return;
-                }
-                // init arg[key] to default value defaults[key]
-                if (!arg2) {
-                    arg[key] = defaults2;
-                    return;
-                }
-                // if arg2 and defaults2 are both non-null and non-array objects,
-                // then recurse with arg2 and defaults2
-                if (depth > 1 &&
-                        // arg2 is a non-null and non-array object
-                        arg2 &&
-                        typeof arg2 === 'object' &&
-                        !Array.isArray(arg2) &&
-                        // defaults2 is a non-null and non-array object
-                        defaults2 &&
-                        typeof defaults2 === 'object' &&
-                        !Array.isArray(defaults2)) {
-                    local.db.objectSetDefault(arg2, defaults2, depth - 1);
-                }
-            });
-            return arg;
-        };
-
-        local.db.onErrorDefault = function (error) {
-        /*
-         * this function will print error.stack or error.message to stderr
-         */
-            // if error is defined, then print error.stack
-            if (error && !local.global.__coverage__) {
-                console.error('\nonErrorDefault - error\n' +
-                    error.message + '\n' + error.stack + '\n');
-            }
-        };
-
-        local.db.onNext = function (options, onError) {
-        /*
-         * this function will wrap onError inside the recursive function options.onNext,
-         * and append the current stack to any error
-         */
-            options.onNext = function (error, data, meta) {
-                try {
-                    options.modeNext = error
-                        ? Infinity
-                        : options.modeNext + 1;
-                    onError(error, data, meta);
-                } catch (errorCaught) {
-                    // throw errorCaught to break infinite recursion-loop
-                    if (options.errorCaught) {
-                        throw options.errorCaught;
-                    }
-                    options.errorCaught = errorCaught;
-                    options.onNext(errorCaught, data, meta);
-                }
-            };
-            return options;
-        };
-
-        local.db.onParallel = function (onError, onDebug) {
-        /*
-         * this function will return a function that will
-         * 1. run async tasks in parallel
-         * 2. if counter === 0 or error occurred, then call onError with error
-         */
-            var self;
-            onDebug = onDebug || local.db.nop;
-            self = function (error) {
-                onDebug(error, self);
-                // if previously counter === 0 or error occurred, then return
-                if (self.counter === 0 || self.error) {
-                    return;
-                }
-                // handle error
-                if (error) {
-                    self.error = error;
-                    // ensure counter will decrement to 0
-                    self.counter = 1;
-                }
-                // decrement counter
-                self.counter -= 1;
-                // if counter === 0, then call onError with error
-                if (self.counter === 0) {
-                    onError(error);
-                }
-            };
-            // init counter
-            self.counter = 0;
-            // return callback
-            return self;
-        };
 
         local.db.operatorTest = function (operator, aa, bb) {
         /*
@@ -722,20 +800,6 @@
             return aa < bb
                 ? -1
                 : 1;
-        };
-
-        local.db.tryCatchOnError = function (fnc, onError) {
-        /*
-         * this function will try to run the fnc in a try-catch block,
-         * else call onError with the errorCaught
-         */
-            try {
-                local.db._debugTryCatchErrorCaught = null;
-                return fnc();
-            } catch (errorCaught) {
-                local.db._debugTryCatchErrorCaught = errorCaught;
-                return onError(errorCaught);
-            }
         };
 
         local.db.valueNormalize = function (value) {
@@ -1609,9 +1673,9 @@
                 height = Math.max(depth, height);
             });
             // validate height
+            // https://en.wikipedia.org/wiki/AVL_tree#Properties
             tmp = Math.log2(nn + 1);
             local.db.assert(tmp <= height, [tmp, height]);
-            // https://en.wikipedia.org/wiki/AVL_tree#Properties
             tmp = (1 / Math.log2(0.5 * (1 + Math.sqrt(5))));
             tmp = tmp * Math.log2(nn + 2) + 0.5 * tmp * Math.log2(5) - 2;
             tmp *= 1.000000000000001;
@@ -2390,13 +2454,13 @@
                 data = data || [];
                 switch (options.modeNext) {
                 case 1:
-                    result = 0;
+                    result = [];
                     self.dbIndexCullMany(options.query, options.onNext);
                     break;
                 case 2:
                     data.some(function (dbRow) {
                         if (local.db.queryTest(options.query, dbRow)) {
-                            result += 1;
+                            result.push(dbRow);
                             self.dbIndexList().forEach(function (dbIndex) {
                                 dbIndex.remove(dbRow);
                             });
@@ -2422,7 +2486,9 @@
          */
             options = local.db.objectSetDefault({}, options);
             options = local.db.objectSetDefault(options, { one: true });
-            this.crudRemoveMany(options, onError);
+            this.crudRemoveMany(options, function (error, data) {
+                onError(error, data[0] || null);
+            });
         };
 
         local.db._DbTable.prototype.dbIndexCreate = function (options) {
@@ -2930,6 +2996,34 @@
                             onError(null, numReplaced, updatedDocsDC);
                         });
                     });
+                }
+            });
+            options.modeNext = 0;
+            options.onNext();
+        };
+
+        local.db._DbTable.prototype.crudUpdateMany = function (options, onError) {
+        /*
+         * this function will update many dbRow's in dbTable with the given options.query
+         */
+            var result, self;
+            self = this;
+            options = local.db.objectSetDefault({}, options);
+            local.db.onNext(options, function (error, data) {
+                data = data || [];
+                switch (options.modeNext) {
+                case 1:
+                    result = [];
+                    self.crudFindMany(options, options.onNext);
+                    break;
+                case 2:
+                    result = data;
+                    result.forEach(function (dbRow) {
+                        local.db.objectSetOverride(dbRow, options.$set, Infinity);
+                    });
+                    break;
+                default:
+                    onError(error, result);
                 }
             });
             options.modeNext = 0;
