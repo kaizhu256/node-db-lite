@@ -7,20 +7,26 @@
  * browser example:
  *     <script src="assets.db-lite.js"></script>
  *     <script>
- *     var dbTable1 = window.db_lite.dbTableCreate({ name: "dbTable1" });
- *     dbTable1.crudInsertOrReplaceMany([{
- *         field1: 'hello',
- *         field2: 'world'
- *     }], console.log.bind(console));
+ *     var dbTable1;
+ *     dbTable1 = window.db_lite.dbTableCreate({ name: "dbTable1" });
+ *     dbTable1.dbIndexCreate({ fieldName: "field1" });
+ *     dbTable1.crudInsertOrReplaceOne({
+ *         field1: "hello",
+ *         field2: "world"
+ *     });
+ *     console.log(dbTable1.crudFindMany({ query: { field1: "hello" } }));
  *     </script>
  *
  * node example:
- *     var db = require('./assets.db-lite.js');
- *     var dbTable1 = window.db_lite.dbTableCreate({ name: "dbTable1" });
- *     dbTable1.crudInsertOrReplaceMany([{
- *         field1: 'hello',
- *         field2: 'world'
- *     }], console.log.bind(console));
+ *     var db, dbTable1;
+ *     db = require("./assets.db-lite.js");
+ *     dbTable1 = db.dbTableCreate({ name: "dbTable1" });
+ *     dbTable1.dbIndexCreate({ fieldName: "field1" });
+ *     dbTable1.crudInsertOrReplaceOne({
+ *         field1: "hello",
+ *         field2: "world"
+ *     });
+ *     console.log(dbTable1.crudFindMany({ query: { field1: "hello" } }));
  */
 
 
@@ -353,7 +359,7 @@
             local.db.dbStorageClear(onError);
         };
 
-        local.db.dbExport = function () {
+        local.db.dbExport = function (onError) {
         /*
          * this function will export db as a serialized dbTableList
          */
@@ -362,10 +368,11 @@
             Object.keys(local.db.dbTableDict).forEach(function (key) {
                 data += local.db.dbTableDict[key].dbTableExport() + '\n\n\n\n';
             });
-            return data.slice(0, -2);
+            data = data.trim();
+            return local.db.setTimeoutOnError(onError, null, data);
         };
 
-        local.db.dbImport = function (dbTableList) {
+        local.db.dbImport = function (dbTableList, onError) {
         /*
          * this function will import the serialized dbTableList
          */
@@ -375,6 +382,7 @@
                     name: JSON.parse((/"name":("[^"].*?")/).exec(dbTable)[1])
                 }).dbTableImport(dbTable);
             });
+            return local.db.setTimeoutOnError(onError);
         };
 
         local.db.dbRowGetItem = function (dbRow, key) {
@@ -622,7 +630,7 @@
                         break;
                     case 'node':
                         // mkdirp dbStorage
-                        local.db.dbStorage = 'tmp/db.persistence.' + local.db.NODE_ENV;
+                        local.db.dbStorage = 'tmp/db.storage.' + local.db.NODE_ENV;
                         local.child_process.spawnSync('mkdir', ['-p', local.db.dbStorage], {
                             stdio: ['ignore', 1, 2]
                         });
@@ -678,30 +686,20 @@
          * this function will create a dbTable with the given options
          */
             var self;
-            options = local.db.objectSetDefault({}, options);
-            local.db.onNext(options, function (error, data) {
-                switch (options.modeNext) {
-                case 1:
-                    self = local.db.dbTableDict[options.name] =
-                        local.db.dbTableDict[options.name] || new local.db._DbTable(options);
-                    // import persistence
-                    if (!self.imported) {
-                        local.db.dbStorageGetItem(self.name, options.onNext);
-                        return;
-                    }
-                    options.onNext();
-                    break;
-                default:
-                    // validate no error occurred
-                    local.db.assert(!error, error);
-                    if (!self.imported) {
-                        self.dbTableImport(data);
-                    }
-                    local.db.setTimeoutOnError(onError, error, self);
+            self = local.db.dbTableDict[options.name] =
+                local.db.dbTableDict[options.name] || new local.db._DbTable(options);
+            if (self.imported) {
+                return local.db.setTimeoutOnError(onError, null, self);
+            }
+            // import table from persistent-storage
+            local.db.dbStorageGetItem(self.name, function (error, data) {
+                // validate no error occurred
+                local.db.assert(!error, error);
+                if (!self.imported) {
+                    self.dbTableImport(data);
                 }
+                local.db.setTimeoutOnError(onError, null, self);
             });
-            options.modeNext = 0;
-            options.onNext();
             return self;
         };
 
@@ -761,6 +759,7 @@
                     onError(error, data);
                 });
             }
+            return data;
         };
 
         local.db.sortCompare = function (aa, bb) {
@@ -847,210 +846,10 @@
 // https://github.com
 // /louischatriot/db/blob/cadf4ef434e517e47c4e9ca1db5b89e892ff5981/browser-version/out/db.js
     (function () {
-        var modifierFunctions = {},
-            lastStepModifierFunctions = {},
-            logicalOperators = {};
+        local.db.logicalOperators = {};
 
-        function checkKey(key, value) {
-        /*
-         * Check a key, throw an error if the key is non valid
-         * @param {String} key
-         * @param {Model} value, needed to treat the Date edge case
-         * Non-treatable edge cases here:
-         * if part of the object if of the form { $$date: number } or { $$deleted: true }
-         * Its serialized-then-deserialized version it will transformed into a Date object
-         * But you really need to want it to trigger such behaviour,
-         *    even when warned not to use '$' at the beginning of the field names...
-         */
-            if (typeof key === 'number') {
-                key = key.toString();
-            }
-
-            if (key[0] === '$' &&
-                    !(key === '$$date' &&
-                    typeof value === 'number') &&
-                    !(key === '$$deleted' && value === true) &&
-                    !(key === '$$indexCreated') &&
-                    !(key === '$$indexRemoved')) {
-                throw new Error('Field names cannot begin with the $ character');
-            }
-
-            if (key.indexOf('.') !== -1) {
-                throw new Error('Field names cannot contain a .');
-            }
-        }
-        local.db.dbRowValidate = function (dbRow) {
-        /*
-         * Check a DB object and throw an error if it's not valid
-         * Works by applying the above checkKey function to all fields recursively
-         */
-            if (Array.isArray(dbRow)) {
-                dbRow.forEach(function (element) {
-                    local.db.dbRowValidate(element);
-                });
-            }
-            if (dbRow && typeof dbRow === 'object') {
-                Object.keys(dbRow).forEach(function (key) {
-                    checkKey(key, dbRow[key]);
-                    local.db.dbRowValidate(dbRow[key]);
-                });
-            }
-        };
-        local.db.dbRowDeepCopy = function (obj, strictKeys) {
-        /*
-         * Deep copy a DB object
-         * The optional strictKeys flag (defaulting to false)
-         * indicates whether to copy everything or only fields
-         * where the keys are valid, i.e. don't begin with $ and don't contain a .
-         */
-            var res;
-
-            if (typeof obj === 'boolean' ||
-                    typeof obj === 'number' ||
-                    typeof obj === 'string' ||
-                    obj === null) {
-                return obj;
-            }
-
-            if (Array.isArray(obj)) {
-                res = [];
-                obj.forEach(function (o) {
-                    res.push(local.db.dbRowDeepCopy(o, strictKeys));
-                });
-                return res;
-            }
-
-            if (typeof obj === 'object') {
-                res = {};
-                Object.keys(obj).forEach(function (key) {
-                    if (!strictKeys || (key[0] !== '$' && key.indexOf('.') === -1)) {
-                        res[key] = local.db.dbRowDeepCopy(obj[key], strictKeys);
-                    }
-                });
-                return res;
-            }
-
-            // For now everything else is undefined. We should probably throw an error instead
-            return undefined;
-        };
         // ==============================================================
         // Updating dbRow's
-        // ==============================================================
-
-        /*
-         * The signature of modifier functions is as follows
-         * Their structure is always the same:
-         * recursively follow the dot notation while creating
-         * the nested dbRow's if needed, then apply the 'last step modifier'
-         * @param {Object} obj The model to modify
-         * @param {String} field Can contain dots,
-         * in that case that means we will set a subfield recursively
-         * @param {Model} value
-         */
-
-        lastStepModifierFunctions.$set = function (obj, field, value) {
-        /*
-         * Set a field to a new value
-         */
-            obj[field] = value;
-        };
-
-        lastStepModifierFunctions.$unset = function (obj, field) {
-        /*
-         * Unset a field
-         */
-            delete obj[field];
-        };
-
-        // Given its name, create the complete modifier function
-        function createModifierFunction(modifier) {
-            return function (obj, field, value) {
-                var fieldParts = typeof field === 'string' ? field.split('.') : field;
-
-                if (fieldParts.length === 1) {
-                    lastStepModifierFunctions[modifier](obj, field, value);
-                } else {
-                    if (obj[fieldParts[0]] === undefined) {
-                        // Bad looking specific fix,
-                        // needs to be generalized modifiers
-                        // that behave like $unset are implemented
-                        if (modifier === '$unset') {
-                            return;
-                        }
-                        obj[fieldParts[0]] = {};
-                    }
-                    modifierFunctions[modifier](
-                        obj[fieldParts[0]],
-                        fieldParts.slice(1),
-                        value
-                    );
-                }
-            };
-        }
-
-        // Actually create all modifier functions
-        Object.keys(lastStepModifierFunctions).forEach(function (modifier) {
-            modifierFunctions[modifier] = createModifierFunction(modifier);
-        });
-        local.db.dbRowModify = function (obj, updateQuery) {
-        /*
-         * Modify a DB object according to an update query
-         */
-            var keys, dollarFirstChars, firstChars, modifiers, newDoc;
-            keys = Object.keys(updateQuery);
-            firstChars = keys.map(function (item) {
-                return item[0];
-            });
-            dollarFirstChars = firstChars.filter(function (cc) {
-                return cc === '$';
-            });
-
-            if (keys.indexOf('_id') !== -1 && updateQuery._id !== obj._id) {
-                throw new Error("You cannot change a dbRow's _id");
-            }
-
-            if (dollarFirstChars.length !== 0 &&
-                    dollarFirstChars.length !== firstChars.length) {
-                throw new Error('You cannot mix modifiers and normal fields');
-            }
-
-            if (dollarFirstChars.length === 0) {
-                // Simply replace the object with the update query contents
-                newDoc = local.db.jsonCopy(updateQuery);
-                newDoc._id = obj._id;
-            } else {
-                // Apply modifiers
-                modifiers = local.db.listUnique(keys);
-                newDoc = local.db.jsonCopy(obj);
-                modifiers.forEach(function (m) {
-
-                    if (!modifierFunctions[m]) {
-                        throw new Error('Unknown modifier ' + m);
-                    }
-
-                    // Can't rely on Object.keys throwing on non objects since ES6
-                    // Not 100% satisfying as non objects can be interpreted as objects
-                    // but no false negatives so we can live with it
-                    if (typeof updateQuery[m] !== 'object') {
-                        throw new Error('Modifier ' + m + "'s argument must be an object");
-                    }
-
-                    Object.keys(updateQuery[m]).forEach(function (key) {
-                        modifierFunctions[m](newDoc, key, updateQuery[m][key]);
-                    });
-                });
-            }
-
-            // Check result is valid and return it
-            local.db.dbRowValidate(newDoc);
-
-            if (obj._id !== newDoc._id) {
-                throw new Error("You can't change a dbRow's _id");
-            }
-            return newDoc;
-        };
-        // ==============================================================
-        // Finding dbRow's
         // ==============================================================
 
         function areThingsEqual(aa, bb) {
@@ -1107,7 +906,7 @@
             }
             return true;
         }
-        logicalOperators.$or = function (obj, query) {
+        local.db.logicalOperators.$or = function (obj, query) {
         /*
          * Match any of the subqueries
          * @param {Model} obj
@@ -1127,7 +926,7 @@
 
             return false;
         };
-        logicalOperators.$and = function (obj, query) {
+        local.db.logicalOperators.$and = function (obj, query) {
         /*
          * Match all of the subqueries
          * @param {Model} obj
@@ -1147,7 +946,7 @@
 
             return true;
         };
-        logicalOperators.$not = function (obj, query) {
+        local.db.logicalOperators.$not = function (obj, query) {
         /*
          * Inverted match of the query
          * @param {Model} obj
@@ -1155,7 +954,7 @@
          */
             return !local.db.queryTest(query, obj);
         };
-        logicalOperators.$where = function (obj, fnc) {
+        local.db.logicalOperators.$where = function (obj, fnc) {
         /*
          * Use a function to match
          * @param {Model} obj
@@ -1279,10 +1078,10 @@
             // Normal query
             return Object.keys(query).every(function (key) {
                 if (key[0] === '$') {
-                    if (!logicalOperators[key]) {
+                    if (!local.db.logicalOperators[key]) {
                         throw new Error('Unknown logical operator ' + key);
                     }
-                    if (!logicalOperators[key](dbRow, query[key])) {
+                    if (!local.db.logicalOperators[key](dbRow, query[key])) {
                         return;
                     }
                 } else if (!matchQueryPart(dbRow, key, query[key])) {
@@ -1814,38 +1613,6 @@
                 ((this.right && this.right.height) || 0);
         };
 
-        local.db._DbTree.prototype.rightTooSmall = function () {
-        /*
-         * Modify the tree if its right subtree is too small compared to the left
-         * Return the new root if any
-         */
-            if (this.balanceFactor() <= 1) {
-                return this;
-            } // Right is not too small, don't change
-
-            if (this.left.balanceFactor() < 0) {
-                this.left.rotateLeft();
-            }
-
-            return this.rotateRight();
-        };
-
-        local.db._DbTree.prototype.leftTooSmall = function () {
-        /*
-         * Modify the tree if its left subtree is too small compared to the right
-         * Return the new root if any
-         */
-            if (this.balanceFactor() >= -1) {
-                return this;
-            } // Left is not too small, don't change
-
-            if (this.right.balanceFactor() > 0) {
-                this.right.rotateRight();
-            }
-
-            return this.rotateLeft();
-        };
-
         local.db._DbTree.prototype.rebalanceAlongPath = function (path) {
         /*
          * Rebalance the tree along the given path.
@@ -1869,13 +1636,31 @@
                     ? path[ii].right.height
                     : 0);
                 if (path[ii].balanceFactor() > 1) {
-                    rotated = path[ii].rightTooSmall();
+                    // Right is not too small, don't change
+                    if (path[ii].balanceFactor() <= 1) {
+                        rotated = path[ii];
+                    // Modify the tree if its right subtree is too small compared to the left
+                    } else {
+                        if (path[ii].left.balanceFactor() < 0) {
+                            path[ii].left.rotateLeft();
+                        }
+                        rotated = path[ii].rotateRight();
+                    }
                     if (ii === 0) {
                         rootCurrent = rotated;
                     }
                 }
                 if (path[ii].balanceFactor() < -1) {
-                    rotated = path[ii].leftTooSmall();
+                    // Left is not too small, don't change
+                    if (path[ii].balanceFactor() >= -1) {
+                        rotated = path[ii];
+                    // Modify the tree if its left subtree is too small compared to the right
+                    } else {
+                        if (path[ii].right.balanceFactor() > 0) {
+                            path[ii].right.rotateRight();
+                        }
+                        rotated = path[ii].rotateLeft();
+                    }
                     if (ii === 0) {
                         rootCurrent = rotated;
                     }
@@ -1933,7 +1718,8 @@
          * (if one insertion fails the index is not modified)
          * O(log(n))
          */
-            var key, keys, ii, failingI, error, self = this;
+            var key, keys, ii, self;
+            self = this;
 
             key = local.db.dbRowGetItem(dbRow, self.fieldName);
 
@@ -1962,21 +1748,7 @@
                 keys = local.db.listUnique(key).map(projectForUnique);
 
                 for (ii = 0; ii < keys.length; ii += 1) {
-                    try {
-                        self.dbTree = self.dbTree.insert(keys[ii], dbRow);
-                    } catch (errorCaught) {
-                        error = errorCaught;
-                        failingI = ii;
-                        break;
-                    }
-                }
-
-                if (error) {
-                    for (ii = 0; ii < failingI; ii += 1) {
-                        self.dbTree = self.dbTree.delete(keys[ii], dbRow);
-                    }
-
-                    throw error;
+                    self.dbTree = self.dbTree.insert(keys[ii], dbRow);
                 }
             }
         };
@@ -1988,7 +1760,8 @@
          * The remove operation is safe with regards to the 'unique' constraint
          * O(log(n))
          */
-            var key, self = this;
+            var key, self;
+            self = this;
 
             if (Array.isArray(dbRow)) {
                 dbRow.forEach(function (d) {
@@ -2020,7 +1793,8 @@
          * @param {Thing} value Value to match the key against
          * @return {Array of dbRow's}
          */
-            var self = this, _res = {}, res = [];
+            var self, _res = {}, res = [];
+            self = this;
             if (!Array.isArray(value)) {
                 return self.dbTree.search(value);
             }
@@ -2068,37 +1842,21 @@
         /*
          * this function will count the number of dbRow's in dbTable with the given options
          */
-            var result, self;
-            self = this;
+            var result;
             options = local.db.objectSetDefault({}, options);
             options = local.db.objectSetDefault(options, { query: {} });
-            local.db.onNext(options, function (error, data) {
-                data = data || [];
-                switch (options.modeNext) {
-                case 1:
-                    result = 0;
-                    self.dbIndexCullMany(options.query, options.onNext);
-                    break;
-                case 2:
-                    data.forEach(function (dbRow) {
-                        if (local.db.queryTest(options.query, dbRow)) {
-                            result += 1;
-                        }
-                    });
-                    options.onNext();
-                    break;
-                default:
-                    local.db.setTimeoutOnError(onError, error, result);
+            result = 0;
+            this.dbIndexCullMany(options.query).forEach(function (dbRow) {
+                if (local.db.queryTest(options.query, dbRow)) {
+                    result += 1;
                 }
             });
-            options.modeNext = 0;
-            options.onNext();
-            return result;
+            return local.db.setTimeoutOnError(onError, null, result);
         };
 
         local.db._DbTable.prototype.crudFindMany = function (options, onError) {
         /*
-         * this function will find all dbRow's in dbTable with the given options
+         * this function will find dbRow's in dbTable with the given options
          */
             var limit, projection, result, self, skip, sort, tmp;
             self = this;
@@ -2110,47 +1868,38 @@
                 skip: 0,
                 sort: {}
             });
-            local.db.onNext(options, function (error, data) {
-                data = data || [];
-                switch (options.modeNext) {
-                case 1:
-                    result = [];
-                    self.dbIndexCullMany(options.query, options.onNext);
-                    break;
-                case 2:
-                    sort = Object.keys(options.sort).map(function (key) {
-                        return {
-                            key: key,
-                            direction: options.sort[key]
-                        };
-                    });
-                    // optimization - no sort
-                    if (!sort.length) {
-                        limit = options.limit;
-                        skip = options.skip;
-                        data.some(function (dbRow) {
-                            if (!local.db.queryTest(options.query, dbRow)) {
-                                return;
-                            }
-                            skip -= 1;
-                            if (skip >= 0) {
-                                return;
-                            }
-                            result.push(dbRow);
-                            limit -= 1;
-                            if (limit <= 0) {
-                                return true;
-                            }
-                        });
-                        options.onNext();
+            result = [];
+            sort = Object.keys(options.sort).map(function (key) {
+                return {
+                    key: key,
+                    direction: options.sort[key]
+                };
+            });
+            // optimization - no sort
+            if (!sort.length) {
+                limit = options.limit;
+                skip = options.skip;
+                self.dbIndexCullMany(options.query).some(function (dbRow) {
+                    if (!local.db.queryTest(options.query, dbRow)) {
                         return;
                     }
-                    // sort
-                    result = data;
-                    result = result.filter(function (dbRow) {
+                    skip -= 1;
+                    if (skip >= 0) {
+                        return;
+                    }
+                    result.push(dbRow);
+                    limit -= 1;
+                    if (limit <= 0) {
+                        return true;
+                    }
+                });
+            // sort
+            } else {
+                result = self.dbIndexCullMany(options.query)
+                    .filter(function (dbRow) {
                         return local.db.queryTest(options.query, dbRow);
-                    });
-                    result = result.sort(function (aa, bb) {
+                    })
+                    .sort(function (aa, bb) {
                         sort.some(function (element) {
                             tmp = element.direction * local.db.sortCompare(
                                 local.db.dbRowGetItem(aa, element.key),
@@ -2159,54 +1908,43 @@
                             return tmp;
                         });
                         return tmp;
-                    });
+                    })
                     // limit and skip
-                    result = result.slice(options.skip, options.skip + options.limit);
-                    options.onNext();
-                    break;
-                case 4:
-                    // projection
-                    projection = Object.keys(options.projection);
-                    if (!projection.list) {
-                        options.onNext();
-                        return;
-                    }
-                    // pick-type projection
-                    if (options.projection[projection.list[0]] === 1) {
-                        result = result.map(function (dbRow) {
-                            tmp = {};
-                            projection.forEach(function (key) {
+                    .slice(options.skip, options.skip + options.limit);
+            }
+            // projection
+            projection = Object.keys(options.projection);
+            if (projection.length) {
+                // pick-type projection
+                if (options.projection[projection[0]]) {
+                    result = result.map(function (dbRow) {
+                        tmp = {};
+                        projection.forEach(function (key) {
+                            tmp[key] = dbRow[key];
+                        });
+                        return tmp;
+                    });
+                // omit-type projection
+                } else {
+                    result = result.map(function (dbRow) {
+                        tmp = {};
+                        Object.keys(dbRow).forEach(function (key) {
+                            if (!options.projection.hasOwnProperty(key)) {
                                 tmp[key] = dbRow[key];
-                            });
-                            return tmp;
+                            }
                         });
-                    // omit-type projection
-                    } else {
-                        result = result.map(function (dbRow) {
-                            tmp = {};
-                            Object.keys(dbRow).forEach(function (key) {
-                                if (!options.projection.hasOwnProperty(key)) {
-                                    tmp[key] = dbRow[key];
-                                }
-                            });
-                            return tmp;
-                        });
-                    }
-                    options.onNext();
-                    break;
-                default:
-                    onError(error, result);
+                        return tmp;
+                    });
                 }
-            });
-            options.modeNext = 0;
-            options.onNext();
+            }
+            return local.db.setTimeoutOnError(onError, null, result);
         };
 
         local.db._DbTable.prototype.crudFindOne = function (options, onError) {
         /*
          * this function will find one dbRow in dbTable with the given options
          */
-            this.crudFindMany({ limit: 1, query: options.query }, onError);
+            return this.crudFindMany({ limit: 1, query: options.query }, onError);
         };
 
         local.db._DbTable.prototype.crudRemoveMany = function (options, onError) {
@@ -2215,36 +1953,20 @@
          */
             var result, self;
             self = this;
-            options = local.db.objectSetDefault({}, options);
-            options = local.db.objectSetDefault(options, { query: {} });
-            local.db.onNext(options, function (error, data) {
-                data = data || [];
-                switch (options.modeNext) {
-                case 1:
-                    result = [];
-                    self.dbIndexCullMany(options.query, options.onNext);
-                    break;
-                case 2:
-                    data.some(function (dbRow) {
-                        if (local.db.queryTest(options.query, dbRow)) {
-                            result.push(dbRow);
-                            self.dbIndexList().forEach(function (dbIndex) {
-                                dbIndex.remove(dbRow);
-                            });
-                            if (options.one) {
-                                return true;
-                            }
-                        }
+            result = [];
+            self.dbIndexCullMany(options.query).some(function (dbRow) {
+                if (local.db.queryTest(options.query, dbRow)) {
+                    result.push(dbRow);
+                    self.dbIndexList().forEach(function (dbIndex) {
+                        dbIndex.remove(dbRow);
                     });
-                    self.dbTablePersist();
-                    options.onNext();
-                    break;
-                default:
-                    onError(error, result);
+                    if (options.one) {
+                        return true;
+                    }
                 }
             });
-            options.modeNext = 0;
-            options.onNext();
+            self.dbTablePersist();
+            return local.db.setTimeoutOnError(onError, null, result);
         };
 
         local.db._DbTable.prototype.crudRemoveOne = function (options, onError) {
@@ -2253,10 +1975,10 @@
          */
             options = local.db.objectSetDefault({}, options);
             options = local.db.objectSetDefault(options, { one: true });
-            this.crudRemoveMany(options, onError);
+            return this.crudRemoveMany(options, onError);
         };
 
-        local.db._DbTable.prototype.dbIndexCreate = function (options) {
+        local.db._DbTable.prototype.dbIndexCreate = function (options, onError) {
         /*
          * this function will create an index for the given dbTable
          */
@@ -2270,23 +1992,23 @@
          *     becomes a TTL index (only works on Date fields, not arrays of Date)
          * @param {Function} onError - callback, signature: error
          */
-            var dbIndex, self;
-            // validate fieldName
+            var dbIndex;
+            // validate options
             local.db.assert(!(options.fieldName &&
                 options.fieldName === '_id' &&
                 options.fieldName === 'createdAt' &&
                 options.fieldName === 'updatedAt'), 'invalid fieldName ' + options.fieldName);
-            self = this;
-            dbIndex = self.dbIndexDict[options.fieldName] = new local.db._DbIndex(options);
+            dbIndex = this.dbIndexDict[options.fieldName] = new local.db._DbIndex(options);
             // With this implementation index creation is not necessary to ensure TTL
             // but we stick with MongoDB's API here
             if (options.expireAfterSeconds !== undefined) {
-                self.dbIndexTtlDict[options.fieldName] = options.expireAfterSeconds;
+                this.dbIndexTtlDict[options.fieldName] = options.expireAfterSeconds;
             }
-            self.dbRowList().forEach(dbIndex.insertOne.bind(dbIndex));
+            this.dbRowList().forEach(dbIndex.insertOne.bind(dbIndex));
             // We may want to force all options to be persisted including defaults,
             // not just the ones passed the index creation function
-            self.dbTablePersist();
+            this.dbTablePersist();
+            return local.db.setTimeoutOnError(onError, null, this);
         };
 
         local.db._DbTable.prototype.dbIndexList = function () {
@@ -2300,7 +2022,7 @@
             });
         };
 
-        local.db._DbTable.prototype.dbIndexRemove = function (options) {
+        local.db._DbTable.prototype.dbIndexRemove = function (options, onError) {
         /*
          * this function will remove the dbIndex from dbTable with the given options
          */
@@ -2311,6 +2033,7 @@
                 options.fieldName === 'updatedAt'), 'invalid fieldName ' + options.fieldName);
             delete this.dbIndexDict[options.fieldName];
             this.dbTablePersist();
+            return local.db.setTimeoutOnError(onError, null, this);
         };
 
         local.db._DbTable.prototype.dbRowList = function () {
@@ -2421,7 +2144,7 @@
             local.db.dbStorageSetItem(self.name, self.dbTableExport(), local.db.onErrorDefault);
         };
 
-        local.db._DbTable.prototype.dbIndexCullMany = function (query, onError) {
+        local.db._DbTable.prototype.dbIndexCullMany = function (query) {
         /*
          * Return the dbRowList for a given query
          * Crude implementation for now, we return the dbRowList given
@@ -2435,12 +2158,12 @@
          * Returned dbRowList will be scanned to find and remove all expired dbRow's
          *
          * @param {Query} query
-         * @param {Function} onError Signature error, dbRowList
          */
-            var self = this,
-                onParallel,
+            var result,
+                self = this,
                 options,
                 usableQueryKeys;
+            result = [];
             options = {};
             local.db.onNext(options, function (error, data) {
                 switch (options.modeNext) {
@@ -2508,12 +2231,7 @@
                 default:
                     // validate no error occurred
                     local.db.assert(!error, error);
-                    var validDocs = [],
-                        dbIndexTtlDictFieldNames = Object.keys(self.dbIndexTtlDict);
-                    onParallel = local.db.onParallel(function (error) {
-                        onError(error, validDocs);
-                    });
-                    onParallel.counter += 1;
+                    var dbIndexTtlDictFieldNames = Object.keys(self.dbIndexTtlDict);
                     data.forEach(function (dbRow) {
                         var valid = true;
                         dbIndexTtlDictFieldNames.forEach(function (ii) {
@@ -2524,17 +2242,16 @@
                             }
                         });
                         if (valid) {
-                            validDocs.push(dbRow);
+                            result.push(dbRow);
                         } else {
-                            onParallel.counter += 1;
-                            self.crudRemoveOne({ query: { _id: dbRow._id } }, onParallel);
+                            self.crudRemoveOne({ query: { _id: dbRow._id } });
                         }
                     });
-                    onParallel();
                 }
             });
             options.modeNext = 0;
             options.onNext();
+            return result;
         };
 
         local.db._DbTable.prototype.crudInsertOrReplaceMany = function (dbRowList, onError) {
@@ -2544,8 +2261,9 @@
          */
             var self;
             self = this;
-            dbRowList = dbRowList.map(self.crudInsertOrReplaceOne.bind(self));
-            local.db.setTimeoutOnError(onError, null, dbRowList);
+            return local.db.setTimeoutOnError(onError, null, dbRowList.map(function (dbRow) {
+                return self.crudInsertOrReplaceOne(dbRow)[0];
+            }));
         };
 
         local.db._DbTable.prototype.crudInsertOrReplaceOne = function (dbRow, onError) {
@@ -2564,7 +2282,7 @@
                     dbRow.forEach(dbRowNormalize);
                 } else if (dbRow && typeof dbRow === 'object') {
                     Object.keys(dbRow).forEach(function (key) {
-                        if (key[0] === '$' || dbRow[key] === null) {
+                        if (key[0] === '$' || key.indexOf('.') >= 0 || dbRow[key] === null) {
                             // remove invalid property
                             delete dbRow[key];
                             return;
@@ -2608,51 +2326,32 @@
                 dbIndex.insertOne(dbRow);
             });
             self.dbTablePersist();
-            local.db.setTimeoutOnError(onError, null, [dbRow]);
-            return dbRow;
+            return local.db.setTimeoutOnError(onError, null, [dbRow]);
         };
 
         local.db._DbTable.prototype.crudUpdateMany = function (options, onError) {
         /*
          * this function will update many dbRow's in dbTable with the given options.query
          */
-            var result, self;
+            var result, self, timeNow;
             self = this;
             options = local.db.objectSetDefault({}, options);
-            local.db.onNext(options, function (error, data) {
-                data = data || [];
-                switch (options.modeNext) {
-                case 1:
-                    result = [];
-                    self.crudFindMany(options, options.onNext);
-                    break;
-                case 2:
-                    result = data;
-                    data = new Date().toISOString();
-                    result.forEach(function (dbRow) {
-                        local.db.objectSetOverride(dbRow, options.$set, Infinity);
-                        // update timestamp
-                        dbRow.updatedAt = data;
-                    });
-                    self.crudInsertOrReplaceMany(result, options.onNext);
-                    break;
-                case 3:
-                    result = data;
-                    options.onNext();
-                    break;
-                default:
-                    onError(error, result);
-                }
+            timeNow = new Date().toISOString();
+            result = self.crudFindMany(options);
+            result.forEach(function (dbRow) {
+                local.db.objectSetOverride(dbRow, options.$set, Infinity);
+                // update timestamp
+                dbRow.updatedAt = timeNow;
             });
-            options.modeNext = 0;
-            options.onNext();
+            result = self.crudInsertOrReplaceMany(result);
+            return local.db.setTimeoutOnError(onError, null, result);
         };
 
         local.db._DbTable.prototype.crudUpdateOne = function (options, onError) {
         /*
          * this function will update one dbRow in dbTable with the given options.query
          */
-            this.crudUpdateMany({
+            return this.crudUpdateMany({
                 $set: options.$set,
                 limit: 1,
                 query: options.query

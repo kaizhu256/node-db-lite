@@ -165,7 +165,7 @@ instruction
                 break;
             case 'dbImportInput1':
                 document.querySelector('#outputTextarea1').value = '';
-                console.log('importing db-database ...');
+                console.log('importing db-lite database ...');
                 reader = new window.FileReader();
                 tmp = document.querySelector('#dbImportInput1').files[0];
                 if (!tmp) {
@@ -173,15 +173,15 @@ instruction
                 }
                 reader.addEventListener('load', function () {
                     local.db.dbImport(reader.result);
-                    console.log('... imported db-database');
+                    console.log('... imported db-lite database');
                 });
                 reader.readAsText(tmp);
                 break;
             case 'dbResetButton1':
                 document.querySelector('#outputTextarea1').value = '';
-                console.log('resetting db-database ...');
+                console.log('resetting db-lite database ...');
                 local.db.dbClear(function () {
-                    console.log('... resetted db-database');
+                    console.log('... resetted db-lite database');
                 });
                 break;
             case 'testRunButton1':
@@ -296,10 +296,10 @@ utility2-comment -->\n\
     <div class="testReportDiv" style="display: none;"></div>\n\
 utility2-comment -->\n\
 \n\
-    <button class="onclick" id="dbResetButton1">reset db-database</button><br>\n\
-    <button class="onclick" id="dbExportButton1">save db-database to file</button><br>\n\
+    <button class="onclick" id="dbResetButton1">reset db-lite database</button><br>\n\
+    <button class="onclick" id="dbExportButton1">export db-lite database -> file</button><br>\n\
     <a download="db.persistence.json" href="" id="dbExportA1"></a>\n\
-    <button class="onclick" id="dbImportButton1">load db-database from file</button><br>\n\
+    <button class="onclick" id="dbImportButton1">import db-lite database <- file</button><br>\n\
     <input class="onchange zeroPixel" type="file" id="dbImportInput1">\n\
     <label>edit or paste script below to\n\
         <a\n\
@@ -308,18 +308,14 @@ utility2-comment -->\n\
         >eval</a>\n\
     </label>\n\
 <textarea id="inputTextarea1">\n\
-window.dbTable1 = window.db_lite.dbTableCreate({ name: "dbTable1" });\n\
-dbTable1.crudInsertOrReplaceMany([{ field1: "hello", field2: "world"}], function () {\n\
-    console.log();\n\
-    console.log(dbTable1.dbTableExport());\n\
+var dbTable1;\n\
+dbTable1 = window.db_lite.dbTableCreate({ name: "dbTable1" });\n\
+dbTable1.dbIndexCreate({ fieldName: "field1" });\n\
+dbTable1.crudInsertOrReplaceOne({\n\
+    field1: "hello",\n\
+    field2: "world"\n\
 });\n\
-\n\
-window.dbTable2 = window.db_lite.dbTableCreate({ name: "dbTable2" });\n\
-dbTable2.dbIndexCreate({ fieldName: "field2" });\n\
-dbTable2.crudInsertOrReplaceMany([{ field1: "hello", field2: "world"}], function () {\n\
-    console.log();\n\
-    console.log(dbTable2.dbTableExport());\n\
-});\n\
+console.log(dbTable1.crudFindMany({ query: { field1: "hello" } }));\n\
 </textarea>\n\
     <button class="onclick" id="dbEvalButton1">eval script</button><br>\n\
     <label>stderr and stdout</label>\n\
