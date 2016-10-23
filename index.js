@@ -378,7 +378,7 @@
          */
             dbTableList.trim().split('\n\n\n\n').forEach(function (dbTable) {
                 local.db.dbTableCreate({
-                    imported: true,
+                    isImported: true,
                     name: JSON.parse((/"name":("[^"].*?")/).exec(dbTable)[1])
                 }).dbTableImport(dbTable);
             });
@@ -688,14 +688,14 @@
             var self;
             self = local.db.dbTableDict[options.name] =
                 local.db.dbTableDict[options.name] || new local.db._DbTable(options);
-            if (self.imported) {
+            if (self.isImported) {
                 return local.db.setTimeoutOnError(onError, null, self);
             }
             // import table from persistent-storage
             local.db.dbStorageGetItem(self.name, function (error, data) {
                 // validate no error occurred
                 local.db.assert(!error, error);
-                if (!self.imported) {
+                if (!self.isImported) {
                     self.dbTableImport(data);
                 }
                 local.db.setTimeoutOnError(onError, null, self);
@@ -1098,6 +1098,258 @@
          * Copying
          * Querying, update
          */
+
+        local.db._DbIndex = function (options) {
+        /*
+         * Create a new index
+         * All methods on an index guarantee that either
+         * the whole operation was successful and the index changed
+         * or the operation was unsuccessful and an error is thrown
+         * while the index is unchanged
+         * @param {String} options.fieldName On which field should the index apply
+         * (can use dot notation to index on sub fields)
+         * @param {Boolean} options.unique Optional,
+         * enforce a unique constraint (default: false)
+         * (we can have dbRow's for which fieldName is undefined) (default: false)
+         */
+            this.fieldName = options.fieldName;
+            this.isInteger = options.isInteger;
+            this.isUnique = options.isUnique;
+            // init dbTree
+            this.dbTree = new local.db._DbTree({ isUnique: this.isUnique });
+        };
+
+        local.db._DbIndex.prototype.insertOrReplaceOne = function (dbRow) {
+        /*
+         * Insert a new dbRow in the index
+         * If an array is passed, we insert all its elements
+         * (if one insertion fails the index is not modified)
+         * O(log(n))
+         */
+            var dbTree, keyValue, pathList, self;
+            self = this;
+            keyValue = local.db.dbRowGetItem(dbRow, self.fieldName);
+            // auto-create unique keyValue
+            if (self.isUnique && !keyValue && keyValue !== 0) {
+                do {
+                    keyValue = self.isInteger
+                        ? Math.floor(Math.random() * 0x20000000000000)
+                        : ('a' +
+                            Math.random().toString(36).slice(2) +
+                            Math.random().toString(36).slice(2)).slice(0, 16);
+                } while (self.getMatching(keyValue).length);
+                local.db.dbRowSetItem(dbRow, self.fieldName, keyValue);
+            }
+            // sparse index - ignore null keyValue
+            if (local.db.isNullOrUndefined(keyValue)) {
+                return;
+            }
+            dbTree = self.dbTree;
+            pathList = [];
+            // Empty tree, insert as root
+            if (!self.dbTree.hasOwnProperty('keyValue')) {
+                self.dbTree.keyValue = keyValue;
+                self.dbTree.dbRowList.push(dbRow);
+                self.dbTree.height = 1;
+                return;
+            }
+            // Insert new leaf at the right place
+            while (true) {
+                // Same keyValue: no change in the tree structure
+                if (local.db.sortCompare(dbTree.keyValue, keyValue) === 0) {
+                    // if isUnique, then replace existing dbRow
+                    if (dbTree.isUnique) {
+                        // update timestamp
+                        dbRow.createdAt = dbTree.dbRowList[0].createdAt;
+                        dbTree.dbRowList[0] = dbRow;
+                    // else insert new dbRow
+                    } else {
+                        dbTree.dbRowList.push(dbRow);
+                    }
+                    return;
+                }
+                pathList.push(dbTree);
+                if (local.db.sortCompare(keyValue, dbTree.keyValue) < 0) {
+                    if (!dbTree.left) {
+                        dbTree.left = new local.db._DbTree({
+                            keyValue: keyValue,
+                            parent: dbTree,
+                            isUnique: dbTree.isUnique,
+                            dbRow: dbRow
+                        });
+                        pathList.push(dbTree.left);
+                        break;
+                    }
+                    dbTree = dbTree.left;
+                } else {
+                    if (!dbTree.right) {
+                        dbTree.right = new local.db._DbTree({
+                            keyValue: keyValue,
+                            parent: dbTree,
+                            isUnique: dbTree.isUnique,
+                            dbRow: dbRow
+                        });
+                        pathList.push(dbTree.right);
+                        break;
+                    }
+                    dbTree = dbTree.right;
+                }
+            }
+            self.dbTree = self.dbTree.rebalanceAlongPath(pathList);
+        };
+
+        local.db._DbIndex.prototype.removeOne = function (dbRow) {
+        /*
+         * Remove a dbRow from the index
+         * If an array is passed, we remove all its elements
+         * The remove operation is safe with regards to the 'unique' constraint
+         * O(log(n))
+         */
+            var newData, dbTree, keyValue, pathList, replaceWith, self;
+            self = this;
+            keyValue = local.db.dbRowGetItem(dbRow, self.fieldName);
+            // sparse index - ignore null keyValue
+            if (local.db.isNullOrUndefined(keyValue)) {
+                return;
+            }
+            newData = [];
+            dbTree = self.dbTree;
+            pathList = [];
+            // Empty tree
+            if (!self.dbTree.hasOwnProperty('keyValue')) {
+                return;
+            }
+            // Either no match is found and the function will return from within the loop
+            // Or a match is found and pathList will contain the path
+            // from the root to the node to delete after the loop
+            while (local.db.sortCompare(keyValue, dbTree.keyValue) !== 0) {
+                pathList.push(dbTree);
+                if (local.db.sortCompare(keyValue, dbTree.keyValue) < 0) {
+                    if (dbTree.left) {
+                        dbTree = dbTree.left;
+                    // keyValue not found, no modification
+                    } else {
+                        return;
+                    }
+                } else {
+                    // local.db.sortCompare(keyValue, dbTree.keyValue) is > 0
+                    if (dbTree.right) {
+                        dbTree = dbTree.right;
+                    // keyValue not found, no modification
+                    } else {
+                        return;
+                    }
+                }
+            }
+            // Delete only a dbRow (no tree modification)
+            if (dbTree.dbRowList.length > 1 && dbRow) {
+                dbTree.dbRowList.forEach(function (d) {
+                    if (d !== dbRow) {
+                        newData.push(d);
+                    }
+                });
+                dbTree.dbRowList = newData;
+                return;
+            }
+            // Delete a whole node
+            // Leaf
+            if (!dbTree.left && !dbTree.right) {
+                // This leaf is also the root
+                if (dbTree === self.dbTree) {
+                    delete dbTree.keyValue;
+                    dbTree.dbRowList = [];
+                    delete dbTree.height;
+                    return;
+                }
+                if (dbTree.parent.left === dbTree) {
+                    dbTree.parent.left = null;
+                } else {
+                    dbTree.parent.right = null;
+                }
+                self.dbTree = self.dbTree.rebalanceAlongPath(pathList);
+                return;
+            }
+            // Node with only one child
+            if (!dbTree.left || !dbTree.right) {
+                replaceWith = dbTree.left || dbTree.right;
+                // This node is also the root
+                if (dbTree === self.dbTree) {
+                    replaceWith.parent = null;
+                    // height of replaceWith is necessarily 1
+                    // because the tree was balanced before deletion
+                    self.dbTree = replaceWith;
+                    return;
+                }
+                if (dbTree.parent.left === dbTree) {
+                    dbTree.parent.left = replaceWith;
+                    replaceWith.parent = dbTree.parent;
+                } else {
+                    dbTree.parent.right = replaceWith;
+                    replaceWith.parent = dbTree.parent;
+                }
+                self.dbTree = self.dbTree.rebalanceAlongPath(pathList);
+                return;
+            }
+            // Node with two children
+            // Use the in-order predecessor (no need to randomize since we actively rebalance)
+            pathList.push(dbTree);
+            replaceWith = dbTree.left;
+            // Special case: the in-order predecessor is right below the node to delete
+            if (!replaceWith.right) {
+                dbTree.keyValue = replaceWith.keyValue;
+                dbTree.dbRowList = replaceWith.dbRowList;
+                dbTree.left = replaceWith.left;
+                if (replaceWith.left) {
+                    replaceWith.left.parent = dbTree;
+                }
+                self.dbTree = self.dbTree.rebalanceAlongPath(pathList);
+                return;
+            }
+            // After this loop, replaceWith is the right-most leaf in the left subtree
+            // and pathList the path from the root (inclusive) to replaceWith (exclusive)
+            while (true) {
+                if (replaceWith.right) {
+                    pathList.push(replaceWith);
+                    replaceWith = replaceWith.right;
+                } else {
+                    break;
+                }
+            }
+            dbTree.keyValue = replaceWith.keyValue;
+            dbTree.dbRowList = replaceWith.dbRowList;
+            replaceWith.parent.right = replaceWith.left;
+            if (replaceWith.left) {
+                replaceWith.left.parent = replaceWith.parent;
+            }
+            self.dbTree = self.dbTree.rebalanceAlongPath(pathList);
+        };
+
+        local.db._DbIndex.prototype.getMatching = function (keyValue) {
+        /*
+         * Get all dbRow's in index whose keyValue match value (if it is a Thing)
+         * or one of the elements of value (if it is an array of Things)
+         * @param {Thing} value Value to match the keyValue against
+         * @return {Array of dbRow's}
+         */
+            var self, _res = {}, res = [];
+            self = this;
+            if (!Array.isArray(keyValue)) {
+                return self.dbTree.search(keyValue);
+            }
+            keyValue.forEach(function (keyValue) {
+                self.getMatching(keyValue).forEach(function (dbRow) {
+                    _res[dbRow._id] = dbRow;
+                });
+            });
+
+            Object.keys(_res).forEach(function (_id) {
+                res.push(_res[_id]);
+            });
+
+            return res;
+        };
+
+
         local.db._DbTree = function (options) {
         /*
          * Constructor of the internal DbTree (AvlTree implementation)
@@ -1109,11 +1361,11 @@
          * on the key or not
          * @param {Value}    options.dbRow Initialize this DbTree's dbRowList with [value]
          */
-            if (options.hasOwnProperty('key')) {
-                this.key = options.key;
+            if (options.hasOwnProperty('keyValue')) {
+                this.keyValue = options.keyValue;
             }
             this.parent = options.parent;
-            this.unique = options.unique;
+            this.isUnique = options.isUnique;
             this.dbRowList = options.hasOwnProperty('dbRow')
                 ? [options.dbRow]
                 : [];
@@ -1122,22 +1374,26 @@
         // Methods used to actually work on the tree
         // ============================================
 
-        local.db._DbTree.prototype.dbRowListSome = function (fnc) {
+        local.db._DbIndex.prototype.dbRowListForEach = function (fnc) {
         /*
-         * this function will recursively traverse the tree in sorted-order,
-         * and call dbRowList.some(fnc)
+         * this function will recursively traverse dbIndex in sorted-order,
+         * and call dbRowList.forEach(fnc)
          */
-            if ((this.left && this.left.dbRowListSome(fnc)) ||
-                    this.dbRowList.some(fnc) ||
-                    (this.right && this.right.dbRowListSome(fnc))) {
-                return true;
-            }
-            return false;
+            var recurse;
+            recurse = function (dbTree) {
+                if (!dbTree) {
+                    return;
+                }
+                recurse(dbTree.left);
+                dbTree.dbRowList.forEach(fnc);
+                recurse(dbTree.right);
+            };
+            recurse(this.dbTree);
         };
 
-        local.db._DbTree.prototype.dbTreeSome = function (fnc) {
+        local.db._DbIndex.prototype.dbTreeSome = function (fnc) {
         /*
-         * this function will recursively traverse some of the tree in sorted-order,
+         * this function will recursively traverse some of the dbTree in sorted-order,
          * and call fnc(dbTree, depth, ii)
          */
             var fnc2, ii, recurse;
@@ -1154,205 +1410,24 @@
                 }
                 return false;
             };
-            return recurse(this, 1);
+            return recurse(this.dbTree, 1);
         };
 
-        local.db._DbTree.prototype.delete = function (key, dbRow) {
+        local.db._DbIndex.prototype.count = function () {
         /*
-         * Delete a key or just a dbRow and return the new root of the tree
-         * @param {Key} key
-         * @param {dbRow} dbRow Optional. If not set, the whole key is deleted.
-         * If set, only this dbRow is deleted
+         * this function will count the number of dbRow's in dbIndex
          */
-            var newData, nodeCurrent, pathList, replaceWith;
-            newData = [];
-            nodeCurrent = this;
-            pathList = [];
-            // Empty tree
-            if (!this.hasOwnProperty('key')) {
-                return this;
-            }
-            // Either no match is found and the function will return from within the loop
-            // Or a match is found and pathList will contain the path
-            // from the root to the node to delete after the loop
-            while (local.db.sortCompare(key, nodeCurrent.key) !== 0) {
-                pathList.push(nodeCurrent);
-                if (local.db.sortCompare(key, nodeCurrent.key) < 0) {
-                    if (nodeCurrent.left) {
-                        nodeCurrent = nodeCurrent.left;
-                    } else {
-                        return this; // Key not found, no modification
-                    }
-                } else {
-                    // local.db.sortCompare(key, nodeCurrent.key) is > 0
-                    if (nodeCurrent.right) {
-                        nodeCurrent = nodeCurrent.right;
-                    } else {
-                        return this; // Key not found, no modification
-                    }
+            var recurse, result;
+            recurse = function (dbTree) {
+                if (!dbTree) {
+                    return;
                 }
-            }
-            // Delete only a dbRow (no tree modification)
-            if (nodeCurrent.dbRowList.length > 1 && dbRow) {
-                nodeCurrent.dbRowList.forEach(function (d) {
-                    if (d !== dbRow) {
-                        newData.push(d);
-                    }
-                });
-                nodeCurrent.dbRowList = newData;
-                return this;
-            }
-            // Delete a whole node
-            // Leaf
-            if (!nodeCurrent.left && !nodeCurrent.right) {
-                if (nodeCurrent === this) { // This leaf is also the root
-                    delete nodeCurrent.key;
-                    nodeCurrent.dbRowList = [];
-                    delete nodeCurrent.height;
-                    return this;
-                }
-                if (nodeCurrent.parent.left === nodeCurrent) {
-                    nodeCurrent.parent.left = null;
-                } else {
-                    nodeCurrent.parent.right = null;
-                }
-                return this.rebalanceAlongPath(pathList);
-            }
-            // Node with only one child
-            if (!nodeCurrent.left || !nodeCurrent.right) {
-                replaceWith = nodeCurrent.left || nodeCurrent.right;
-                // This node is also the root
-                if (nodeCurrent === this) {
-                    replaceWith.parent = null;
-                    // height of replaceWith is necessarily 1
-                    // because the tree was balanced before deletion
-                    return replaceWith;
-                }
-                if (nodeCurrent.parent.left === nodeCurrent) {
-                    nodeCurrent.parent.left = replaceWith;
-                    replaceWith.parent = nodeCurrent.parent;
-                } else {
-                    nodeCurrent.parent.right = replaceWith;
-                    replaceWith.parent = nodeCurrent.parent;
-                }
-                return this.rebalanceAlongPath(pathList);
-            }
-            // Node with two children
-            // Use the in-order predecessor (no need to randomize since we actively rebalance)
-            pathList.push(nodeCurrent);
-            replaceWith = nodeCurrent.left;
-            // Special case: the in-order predecessor is right below the node to delete
-            if (!replaceWith.right) {
-                nodeCurrent.key = replaceWith.key;
-                nodeCurrent.dbRowList = replaceWith.dbRowList;
-                nodeCurrent.left = replaceWith.left;
-                if (replaceWith.left) {
-                    replaceWith.left.parent = nodeCurrent;
-                }
-                return this.rebalanceAlongPath(pathList);
-            }
-            // After this loop, replaceWith is the right-most leaf in the left subtree
-            // and pathList the path from the root (inclusive) to replaceWith (exclusive)
-            while (true) {
-                if (replaceWith.right) {
-                    pathList.push(replaceWith);
-                    replaceWith = replaceWith.right;
-                } else {
-                    break;
-                }
-            }
-            nodeCurrent.key = replaceWith.key;
-            nodeCurrent.dbRowList = replaceWith.dbRowList;
-            replaceWith.parent.right = replaceWith.left;
-            if (replaceWith.left) {
-                replaceWith.left.parent = replaceWith.parent;
-            }
-            return this.rebalanceAlongPath(pathList);
-        };
-
-        local.db._DbTree.prototype.insert = function (key, dbRow) {
-        /*
-         * Insert a key, dbRow pair in the tree while maintaining the DbTree height constraint
-         * Return a pointer to the root node, which may have changed
-         */
-            var nodeCurrent, pathList;
-            // validate dbRow
-            local.db.assert(dbRow, dbRow);
-            nodeCurrent = this;
-            pathList = [];
-            // coerce undefined to null
-            if (key === undefined) {
-                key = null;
-            }
-            // Empty tree, insert as root
-            if (!this.hasOwnProperty('key')) {
-                this.key = key;
-                this.dbRowList.push(dbRow);
-                this.height = 1;
-                return this;
-            }
-            // Insert new leaf at the right place
-            while (true) {
-                // Same key: no change in the tree structure
-                if (local.db.sortCompare(nodeCurrent.key, key) === 0) {
-                    local.db.assert(
-                        !nodeCurrent.unique,
-                        'insert - unique-key ' + key + ' already exists'
-                    );
-                    nodeCurrent.dbRowList.push(dbRow);
-                    return this;
-                }
-                pathList.push(nodeCurrent);
-                if (local.db.sortCompare(key, nodeCurrent.key) < 0) {
-                    if (!nodeCurrent.left) {
-                        nodeCurrent.left = new local.db._DbTree({
-                            key: key,
-                            parent: nodeCurrent,
-                            unique: nodeCurrent.unique,
-                            dbRow: dbRow
-                        });
-                        pathList.push(nodeCurrent.left);
-                        break;
-                    }
-                    nodeCurrent = nodeCurrent.left;
-                } else {
-                    if (!nodeCurrent.right) {
-                        nodeCurrent.right = new local.db._DbTree({
-                            key: key,
-                            parent: nodeCurrent,
-                            unique: nodeCurrent.unique,
-                            dbRow: dbRow
-                        });
-                        pathList.push(nodeCurrent.right);
-                        break;
-                    }
-                    nodeCurrent = nodeCurrent.right;
-                }
-            }
-            return this.rebalanceAlongPath(pathList);
-        };
-
-        local.db._DbTree.prototype.length = function () {
-        /*
-         * this function will return the length of dbTree
-         */
-            var result;
+                result += dbTree.dbRowList.length;
+                recurse(dbTree.left);
+                recurse(dbTree.right);
+            };
             result = 0;
-            this.dbRowListSome(function () {
-                result += 1;
-            });
-            return result;
-        };
-
-        local.db._DbTree.prototype.list = function () {
-        /*
-         * this function will return the list of all dbRows in dbTree
-         */
-            var result;
-            result = [];
-            this.dbRowListSome(function (dbRow) {
-                result.push(dbRow);
-            });
+            recurse(this.dbTree);
             return result;
         };
 
@@ -1423,57 +1498,66 @@
             return pp;
         };
 
-        local.db._DbTree.prototype.print = function (depth) {
+        local.db._DbIndex.prototype.print = function () {
         /*
          * this function will print the dbTree
          */
-            depth = depth || '';
-            console.log(depth + '* ' + JSON.stringify(this.key));
-            [this.left, this.right].forEach(function (self) {
-                if (self) {
-                    self.print(depth + '    ');
+            var ii, recurse;
+            recurse = function (dbTree, depth) {
+                if (!dbTree) {
+                    return;
                 }
-            });
+                ii += 1;
+                depth = depth || '';
+                console.log('[' + ii + ',' + (depth.length / 4) + '] ' + depth +
+                    JSON.stringify(dbTree.keyValue));
+                recurse(dbTree.left, depth + '*   ');
+                recurse(dbTree.right, depth + '*   ');
+            };
+            ii = -1;
+            recurse(this.dbTree);
         };
 
-        local.db._DbTree.prototype.search = function (key) {
+        local.db._DbTree.prototype.search = function (keyValue) {
         /*
-         * Search for all dbRowList corresponding to a key
+         * Search for all dbRowList corresponding to a keyValue
          */
-            if (!this.hasOwnProperty('key')) {
+            if (!this.hasOwnProperty('keyValue')) {
                 return [];
             }
 
-            if (local.db.sortCompare(this.key, key) === 0) {
+            if (local.db.sortCompare(this.keyValue, keyValue) === 0) {
                 return this.dbRowList;
             }
 
-            if (local.db.sortCompare(key, this.key) < 0) {
+            if (local.db.sortCompare(keyValue, this.keyValue) < 0) {
                 if (this.left) {
-                    return this.left.search(key);
+                    return this.left.search(keyValue);
                 }
                 return [];
             }
             if (this.right) {
-                return this.right.search(key);
+                return this.right.search(keyValue);
             }
             return [];
         };
 
-        local.db._DbTree.prototype.validate = function () {
+        local.db._DbIndex.prototype.validate = function (options) {
         /*
          * this function will validate dbTree
          */
-            var height, keyValue, nn, self, tmp;
-            self = this;
+            var height, keyValue, nn, tmp;
+            if (typeof options.count === 'number') {
+                local.utility2.assert(options.count === this.count());
+            }
             keyValue = false;
             height = -1;
             nn = 0;
-            self.dbTreeSome(function (dbTree, depth, ii) {
+            this.dbTreeSome(function (dbTree, depth, ii) {
                 // validate sort
                 local.db.assert(
-                    local.db.sortCompare(keyValue, dbTree.key) <= 0,
-                    [keyValue, dbTree.key]
+                    local.db.sortCompare(keyValue, dbTree.keyValue) <= 0,
+                    [keyValue, dbTree.keyValue]
                 );
                 // validate nn
                 nn += 1;
@@ -1624,7 +1708,7 @@
             // Empty tree
             var ii, rootCurrent, rotated;
             rootCurrent = this;
-            if (!this.hasOwnProperty('key')) {
+            if (!this.hasOwnProperty('keyValue')) {
                 delete this.height;
                 return this;
             }
@@ -1669,7 +1753,7 @@
             return rootCurrent;
         };
 
-        function projectForUnique(elt) {
+        local.projectForUnique = function (elt) {
         /*
          * Type-aware projection
          */
@@ -1690,132 +1774,13 @@
             }
 
             return elt; // Arrays and objects, will check for pointer equality
-        }
-        local.db._DbIndex = function (options) {
-        /*
-         * Create a new index
-         * All methods on an index guarantee that either
-         * the whole operation was successful and the index changed
-         * or the operation was unsuccessful and an error is thrown
-         * while the index is unchanged
-         * @param {String} options.fieldName On which field should the index apply
-         * (can use dot notation to index on sub fields)
-         * @param {Boolean} options.unique Optional,
-         * enforce a unique constraint (default: false)
-         * (we can have dbRow's for which fieldName is undefined) (default: false)
-         */
-            this.fieldName = options.fieldName;
-            this.integer = options.integer;
-            this.unique = options.unique;
-            // init dbTree
-            this.dbTree = new local.db._DbTree({ unique: this.unique });
-        };
-
-        local.db._DbIndex.prototype.insertOne = function (dbRow) {
-        /*
-         * Insert a new dbRow in the index
-         * If an array is passed, we insert all its elements
-         * (if one insertion fails the index is not modified)
-         * O(log(n))
-         */
-            var key, keys, ii, self;
-            self = this;
-
-            key = local.db.dbRowGetItem(dbRow, self.fieldName);
-
-            // auto-create keyUnique
-            if (self.unique && !(key === 0 || key)) {
-                do {
-                    key = self.integer
-                        ? Math.floor(Math.random() * 0x20000000000000)
-                        : ('a' +
-                            Math.random().toString(36).slice(2) +
-                            Math.random().toString(36).slice(2)).slice(0, 16);
-                } while (self.getMatching(key).length);
-                local.db.dbRowSetItem(dbRow, self.fieldName, key);
-            }
-
-            // We don't index dbRow's that don't contain the field if the index is sparse
-            if (local.db.isNullOrUndefined(key)) {
-                return;
-            }
-
-            if (!Array.isArray(key)) {
-                self.dbTree = self.dbTree.insert(key, dbRow);
-            } else {
-                // If an insert fails due to a unique constraint,
-                // roll back all inserts before it
-                keys = local.db.listUnique(key).map(projectForUnique);
-
-                for (ii = 0; ii < keys.length; ii += 1) {
-                    self.dbTree = self.dbTree.insert(keys[ii], dbRow);
-                }
-            }
-        };
-
-        local.db._DbIndex.prototype.remove = function (dbRow) {
-        /*
-         * Remove a dbRow from the index
-         * If an array is passed, we remove all its elements
-         * The remove operation is safe with regards to the 'unique' constraint
-         * O(log(n))
-         */
-            var key, self;
-            self = this;
-
-            if (Array.isArray(dbRow)) {
-                dbRow.forEach(function (d) {
-                    self.remove(d);
-                });
-                return;
-            }
-
-            key = local.db.dbRowGetItem(dbRow, self.fieldName);
-
-            // We don't index dbRow's that don't contain the field if the index is sparse
-            if (local.db.isNullOrUndefined(key)) {
-                return;
-            }
-
-            if (!Array.isArray(key)) {
-                self.dbTree = self.dbTree.delete(key, dbRow);
-            } else {
-                local.db.listUnique(key).map(projectForUnique).forEach(function (_key) {
-                    self.dbTree = self.dbTree.delete(_key, dbRow);
-                });
-            }
-        };
-
-        local.db._DbIndex.prototype.getMatching = function (value) {
-        /*
-         * Get all dbRow's in index whose key match value (if it is a Thing)
-         * or one of the elements of value (if it is an array of Things)
-         * @param {Thing} value Value to match the key against
-         * @return {Array of dbRow's}
-         */
-            var self, _res = {}, res = [];
-            self = this;
-            if (!Array.isArray(value)) {
-                return self.dbTree.search(value);
-            }
-            value.forEach(function (value) {
-                self.getMatching(value).forEach(function (dbRow) {
-                    _res[dbRow._id] = dbRow;
-                });
-            });
-
-            Object.keys(_res).forEach(function (_id) {
-                res.push(_res[_id]);
-            });
-
-            return res;
         };
 
         local.db._DbTable = function (options) {
         /*
          * this function will create a dbTable
          */
-            this.imported = this.imported || options.imported;
+            this.isImported = this.isImported || options.isImported;
             this.name = options.name;
             // validate name
             local.db.assert(
@@ -1831,7 +1796,7 @@
             local.db.dbTableDict[this.name] = this;
             // init dbIndexDict
             this.dbIndexDict = {
-                _id: new local.db._DbIndex({ fieldName: '_id', unique: true }),
+                _id: new local.db._DbIndex({ fieldName: '_id', isUnique: true }),
                 createdAt: new local.db._DbIndex({ fieldName: 'createdAt' }),
                 updatedAt: new local.db._DbIndex({ fieldName: 'updatedAt' })
             };
@@ -1958,7 +1923,7 @@
                 if (local.db.queryTest(options.query, dbRow)) {
                     result.push(dbRow);
                     self.dbIndexList().forEach(function (dbIndex) {
-                        dbIndex.remove(dbRow);
+                        dbIndex.removeOne(dbRow);
                     });
                     if (options.one) {
                         return true;
@@ -1987,7 +1952,7 @@
          * For now this function is synchronous, we need to test how much time it takes
          * We use an async API for consistency with the rest of the code
          * @param {String} options.fieldName
-         * @param {Boolean} options.unique
+         * @param {Boolean} options.isUnique
          * @param {Number} options.expireAfterSeconds - Optional, if set this index
          *     becomes a TTL index (only works on Date fields, not arrays of Date)
          * @param {Function} onError - callback, signature: error
@@ -2004,7 +1969,7 @@
             if (options.expireAfterSeconds !== undefined) {
                 this.dbIndexTtlDict[options.fieldName] = options.expireAfterSeconds;
             }
-            this.dbRowList().forEach(dbIndex.insertOne.bind(dbIndex));
+            this.dbIndexDict._id.dbRowListForEach(dbIndex.insertOrReplaceOne.bind(dbIndex));
             // We may want to force all options to be persisted including defaults,
             // not just the ones passed the index creation function
             this.dbTablePersist();
@@ -2036,15 +2001,6 @@
             return local.db.setTimeoutOnError(onError, null, this);
         };
 
-        local.db._DbTable.prototype.dbRowList = function () {
-        /*
-         * this function will return the list of all dbRow's in dbTable
-         */
-            return this.dbIndexDict._id
-                ? this.dbIndexDict._id.dbTree.list()
-                : [];
-        };
-
         local.db._DbTable.prototype.dbTableClear = function () {
         /*
          * this function will clear dbTable
@@ -2052,9 +2008,9 @@
             var self;
             self = this;
             delete self.timerDbTableSave;
-            self.imported = true;
+            self.isImported = true;
             self.dbIndexList().forEach(function (dbIndex) {
-                dbIndex.dbTree = new local.db._DbTree({ unique: dbIndex.unique });
+                dbIndex.dbTree = new local.db._DbTree({ isUnique: dbIndex.isUnique });
             });
             // clear persistence
             local.db.dbStorageRemoveItem(self.name, local.db.onErrorDefault);
@@ -2078,12 +2034,12 @@
                 }
                 data += JSON.stringify({
                     fieldName: dbIndex.fieldName,
-                    integer: dbIndex.integer,
-                    unique: dbIndex.unique
+                    isInteger: dbIndex.isInteger,
+                    isUnique: dbIndex.isUnique
                 }) + '\n';
             });
             data += '#\n';
-            self.dbRowList().forEach(function (dbRow) {
+            self.dbIndexDict._id.dbRowListForEach(function (dbRow) {
                 data += JSON.stringify(dbRow) + '\n';
             });
             data += '####';
@@ -2096,7 +2052,7 @@
          */
             var self;
             self = this;
-            self.imported = true;
+            self.isImported = true;
             if (!data) {
                 return;
             }
@@ -2117,7 +2073,7 @@
                 });
             data[1].forEach(function (dbIndex) {
                 dbIndex = self.dbIndexDict[dbIndex.fieldName] = new local.db._DbIndex(dbIndex);
-                self.dbRowList().forEach(dbIndex.insertOne.bind(dbIndex));
+                self.dbIndexDict._id.dbRowListForEach(dbIndex.insertOrReplaceOne.bind(dbIndex));
             });
             // insert data
             self.crudInsertOrReplaceMany(data[2], local.db.onErrorDefault);
@@ -2226,7 +2182,11 @@
                     }
 
                     // By default, return all the DB data
-                    return options.onNext(null, self.dbRowList());
+                    data = [];
+                    self.dbIndexDict._id.dbRowListForEach(function (dbRow) {
+                        data.push(dbRow);
+                    });
+                    return options.onNext(null, data);
                 // STEP 2: remove all expired dbRow's
                 default:
                     // validate no error occurred
@@ -2270,7 +2230,7 @@
         /*
          * this function will insert or replace the dbRow in dbTable
          */
-            var dbRowNormalize, self, value;
+            var dbRowNormalize, self, timeNow;
             self = this;
             // normalize dbRow
             dbRowNormalize = function (dbRow) {
@@ -2295,35 +2255,12 @@
             };
             dbRow = local.db.jsonCopy(dbRowNormalize(local.db.jsonCopy(dbRow)));
             // update timestamp
-            value = new Date().toISOString();
-            dbRow.createdAt = dbRow.createdAt || value;
-            dbRow.updatedAt = value;
-            self.dbIndexList().forEach(function (dbIndex) {
-                if (!dbIndex.unique) {
-                    return;
-                }
-                value = local.db.dbRowGetItem(dbRow, dbIndex.fieldName);
-                if (value === null) {
-                    return;
-                }
-                // remove existing dbRow2 from dbIndex with keyUnique conflict
-                dbIndex.dbTree.search(value).forEach(function (dbRow2) {
-                    // update timestamp
-                    if (dbRow2.createdAt && dbRow2.createdAt < dbRow.createdAt) {
-                        dbRow.createdAt = dbRow2.createdAt;
-                    }
-                    self.dbIndexList().forEach(function (dbIndex) {
-                        value = local.db.dbRowGetItem(dbRow2, dbIndex.fieldName);
-                        // remove existing dbRow2
-                        if (value !== null) {
-                            dbIndex.dbTree = dbIndex.dbTree.delete(value);
-                        }
-                    });
-                });
-            });
+            timeNow = new Date().toISOString();
+            dbRow.createdAt = dbRow.createdAt || timeNow;
+            dbRow.updatedAt = timeNow;
             // insert dbRow into dbIndex
             self.dbIndexList().forEach(function (dbIndex) {
-                dbIndex.insertOne(dbRow);
+                dbIndex.insertOrReplaceOne(dbRow);
             });
             self.dbTablePersist();
             return local.db.setTimeoutOnError(onError, null, [dbRow]);

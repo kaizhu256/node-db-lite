@@ -325,55 +325,56 @@
             onError();
         };
 
-        local.testCase_dbTree_default = function (options, onError) {
+        local.testCase_dbIndex_default = function (options, onError) {
         /*
-         * this function will test dbTree's default handling-behavior
+         * this function will test dbIndex's default handling-behavior
          */
             options = {};
-            options.dbTree = new local.db._DbTree({});
+            options.count = 0;
+            options.dbIndex = new local.db._DbIndex({ fieldName: 'field1' });
+            options.dbTree = options.dbIndex.dbTree;
             // test null-case delete handling-behavior
-            local.utility2.assert(
-                options.dbTree.delete(null, {}) === options.dbTree
-            );
+            options.dbIndex.removeOne(null, {});
             // test null-case search handling-behavior
-            local.utility2.assertJsonEqual(
-                options.dbTree.search(null),
-                []
-            );
+            local.utility2.assertJsonEqual(options.dbTree.search(null), []);
             // test insert-null-item handling-behavior
-            options.dbTree = options.dbTree.insert(null, { key: null });
+            options.dbIndex.insertOrReplaceOne({ field1: null });
+            options.dbTree = options.dbIndex.dbTree;
             // test insert-undefined-item handling-behavior
-            options.dbTree = options.dbTree.insert(undefined, { key: undefined });
+            options.dbIndex.insertOrReplaceOne({ field1: undefined });
+            options.dbTree = options.dbIndex.dbTree;
             // test insert handling-behavior
             for (options.ii = 0; options.ii < 0x100; options.ii += 1) {
-                options.dbRow = { key: Math.random() };
-                options.dbTree = options.dbTree.insert(options.dbRow.key, options.dbRow);
+                options.dbRow = { field1: Math.random() };
+                options.dbIndex.insertOrReplaceOne(options.dbRow);
+                options.count += 1;
+                options.dbTree = options.dbIndex.dbTree;
                 // test print handling-behavior
-                if (options.ii === 0x8) {
-                    options.dbTree.print();
+                if (options.ii === 0x10) {
+                    options.dbIndex.print();
                 }
-                options.dbTree.validate();
+                options.dbIndex.validate({});
             }
-            // validate null-item
-            options.data = options.dbTree.list();
-            local.utility2.assertJsonEqual(options.data[options.data.length - 2], {
-                key: null
+            options.data = [];
+            options.dbIndex.dbRowListForEach(function (dbRow) {
+                options.data.push(dbRow);
             });
-            // validate undefined-item
-            local.utility2.assertJsonEqual(options.data[options.data.length - 1], {});
-            options.length = options.dbTree.length();
+            //!! // validate null-item
+            //!! local.utility2.assertJsonEqual(options.data[options.data.length - 2], {
+                //!! key: null
+            //!! });
+            //!! // validate undefined-item
+            //!! local.utility2.assertJsonEqual(options.data[options.data.length - 1], {});
             local.utility2.listShuffle(options.data).forEach(function (dbRow) {
                 // test search handling-behavior
-                local.utility2.assert(options.dbTree.search(dbRow.key).length >= 1, dbRow);
+                local.utility2.assert(options.dbTree.search(dbRow.field1).length >= 1, dbRow);
                 // test delete handling-behavior
-                options.dbTree = options.dbTree.delete(dbRow.key, dbRow);
+                options.dbIndex.removeOne(dbRow.field1, dbRow);
+                options.dbTree = options.dbIndex.dbTree;
+                options.count -= 1;
                 // test re-delete handling-behavior
-                local.utility2.assert(
-                    options.dbTree.delete(dbRow.key || 'undefined', dbRow) === options.dbTree
-                );
-                options.length -= 1;
-                local.utility2.assertJsonEqual(options.dbTree.length(), options.length);
-                options.dbTree.validate();
+                options.dbIndex.removeOne(dbRow.field1, dbRow);
+                options.dbIndex.validate(options);
             });
             onError();
         };
@@ -2170,8 +2171,7 @@
             dbIndexCreateList: [{
                 expireAfterSeconds: 30,
                 fieldName: 'field1',
-                sparse: true,
-                unique: true
+                isUnique: true
             }],
             dbRowList: [{
                 id: 'testCase_dbTableCrudCountMany_default'
