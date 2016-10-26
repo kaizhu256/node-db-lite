@@ -609,7 +609,7 @@
                 local.db.dbTableDict[key].dbTableClear();
             });
             // clear persistence
-            local.db.dbStorageClear(onError);
+            local.db.storageClear(onError);
         };
 
         local.db.dbExport = function (onError) {
@@ -696,21 +696,21 @@
             dbRow[key[key.length - 1]] = value;
         };
 
-        local.db.dbStorageClear = function (onError) {
+        local.db.storageClear = function (onError) {
         /*
-         * this function will clear dbStorage
+         * this function will clear storage
          */
-            local.db.dbStorageDefer({ action: 'clear' }, onError);
+            local.db.storageDefer({ action: 'clear' }, onError);
         };
 
-        local.db.dbStorageDefer = function (options, onError) {
+        local.db.storageDefer = function (options, onError) {
         /*
-         * this function will defer options.action until dbStorage is ready
+         * this function will defer options.action until storage is ready
          */
             var data, done, objectStore, onError2, request, tmp;
-            if (!local.db.dbStorage) {
-                local.db.dbStorageDeferList.push(function () {
-                    local.db.dbStorageDefer(options, onError);
+            if (!local.db.storage) {
+                local.db.storageDeferList.push(function () {
+                    local.db.storageDefer(options, onError);
                 });
                 return;
             }
@@ -730,12 +730,12 @@
                 case 'clear':
                 case 'removeItem':
                 case 'setItem':
-                    objectStore = local.db.dbStorage
+                    objectStore = local.db.storage
                         .transaction('db-lite', 'readwrite')
                         .objectStore('db-lite');
                     break;
                 default:
-                    objectStore = local.db.dbStorage
+                    objectStore = local.db.storage
                         .transaction('db-lite', 'readonly')
                         .objectStore('db-lite');
                 }
@@ -772,14 +772,14 @@
                     request[handler] = request[handler] || onError2;
                 });
                 // debug request
-                local.db._debugDbStorageRequest = request;
+                local.db._debugStorageRequest = request;
                 break;
             case 'node':
                 switch (options.action) {
                 case 'clear':
                     local.child_process.spawn(
                         'sh',
-                        ['-c', 'rm -f ' + local.db.dbStorage + '/*'],
+                        ['-c', 'rm -f ' + local.db.storage + '/*'],
                         { stdio: ['ignore', 1, 2] }
                     // ignore error
                     ).once('exit', function () {
@@ -789,7 +789,7 @@
                 case 'getItem':
                     local.db.assert(typeof options.key === 'string', options.key);
                     local.fs.readFile(
-                        local.db.dbStorage + '/' + encodeURIComponent(options.key),
+                        local.db.storage + '/' + encodeURIComponent(options.key),
                         'utf8',
                         // ignore error
                         function (error, data) {
@@ -798,19 +798,19 @@
                     );
                     break;
                 case 'keys':
-                    local.fs.readdir(local.db.dbStorage, function (error, data) {
+                    local.fs.readdir(local.db.storage, function (error, data) {
                         onError(error, data && data.map(decodeURIComponent));
                     });
                     break;
                 case 'length':
-                    local.fs.readdir(local.db.dbStorage, function (error, data) {
+                    local.fs.readdir(local.db.storage, function (error, data) {
                         onError(error, data && data.length);
                     });
                     break;
                 case 'removeItem':
                     local.db.assert(typeof options.key === 'string', options.key);
                     local.fs.unlink(
-                        local.db.dbStorage + '/' + encodeURIComponent(options.key),
+                        local.db.storage + '/' + encodeURIComponent(options.key),
                         // ignore error
                         function () {
                             onError();
@@ -828,7 +828,7 @@
                         // rename tmp to key
                         local.fs.rename(
                             tmp,
-                            local.db.dbStorage + '/' + encodeURIComponent(options.key),
+                            local.db.storage + '/' + encodeURIComponent(options.key),
                             onError
                         );
                     });
@@ -838,19 +838,19 @@
             }
         };
 
-        local.db.dbStorageDeferList = [];
+        local.db.storageDeferList = [];
 
-        local.db.dbStorageGetItem = function (key, onError) {
+        local.db.storageGetItem = function (key, onError) {
         /*
-         * this function will get the item with the given key from dbStorage
+         * this function will get the item with the given key from storage
          */
             local.db.assert(typeof key === 'string');
-            local.db.dbStorageDefer({ action: 'getItem', key: key }, onError);
+            local.db.storageDefer({ action: 'getItem', key: key }, onError);
         };
 
-        local.db.dbStorageInit = function () {
+        local.db.storageInit = function () {
         /*
-         * this function will init dbStorage
+         * this function will init storage
          */
             var options, request;
             options = {};
@@ -858,11 +858,11 @@
                 // validate no error occurred
                 local.db.assert(!error, error);
                 if (local.modeJs === 'browser') {
-                    local.db.dbStorage = local.global.db_lite_dbStorage;
+                    local.db.storage = local.global.db_lite_storage;
                 }
                 switch (options.modeNext) {
                 case 1:
-                    if (local.db.dbStorage) {
+                    if (local.db.storage) {
                         options.onNext();
                         return;
                     }
@@ -873,7 +873,7 @@
                             request = local.global.indexedDB.open('db-lite');
                             request.onerror = options.onNext;
                             request.onsuccess = function () {
-                                local.global.db_lite_dbStorage = request.result;
+                                local.global.db_lite_storage = request.result;
                                 options.onNext();
                             };
                             request.onupgradeneeded = function () {
@@ -885,9 +885,9 @@
                         }
                         break;
                     case 'node':
-                        // mkdirp dbStorage
-                        local.db.dbStorage = 'tmp/db.storage.' + local.db.NODE_ENV;
-                        local.child_process.spawnSync('mkdir', ['-p', local.db.dbStorage], {
+                        // mkdirp storage
+                        local.db.storage = 'tmp/db.storage.' + local.db.NODE_ENV;
+                        local.child_process.spawnSync('mkdir', ['-p', local.db.storage], {
                             stdio: ['ignore', 1, 2]
                         });
                         options.onNext();
@@ -896,8 +896,8 @@
                     break;
                 // run deferred actions
                 case 2:
-                    while (local.db.dbStorageDeferList.length) {
-                        local.db.dbStorageDeferList.shift()();
+                    while (local.db.storageDeferList.length) {
+                        local.db.storageDeferList.shift()();
                     }
                     break;
                 }
@@ -906,35 +906,35 @@
             options.onNext();
         };
 
-        local.db.dbStorageKeys = function (onError) {
+        local.db.storageKeys = function (onError) {
         /*
-         * this function will get all the keys in dbStorage
+         * this function will get all the keys in storage
          */
-            local.db.dbStorageDefer({ action: 'keys' }, onError);
+            local.db.storageDefer({ action: 'keys' }, onError);
         };
 
-        local.db.dbStorageLength = function (onError) {
+        local.db.storageLength = function (onError) {
         /*
-         * this function will get the number of items in dbStorage
+         * this function will get the number of items in storage
          */
-            local.db.dbStorageDefer({ action: 'length' }, onError);
+            local.db.storageDefer({ action: 'length' }, onError);
         };
 
-        local.db.dbStorageRemoveItem = function (key, onError) {
+        local.db.storageRemoveItem = function (key, onError) {
         /*
-         * this function will remove the item with the given key from dbStorage
+         * this function will remove the item with the given key from storage
          */
             local.db.assert(typeof key === 'string');
-            local.db.dbStorageDefer({ action: 'removeItem', key: key }, onError);
+            local.db.storageDefer({ action: 'removeItem', key: key }, onError);
         };
 
-        local.db.dbStorageSetItem = function (key, value, onError) {
+        local.db.storageSetItem = function (key, value, onError) {
         /*
-         * this function will set the item with the given key and value to dbStorage
+         * this function will set the item with the given key and value to storage
          */
             local.db.assert(typeof key === 'string');
             local.db.assert(typeof value === 'string');
-            local.db.dbStorageDefer({ action: 'setItem', key: key, value: value }, onError);
+            local.db.storageDefer({ action: 'setItem', key: key, value: value }, onError);
         };
 
         local.db.dbTableCreate = function (options, onError) {
@@ -948,7 +948,7 @@
                 return local.db.setTimeoutOnError(onError, null, self);
             }
             // import table from persistent-storage
-            local.db.dbStorageGetItem(self.name, function (error, data) {
+            local.db.storageGetItem(self.name, function (error, data) {
                 // validate no error occurred
                 local.db.assert(!error, error);
                 if (!self.isImported) {
@@ -2241,7 +2241,7 @@
                 dbIndex.dbTree = new local.db._DbTree({ isUnique: dbIndex.isUnique });
             });
             // clear persistence
-            local.db.dbStorageRemoveItem(self.name, local.db.onErrorDefault);
+            local.db.storageRemoveItem(self.name, local.db.onErrorDefault);
         };
 
         local.db._DbTable.prototype.dbTableExport = function () {
@@ -2309,23 +2309,23 @@
 
         local.db._DbTable.prototype.dbTablePersist = function () {
         /*
-         * this function will persist dbTable to dbStorage
+         * this function will persist dbTable to storage
          */
             var self;
             self = this;
-            // throttle dbStorage writes to 2 every 1000 ms
+            // throttle storage writes to 2 every 1000 ms
             if (self.timerDbTableSave) {
                 return;
             }
             self.timerDbTableSave = setTimeout(function () {
                 delete self.timerDbTableSave;
-                local.db.dbStorageSetItem(
+                local.db.storageSetItem(
                     self.name,
                     self.dbTableExport(),
                     local.db.onErrorDefault
                 );
             }, 1000);
-            local.db.dbStorageSetItem(self.name, self.dbTableExport(), local.db.onErrorDefault);
+            local.db.storageSetItem(self.name, self.dbTableExport(), local.db.onErrorDefault);
         };
 
         local.db._DbTable.prototype.dbIndexCullMany = function (query) {
@@ -2577,7 +2577,7 @@
 
     // run shared js-env code - post-init
     (function () {
-        // init dbStorage
-        local.db.dbStorageInit();
+        // init storage
+        local.db.storageInit();
     }());
 }());

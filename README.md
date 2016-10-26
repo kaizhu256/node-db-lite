@@ -32,7 +32,7 @@ this package will run a persistent, in-browser database with zero npm-dependenci
 #### change since 6c1363ea
 - add function dbTable.crudInsertOrReplaceOne, dbTable.crudUpdateMany, dbTable.crudUpdateOne
 - fix function dbClear
-- fix function dbStorageGetItem in node js-env
+- fix function storageGetItem in node js-env
 - none
 
 #### this package requires

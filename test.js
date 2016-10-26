@@ -134,32 +134,6 @@
             onError();
         };
 
-        local.testCase_dbStorageXxx_misc = function (options, onError) {
-        /*
-         * this function will test dbStorageXxx's misc handling-behavior
-         */
-            var onParallel;
-            // jslint-hack
-            local.utility2.nop(options);
-            onParallel = local.utility2.onParallel(onError);
-            onParallel.counter += 1;
-            // test dbStorageInit's re-init handling-behavior
-            local.db.dbStorageInit();
-            // test dbStorageKey's handling-behavior
-            onParallel.counter += 1;
-            local.db.dbStorageKeys(function () {
-                local.utility2.tryCatchOnError(function () {
-                    // test dbStorageDefer's done handling-behavior
-                    local.db._debugDbStorageRequest.onerror(local.utility2.errorDefault);
-                }, local.utility2.nop);
-                onParallel();
-            });
-            onParallel.counter += 1;
-            // test dbStorageLength's handling-behavior
-            local.db.dbStorageLength(onParallel);
-            onParallel();
-        };
-
         local.testCase_dbTableClear_default = function (options, onError) {
         /*
          * this function will test dbTableDrop's default handling-behavior
@@ -2005,6 +1979,32 @@
                 [], { aa: 1 }, {},
                 null, null, null, null, null, null]);
             onError();
+        };
+
+        local.testCase_storageXxx_misc = function (options, onError) {
+        /*
+         * this function will test storageXxx's misc handling-behavior
+         */
+            var onParallel;
+            // jslint-hack
+            local.utility2.nop(options);
+            onParallel = local.utility2.onParallel(onError);
+            onParallel.counter += 1;
+            // test storageInit's re-init handling-behavior
+            local.db.storageInit();
+            // test storageKey's handling-behavior
+            onParallel.counter += 1;
+            local.db.storageKeys(function () {
+                local.utility2.tryCatchOnError(function () {
+                    // test storageDefer's done handling-behavior
+                    local.db._debugStorageRequest.onerror(local.utility2.errorDefault);
+                }, local.utility2.nop);
+                onParallel();
+            });
+            onParallel.counter += 1;
+            // test storageLength's handling-behavior
+            local.db.storageLength(onParallel);
+            onParallel();
         };
     }());
     switch (local.modeJs) {
