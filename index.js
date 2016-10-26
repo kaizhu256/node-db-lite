@@ -77,7 +77,7 @@
 
 
     /* istanbul ignore next */
-    // run shared js-env code - utility2 function
+    // run shared js-env code - pre-function
     (function (local) {
         local.utility2.assert = function (passed, message) {
         /*
@@ -96,6 +96,16 @@
                     // else JSON.stringify message
                     : JSON.stringify(message));
             throw error;
+        };
+
+        local.utility2.assertJsonEqual = function (aa, bb) {
+        /*
+         * this function will assert
+         * utility2.jsonStringifyOrdered(aa) === JSON.stringify(bb)
+         */
+            aa = local.utility2.jsonStringifyOrdered(aa);
+            bb = JSON.stringify(bb);
+            local.utility2.assert(aa === bb, [aa, bb]);
         };
 
         local.utility2.isNullOrUndefined = function (arg) {
@@ -293,55 +303,298 @@
             });
             return options;
         };
+    }({ utility2: local.db }));
 
-        local.utility2.onParallel = function (onError, onDebug) {
+
+
+    // run shared js-env code - rbst-lite
+    local.rbst = {};
+    (function (local) {
+        var compare,
+            create,
+            find,
+            findInKeyRange,
+            insert,
+            insertRoot,
+            join,
+            print,
+            remove,
+            rotateLeft,
+            rotateRight,
+            sizeUpdate;
+
+        compare = function (aa, bb) {
         /*
-         * this function will return a function that will
-         * 1. run async tasks in parallel
-         * 2. if counter === 0 or error occurred, then call onError with error
+         * this function will compare aa vs bb and return:
+         * -1 if aa < bb
+         *  0 if aa === bb
+         *  1 if aa > bb
+         * the priority for comparing different typeof's is:
+         * number < boolean < string < object
          */
-            var self;
-            onError = local.utility2.onErrorWithStack(onError);
-            onDebug = onDebug || local.utility2.nop;
-            self = function (error) {
-                onDebug(error, self);
-                // if previously counter === 0 or error occurred, then return
-                if (self.counter === 0 || self.error) {
+            var typeof1, typeof2;
+            if (aa === bb) {
+                return 0;
+            }
+            typeof1 = typeof aa;
+            typeof2 = typeof bb;
+            if (typeof1 === typeof2) {
+                return typeof1 === 'object'
+                    ? 0
+                    : aa < bb
+                    ? -1
+                    : 1;
+            }
+            if (typeof1 === 'number') {
+                return -1;
+            }
+            if (typeof2 === 'number') {
+                return 1;
+            }
+            if (typeof1 === 'boolean') {
+                return -1;
+            }
+            if (typeof2 === 'boolean') {
+                return 1;
+            }
+            if (typeof1 === 'string') {
+                return -1;
+            }
+            if (typeof2 === 'string') {
+                return 1;
+            }
+            return 0;
+        };
+
+        create = function (key, data) {
+        /*
+         * this function will create a tree with the given key and data
+         */
+            return {
+                key: key,
+                data: data,
+                left: null,
+                right: null,
+                size: 1
+            };
+        };
+
+        find = function (tree, key) {
+        /*
+         * this function will find the node in the tree with the given key
+         */
+            var node, tmp;
+            node = tree;
+            tmp = node && compare(node.key, key);
+            while (tmp) {
+                node = tmp === -1
+                    ? node.right
+                    : node.left;
+                tmp = node && compare(node.key, key);
+            }
+            return node;
+        };
+
+        findInKeyRange = function (tree, aa, bb, fnc) {
+        /*
+         * this function will iteratively call fnc on all nodes in the tree,
+         * with keys in the inclusive key-range [aa, bb]
+         */
+            var node, sentinel, stack, tmp, traversedList;
+            if (!tree) {
+                return;
+            }
+            // find first node with key >= aa
+            node = tree;
+            stack = [node];
+            tmp = node && compare(node.key, aa);
+            while (node) {
+                stack.push(node);
+                node = tmp === -1
+                    ? node.right
+                    : node.left;
+                tmp = node && compare(node.key, aa);
+            }
+            traversedList = stack.slice();
+            // find last node with key <= bb
+            sentinel = null;
+            node = tree;
+            tmp = compare(node.key, bb);
+            while (node) {
+                sentinel = node;
+                node = tmp === 1
+                    ? node.left
+                    : node.right;
+                tmp = node && compare(node.key, bb);
+            }
+            sentinel = node || sentinel;
+            // begin traversal with first node with key >= aa
+            while (stack.length) {
+                node = stack.pop();
+                tmp = compare(node.key, bb);
+                if (compare(node.key, aa) >= 0 && compare(node.key, bb) <= 0) {
+                    fnc(node);
+                }
+                // end traversal with last node with key <= bb
+                if (node === sentinel) {
                     return;
                 }
-                // handle error
-                if (error) {
-                    self.error = error;
-                    // ensure counter will decrement to 0
-                    self.counter = 1;
+                node = node.right;
+                if (traversedList.indexOf(node) < 0) {
+                    while (node) {
+                        stack.push(node);
+                        node = node.left;
+                    }
                 }
-                // decrement counter
-                self.counter -= 1;
-                // if counter === 0, then call onError with error
-                if (self.counter === 0) {
-                    onError(error);
-                }
-            };
-            // init counter
-            self.counter = 0;
-            // return callback
-            return self;
-        };
-
-        local.utility2.tryCatchOnError = function (fnc, onError) {
-        /*
-         * this function will try to run the fnc in a try-catch block,
-         * else call onError with the errorCaught
-         */
-            try {
-                local.utility2._debugTryCatchErrorCaught = null;
-                return fnc();
-            } catch (errorCaught) {
-                local.utility2._debugTryCatchErrorCaught = errorCaught;
-                return onError(errorCaught);
             }
         };
-    }({ utility2: local.db }));
+
+        insert = function (tree, key, data) {
+        /*
+         * this function will insert a new node in the tree with the given key and data,
+         * with random re-balancing
+         */
+            if (!tree) {
+                return create(key, data);
+            }
+            if (Math.floor(Math.random() * 0x10000000000000) % (tree.size + 1) === 0 &&
+                    typeof key !== 'object') {
+                return insertRoot(tree, key, data);
+            }
+            if (compare(key, tree.key) === -1) {
+                tree.left = insert(tree.left, key, data);
+            } else {
+                tree.right = insert(tree.right, key, data);
+            }
+            sizeUpdate(tree);
+            return tree;
+        };
+
+        insertRoot = function (tree, key, data) {
+        /*
+         * this function will insert a new node in the tree with the given key and data,
+         * and rebalance it as the root node
+         */
+            if (!tree) {
+                return create(key, data);
+            }
+            if (compare(key, tree.key) === -1) {
+                tree.left = insertRoot(tree.left, key, data);
+                return rotateRight(tree);
+            }
+            tree.right = insertRoot(tree.right, key, data);
+            return rotateLeft(tree);
+        };
+
+        join = function (left, right) {
+        /*
+         * this function will join the left and right trees after deleting their parent tree
+         */
+            if (!left) {
+                return right;
+            }
+            if (!right) {
+                return left;
+            }
+            if (Math.floor(Math.random() * 0x10000000000000) % (left.size + right.size) <
+                    left.size) {
+                // recurse
+                left.right = join(left.right, right);
+                sizeUpdate(left);
+                return left;
+            }
+            // recurse
+            right.left = join(left, right.left);
+            sizeUpdate(right);
+            return right;
+        };
+
+        print = function (tree) {
+        /*
+         * this function will print the tree
+         */
+            var height, ii, recurse;
+            recurse = function (tree, depth) {
+                if (!tree) {
+                    return;
+                }
+                recurse(tree.left, depth + '* ');
+                ii += 1;
+                if (depth > height) {
+                    height = depth;
+                }
+                console.log('(' + ii + ',' + (depth.length / 2) + ') ' + depth +
+                    JSON.stringify(tree.key));
+                recurse(tree.right, depth + '* ');
+            };
+            height = '';
+            ii = -1;
+            console.log('\ntree\n(ii,depth) key');
+            recurse(tree, '');
+            console.log('height = ' + height.length / 2);
+        };
+
+        remove = function (tree, key) {
+        /*
+         * this function will remove the node in the tree with the given key
+         */
+            if (!tree) {
+                return tree;
+            }
+            if (tree.key === key) {
+                return join(tree.left, tree.right);
+            }
+            if (compare(key, tree.key) === -1) {
+                tree.left = remove(tree.left, key);
+            } else {
+                tree.right = remove(tree.right, key);
+            }
+            return tree;
+        };
+
+        rotateLeft = function (tree) {
+        /*
+         * this function will rotate-left tree.right up to its parent tree's position
+         */
+            var right;
+            right = tree.right;
+            tree.right = right.left;
+            right.left = tree;
+            right.size = tree.size;
+            sizeUpdate(tree);
+            return right;
+        };
+
+        rotateRight = function (tree) {
+        /*
+         * this function will rotate-right tree.left up to its parent tree's position
+         */
+            var left;
+            left = tree.left;
+            tree.left = left.right;
+            left.right = tree;
+            left.size = tree.size;
+            sizeUpdate(tree);
+            return left;
+        };
+
+        sizeUpdate = function (tree) {
+        /*
+         * this function will update tree.size
+         */
+            tree.size = 1 +
+                ((tree.left && tree.left.size) || 0) + ((tree.right && tree.right.size) || 0);
+        };
+
+        // init local
+        local.compare = compare;
+        local.create = create;
+        local.find = find;
+        local.findInKeyRange = findInKeyRange;
+        local.insert = insert;
+        local.print = print;
+        local.remove = remove;
+    }(local.rbst));
 
 
 
@@ -398,7 +651,9 @@
                 }
                 value = value[element];
             });
-            return local.db.valueNormalize(value);
+            return value === undefined
+                ? null
+                : value;
         };
 
         local.db.dbRowRemoveItem = function (dbRow, key) {
@@ -426,7 +681,7 @@
          */
             var tmp;
             local.db.assert(typeof key === 'string');
-            if (local.db.valueNormalize(value) === null) {
+            if (value === null) {
                 local.db.dbRowRemoveItem(dbRow, key);
                 return;
             }
@@ -614,7 +869,7 @@
                     switch (local.modeJs) {
                     case 'browser':
                         // init indexedDB
-                        local.db.tryCatchOnError(function () {
+                        try {
                             request = local.global.indexedDB.open('db-lite');
                             request.onerror = options.onNext;
                             request.onsuccess = function () {
@@ -626,7 +881,8 @@
                                     request.result.createObjectStore('db-lite');
                                 }
                             };
-                        }, local.db.nop);
+                        } catch (ignore) {
+                        }
                         break;
                     case 'node':
                         // mkdirp dbStorage
@@ -815,7 +1071,8 @@
          * this function will normalize the value to a json-object
          */
             return value === undefined ||
-                (typeof value === 'number' && !Number.isFinite(value))
+                (typeof value === 'number' && !Number.isFinite(value)) ||
+                typeof value === 'symbol'
                 ? null
                 : value;
         };
@@ -1128,44 +1385,40 @@
          */
             var dbTree, keyValue, pathList, self;
             self = this;
+            // init keyValue
             keyValue = local.db.dbRowGetItem(dbRow, self.fieldName);
             // auto-create unique keyValue
             if (self.isUnique && !keyValue && keyValue !== 0) {
                 do {
                     keyValue = self.isInteger
-                        ? Math.floor(Math.random() * 0x20000000000000)
+                        ? Math.floor(Math.random() * 0x10000000000000)
                         : ('a' +
                             Math.random().toString(36).slice(2) +
                             Math.random().toString(36).slice(2)).slice(0, 16);
-                } while (self.getMatching(keyValue).length);
+                } while (self.getItemMany(keyValue).length);
                 local.db.dbRowSetItem(dbRow, self.fieldName, keyValue);
             }
-            // sparse index - ignore null keyValue
-            if (local.db.isNullOrUndefined(keyValue)) {
+            // sparse-index
+            if (typeof keyValue === 'object') {
                 return;
             }
             dbTree = self.dbTree;
-            pathList = [];
-            // Empty tree, insert as root
-            if (!self.dbTree.hasOwnProperty('keyValue')) {
-                self.dbTree.keyValue = keyValue;
-                self.dbTree.dbRowList.push(dbRow);
-                self.dbTree.height = 1;
+            // empty tree - insert as root
+            if (!dbTree.hasOwnProperty('keyValue')) {
+                dbTree.keyValue = keyValue;
+                dbTree.dbRowList.push(dbRow);
+                dbTree.height = 1;
                 return;
             }
+            pathList = [];
             // Insert new leaf at the right place
-            while (true) {
+            while (dbTree) {
                 // Same keyValue: no change in the tree structure
                 if (local.db.sortCompare(dbTree.keyValue, keyValue) === 0) {
-                    // if isUnique, then replace existing dbRow
-                    if (dbTree.isUnique) {
-                        // update timestamp
-                        dbRow.createdAt = dbTree.dbRowList[0].createdAt;
-                        dbTree.dbRowList[0] = dbRow;
+                    // validate unique-constraint
+                    local.db.assert(keyValue === null || !dbTree.unique);
                     // else insert new dbRow
-                    } else {
-                        dbTree.dbRowList.push(dbRow);
-                    }
+                    dbTree.dbRowList.push(dbRow);
                     return;
                 }
                 pathList.push(dbTree);
@@ -1205,20 +1458,20 @@
          * The remove operation is safe with regards to the 'unique' constraint
          * O(log(n))
          */
-            var newData, dbTree, keyValue, pathList, replaceWith, self;
+            var dbTree, keyValue, pathList, replaceWith, self;
             self = this;
-            keyValue = local.db.dbRowGetItem(dbRow, self.fieldName);
-            // sparse index - ignore null keyValue
-            if (local.db.isNullOrUndefined(keyValue)) {
-                return;
-            }
-            newData = [];
-            dbTree = self.dbTree;
-            pathList = [];
-            // Empty tree
+            // empty tree - do nothing
             if (!self.dbTree.hasOwnProperty('keyValue')) {
                 return;
             }
+            // init keyValue
+            keyValue = local.db.dbRowGetItem(dbRow, self.fieldName);
+            // sparse-index
+            if (typeof keyValue === 'object') {
+                return;
+            }
+            dbTree = self.dbTree;
+            pathList = [];
             // Either no match is found and the function will return from within the loop
             // Or a match is found and pathList will contain the path
             // from the root to the node to delete after the loop
@@ -1232,7 +1485,7 @@
                         return;
                     }
                 } else {
-                    // local.db.sortCompare(keyValue, dbTree.keyValue) is > 0
+                    // local.db.sortCompare(keyValue, dbTree.keyValue) > 0
                     if (dbTree.right) {
                         dbTree = dbTree.right;
                     // keyValue not found, no modification
@@ -1241,14 +1494,13 @@
                     }
                 }
             }
+            // could not find dbRow to remove
+            if (dbTree.dbRowList.indexOf(dbRow) < 0) {
+                return;
+            }
             // Delete only a dbRow (no tree modification)
-            if (dbTree.dbRowList.length > 1 && dbRow) {
-                dbTree.dbRowList.forEach(function (d) {
-                    if (d !== dbRow) {
-                        newData.push(d);
-                    }
-                });
-                dbTree.dbRowList = newData;
+            if (dbTree.dbRowList.length >= 2) {
+                dbTree.dbRowList.splice(dbTree.dbRowList.indexOf(dbRow), 1);
                 return;
             }
             // Delete a whole node
@@ -1324,29 +1576,47 @@
             self.dbTree = self.dbTree.rebalanceAlongPath(pathList);
         };
 
-        local.db._DbIndex.prototype.getMatching = function (keyValue) {
+        local.db._DbIndex.prototype.getItemMany = function (keyValue) {
         /*
          * Get all dbRow's in index whose keyValue match value (if it is a Thing)
          * or one of the elements of value (if it is an array of Things)
          * @param {Thing} value Value to match the keyValue against
          * @return {Array of dbRow's}
          */
-            var self, _res = {}, res = [];
+            var recurse, self, _result = {}, result = [];
             self = this;
+            // empty tree - return empty list
+            if (!self.dbTree.hasOwnProperty('keyValue')) {
+                return [];
+            }
+            // optimization - avoid closure
+            recurse = function (dbTree, keyValue) {
+                if (local.db.sortCompare(dbTree.keyValue, keyValue) === 0) {
+                    return dbTree.dbRowList;
+                }
+                if (local.db.sortCompare(keyValue, dbTree.keyValue) < 0) {
+                    if (dbTree.left) {
+                        return recurse(dbTree.left, keyValue);
+                    }
+                    return [];
+                }
+                if (dbTree.right) {
+                    return recurse(dbTree.right, keyValue);
+                }
+                return [];
+            };
             if (!Array.isArray(keyValue)) {
-                return self.dbTree.search(keyValue);
+                return recurse(self.dbTree, keyValue);
             }
             keyValue.forEach(function (keyValue) {
-                self.getMatching(keyValue).forEach(function (dbRow) {
-                    _res[dbRow._id] = dbRow;
+                self.getItemMany(keyValue).forEach(function (dbRow) {
+                    _result[dbRow._id] = dbRow;
                 });
             });
-
-            Object.keys(_res).forEach(function (_id) {
-                res.push(_res[_id]);
+            Object.keys(_result).forEach(function (_id) {
+                result.push(_result[_id]);
             });
-
-            return res;
+            return result;
         };
 
 
@@ -1361,6 +1631,7 @@
          * on the key or not
          * @param {Value}    options.dbRow Initialize this DbTree's dbRowList with [value]
          */
+            // non-empty tree
             if (options.hasOwnProperty('keyValue')) {
                 this.keyValue = options.keyValue;
             }
@@ -1389,28 +1660,6 @@
                 recurse(dbTree.right);
             };
             recurse(this.dbTree);
-        };
-
-        local.db._DbIndex.prototype.dbTreeSome = function (fnc) {
-        /*
-         * this function will recursively traverse some of the dbTree in sorted-order,
-         * and call fnc(dbTree, depth, ii)
-         */
-            var fnc2, ii, recurse;
-            ii = 0;
-            fnc2 = function (dbTree, depth) {
-                ii += 1;
-                return fnc(dbTree, depth, ii);
-            };
-            recurse = function (dbTree, depth) {
-                if ((dbTree.left && recurse(dbTree.left, depth + 1)) ||
-                        fnc2(dbTree, depth) ||
-                        (dbTree.right && recurse(dbTree.right, depth + 1))) {
-                    return true;
-                }
-                return false;
-            };
-            return recurse(this.dbTree, 1);
         };
 
         local.db._DbIndex.prototype.count = function () {
@@ -1507,63 +1756,42 @@
                 if (!dbTree) {
                     return;
                 }
+                recurse(dbTree.left, depth + '*   ');
                 ii += 1;
-                depth = depth || '';
                 console.log('[' + ii + ',' + (depth.length / 4) + '] ' + depth +
                     JSON.stringify(dbTree.keyValue));
-                recurse(dbTree.left, depth + '*   ');
                 recurse(dbTree.right, depth + '*   ');
             };
             ii = -1;
-            recurse(this.dbTree);
-        };
-
-        local.db._DbTree.prototype.search = function (keyValue) {
-        /*
-         * Search for all dbRowList corresponding to a keyValue
-         */
-            if (!this.hasOwnProperty('keyValue')) {
-                return [];
-            }
-
-            if (local.db.sortCompare(this.keyValue, keyValue) === 0) {
-                return this.dbRowList;
-            }
-
-            if (local.db.sortCompare(keyValue, this.keyValue) < 0) {
-                if (this.left) {
-                    return this.left.search(keyValue);
-                }
-                return [];
-            }
-            if (this.right) {
-                return this.right.search(keyValue);
-            }
-            return [];
+            recurse(this.dbTree, '');
         };
 
         local.db._DbIndex.prototype.validate = function (options) {
         /*
          * this function will validate dbTree
          */
-            var height, keyValue, nn, tmp;
+            var height, keyValue, nn, recurse, tmp;
             if (typeof options.count === 'number') {
-                local.utility2.assert(options.count === this.count());
+                local.db.assertJsonEqual(options.count, this.count());
             }
             keyValue = false;
             height = -1;
             nn = 0;
-            this.dbTreeSome(function (dbTree, depth, ii) {
+            recurse = function (dbTree, depth) {
+                if (!dbTree) {
+                    return;
+                }
+                recurse(dbTree.left, depth + 1);
                 // validate sort
                 local.db.assert(
                     local.db.sortCompare(keyValue, dbTree.keyValue) <= 0,
                     [keyValue, dbTree.keyValue]
                 );
-                // validate nn
                 nn += 1;
-                local.db.assert(ii === nn, [ii, nn]);
                 height = Math.max(depth, height);
-            });
+                recurse(dbTree.right, depth + 1);
+            };
+            recurse(this.dbTree, 1);
             // validate height
             // https://en.wikipedia.org/wiki/AVL_tree#Properties
             tmp = Math.log2(nn + 1);
@@ -1661,32 +1889,32 @@
         }
         local.db._DbTree.prototype.betweenBounds = function (query, lbm, ubm) {
         /*
-         * Get all dbRowList for a key between bounds
-         * Return it in key order
+         * Get all dbRowList for a keyValue between bounds
+         * Return it in keyValue order
          * @param {Object} query Mongo-style query
          * where keys are $lt, $lte, $gt or $gte (other keys are not considered)
          * @param {Functions} lbm/ubm matching functions calculated at the first recursive step
          */
-            var res = [];
-
-            if (!this.hasOwnProperty('key')) {
+            var result = [];
+            // empty tree - return empty list
+            if (!this.hasOwnProperty('keyValue')) {
                 return [];
-            } // Empty tree
+            }
 
             lbm = lbm || this.getLowerBoundMatcher(query);
             ubm = ubm || this.getUpperBoundMatcher(query);
 
-            if (lbm(this.key) && this.left) {
-                append(res, this.left.betweenBounds(query, lbm, ubm));
+            if (lbm(this.keyValue) && this.left) {
+                append(result, this.left.betweenBounds(query, lbm, ubm));
             }
-            if (lbm(this.key) && ubm(this.key)) {
-                append(res, this.dbRowList);
+            if (lbm(this.keyValue) && ubm(this.keyValue)) {
+                append(result, this.dbRowList);
             }
-            if (ubm(this.key) && this.right) {
-                append(res, this.right.betweenBounds(query, lbm, ubm));
+            if (ubm(this.keyValue) && this.right) {
+                append(result, this.right.betweenBounds(query, lbm, ubm));
             }
 
-            return res;
+            return result;
         };
 
         local.db._DbTree.prototype.balanceFactor = function () {
@@ -1705,13 +1933,13 @@
          * Returns the new root of the tree
          * Of course, the first element of the path must be the root of the tree
          */
-            // Empty tree
             var ii, rootCurrent, rotated;
-            rootCurrent = this;
+            // empty tree - reset height
             if (!this.hasOwnProperty('keyValue')) {
-                delete this.height;
+                this.height = 0;
                 return this;
             }
+            rootCurrent = this;
             // Rebalance the tree and update all heights
             for (ii = path.length - 1; ii >= 0; ii -= 1) {
                 path[ii].height = 1 + Math.max(path[ii].left
@@ -1925,13 +2153,13 @@
                     self.dbIndexList().forEach(function (dbIndex) {
                         dbIndex.removeOne(dbRow);
                     });
-                    if (options.one) {
+                    if (options.limit === 1) {
                         return true;
                     }
                 }
             });
             self.dbTablePersist();
-            return local.db.setTimeoutOnError(onError, null, result);
+            return local.db.setTimeoutOnError(onError, null, local.db.jsonCopy(result));
         };
 
         local.db._DbTable.prototype.crudRemoveOne = function (options, onError) {
@@ -1939,7 +2167,7 @@
          * this function will remove one dbRow in dbTable with the given options
          */
             options = local.db.objectSetDefault({}, options);
-            options = local.db.objectSetDefault(options, { one: true });
+            options = local.db.objectSetDefault(options, { limit: 1 });
             return this.crudRemoveMany(options, onError);
         };
 
@@ -2138,7 +2366,7 @@
                     });
                     if (usableQueryKeys.length > 0) {
                         return options.onNext(null, self.dbIndexDict[usableQueryKeys[0]]
-                            .getMatching(query[usableQueryKeys[0]]));
+                            .getItemMany(query[usableQueryKeys[0]]));
                     }
 
                     // For a $in match
@@ -2155,7 +2383,7 @@
                         return options.onNext(
                             null,
                             self.dbIndexDict[usableQueryKeys[0]]
-                                .getMatching(query[usableQueryKeys[0]].$in)
+                                .getItemMany(query[usableQueryKeys[0]].$in)
                         );
                     }
 
@@ -2230,40 +2458,64 @@
         /*
          * this function will insert or replace the dbRow in dbTable
          */
-            var dbRowNormalize, self, timeNow;
+            var recurse, self, value;
             self = this;
-            // normalize dbRow
-            dbRowNormalize = function (dbRow) {
+            recurse = function (dbRow) {
             /*
-             * this function will normalize dbRow by recursively removing invalid properties
+             * this function will normalize dbRow by recursively removing invalid-properties
              */
-                if (Array.isArray(dbRow)) {
-                    // recurse
-                    dbRow.forEach(dbRowNormalize);
-                } else if (dbRow && typeof dbRow === 'object') {
+                if (dbRow && typeof dbRow === 'object') {
                     Object.keys(dbRow).forEach(function (key) {
-                        if (key[0] === '$' || key.indexOf('.') >= 0 || dbRow[key] === null) {
-                            // remove invalid property
-                            delete dbRow[key];
+                        value = dbRow[key];
+                        // convert date to string
+                        if (value instanceof Date) {
+                            dbRow[key] = Number.isNan(value.getTime())
+                                // optimization - soft-remove invalid-property
+                                ? undefined
+                                : value.toISOString();
                             return;
                         }
-                        // recurse
-                        dbRowNormalize(dbRow[key]);
+                        if (key[0] === '$' ||
+                                key.indexOf('.') >= 0 ||
+                                value === null ||
+                                (typeof value === 'number' && !Number.isFinite(value)) ||
+                                typeof value === 'symbol') {
+                            // optimization - soft-remove invalid-property
+                            dbRow[key] = undefined;
+                            return;
+                        }
+                        recurse(dbRow[key]);
                     });
                 }
                 return dbRow;
             };
-            dbRow = local.db.jsonCopy(dbRowNormalize(local.db.jsonCopy(dbRow)));
+            dbRow = local.db.jsonCopy(recurse(local.db.jsonCopy(dbRow)));
             // update timestamp
-            timeNow = new Date().toISOString();
-            dbRow.createdAt = dbRow.createdAt || timeNow;
-            dbRow.updatedAt = timeNow;
+            value = new Date().toISOString();
+            dbRow.createdAt = dbRow.createdAt || value;
+            dbRow.updatedAt = value;
+            // remove existing dbRow2 from dbIndex with keyUnique conflict
+            self.dbIndexList().forEach(function (dbIndex) {
+                value = local.db.dbRowGetItem(dbRow, dbIndex.fieldName);
+                if (value === null || !dbIndex.unique) {
+                    return;
+                }
+                dbIndex.getItemMany(value).forEach(function (dbRow2) {
+                    // update timestamp
+                    if (dbRow2.createdAt && dbRow2.createdAt < dbRow.createdAt) {
+                        dbRow.createdAt = dbRow2.createdAt;
+                    }
+                    self.dbIndexList().forEach(function (dbIndex) {
+                        dbIndex.remove(dbRow2);
+                    });
+                });
+            });
             // insert dbRow into dbIndex
             self.dbIndexList().forEach(function (dbIndex) {
                 dbIndex.insertOrReplaceOne(dbRow);
             });
             self.dbTablePersist();
-            return local.db.setTimeoutOnError(onError, null, [dbRow]);
+            return local.db.setTimeoutOnError(onError, null, local.db.jsonCopy([dbRow]));
         };
 
         local.db._DbTable.prototype.crudUpdateMany = function (options, onError) {
@@ -2281,7 +2533,7 @@
                 dbRow.updatedAt = timeNow;
             });
             result = self.crudInsertOrReplaceMany(result);
-            return local.db.setTimeoutOnError(onError, null, result);
+            return local.db.setTimeoutOnError(onError, null, local.db.jsonCopy(result));
         };
 
         local.db._DbTable.prototype.crudUpdateOne = function (options, onError) {

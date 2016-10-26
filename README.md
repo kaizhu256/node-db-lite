@@ -1,5 +1,5 @@
 db-lite
-=========
+=======
 this package will run a persistent, in-browser database with zero npm-dependencies
 
 [![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-db-lite.svg)](https://travis-ci.org/kaizhu256/node-db-lite)
@@ -18,13 +18,18 @@ this package will run a persistent, in-browser database with zero npm-dependenci
 
 
 # documentation
+#### api-doc
+- [https://kaizhu256.github.io/node-db-lite/build/doc.api.html](https://kaizhu256.github.io/node-db-lite/build/doc.api.html)
+
+[![api-doc](https://kaizhu256.github.io/node-db-lite/build/screen-capture.docApiCreate.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-db-lite_2Ftmp_2Fbuild_2Fdoc.api.html.png)](https://kaizhu256.github.io/node-db-lite/build/doc.api.html)
+
 #### todo
 - npm publish 2016.10.2
-- make crud operations synchronous
+- rename createdAt to _timeCreated and updatedAt to _timeModified
+- jsonCopy result in crudFindMany and crudFindOne
 - none
 
 #### change since 6c1363ea
-- force all dbIndexes to be sparse
 - add function dbTable.crudInsertOrReplaceOne, dbTable.crudUpdateMany, dbTable.crudUpdateOne
 - fix function dbClear
 - fix function dbStorageGetItem in node js-env
@@ -32,11 +37,6 @@ this package will run a persistent, in-browser database with zero npm-dependenci
 
 #### this package requires
 - darwin or linux os
-
-#### api-doc
-- [https://kaizhu256.github.io/node-db-lite/build/doc.api.html](https://kaizhu256.github.io/node-db-lite/build/doc.api.html)
-
-[![api-doc](https://kaizhu256.github.io/node-db-lite/build/screen-capture.docApiCreate.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-db-lite_2Ftmp_2Fbuild_2Fdoc.api.html.png)](https://kaizhu256.github.io/node-db-lite/build/doc.api.html)
 
 
 

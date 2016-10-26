@@ -332,23 +332,21 @@
             options = {};
             options.count = 0;
             options.dbIndex = new local.db._DbIndex({ fieldName: 'field1' });
-            options.dbTree = options.dbIndex.dbTree;
             // test null-case delete handling-behavior
             options.dbIndex.removeOne(null, {});
             // test null-case search handling-behavior
-            local.utility2.assertJsonEqual(options.dbTree.search(null), []);
+            local.utility2.assertJsonEqual(options.dbIndex.getItemMany(null), []);
             // test insert-null-item handling-behavior
             options.dbIndex.insertOrReplaceOne({ field1: null });
-            options.dbTree = options.dbIndex.dbTree;
+            //!! options.count += 1;
             // test insert-undefined-item handling-behavior
             options.dbIndex.insertOrReplaceOne({ field1: undefined });
-            options.dbTree = options.dbIndex.dbTree;
+            //!! options.count += 1;
             // test insert handling-behavior
             for (options.ii = 0; options.ii < 0x100; options.ii += 1) {
                 options.dbRow = { field1: Math.random() };
                 options.dbIndex.insertOrReplaceOne(options.dbRow);
                 options.count += 1;
-                options.dbTree = options.dbIndex.dbTree;
                 // test print handling-behavior
                 if (options.ii === 0x10) {
                     options.dbIndex.print();
@@ -361,19 +359,21 @@
             });
             //!! // validate null-item
             //!! local.utility2.assertJsonEqual(options.data[options.data.length - 2], {
-                //!! key: null
+                //!! field1: null
             //!! });
             //!! // validate undefined-item
             //!! local.utility2.assertJsonEqual(options.data[options.data.length - 1], {});
             local.utility2.listShuffle(options.data).forEach(function (dbRow) {
                 // test search handling-behavior
-                local.utility2.assert(options.dbTree.search(dbRow.field1).length >= 1, dbRow);
+                local.utility2.assert(
+                    options.dbIndex.getItemMany(dbRow.field1).indexOf(dbRow) >= 0,
+                    dbRow
+                );
                 // test delete handling-behavior
-                options.dbIndex.removeOne(dbRow.field1, dbRow);
-                options.dbTree = options.dbIndex.dbTree;
+                options.dbIndex.removeOne(dbRow);
                 options.count -= 1;
                 // test re-delete handling-behavior
-                options.dbIndex.removeOne(dbRow.field1, dbRow);
+                options.dbIndex.removeOne(dbRow);
                 options.dbIndex.validate(options);
             });
             onError();
