@@ -1,5 +1,5 @@
 db-lite
-=========
+=======
 this package will run a persistent, in-browser database with zero npm-dependencies
 
 [![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-db-lite.svg)](https://travis-ci.org/kaizhu256/node-db-lite)
@@ -18,26 +18,23 @@ this package will run a persistent, in-browser database with zero npm-dependenci
 
 
 # documentation
+#### api-doc
+- [https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/doc.api.html](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/doc.api.html)
+
+[![api-doc](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/screen-capture.docApiCreate.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-db-lite_2Ftmp_2Fbuild_2Fdoc.api.html.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/doc.api.html)
+
 #### todo
+- npm publish 2016.10.2
 - none
 
-#### change since 3e821f9c
-- npm publish 2016.10.1
-- migrate to db-lite
-- insert will auto-create missing non-sparse unique-keys
-- row-update always returns updated row
-- add integer parameter to dbIndex
-- add eval button to demo
-- add 'hide internal test' button to demo
+#### change since 6c1363ea
+- rewrite replacing trees with native javascript dict
+- fix function storageGetItem in node js-env
+- rename createdAt to _timeCreated and updatedAt to _timeModified
 - none
 
 #### this package requires
 - darwin or linux os
-
-#### api-doc
-- [https://kaizhu256.github.io/node-db-lite/build/doc.api.html](https://kaizhu256.github.io/node-db-lite/build/doc.api.html)
-
-[![api-doc](https://kaizhu256.github.io/node-db-lite/build/screen-capture.docApiCreate.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-db-lite_2Ftmp_2Fbuild_2Fdoc.api.html.png)](https://kaizhu256.github.io/node-db-lite/build/doc.api.html)
 
 
 
@@ -166,7 +163,7 @@ instruction
                 break;
             case 'dbImportInput1':
                 document.querySelector('#outputTextarea1').value = '';
-                console.log('importing db-database ...');
+                console.log('importing db-lite database ...');
                 reader = new window.FileReader();
                 tmp = document.querySelector('#dbImportInput1').files[0];
                 if (!tmp) {
@@ -174,15 +171,15 @@ instruction
                 }
                 reader.addEventListener('load', function () {
                     local.db.dbImport(reader.result);
-                    console.log('... imported db-database');
+                    console.log('... imported db-lite database');
                 });
                 reader.readAsText(tmp);
                 break;
             case 'dbResetButton1':
                 document.querySelector('#outputTextarea1').value = '';
-                console.log('resetting db-database ...');
+                console.log('resetting db-lite database ...');
                 local.db.dbClear(function () {
-                    console.log('... resetted db-database');
+                    console.log('... resetted db-lite database');
                 });
                 break;
             case 'testRunButton1':
@@ -297,30 +294,26 @@ utility2-comment -->\n\
     <div class="testReportDiv" style="display: none;"></div>\n\
 utility2-comment -->\n\
 \n\
-    <button class="onclick" id="dbResetButton1">reset db-database</button><br>\n\
-    <button class="onclick" id="dbExportButton1">save db-database to file</button><br>\n\
+    <button class="onclick" id="dbResetButton1">reset db-lite database</button><br>\n\
+    <button class="onclick" id="dbExportButton1">export db-lite database -> file</button><br>\n\
     <a download="db.persistence.json" href="" id="dbExportA1"></a>\n\
-    <button class="onclick" id="dbImportButton1">load db-database from file</button><br>\n\
+    <button class="onclick" id="dbImportButton1">import db-lite database <- file</button><br>\n\
     <input class="onchange zeroPixel" type="file" id="dbImportInput1">\n\
     <label>edit or paste script below to\n\
         <a\n\
-            href="https://kaizhu256.github.io/node-db-lite/build/doc.api.html"\n\
+            href="https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/doc.api.html"\n\
             target="_blank"\n\
         >eval</a>\n\
     </label>\n\
 <textarea id="inputTextarea1">\n\
-window.dbTable1 = window.db_lite.dbTableCreate({ name: "dbTable1" });\n\
-dbTable1.crudInsertMany([{ field1: "hello", field2: "world"}], function () {\n\
-    console.log();\n\
-    console.log(dbTable1.dbTableExport());\n\
+var dbTable1;\n\
+dbTable1 = window.db_lite.dbTableCreate({ name: "dbTable1" });\n\
+dbTable1.dbIndexCreate({ fieldName: "field1" });\n\
+dbTable1.crudInsertOrReplaceOne({\n\
+    field1: "hello",\n\
+    field2: "world"\n\
 });\n\
-\n\
-window.dbTable2 = window.db_lite.dbTableCreate({ name: "dbTable2" });\n\
-dbTable2.dbIndexCreate({ fieldName: "field2" });\n\
-dbTable2.crudInsertMany([{ field1: "hello", field2: "world"}], function () {\n\
-    console.log();\n\
-    console.log(dbTable2.dbTableExport());\n\
-});\n\
+console.log(dbTable1.crudFindMany({ query: { field1: "hello" } }));\n\
 </textarea>\n\
     <button class="onclick" id="dbEvalButton1">eval script</button><br>\n\
     <label>stderr and stdout</label>\n\
@@ -410,7 +403,7 @@ utility2-comment -->\n\
     "description": "{{packageJson.description}}",
     "devDependencies": {
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
-        "utility2": "2016.10.1"
+        "utility2": "kaizhu256/node-utility2#alpha"
     },
     "engines": { "node": ">=4.0" },
     "homepage": "https://github.com/kaizhu256/node-db-lite",
@@ -437,9 +430,11 @@ utility2-comment -->\n\
 export PORT=${PORT:-8080} && \
 export npm_config_mode_auto_restart=1 && \
 utility2 shRun shIstanbulCover test.js",
-        "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
+        "start2": "utility2 start index2.js",
+        "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js",
+        "test2": "utility2-istanbul cover index2.js"
     },
-    "version": "2016.10.1"
+    "version": "2016.10.2"
 }
 ```
 
