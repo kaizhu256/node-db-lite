@@ -35,5 +35,5 @@
         "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js",
         "test2": "utility2-istanbul cover index2.js"
     },
-    "version": "2016.10.2"
+    "version": "2016.10.3"
 }

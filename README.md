@@ -30,21 +30,12 @@ this zero-dependency package will provide a persistent, in-browser database
 [![api-doc](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/screen-capture.docApiCreate.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-db-lite_2Ftmp_2Fbuild_2Fdoc.api.html.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/doc.api.html)
 
 #### todo
-- persistence - re-implement
-- persistence - pause db operations when loading
-- auto-cleanup soft-delete
+- add ttl-cache
 - none
 
-#### change since 6c1363ea
-- npm publish 2016.10.2
-- rewrite replacing trees with native javascript dict
-- fix function storageGetItem in node js-env
-- rename createdAt to _timeCreated and updatedAt to _timeModified
-- optimization - soft-delete dbRow's in dbTable, and mark it as dirty
-- function _DbTable.prototype.crudFindMany - add or operator
-- function _DbTable.prototype.crudFindMany - add projection feature
-- README.md - add cdn-download links
-- README.md - replace alpha api-doc with beta api-doc
+#### change since a30e0b67
+- npm publish 2016.10.3
+- re-implement persistence
 - none
 
 #### this package requires
@@ -141,6 +132,15 @@ instruction
             : require('db-lite').local;
         // export local
         local.global.local = local;
+        // load db
+        local.db.dbLoad(function () {
+            console.log('db loaded from ' + local.storageDir);
+        });
+        /* istanbul ignore next */
+        (local.utility2 || {}).testRunBefore = function () {
+            local.utility2.onReadyBefore.counter += 1;
+            local.db.dbReset(local.utility2.onReadyBefore);
+        };
     }());
     switch (local.modeJs) {
 
@@ -148,18 +148,6 @@ instruction
 
     // run browser js-env code - post-init
     case 'browser':
-        ['error', 'log'].forEach(function (key) {
-            console['_' + key] = console[key];
-            console[key] = function () {
-                console['_' + key].apply(console, arguments);
-                document.querySelector('#outputTextarea1').value +=
-                    Array.prototype.slice.call(arguments).map(function (arg) {
-                        return typeof arg === 'string'
-                            ? arg
-                            : local.db.jsonStringifyOrdered(arg, null, 4);
-                    }).join(' ') + '\n';
-            };
-        });
         /* istanbul ignore next */
         local.testRun = function (event) {
             var reader, tmp;
@@ -192,22 +180,25 @@ instruction
             case 'dbResetButton1':
                 document.querySelector('#outputTextarea1').value = '';
                 console.log('resetting db-lite database ...');
-                local.db.dbClear(function () {
+                local.db.dbReset(function () {
                     console.log('... resetted db-lite database');
                 });
                 break;
             case 'testRunButton1':
+                // show tests
                 if (document.querySelector('#testReportDiv1').style.display === 'none') {
                     document.querySelector('#testReportDiv1').style.display = 'block';
                     document.querySelector('#testRunButton1').innerText = 'hide internal test';
                     local.modeTest = true;
                     local.utility2.testRun(local);
+                // hide tests
                 } else {
                     document.querySelector('#testReportDiv1').style.display = 'none';
                     document.querySelector('#testRunButton1').innerText = 'run internal test';
                 }
                 break;
             default:
+                // reset stdout
                 document.querySelector('#outputTextarea1').value = '';
                 try {
                     /*jslint evil: true*/
@@ -215,13 +206,27 @@ instruction
                 } catch (errorCaught) {
                     document.querySelector('#outputTextarea1').value = errorCaught.stack;
                 }
+                // scroll stdout to bottom
+                document.querySelector('#outputTextarea1').scrollTop =
+                    document.querySelector('#outputTextarea1').scrollHeight;
             }
         };
+        // log stderr and stdout to #outputTextarea1
+        ['error', 'log'].forEach(function (key) {
+            console['_' + key] = console[key];
+            console[key] = function () {
+                console['_' + key].apply(console, arguments);
+                document.querySelector('#outputTextarea1').value +=
+                    Array.from(arguments).map(function (arg) {
+                        return typeof arg === 'string'
+                            ? arg
+                            : local.db.jsonStringifyOrdered(arg, null, 4);
+                    }).join(' ') + '\n';
+            };
+        });
         // init event-handling
         ['change', 'click'].forEach(function (event) {
-            Array.prototype.slice.call(
-                document.querySelectorAll('.on' + event)
-            ).forEach(function (element) {
+            Array.from(document.querySelectorAll('.on' + event)).forEach(function (element) {
                 element.addEventListener(event, local.testRun);
             });
         });
@@ -323,19 +328,21 @@ utility2-comment -->\n\
     </label>\n\
 <textarea id="inputTextarea1">\n\
 var dbTable1;\n\
-dbTable1 = window.db_lite.dbTableCreate({ name: "dbTable1" });\n\
+dbTable1 = window.dbTable1 = window.db_lite.dbTableCreateOne({ name: "dbTable1" });\n\
 dbTable1.idIndexCreate({ name: "email" });\n\
-dbTable1.crudSetOne({ email: "a@a.com", field1: 1, field2: "aa" });\n\
-dbTable1.crudSetOne({ email: "b@b.com", field1: 2, field2: "bb" });\n\
-dbTable1.crudSetOne({ email: "c@c.com", field1: 3, field2: "cc" });\n\
-dbTable1.crudRemoveOne({ email: "a@a.com" });\n\
-dbTable1.crudUpdateOne({ email: "b@b.com", field1: -1 });\n\
-console.log(dbTable1.crudFindMany({\n\
+dbTable1.crudSetOneById({ email: "a@a.com", field1: 1, field2: "aa" });\n\
+dbTable1.crudSetOneById({ email: "b@b.com", field1: 2, field2: "bb" });\n\
+dbTable1.crudSetOneById({ email: "c@c.com", field1: 3, field2: "cc" });\n\
+dbTable1.crudRemoveOneById({ email: "a@a.com" });\n\
+dbTable1.crudUpdateOneById({ email: "b@b.com", field1: -1 });\n\
+dbTable1.crudSetOneById({ field1: Math.random() });\n\
+console.log(dbTable1.crudGetManyByQuery({\n\
     limit: Infinity,\n\
     query: { field1: { $gte: -Infinity, $lte: Infinity } },\n\
     skip: 0,\n\
     sort: [{ fieldName: "_timeModified", idDescending: true }]\n\
 }));\n\
+console.log(dbTable1.crudCountAll());\n\
 </textarea>\n\
     <button class="onclick" id="dbEvalButton1">eval script</button><br>\n\
     <label>stderr and stdout</label>\n\
@@ -456,7 +463,7 @@ utility2 shRun shIstanbulCover test.js",
         "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js",
         "test2": "utility2-istanbul cover index2.js"
     },
-    "version": "2016.10.2"
+    "version": "2016.10.3"
 }
 ```
 
