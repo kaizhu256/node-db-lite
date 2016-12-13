@@ -11,8 +11,8 @@ this zero-dependency package will provide a persistent, in-browser database
 
 
 # cdn download
-- [http://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/assets.db-lite.js](http://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/assets.db-lite.js)
-- [http://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/assets.db-lite.min.js](http://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/assets.db-lite.min.js)
+- [https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/assets.db-lite.js](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/assets.db-lite.js)
+- [https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/assets.db-lite.min.js](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/assets.db-lite.min.js)
 
 
 
@@ -33,9 +33,13 @@ this zero-dependency package will provide a persistent, in-browser database
 - add ttl-cache
 - none
 
-#### change since a30e0b67
-- npm publish 2016.10.3
-- re-implement persistence
+#### change since 627437f8
+- npm publish 2016.12.1
+- fix persistence-cancel handling-behavior
+- rename function clear to crudRemoveAll
+- rename function reset to drop
+- rename files index.* -> lib.db.*
+- rename field _timeModified -> _timeUpdated
 - none
 
 #### this package requires
@@ -83,9 +87,10 @@ this script will will demo the browser-version of db-lite
 instruction
     1. save this script as example.js
     2. run the shell command:
-        $ npm install db-lite && export PORT=8081 && node example.js
-    3. open a browser to http://localhost:8081
-    4. edit or paste script in browser to eval
+        $ npm install db-lite && \
+            export PORT=8081 && \
+            node example.js
+    3. play with the browser-demo on http://localhost:8081
 */
 
 /* istanbul instrument in package db-lite */
@@ -123,13 +128,14 @@ instruction
                     'node';
             }
         }());
-        /* istanbul ignore next */
-        // re-init local
-        local = local.modeJs === 'browser'
-            ? window.db_lite.local
-            : module.isRollup
-            ? module
-            : require('db-lite').local;
+        // init global
+        local.global = local.modeJs === 'browser'
+            ? window
+            : global;
+        // init utility2_rollup
+        local = local.global.utility2_rollup || (local.modeJs === 'browser'
+            ? local.global.utility2_db
+            : require('db-lite'));
         // export local
         local.global.local = local;
         // load db
@@ -137,9 +143,9 @@ instruction
             console.log('db loaded from ' + local.storageDir);
         });
         /* istanbul ignore next */
-        (local.utility2 || {}).testRunBefore = function () {
-            local.utility2.onReadyBefore.counter += 1;
-            local.db.dbReset(local.utility2.onReadyBefore);
+        (local.global.utility2 || {})._testRunBefore = function () {
+            local.onReadyBefore.counter += 1;
+            local.db.dbDrop(local.onReadyBefore);
         };
     }());
     switch (local.modeJs) {
@@ -180,7 +186,7 @@ instruction
             case 'dbResetButton1':
                 document.querySelector('#outputTextarea1').value = '';
                 console.log('resetting db-lite database ...');
-                local.db.dbReset(function () {
+                local.db.dbDrop(function () {
                     console.log('... resetted db-lite database');
                 });
                 break;
@@ -190,7 +196,7 @@ instruction
                     document.querySelector('#testReportDiv1').style.display = 'block';
                     document.querySelector('#testRunButton1').innerText = 'hide internal test';
                     local.modeTest = true;
-                    local.utility2.testRun(local);
+                    local.testRunDefault(local);
                 // hide tests
                 } else {
                     document.querySelector('#testReportDiv1').style.display = 'none';
@@ -252,9 +258,7 @@ instruction
 <head>\n\
 <meta charset="UTF-8">\n\
 <meta name="viewport" content="width=device-width, initial-scale=1">\n\
-<title>\n\
-{{envDict.npm_package_name}} v{{envDict.npm_package_version}}\n\
-</title>\n\
+<title>{{env.npm_package_name}} v{{env.npm_package_version}}</title>\n\
 <style>\n\
 /*csslint\n\
     box-sizing: false,\n\
@@ -293,32 +297,34 @@ textarea[readonly] {\n\
 </style>\n\
 </head>\n\
 <body>\n\
+<!-- utility2-comment\n\
+    <div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 0.5s, width 1.5s; width: 25%;"></div>\n\
+utility2-comment -->\n\
     <h1>\n\
 <!-- utility2-comment\n\
-        <div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 0.5s, width 1.5s; width: 25%;"></div>\n\
         <a\n\
-            {{#if envDict.npm_package_homepage}}\n\
-            href="{{envDict.npm_package_homepage}}"\n\
-            {{/if envDict.npm_package_homepage}}\n\
+            {{#if env.npm_package_homepage}}\n\
+            href="{{env.npm_package_homepage}}"\n\
+            {{/if env.npm_package_homepage}}\n\
             target="_blank"\n\
         >\n\
 utility2-comment -->\n\
-            {{envDict.npm_package_name}} v{{envDict.npm_package_version}}\n\
+            {{env.npm_package_name}} v{{env.npm_package_version}}\n\
 <!-- utility2-comment\n\
         </a>\n\
 utility2-comment -->\n\
     </h1>\n\
-    <h3>{{envDict.npm_package_description}}</h3>\n\
+    <h3>{{env.npm_package_description}}</h3>\n\
 <!-- utility2-comment\n\
     <h4><a download href="assets.app.js">download standalone app</a></h4>\n\
     <button class="onclick" id="testRunButton1">run internal test</button><br>\n\
     <div id="testReportDiv1" style="display: none;"></div>\n\
 utility2-comment -->\n\
 \n\
-    <button class="onclick" id="dbResetButton1">reset db-lite database</button><br>\n\
-    <button class="onclick" id="dbExportButton1">export db-lite database -> file</button><br>\n\
+    <button class="onclick" id="dbResetButton1">reset database</button><br>\n\
+    <button class="onclick" id="dbExportButton1">export database -&gt; file</button><br>\n\
     <a download="db.persistence.json" href="" id="dbExportA1"></a>\n\
-    <button class="onclick" id="dbImportButton1">import db-lite database <- file</button><br>\n\
+    <button class="onclick" id="dbImportButton1">import database &lt;- file</button><br>\n\
     <input class="onchange zeroPixel" type="file" id="dbImportInput1">\n\
     <label>edit or paste script below to\n\
         <a\n\
@@ -328,7 +334,7 @@ utility2-comment -->\n\
     </label>\n\
 <textarea id="inputTextarea1">\n\
 var dbTable1;\n\
-dbTable1 = window.dbTable1 = window.db_lite.dbTableCreateOne({ name: "dbTable1" });\n\
+dbTable1 = window.dbTable1 = window.utility2_db.dbTableCreateOne({ name: "dbTable1" });\n\
 dbTable1.idIndexCreate({ name: "email" });\n\
 dbTable1.crudSetOneById({ email: "a@a.com", field1: 1, field2: "aa" });\n\
 dbTable1.crudSetOneById({ email: "b@b.com", field1: 2, field2: "bb" });\n\
@@ -340,7 +346,7 @@ console.log(dbTable1.crudGetManyByQuery({\n\
     limit: Infinity,\n\
     query: { field1: { $gte: -Infinity, $lte: Infinity } },\n\
     skip: 0,\n\
-    sort: [{ fieldName: "_timeModified", idDescending: true }]\n\
+    sort: [{ fieldName: "_timeUpdated", idDescending: true }]\n\
 }));\n\
 console.log(dbTable1.crudCountAll());\n\
 </textarea>\n\
@@ -353,7 +359,7 @@ console.log(dbTable1.crudCountAll());\n\
     {{#unless isRollup}}\n\
 utility2-comment -->\n\
     <script src="assets.utility2.rollup.js"></script>\n\
-    <script src="jsonp.utility2.stateInit?callback=window.utility2.stateInit"></script>\n\
+    <script src="jsonp.utility2._stateInit?callback=window.utility2._stateInit"></script>\n\
     <script src="assets.db-lite.js"></script>\n\
     <script src="assets.example.js"></script>\n\
     <script src="assets.test.js"></script>\n\
@@ -365,7 +371,7 @@ utility2-comment -->\n\
 ';
         /* jslint-ignore-end */
         local['/'] = local.templateIndexHtml
-            .replace((/\{\{envDict\.(\w+?)\}\}/g), function (match0, match1) {
+            .replace((/\{\{env\.(\w+?)\}\}/g), function (match0, match1) {
                 // jslint-hack
                 String(match0);
                 switch (match1) {
@@ -377,7 +383,7 @@ utility2-comment -->\n\
                     return '0.0.1';
                 }
             });
-        if (module.isRollup) {
+        if (local.global.utility2_rollup) {
             break;
         }
         try {
@@ -385,7 +391,7 @@ utility2-comment -->\n\
         } catch (ignore) {
         }
         local['/assets.db-lite.js'] = local.fs.readFileSync(
-            local.db.__dirname + '/index.js',
+            local.db.__dirname + '/lib.db.js',
             'utf8'
         );
         // run the cli
@@ -406,7 +412,7 @@ utility2-comment -->\n\
                 response.end();
             }
         }).listen(process.env.PORT);
-        // if $npm_config_timeout_exit is defined,
+        // if $npm_config_timeout_exit exists,
         // then exit this process after $npm_config_timeout_exit ms
         if (Number(process.env.npm_config_timeout_exit)) {
             setTimeout(process.exit, Number(process.env.npm_config_timeout_exit));
@@ -447,6 +453,7 @@ utility2-comment -->\n\
         "web", "web-sql", "websql"
     ],
     "license": "MIT",
+    "main": "lib.db",
     "name": "db-lite",
     "os": ["darwin", "linux"],
     "repository": {
@@ -459,11 +466,9 @@ utility2-comment -->\n\
 export PORT=${PORT:-8080} && \
 export npm_config_mode_auto_restart=1 && \
 utility2 shRun shIstanbulCover test.js",
-        "start2": "utility2 start index2.js",
-        "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js",
-        "test2": "utility2-istanbul cover index2.js"
+        "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
     },
-    "version": "2016.10.3"
+    "version": "2016.12.1"
 }
 ```
 
@@ -497,7 +502,7 @@ shBuildCiTestPre() {(set -e
 shBuildCiTestPost() {(set -e
 # this function will run the post-test build
     # if running legacy-node, then return
-    [ "$(node --version)" \< "v5.0" ] && return || true
+    [ "$(node --version)" \< "v7.0" ] && return || true
     export NODE_ENV=production
     # deploy app to gh-pages
     export TEST_URL="https://$(printf "$GITHUB_REPO" | \
