@@ -17,8 +17,6 @@
 
     // run shared js-env code - pre-init
     (function () {
-        // init Error.stackTraceLimit
-        Error.stackTraceLimit = 20;
         // init local
         local = {};
         // init modeJs
@@ -1034,20 +1032,29 @@
 
     // run node js-env code - function
     case 'node':
-        local.testCase_build_app = function (options, onError) {
+        local.testCase_buildApiDoc_default = function (options, onError) {
         /*
-         * this function will test build's app handling-behavior
+         * this function will test buildApiDoc's handling-behavior
          */
+            options = {};
+            local.buildApiDoc(options, onError);
+        };
+
+        local.testCase_buildApp_default = function (options, onError) {
+        /*
+         * this function will test buildApp's handling-behavior
+         */
+            local.testCase_buildReadme_default(options, local.onErrorDefault);
             options = [];
             local.buildApp(options, onError);
         };
 
-        local.testCase_build_doc = function (options, onError) {
+        local.testCase_buildReadme_default = function (options, onError) {
         /*
-         * this function will test build's doc handling-behavior
+         * this function will test buildReadme's handling-behavior
          */
             options = {};
-            local.buildDoc(options, onError);
+            local.buildReadme(options, onError);
         };
 
         local.testCase_webpage_default = function (options, onError) {
