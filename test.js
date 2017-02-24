@@ -1,4 +1,4 @@
-/* istanbul instrument in package db-lite */
+/* istanbul instrument in package db */
 /*jslint
     bitwise: true,
     browser: true,
@@ -642,6 +642,9 @@
             local.assertJsonEqual(options.data.field2, 2);
             local.assertJsonEqual(options.data.field3, 3);
             // test idIndexCreate's create handling-behavior
+            // coverage-hack - $meta.isRemoved
+            options.dbTable.crudSetOneById({ _id: 'undefined' });
+            options.dbTable.crudRemoveOneById({ _id: 'undefined' });
             options._id = options.data._id;
             options.dbTable.idIndexCreate({ isInteger: true, name: 'id2' });
             // test crudGetManyById's get handling-behavior
@@ -897,7 +900,8 @@
             // load db
             local.dbLoad();
             // import db
-            local.dbImport('testCase_dbTable_persistence idIndexCreate {"name":"_id"}\n' +
+            local.dbImport('testCase_dbTable_persistence ttlSet 0\n' +
+                'testCase_dbTable_persistence idIndexCreate {"name":"_id"}\n' +
                 'testCase_dbTable_persistence idIndexCreate {"name":"id2"}\n' +
                 'testCase_dbTable_persistence dbRowSet {"_id":"id1"}\n' +
                 'undefined undefined undefined');
@@ -949,6 +953,24 @@
                 options.dbTable._persist();
                 onError();
             }, 2000);
+        };
+
+        local.testCase_dbTable_ttl = function (options, onError) {
+        /*
+         * this function will test dbTable's ttl handling-behavior
+         */
+            options = {};
+            options.dbTable = local.dbTableCreateOne({ name: 'testCase_dbTable_ttl' });
+            options.dbTable.crudSetOneById({});
+            options.dbTable.ttlSet(100);
+            options.dbTable.crudSetOneById({});
+            // validate dbRowCount
+            local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
+            setTimeout(function () {
+                // validate dbRowCount
+                local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+                onError();
+            }, 500);
         };
 
         local.testCase_sortCompare_default = function (options, onError) {

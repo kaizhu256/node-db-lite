@@ -12,7 +12,6 @@ this zero-dependency package will provide a persistent, in-browser database
 
 # cdn download
 - [https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/assets.db.rollup.js](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/assets.db.rollup.js)
-- [https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/assets.db.rollup.min.js](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/assets.db.rollup.min.js)
 
 
 
@@ -30,13 +29,15 @@ this zero-dependency package will provide a persistent, in-browser database
 [![api-doc](https://kaizhu256.github.io/node-db-lite/build/screen-capture.apiDoc.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-db-lite_2Ftmp_2Fbuild_2Fapi-doc.html.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/api-doc.html)
 
 #### todo
-- add ttl-cache
+- add remote http-api
 - none
 
-#### change since 06c109e1
-- npm publish 2017.2.1
-- add file assets.db.rollup.js
-- revamp README.md
+#### change since 420c05c1
+- npm publish 2017.2.2
+- add ttl-cache
+- do not auto-uglify js-assets in production
+- replace env var npm_package_name with npm_package_nameAlias in istanbul code-coverage
+- use async-api's in example.js
 - none
 
 #### this package requires
@@ -90,6 +91,7 @@ instruction
 
 
 
+/* istanbul instrument in package db */
 /*jslint
     bitwise: true,
     browser: true,
@@ -138,20 +140,62 @@ instruction
         local.db.dbLoad(function () {
             console.log('db loaded from ' + local.storageDir);
         });
-        (local.global.utility2 || {})._testRunBefore = function () {
-            local.onReadyBefore.counter += 1;
-            local.db.dbDrop(local.onReadyBefore);
-        };
+        // coverage-hack
+        [null, local.global.utility2].forEach(function (element) {
+            if (!element) {
+                return;
+            }
+            element._testRunBefore = function () {
+                local.onReadyBefore.counter += 1;
+                local.db.dbDrop(local.onReadyBefore);
+            };
+        });
     }());
     switch (local.modeJs) {
 
 
 
+    // post-init
+    /* istanbul ignore next */
     // run browser js-env code - post-init
     case 'browser':
-        local.testRun = function (event) {
+        local.testRunBrowser = function (event) {
             var reader, tmp;
-            switch (event && event.currentTarget.id) {
+            if (!event || (event &&
+                    event.currentTarget &&
+                    event.currentTarget.className &&
+                    event.currentTarget.className.includes &&
+                    event.currentTarget.className.includes('onreset'))) {
+                // reset output
+                Array.from(
+                    document.querySelectorAll('body > .resettable')
+                ).forEach(function (element) {
+                    switch (element.tagName) {
+                    case 'INPUT':
+                    case 'TEXTAREA':
+                        element.value = '';
+                        break;
+                    default:
+                        element.textContent = '';
+                    }
+                });
+            }
+            switch (event && event.currentTarget && event.currentTarget.id) {
+            case 'testRunButton1':
+                // show tests
+                if (document.querySelector('#testReportDiv1').style.display === 'none') {
+                    document.querySelector('#testReportDiv1').style.display = 'block';
+                    document.querySelector('#testRunButton1').textContent =
+                        'hide internal test';
+                    local.modeTest = true;
+                    local.testRunDefault(local);
+                // hide tests
+                } else {
+                    document.querySelector('#testReportDiv1').style.display = 'none';
+                    document.querySelector('#testRunButton1').textContent = 'run internal test';
+                }
+                break;
+            // custom-case
             case 'dbExportButton1':
                 tmp = window.URL.createObjectURL(new window.Blob([local.db.dbExport()]));
                 document.querySelector('#dbExportA1').href = tmp;
@@ -164,7 +208,6 @@ instruction
                 document.querySelector('#dbImportInput1').click();
                 break;
             case 'dbImportInput1':
-                document.querySelector('#outputTextarea1').value = '';
                 console.log('importing db-lite database ...');
                 reader = new window.FileReader();
                 tmp = document.querySelector('#dbImportInput1').files[0];
@@ -178,62 +221,59 @@ instruction
                 reader.readAsText(tmp);
                 break;
             case 'dbResetButton1':
-                document.querySelector('#outputTextarea1').value = '';
                 console.log('resetting db-lite database ...');
                 local.db.dbDrop(function () {
                     console.log('... resetted db-lite database');
                 });
                 break;
-            case 'testRunButton1':
-                // show tests
-                if (document.querySelector('#testReportDiv1').style.display === 'none') {
-                    document.querySelector('#testReportDiv1').style.display = 'block';
-                    document.querySelector('#testRunButton1').innerText = 'hide internal test';
-                    local.modeTest = true;
-                    local.testRunDefault(local);
-                // hide tests
-                } else {
-                    document.querySelector('#testReportDiv1').style.display = 'none';
-                    document.querySelector('#testRunButton1').innerText = 'run internal test';
-                }
-                break;
-            default:
-                // reset stdout
-                document.querySelector('#outputTextarea1').value = '';
+            }
+            if (document.querySelector('#inputTextareaEval1') && (!event || (event &&
+                    event.currentTarget &&
+                    event.currentTarget.className &&
+                    event.currentTarget.className.includes &&
+                    event.currentTarget.className.includes('oneval')))) {
+                // try to eval input-code
                 try {
                     /*jslint evil: true*/
-                    eval(document.querySelector('#inputTextarea1').value);
+                    eval(document.querySelector('#inputTextareaEval1').value);
                 } catch (errorCaught) {
-                    document.querySelector('#outputTextarea1').value = errorCaught.stack;
+                    console.error(errorCaught.stack);
                 }
-                // scroll stdout to bottom
-                document.querySelector('#outputTextarea1').scrollTop =
-                    document.querySelector('#outputTextarea1').scrollHeight;
             }
         };
-        // log stderr and stdout to #outputTextarea1
+        // log stderr and stdout to #outputTextareaStdout1
         ['error', 'log'].forEach(function (key) {
-            console['_' + key] = console[key];
+            console[key + '_original'] = console[key];
             console[key] = function () {
-                console['_' + key].apply(console, arguments);
-                document.querySelector('#outputTextarea1').value +=
-                    Array.from(arguments).map(function (arg) {
-                        return typeof arg === 'string'
-                            ? arg
-                            : local.db.jsonStringifyOrdered(arg, null, 4);
-                    }).join(' ') + '\n';
+                var element;
+                console[key + '_original'].apply(console, arguments);
+                element = document.querySelector('#outputTextareaStdout1');
+                if (!element) {
+                    return;
+                }
+                // append text to #outputTextareaStdout1
+                element.value += Array.from(arguments).map(function (arg) {
+                    return typeof arg === 'string'
+                        ? arg
+                        : JSON.stringify(arg, null, 4);
+                }).join(' ') + '\n';
+                // scroll textarea to bottom
+                element.scrollTop = element.scrollHeight;
             };
         });
         // init event-handling
-        ['change', 'click'].forEach(function (event) {
+        ['change', 'click', 'keyup'].forEach(function (event) {
             Array.from(document.querySelectorAll('.on' + event)).forEach(function (element) {
-                element.addEventListener(event, local.testRun);
+                element.addEventListener(event, local.testRunBrowser);
             });
         });
+        // run tests
+        local.testRunBrowser();
         break;
 
 
 
+    /* istanbul ignore next */
     // run node js-env code - post-init
     case 'node':
         // export local
@@ -281,7 +321,7 @@ body > button {\n\
 }\n\
 textarea {\n\
     font-family: monospace;\n\
-    height: 15rem;\n\
+    height: 10rem;\n\
     width: 100%;\n\
 }\n\
 textarea[readonly] {\n\
@@ -317,45 +357,86 @@ utility2-comment -->\n\
     <h3>{{env.npm_package_description}}</h3>\n\
 <!-- utility2-comment\n\
     <h4><a download href="assets.app.js">download standalone app</a></h4>\n\
-    <button class="onclick" id="testRunButton1">run internal test</button><br>\n\
+    <button class="onclick onreset" id="testRunButton1">run internal test</button><br>\n\
     <div id="testReportDiv1" style="display: none;"></div>\n\
 utility2-comment -->\n\
 \n\
-    <button class="onclick" id="dbResetButton1">reset database</button><br>\n\
+\n\
+\n\
+    <button class="onclick onreset" id="dbResetButton1">reset database</button><br>\n\
     <button class="onclick" id="dbExportButton1">export database -&gt; file</button><br>\n\
     <a download="db.persistence.json" href="" id="dbExportA1"></a>\n\
     <button class="onclick" id="dbImportButton1">import database &lt;- file</button><br>\n\
-    <input class="onchange zeroPixel" type="file" id="dbImportInput1">\n\
+    <input class="onchange onreset zeroPixel" type="file" id="dbImportInput1">\n\
     <label>edit or paste script below to\n\
         <a\n\
             href="https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/api-doc.html"\n\
             target="_blank"\n\
         >eval</a>\n\
     </label>\n\
-<textarea id="inputTextarea1">\n\
-var dbTable1;\n\
-dbTable1 = window.dbTable1 = window.utility2_db.dbTableCreateOne({ name: "dbTable1" });\n\
-dbTable1.idIndexCreate({ name: "email" });\n\
-dbTable1.crudSetOneById({ email: "a@a.com", field1: 1, field2: "aa" });\n\
-dbTable1.crudSetOneById({ email: "b@b.com", field1: 2, field2: "bb" });\n\
-dbTable1.crudSetOneById({ email: "c@c.com", field1: 3, field2: "cc" });\n\
-dbTable1.crudRemoveOneById({ email: "a@a.com" });\n\
-dbTable1.crudUpdateOneById({ email: "b@b.com", field1: -1 });\n\
-dbTable1.crudSetOneById({ field1: Math.random() });\n\
-console.log(dbTable1.crudGetManyByQuery({\n\
-    limit: Infinity,\n\
-    query: { field1: { $gte: -Infinity, $lte: Infinity } },\n\
-    skip: 0,\n\
-    sort: [{ fieldName: "_timeUpdated", idDescending: true }]\n\
-}));\n\
-console.log(dbTable1.crudCountAll());\n\
+<textarea id="inputTextareaEval1">\n\
+/*jslint browser: true, node: true*/\n\
+"use strict";\n\
+var dbTable1, modeNext, onNext;\n\
+modeNext = 0;\n\
+onNext = function (error, data) {\n\
+    modeNext = error\n\
+        ? Infinity\n\
+        : modeNext + 1;\n\
+    switch (modeNext) {\n\
+    case 1:\n\
+        dbTable1 = window.dbTable1 = window.utility2_db.dbTableCreateOne({\n\
+            name: "dbTable1"\n\
+        }, onNext);\n\
+        break;\n\
+    case 2:\n\
+        dbTable1.idIndexCreate({ name: "field1" }, onNext);\n\
+        break;\n\
+    case 3:\n\
+        dbTable1.crudSetOneById({ field1: "aa", field2: 1, field3: "foo" }, onNext);\n\
+        break;\n\
+    case 4:\n\
+        dbTable1.crudSetOneById({ field1: "bb", field2: 2, field3: "bar" }, onNext);\n\
+        break;\n\
+    case 5:\n\
+        dbTable1.crudSetOneById({ field1: "cc", field2: 3, field3: "baz" }, onNext);\n\
+        break;\n\
+    case 6:\n\
+        dbTable1.crudRemoveOneById({ field1: "aa" }, onNext);\n\
+        break;\n\
+    case 7:\n\
+        dbTable1.crudUpdateOneById({ field1: "bb", field2: -1 }, onNext);\n\
+        break;\n\
+    case 8:\n\
+        dbTable1.crudSetOneById({ field2: Math.random() }, onNext);\n\
+        break;\n\
+    case 9:\n\
+        dbTable1.crudGetManyByQuery({\n\
+            limit: Infinity,\n\
+            query: { field2: { $gte: -Infinity, $lte: Infinity } },\n\
+            skip: 0,\n\
+            sort: [{ fieldName: "_timeUpdated", idDescending: true }]\n\
+        }, onNext);\n\
+        break;\n\
+    case 10:\n\
+        console.log(data);\n\
+        dbTable1.crudCountAll(onNext);\n\
+        break;\n\
+    case 11:\n\
+        console.log("number of rows: " + data);\n\
+        break;\n\
+    default:\n\
+        console.error(error.stack);\n\
+    }\n\
+};\n\
+onNext();\n\
 </textarea>\n\
-    <button class="onclick" id="dbEvalButton1">eval script</button><br>\n\
+    <button class="onclick oneval onreset" id="dbEvalButton1">eval script</button><br>\n\
     <label>stderr and stdout</label>\n\
-    <textarea id="outputTextarea1" readonly></textarea>\n\
+    <textarea class="resettable" id="outputTextareaStdout1" readonly></textarea>\n\
 <!-- utility2-comment\n\
     {{#if isRollup}}\n\
-    <script src="assets.app.min.js"></script>\n\
+    <script src="assets.app.js"></script>\n\
     {{#unless isRollup}}\n\
 utility2-comment -->\n\
     <script src="assets.utility2.rollup.js"></script>\n\
@@ -464,8 +545,11 @@ utility2-comment -->\n\
         "nedb",
         "no-sql",
         "nosql",
+        "persist",
         "persistence",
         "persistent",
+        "ttl",
+        "ttl-cache",
         "web-sql",
         "websql"
     ],
@@ -473,6 +557,7 @@ utility2-comment -->\n\
     "main": "lib.db.js",
     "name": "db-lite",
     "nameAlias": "db",
+    "nameOriginal": "db-lite",
     "os": [
         "darwin",
         "linux"
@@ -483,12 +568,14 @@ utility2-comment -->\n\
     },
     "scripts": {
         "build-ci": "utility2 shRun shReadmeBuild",
+        "env": "env",
         "heroku-postbuild": "npm install 'kaizhu256/node-utility2#alpha' && utility2 shRun shDeployHeroku",
         "postinstall": "if [ -f lib.db-lite.npm-scripts.sh ]; then ./lib.db-lite.npm-scripts.sh postinstall; fi",
+        "publish-alias": "VERSION=$(npm info $npm_package_name version); for ALIAS in browserdb cachedb microdb nanodb netdb swaggerdb swggdb udb; do utility2 shRun shNpmPublish $ALIAS $VERSION; utility2 shRun shNpmTestPublished $ALIAS || exit $?; done",
         "start": "export PORT=${PORT:-8080} && export npm_config_mode_auto_restart=1 && utility2 shRun shIstanbulCover test.js",
         "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
     },
-    "version": "2017.2.1"
+    "version": "2017.2.2"
 }
 ```
 
@@ -513,14 +600,18 @@ shBuild() {(set -e
     # cleanup github-gh-pages dir
     # export BUILD_GITHUB_UPLOAD_PRE_SH="rm -fr build"
     # init github-gh-pages commit-limit
-    export COMMIT_LIMIT=16
-    # if branch is alpha, beta, or master, then run default build
-    if [ "$CI_BRANCH" = alpha ] ||
-        [ "$CI_BRANCH" = beta ] ||
-        [ "$CI_BRANCH" = master ]
-    then
+    export COMMIT_LIMIT=20
+    case "$CI_BRANCH" in
+    alpha)
         shBuildCiDefault
-    fi
+        ;;
+    beta)
+        shBuildCiDefault
+        ;;
+    master)
+        shBuildCiDefault
+        ;;
+    esac
 )}
 
 shBuildCiTestPost() {(set -e
