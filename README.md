@@ -1,8 +1,7 @@
-db-lite
-=======
+# db-lite
 this zero-dependency package will provide a persistent, in-browser database
 
-[![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-db-lite.svg)](https://travis-ci.org/kaizhu256/node-db-lite) [![istanbul-coverage](https://kaizhu256.github.io/node-db-lite/build..alpha..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-db-lite/build..alpha..travis-ci.org/coverage.html/index.html)
+[![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-db-lite.svg)](https://travis-ci.org/kaizhu256/node-db-lite) [![istanbul-coverage](https://kaizhu256.github.io/node-db-lite/build/coverage.badge.svg)](https://kaizhu256.github.io/node-db-lite/build/coverage.html/index.html)
 
 [![NPM](https://nodei.co/npm/db-lite.png?downloads=true)](https://www.npmjs.com/package/db-lite)
 
@@ -18,26 +17,25 @@ this zero-dependency package will provide a persistent, in-browser database
 # live demo
 - [https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/index.html](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/index.html)
 
-[![github.com test-server](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployGithub.browser._2Fnode-db-lite_2Fbuild..alpha..travis-ci.org_2Fapp_2Findex.html.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/index.html)
+[![github.com test-server](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployGithub.browser._2Fnode-db-lite_2Fbuild_2Fapp_2Findex.html.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/index.html)
 
 
 
 # documentation
-#### api-doc
-- [https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/api-doc.html](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/api-doc.html)
+#### apidoc
+- [https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html)
 
-[![api-doc](https://kaizhu256.github.io/node-db-lite/build/screen-capture.apiDoc.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-db-lite_2Ftmp_2Fbuild_2Fapi-doc.html.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/api-doc.html)
+[![apidoc](https://kaizhu256.github.io/node-db-lite/build/screen-capture.buildApidoc.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-db-lite_2Ftmp_2Fbuild_2Fapidoc.html.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html)
 
 #### todo
 - add remote http-api
+- rename to nedb-lite
 - none
 
-#### change since 420c05c1
-- npm publish 2017.2.2
-- add ttl-cache
-- do not auto-uglify js-assets in production
-- replace env var npm_package_name with npm_package_nameAlias in istanbul code-coverage
-- use async-api's in example.js
+#### change since 44610aca
+- npm publish 2017.3.16
+- remove build-function shBuildCiTestPre
+- rename name api-doc -> apidoc
 - none
 
 #### this package requires
@@ -50,8 +48,8 @@ this zero-dependency package will provide a persistent, in-browser database
 
 | git-branch : | [master](https://github.com/kaizhu256/node-db-lite/tree/master) | [beta](https://github.com/kaizhu256/node-db-lite/tree/beta) | [alpha](https://github.com/kaizhu256/node-db-lite/tree/alpha)|
 |--:|:--|:--|:--|
-| test-server-1 : | [![github.com test-server](https://kaizhu256.github.io/node-db-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-db-lite/build..master..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-db-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-db-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-db-lite/build..alpha..travis-ci.org/app/index.html)|
-| test-server-2 : | [![heroku.com test-server](https://kaizhu256.github.io/node-db-lite/heroku-logo.75x25.png)](https://h1-db-master.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-db-lite/heroku-logo.75x25.png)](https://h1-db-beta.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-db-lite/heroku-logo.75x25.png)](https://h1-db-alpha.herokuapp.com)|
+| test-server-github : | [![github.com test-server](https://kaizhu256.github.io/node-db-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-db-lite/build..master..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-db-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/index.html) | [![github.com test-server](https://kaizhu256.github.io/node-db-lite/GitHub-Mark-32px.png)](https://kaizhu256.github.io/node-db-lite/build..alpha..travis-ci.org/app/index.html)|
+| test-server-heroku : | [![heroku.com test-server](https://kaizhu256.github.io/node-db-lite/heroku-logo.75x25.png)](https://h1-db-master.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-db-lite/heroku-logo.75x25.png)](https://h1-db-beta.herokuapp.com) | [![heroku.com test-server](https://kaizhu256.github.io/node-db-lite/heroku-logo.75x25.png)](https://h1-db-alpha.herokuapp.com)|
 | test-report : | [![test-report](https://kaizhu256.github.io/node-db-lite/build..master..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-db-lite/build..master..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/test-report.html) | [![test-report](https://kaizhu256.github.io/node-db-lite/build..alpha..travis-ci.org/test-report.badge.svg)](https://kaizhu256.github.io/node-db-lite/build..alpha..travis-ci.org/test-report.html)|
 | coverage : | [![istanbul-coverage](https://kaizhu256.github.io/node-db-lite/build..master..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-db-lite/build..master..travis-ci.org/coverage.html/index.html) | [![istanbul-coverage](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/coverage.html/index.html) | [![istanbul-coverage](https://kaizhu256.github.io/node-db-lite/build..alpha..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-db-lite/build..alpha..travis-ci.org/coverage.html/index.html)|
 | build-artifacts : | [![build-artifacts](https://kaizhu256.github.io/node-db-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-db-lite/tree/gh-pages/build..master..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-db-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-db-lite/tree/gh-pages/build..beta..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-db-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-db-lite/tree/gh-pages/build..alpha..travis-ci.org)|
@@ -75,7 +73,7 @@ this zero-dependency package will provide a persistent, in-browser database
 ![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.testExampleJs.browser..png)
 
 #### to run this example, follow the instruction in the script below
-- [example.js](https://kaizhu256.github.io/node-db-lite/build/example.js)
+- [example.js](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/example.js)
 ```javascript
 /*
 example.js
@@ -156,8 +154,8 @@ instruction
 
 
     // post-init
-    /* istanbul ignore next */
     // run browser js-env code - post-init
+    /* istanbul ignore next */
     case 'browser':
         local.testRunBrowser = function (event) {
             var reader, tmp;
@@ -273,8 +271,8 @@ instruction
 
 
 
-    /* istanbul ignore next */
     // run node js-env code - post-init
+    /* istanbul ignore next */
     case 'node':
         // export local
         module.exports = local;
@@ -291,7 +289,7 @@ instruction
 <head>\n\
 <meta charset="UTF-8">\n\
 <meta name="viewport" content="width=device-width, initial-scale=1">\n\
-<title>{{env.npm_package_nameAlias}} v{{env.npm_package_version}}</title>\n\
+<title>{{env.npm_package_name}} (v{{env.npm_package_version}})</title>\n\
 <style>\n\
 /*csslint\n\
     box-sizing: false,\n\
@@ -307,6 +305,10 @@ body {\n\
 }\n\
 body > * {\n\
     margin-bottom: 1rem;\n\
+}\n\
+.utility2FooterDiv {\n\
+    margin-top: 20px;\n\
+    text-align: center;\n\
 }\n\
 </style>\n\
 <style>\n\
@@ -338,42 +340,42 @@ textarea[readonly] {\n\
 </head>\n\
 <body>\n\
 <!-- utility2-comment\n\
-    <div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 0.5s, width 1.5s; width: 25%;"></div>\n\
+<div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 0.5s, width 1.5s; width: 25%;"></div>\n\
 utility2-comment -->\n\
-    <h1>\n\
+<h1>\n\
 <!-- utility2-comment\n\
-        <a\n\
-            {{#if env.npm_package_homepage}}\n\
-            href="{{env.npm_package_homepage}}"\n\
-            {{/if env.npm_package_homepage}}\n\
-            target="_blank"\n\
-        >\n\
+    <a\n\
+        {{#if env.npm_package_homepage}}\n\
+        href="{{env.npm_package_homepage}}"\n\
+        {{/if env.npm_package_homepage}}\n\
+        target="_blank"\n\
+    >\n\
 utility2-comment -->\n\
-            {{env.npm_package_nameAlias}} v{{env.npm_package_version}}\n\
+        {{env.npm_package_name}} (v{{env.npm_package_version}})\n\
 <!-- utility2-comment\n\
-        </a>\n\
+    </a>\n\
 utility2-comment -->\n\
-    </h1>\n\
-    <h3>{{env.npm_package_description}}</h3>\n\
+</h1>\n\
+<h3>{{env.npm_package_description}}</h3>\n\
 <!-- utility2-comment\n\
-    <h4><a download href="assets.app.js">download standalone app</a></h4>\n\
-    <button class="onclick onreset" id="testRunButton1">run internal test</button><br>\n\
-    <div id="testReportDiv1" style="display: none;"></div>\n\
+<h4><a download href="assets.app.js">download standalone app</a></h4>\n\
+<button class="onclick onreset" id="testRunButton1">run internal test</button><br>\n\
+<div id="testReportDiv1" style="display: none;"></div>\n\
 utility2-comment -->\n\
 \n\
 \n\
 \n\
-    <button class="onclick onreset" id="dbResetButton1">reset database</button><br>\n\
-    <button class="onclick" id="dbExportButton1">export database -&gt; file</button><br>\n\
-    <a download="db.persistence.json" href="" id="dbExportA1"></a>\n\
-    <button class="onclick" id="dbImportButton1">import database &lt;- file</button><br>\n\
-    <input class="onchange onreset zeroPixel" type="file" id="dbImportInput1">\n\
-    <label>edit or paste script below to\n\
-        <a\n\
-            href="https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/api-doc.html"\n\
-            target="_blank"\n\
-        >eval</a>\n\
-    </label>\n\
+<button class="onclick onreset" id="dbResetButton1">reset database</button><br>\n\
+<button class="onclick" id="dbExportButton1">export database -&gt; file</button><br>\n\
+<a download="db.persistence.json" href="" id="dbExportA1"></a>\n\
+<button class="onclick" id="dbImportButton1">import database &lt;- file</button><br>\n\
+<input class="onchange onreset zeroPixel" type="file" id="dbImportInput1">\n\
+<label>edit or paste script below to\n\
+    <a\n\
+        href="https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html"\n\
+        target="_blank"\n\
+    >eval</a>\n\
+</label>\n\
 <textarea id="inputTextareaEval1">\n\
 /*jslint browser: true, node: true*/\n\
 "use strict";\n\
@@ -431,22 +433,27 @@ onNext = function (error, data) {\n\
 };\n\
 onNext();\n\
 </textarea>\n\
-    <button class="onclick oneval onreset" id="dbEvalButton1">eval script</button><br>\n\
-    <label>stderr and stdout</label>\n\
-    <textarea class="resettable" id="outputTextareaStdout1" readonly></textarea>\n\
+<button class="onclick oneval onreset" id="dbEvalButton1">eval script</button><br>\n\
+<label>stderr and stdout</label>\n\
+<textarea class="resettable" id="outputTextareaStdout1" readonly></textarea>\n\
 <!-- utility2-comment\n\
-    {{#if isRollup}}\n\
-    <script src="assets.app.js"></script>\n\
-    {{#unless isRollup}}\n\
+{{#if isRollup}}\n\
+<script src="assets.app.js"></script>\n\
+{{#unless isRollup}}\n\
 utility2-comment -->\n\
-    <script src="assets.utility2.rollup.js"></script>\n\
-    <script src="jsonp.utility2._stateInit?callback=window.utility2._stateInit"></script>\n\
-    <script src="assets.db.rollup.js"></script>\n\
-    <script src="assets.example.js"></script>\n\
-    <script src="assets.test.js"></script>\n\
+<script src="assets.utility2.rollup.js"></script>\n\
+<script src="jsonp.utility2._stateInit?callback=window.utility2._stateInit"></script>\n\
+<script src="assets.{{env.npm_package_nameAlias}}.rollup.js"></script>\n\
+<script src="assets.example.js"></script>\n\
+<script src="assets.test.js"></script>\n\
 <!-- utility2-comment\n\
-    {{/if isRollup}}\n\
+{{/if isRollup}}\n\
 utility2-comment -->\n\
+<div class="utility2FooterDiv">\n\
+    [ this app was created with\n\
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>\n\
+    ]\n\
+</div>\n\
 </body>\n\
 </html>\n\
 ';
@@ -457,6 +464,7 @@ utility2-comment -->\n\
                 {
                     env: local.objectSetDefault(local.env, {
                         npm_package_description: 'example module',
+                        npm_package_name: 'example',
                         npm_package_nameAlias: 'example',
                         npm_package_version: '0.0.1'
                     })
@@ -470,6 +478,8 @@ utility2-comment -->\n\
                     switch (match1) {
                     case 'npm_package_description':
                         return 'example module';
+                    case 'npm_package_name':
+                        return 'example';
                     case 'npm_package_nameAlias':
                         return 'example';
                     case 'npm_package_version':
@@ -514,7 +524,7 @@ utility2-comment -->\n\
 }());
 ```
 
-#### output from electron
+#### output from browser
 ![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.testExampleJs.browser..png)
 
 #### output from shell
@@ -562,20 +572,21 @@ utility2-comment -->\n\
         "darwin",
         "linux"
     ],
+    "readmeParse": "1",
     "repository": {
         "type": "git",
         "url": "https://github.com/kaizhu256/node-db-lite.git"
     },
     "scripts": {
-        "build-ci": "utility2 shRun shReadmeBuild",
+        "build-ci": "utility2 shReadmeTest build_ci.sh",
         "env": "env",
-        "heroku-postbuild": "npm install 'kaizhu256/node-utility2#alpha' && utility2 shRun shDeployHeroku",
-        "postinstall": "if [ -f lib.db-lite.npm-scripts.sh ]; then ./lib.db-lite.npm-scripts.sh postinstall; fi",
-        "publish-alias": "VERSION=$(npm info $npm_package_name version); for ALIAS in browserdb cachedb microdb nanodb netdb swaggerdb swggdb udb; do utility2 shRun shNpmPublish $ALIAS $VERSION; utility2 shRun shNpmTestPublished $ALIAS || exit $?; done",
-        "start": "export PORT=${PORT:-8080} && export npm_config_mode_auto_restart=1 && utility2 shRun shIstanbulCover test.js",
-        "test": "export PORT=$(utility2 shServerPortRandom) && utility2 test test.js"
+        "heroku-postbuild": "(set -e; npm install 'kaizhu256/node-utility2#alpha'; utility2 shDeployHeroku)",
+        "postinstall": "if [ -f lib.db-lite.npm_scripts.sh ]; then ./lib.db-lite.npm_scripts.sh postinstall; fi",
+        "publish-alias": "VERSION=$(npm info $npm_package_name version); for ALIAS in browser-db browserdb cachedb db_lite microdb nanodb netdb swaggerdb swggdb udb; do utility2 shNpmPublishAs . $ALIAS $VERSION; eval utility2 shNpmTestPublished $ALIAS || exit $?; done",
+        "start": "(set -e; export PORT=${PORT:-8080}; utility2 start test.js)",
+        "test": "(set -e; export PORT=$(utility2 shServerPortRandom); utility2 test test.js)"
     },
-    "version": "2017.2.2"
+    "version": "2017.3.16"
 }
 ```
 
@@ -587,51 +598,38 @@ utility2-comment -->\n\
 
 
 # internal build-script
-- build.sh
+- build_ci.sh
 ```shell
-# build.sh
+# build_ci.sh
 
 # this shell script will run the build for this package
 
-shBuild() {(set -e
-# this function will run the main build
-    # init env
-    . node_modules/.bin/utility2 && shInit
-    # cleanup github-gh-pages dir
-    # export BUILD_GITHUB_UPLOAD_PRE_SH="rm -fr build"
-    # init github-gh-pages commit-limit
-    export COMMIT_LIMIT=20
-    case "$CI_BRANCH" in
-    alpha)
-        shBuildCiDefault
-        ;;
-    beta)
-        shBuildCiDefault
-        ;;
-    master)
-        shBuildCiDefault
-        ;;
-    esac
+shBuildCiInternalPost() {(set -e
+    shDeployGithub
+    shDeployHeroku
+    shReadmeBuildLinkVerify
 )}
 
-shBuildCiTestPost() {(set -e
-# this function will run the post-test build
-    # if running legacy-node, then return
-    [ "$(node --version)" \< "v7.0" ] && return || true
-    export NODE_ENV=production
-    # deploy app to gh-pages
-    (export MODE_BUILD=deployGithub && shDeployGithub) || return $?
-    # deploy app to heroku
-    (export MODE_BUILD=deployHeroku && shDeployHeroku) || return $?
+shBuildCiInternalPre() {(set -e
+    shReadmeTest example.js
+    shReadmeTest example.sh
+    shNpmTestPublished
 )}
 
-shBuildCiTestPre() {(set -e
-# this function will run the pre-test build
-    # test example.js
-    (export MODE_BUILD=testExampleJs && shRunScreenCapture shReadmeTestExampleJs) || return $?
-    # test published-package
-    (export MODE_BUILD=npmTestPublished && shRunScreenCapture shNpmTestPublished) || return $?
+shBuildCiPost() {(set -e
+    return
 )}
 
-shBuild
+shBuildCiPre() {(set -e
+    return
+)}
+
+# run shBuildCi
+eval $(utility2 source)
+shBuildCi
 ```
+
+
+
+# misc
+- this package was created with [utility2](https://github.com/kaizhu256/node-utility2)
