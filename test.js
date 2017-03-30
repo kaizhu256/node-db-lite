@@ -303,14 +303,14 @@
             // test $gte's number handling-behavior
             // test $lte's number handling-behavior
             // test $ne's number handling-behavior
+            // test fieldList handling-behavior
             // test limit handling-behavior
-            // test projection handling-behavior
             // test skip handling-behavior
             // test sort's isDescending handling-behavior
             options.data = options.dbTable.crudGetManyByQuery({
+                fieldList: ['field1'],
                 limit: 2,
                 query: { field1: { $gte: -1, $lte: 1, $ne: 0 } },
-                projection: ['field1'],
                 skip: 2,
                 sort: [{ fieldName: 'field1', isDescending: true }]
             }).map(function (dbRow) {
@@ -528,6 +528,12 @@
             local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
             // validate data
             local.assertJsonEqual(options.data, null);
+            // test crudGetOneByRandom's null-case handling-behavior
+            options.data = options.dbTable.crudGetOneByRandom();
+            // validate dbRowCount
+            local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+            // validate data
+            local.assertJsonEqual(options.data, null);
             // test crudGetOneByQuery's null-case handling-behavior
             options.data = options.dbTable.crudGetOneByQuery();
             // validate dbRowCount
@@ -564,25 +570,21 @@
             local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
             // validate data
             local.assertJsonEqual(options.data, []);
-            // test crudUpdateOneById's null-case handling-behavior
-            options.data = options.dbTable.crudUpdateOneById();
-            // validate dbRowCount
-            local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
-            // validate data
-            local.assertJsonEqual(options.data, null);
-            // test crudSetOneById's insert handling-behavior
-            options.data = options.dbTable.crudSetOneById({});
-            // validate dbRowCount
-            local.assertJsonEqual(options.dbTable.crudCountAll(), 1);
-            options._id = options.data._id;
-            // validate timestamp
-            local.assertJsonEqual(options.data._timeCreated, options.data._timeUpdated);
-            // test crudRemoveOneById's soft-delete handling-behavior
-            options.data = options.dbTable.crudRemoveOneById(options);
-            // validate dbRowCount
-            local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
-            // validate data
-            local.assertJsonEqual(options.data._id, options._id);
+            // test crudSetOneById's and crudUpdateOneById's null-case handling-behavior
+            ['crudSetOneById', 'crudUpdateOneById'].forEach(function (operation) {
+                options.data = options.dbTable[operation]();
+                // validate dbRowCount
+                local.assertJsonEqual(options.dbTable.crudCountAll(), 1);
+                options._id = options.data._id;
+                // validate timestamp
+                local.assertJsonEqual(options.data._timeCreated, options.data._timeUpdated);
+                // test crudRemoveOneById's soft-delete handling-behavior
+                options.data = options.dbTable.crudRemoveOneById(options);
+                // validate dbRowCount
+                local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+                // validate data
+                local.assertJsonEqual(options.data._id, options._id);
+            });
             // test crudGetOneById's null-case handling-behavior
             options.data = options.dbTable.crudGetOneById(options);
             // validate dbRowCount
@@ -591,12 +593,6 @@
             local.assertJsonEqual(options.data, null);
             // test crudRemoveOneById's null-case handling-behavior
             options.data = options.dbTable.crudRemoveOneById(options);
-            // validate dbRowCount
-            local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
-            // validate data
-            local.assertJsonEqual(options.data, null);
-            // test crudUpdateOneById's null-case handling-behavior
-            options.data = options.dbTable.crudUpdateOneById({ _id: options._id });
             // validate dbRowCount
             local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
             // validate data
@@ -1080,7 +1076,9 @@
     // run browser js-env code - post-init
     case 'browser':
         // run tests
-        local.nop(local.modeTest && document.querySelector('#testRunButton1').click());
+        local.nop(local.modeTest &&
+            document.querySelector('#testRunButton1') &&
+            document.querySelector('#testRunButton1').click());
         break;
 
 
@@ -1095,12 +1093,11 @@
         /*
          * this function will test buildApidoc's default handling-behavior-behavior
          */
+            options = { modulePathList: module.paths };
             if (local.env.npm_package_buildNpmdoc) {
-                options = {};
                 local.buildNpmdoc(options, onError);
                 return;
             }
-            options = {};
             local.buildApidoc(options, onError);
         };
 
@@ -1160,7 +1157,7 @@
             onError
         ) {
         /*
-         * this function will test the webpage's default handling-behavior
+         * this function will test webpage's default handling-behavior
          */
             options = { modeCoverageMerge: true, url: local.serverLocalHost + '?modeTest=1' };
             local.browserTest(options, onError);

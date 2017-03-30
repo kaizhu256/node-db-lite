@@ -12,8 +12,11 @@
     "keywords": [
         "browser",
         "db",
+        "indexed-db",
         "indexeddb",
         "localstorage",
+        "lru",
+        "lru-cache",
         "mongo",
         "mongodb",
         "nedb",
@@ -31,6 +34,8 @@
     "main": "lib.db.js",
     "name": "db-lite",
     "nameAlias": "db",
+    "nameAliasDeprecate": "browser-db browserdb cachedb db_lite microdb nanodb netdb swaggerdb swggdb udb",
+    "nameAliasPublish": "nedb2",
     "nameOriginal": "db-lite",
     "os": [
         "darwin",
@@ -45,10 +50,9 @@
         "build-ci": "utility2 shReadmeTest build_ci.sh",
         "env": "env",
         "heroku-postbuild": "(set -e; npm install 'kaizhu256/node-utility2#alpha'; utility2 shDeployHeroku)",
-        "postinstall": "if [ -f lib.db-lite.npm_scripts.sh ]; then ./lib.db-lite.npm_scripts.sh postinstall; fi",
-        "publish-alias": "VERSION=$(npm info $npm_package_name version); for ALIAS in browser-db browserdb cachedb db_lite microdb nanodb netdb swaggerdb swggdb udb; do utility2 shNpmPublishAs . $ALIAS $VERSION; eval utility2 shNpmTestPublished $ALIAS || exit $?; done",
+        "postinstall": "if [ -f npm_scripts.sh ]; then ./npm_scripts.sh postinstall; fi",
         "start": "(set -e; export PORT=${PORT:-8080}; utility2 start test.js)",
         "test": "(set -e; export PORT=$(utility2 shServerPortRandom); utility2 test test.js)"
     },
-    "version": "2017.3.16"
+    "version": "2017.3.29"
 }

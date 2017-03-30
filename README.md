@@ -5,7 +5,7 @@ this zero-dependency package will provide a persistent, in-browser database
 
 [![NPM](https://nodei.co/npm/db-lite.png?downloads=true)](https://www.npmjs.com/package/db-lite)
 
-[![package-listing](https://kaizhu256.github.io/node-db-lite/build/screen-capture.gitLsTree.svg)](https://github.com/kaizhu256/node-db-lite)
+[![package-listing](https://kaizhu256.github.io/node-db-lite/build/screen-capture.npmPackageListing.svg)](https://github.com/kaizhu256/node-db-lite)
 
 
 
@@ -28,14 +28,15 @@ this zero-dependency package will provide a persistent, in-browser database
 [![apidoc](https://kaizhu256.github.io/node-db-lite/build/screen-capture.buildApidoc.browser._2Fhome_2Ftravis_2Fbuild_2Fkaizhu256_2Fnode-db-lite_2Ftmp_2Fbuild_2Fapidoc.html.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html)
 
 #### todo
+- auto-sort exported dbTable by descending _timeUpdated
 - add remote http-api
 - rename to nedb-lite
 - none
 
-#### change since 44610aca
-- npm publish 2017.3.16
-- remove build-function shBuildCiTestPre
-- rename name api-doc -> apidoc
+#### changes for v2017.3.29
+- npm publish 2017.3.29
+- change function _DbTable.prototype.crudUpdateOneById to auto-insert missing record
+- add function _DbTable.prototype.crudGetOneByRandom
 - none
 
 #### this package requires
@@ -137,16 +138,6 @@ instruction
         // load db
         local.db.dbLoad(function () {
             console.log('db loaded from ' + local.storageDir);
-        });
-        // coverage-hack
-        [null, local.global.utility2].forEach(function (element) {
-            if (!element) {
-                return;
-            }
-            element._testRunBefore = function () {
-                local.onReadyBefore.counter += 1;
-                local.db.dbDrop(local.onReadyBefore);
-            };
         });
     }());
     switch (local.modeJs) {
@@ -443,7 +434,7 @@ onNext();\n\
 utility2-comment -->\n\
 <script src="assets.utility2.rollup.js"></script>\n\
 <script src="jsonp.utility2._stateInit?callback=window.utility2._stateInit"></script>\n\
-<script src="assets.{{env.npm_package_nameAlias}}.rollup.js"></script>\n\
+<script src="assets.db.rollup.js"></script>\n\
 <script src="assets.example.js"></script>\n\
 <script src="assets.test.js"></script>\n\
 <!-- utility2-comment\n\
@@ -491,11 +482,15 @@ utility2-comment -->\n\
         if (local.global.utility2_rollup || module !== require.main) {
             break;
         }
-        local.assetsDict['/assets.example.js'] = local.assetsDict['/assets.example.js'] ||
+        local.assetsDict['/assets.example.js'] =
+            local.assetsDict['/assets.example.js'] ||
             local.fs.readFileSync(__filename, 'utf8');
         local.assetsDict['/assets.db.rollup.js'] =
-            local.assetsDict['/assets.db.rollup.js'] || local.fs.readFileSync(
-                local.db.__dirname + '/lib.db.js',
+            local.assetsDict['/assets.db.rollup.js'] ||
+            local.fs.readFileSync(
+                // npmdoc-hack
+                local.db.__dirname +
+                    '/lib.db.js',
                 'utf8'
             ).replace((/^#!/), '//');
         local.assetsDict['/favicon.ico'] = local.assetsDict['/favicon.ico'] || '';
@@ -509,7 +504,7 @@ utility2-comment -->\n\
             break;
         }
         process.env.PORT = process.env.PORT || '8081';
-        console.log('server starting on port ' + process.env.PORT);
+        console.error('server starting on port ' + process.env.PORT);
         local.http.createServer(function (request, response) {
             request.urlParsed = local.url.parse(request.url);
             if (local.assetsDict[request.urlParsed.pathname] !== undefined) {
@@ -548,8 +543,11 @@ utility2-comment -->\n\
     "keywords": [
         "browser",
         "db",
+        "indexed-db",
         "indexeddb",
         "localstorage",
+        "lru",
+        "lru-cache",
         "mongo",
         "mongodb",
         "nedb",
@@ -567,6 +565,8 @@ utility2-comment -->\n\
     "main": "lib.db.js",
     "name": "db-lite",
     "nameAlias": "db",
+    "nameAliasDeprecate": "browser-db browserdb cachedb db_lite microdb nanodb netdb swaggerdb swggdb udb",
+    "nameAliasPublish": "nedb2",
     "nameOriginal": "db-lite",
     "os": [
         "darwin",
@@ -581,12 +581,11 @@ utility2-comment -->\n\
         "build-ci": "utility2 shReadmeTest build_ci.sh",
         "env": "env",
         "heroku-postbuild": "(set -e; npm install 'kaizhu256/node-utility2#alpha'; utility2 shDeployHeroku)",
-        "postinstall": "if [ -f lib.db-lite.npm_scripts.sh ]; then ./lib.db-lite.npm_scripts.sh postinstall; fi",
-        "publish-alias": "VERSION=$(npm info $npm_package_name version); for ALIAS in browser-db browserdb cachedb db_lite microdb nanodb netdb swaggerdb swggdb udb; do utility2 shNpmPublishAs . $ALIAS $VERSION; eval utility2 shNpmTestPublished $ALIAS || exit $?; done",
+        "postinstall": "if [ -f npm_scripts.sh ]; then ./npm_scripts.sh postinstall; fi",
         "start": "(set -e; export PORT=${PORT:-8080}; utility2 start test.js)",
         "test": "(set -e; export PORT=$(utility2 shServerPortRandom); utility2 test test.js)"
     },
-    "version": "2017.3.16"
+    "version": "2017.3.29"
 }
 ```
 
@@ -604,24 +603,16 @@ utility2-comment -->\n\
 
 # this shell script will run the build for this package
 
-shBuildCiInternalPost() {(set -e
+shBuildCiPost() {(set -e
     shDeployGithub
     shDeployHeroku
     shReadmeBuildLinkVerify
 )}
 
-shBuildCiInternalPre() {(set -e
+shBuildCiPre() {(set -e
     shReadmeTest example.js
     shReadmeTest example.sh
     shNpmTestPublished
-)}
-
-shBuildCiPost() {(set -e
-    return
-)}
-
-shBuildCiPre() {(set -e
-    return
 )}
 
 # run shBuildCi
