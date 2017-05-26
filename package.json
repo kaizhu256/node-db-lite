@@ -34,14 +34,12 @@
     "main": "lib.db.js",
     "name": "db-lite",
     "nameAlias": "db",
-    "nameAliasDeprecate": "browser-db browserdb cachedb db_lite microdb nanodb netdb swaggerdb swggdb udb",
-    "nameAliasPublish": "nedb2",
+    "nameAliasPublish": "nanodb nedb2",
     "nameOriginal": "db-lite",
     "os": [
         "darwin",
         "linux"
     ],
-    "readmeParse": "1",
     "repository": {
         "type": "git",
         "url": "https://github.com/kaizhu256/node-db-lite.git"
@@ -49,10 +47,10 @@
     "scripts": {
         "build-ci": "utility2 shReadmeTest build_ci.sh",
         "env": "env",
-        "heroku-postbuild": "(set -e; npm install 'kaizhu256/node-utility2#alpha'; utility2 shDeployHeroku)",
+        "heroku-postbuild": "(set -e; npm install \"kaizhu256/node-utility2#alpha\"; utility2 shDeployHeroku)",
         "postinstall": "if [ -f npm_scripts.sh ]; then ./npm_scripts.sh postinstall; fi",
         "start": "(set -e; export PORT=${PORT:-8080}; utility2 start test.js)",
         "test": "(set -e; export PORT=$(utility2 shServerPortRandom); utility2 test test.js)"
     },
-    "version": "2017.3.29"
+    "version": "2017.5.25"
 }

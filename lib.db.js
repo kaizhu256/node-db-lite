@@ -51,7 +51,7 @@
 
 
 
-    // run shared js-env code - pre-init
+    // run shared js-env code - init-before
     (function () {
         // init local
         local = {};
@@ -89,8 +89,8 @@
 
 
 
+    // run shared js-env code - function-before
     /* istanbul ignore next */
-    // run shared js-env code - pre-function
     (function () {
         local.jsonCopy = function (arg) {
         /*
@@ -154,6 +154,22 @@
                 // recurse
                 ? JSON.parse(stringify(element))
                 : element, replacer, space);
+        };
+
+        local.listShuffle = function (list) {
+        /*
+         * https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+         * this function will inplace shuffle the list, via fisher-yates algorithm
+         */
+            var ii, random, swap;
+            for (ii = list.length - 1; ii > 0; ii -= 1) {
+                // coerce to finite integer
+                random = (Math.random() * (ii + 1)) | 0;
+                swap = list[ii];
+                list[ii] = list[random];
+                list[random] = swap;
+            }
+            return list;
         };
 
         local.nop = function () {
@@ -223,7 +239,7 @@
          * this function will if error exists, then print error.stack to stderr
          */
             if (error && !local.global.__coverage__) {
-                console.error(error.stack);
+                console.error(error);
             }
         };
 
@@ -245,7 +261,7 @@
             };
         };
 
-        local.onParallel = function (onError, onEach) {
+        local.onParallel = function (onError, onEach, onRetry) {
         /*
          * this function will create a function that will
          * 1. run async tasks in parallel
@@ -254,7 +270,11 @@
             var onParallel;
             onError = local.onErrorWithStack(onError);
             onEach = onEach || local.nop;
-            onParallel = function (error) {
+            onRetry = onRetry || local.nop;
+            onParallel = function (error, data) {
+                if (onRetry(error, data)) {
+                    return;
+                }
                 // decrement counter
                 onParallel.counter -= 1;
                 // validate counter
@@ -266,12 +286,12 @@
                 // handle error
                 if (error) {
                     onParallel.error = error;
-                    // ensure counter < 0
-                    onParallel.counter = -1;
+                    // ensure counter <= 0
+                    onParallel.counter = -Math.abs(onParallel.counter);
                 }
-                // call onError when done
+                // call onError when isDone
                 if (onParallel.counter <= 0) {
-                    onError(error);
+                    onError(error, data);
                     return;
                 }
                 onEach();
@@ -284,7 +304,7 @@
 
         local.setTimeoutOnError = function (onError, error, data) {
         /*
-         * this function will asynchronously call onError
+         * this function will async-call onError
          */
             if (typeof onError === 'function') {
                 setTimeout(function () {
@@ -352,7 +372,7 @@
         /*
          * this function will defer options.action until storage is ready
          */
-            var data, done, objectStore, onError2, request, tmp;
+            var data, isDone, objectStore, onError2, request, tmp;
             onError = onError || function (error) {
                 // validate no error occurred
                 console.assert(!error, error);
@@ -368,10 +388,10 @@
             case 'browser':
                 onError2 = function () {
                     /* istanbul ignore next */
-                    if (done) {
+                    if (isDone) {
                         return;
                     }
-                    done = true;
+                    isDone = true;
                     onError(
                         request && (request.error || request.transaction.error),
                         data || request.result || ''
@@ -604,44 +624,91 @@
             this.dbRowList = [];
             this.isDirty = null;
             this.idIndexList = [{ name: '_id', dict: {} }];
-            this.ttl = 0;
-            this.ttlLast = 0;
+            this.onSaveList = [];
+            this.sizeLimit = options.sizeLimit || 0;
         };
 
         local._DbTable.prototype._cleanup = function () {
         /*
          * this function will cleanup soft-deleted records from the dbTable
          */
-            var dbRow, ii, list, ttl;
-            ttl = Date.now();
-            if (!(this.isDirty ||
-                  // cleanup ttl every minute
-                  (this.ttl && this.ttlLast + this.ttl < ttl))) {
+            var dbRow, ii, list;
+            if (!this.isDirty && this.dbRowList.length <= this.sizeLimit) {
                 return;
             }
             this.isDirty = null;
-            this.ttlLast = ttl;
             // cleanup dbRowList
             list = this.dbRowList;
             this.dbRowList = [];
             // optimization - for-loop
             for (ii = 0; ii < list.length; ii += 1) {
                 dbRow = list[ii];
-                // cleanup ttl
-                if (this.ttl && dbRow.$meta.ttl < ttl) {
-                    this._crudRemoveOneById(dbRow);
                 // cleanup isRemoved
-                } else if (!dbRow.$meta.isRemoved) {
+                if (!dbRow.$meta.isRemoved) {
                     this.dbRowList.push(dbRow);
                 }
             }
+            if (this.sizeLimit && this.dbRowList.length >= 1.5 * this.sizeLimit) {
+                this.dbRowList = this._crudGetManyByQuery(
+                    {},
+                    this.sortDefault,
+                    0,
+                    this.sizeLimit
+                );
+            }
         };
 
-        local._DbTable.prototype._crudGetManyByQuery = function (query) {
+        local._DbTable.prototype._crudGetManyByQuery = function (
+            query,
+            sort,
+            skip,
+            limit,
+            shuffle
+        ) {
         /*
-         * this function will get the dbRow's in the dbTable with the given query
+         * this function will get the dbRow's in the dbTable,
+         * with the given query, sort, skip, and limit
          */
-            return local.dbRowListGetManyByQuery(this.dbRowList, local.normalizeDict(query));
+            var ii, result;
+            result = this.dbRowList;
+            // get by query
+            if (result.length && query && Object.keys(query).length) {
+                result = local.dbRowListGetManyByQuery(this.dbRowList, query);
+            }
+            // sort
+            local.normalizeList(sort).forEach(function (element) {
+                // bug-workaround - v8 does not have stable-sort
+                // optimization - for-loop
+                for (ii = 0; ii < result.length; ii += 1) {
+                    result[ii].$meta.ii = ii;
+                }
+                if (element.isDescending) {
+                    result.sort(function (aa, bb) {
+                        return -local.sortCompare(
+                            local.dbRowGetItem(aa, element.fieldName),
+                            local.dbRowGetItem(bb, element.fieldName),
+                            aa.$meta.ii,
+                            bb.$meta.ii
+                        );
+                    });
+                } else {
+                    result.sort(function (aa, bb) {
+                        return local.sortCompare(
+                            local.dbRowGetItem(aa, element.fieldName),
+                            local.dbRowGetItem(bb, element.fieldName),
+                            aa.$meta.ii,
+                            bb.$meta.ii
+                        );
+                    });
+                }
+            });
+            // skip
+            result = result.slice(skip || 0);
+            // shuffle
+            ((shuffle && local.listShuffle) || local.nop)(result);
+            // limit
+            result = result.slice(0, limit || Infinity);
+            return result;
         };
 
         local._DbTable.prototype._crudGetOneById = function (idDict) {
@@ -691,8 +758,7 @@
                 // recurse
                 self._crudRemoveOneById(result, circularList);
             });
-            // persist
-            this._persist();
+            self.save();
             return result;
         };
 
@@ -725,14 +791,16 @@
             // update timestamp
             timeNow = new Date().toISOString();
             dbRow._timeCreated = dbRow._timeCreated || timeNow;
-            dbRow._timeUpdated = timeNow;
+            if (!local.modeImport) {
+                dbRow._timeUpdated = timeNow;
+            }
             // normalize
             normalize(dbRow);
             dbRow = local.jsonCopy(dbRow);
             // remove existing dbRow
             existing = this._crudRemoveOneById(dbRow) || dbRow;
             // init meta
-            dbRow.$meta = { isRemoved: null, ttl: this.ttl + Date.now() };
+            dbRow.$meta = { isRemoved: null };
             this.idIndexList.forEach(function (idIndex) {
                 // auto-set id
                 id = local.dbRowSetId(existing, idIndex);
@@ -743,8 +811,7 @@
             });
             // update dbRowList
             this.dbRowList.push(dbRow);
-            // persist
-            this._persist();
+            this.save();
             return dbRow;
         };
 
@@ -776,31 +843,6 @@
             // replace dbRow
             result = this._crudSetOneById(result);
             return result;
-        };
-
-        local._DbTable.prototype._persist = function () {
-        /*
-         * this function will persist the dbTable to storage
-         */
-            var self;
-            self = this;
-            // throttle storage-writes to once every 1000 ms
-            if (self.timerPersist) {
-                return;
-            }
-            self.timerPersist = setTimeout(function () {
-                if (self.timerPersist) {
-                    self.timerPersist = null;
-                    self._save();
-                }
-            }, 1000);
-        };
-
-        local._DbTable.prototype._save = function (onError) {
-        /*
-         * this function will save the dbTable to storage
-         */
-            local.storageSetItem('dbTable.' + this.name, this.export(), onError);
         };
 
         local._DbTable.prototype.crudCountAll = function (onError) {
@@ -841,36 +883,16 @@
         /*
          * this function will get the dbRow's in the dbTable with the given options.query
          */
-            var result;
             this._cleanup();
             options = local.normalizeDict(options);
-            // get dbRow's with the given options.query
-            result = this._crudGetManyByQuery(options.query);
-            // sort dbRow's with the given options.sort
-            local.normalizeList(options.sort).forEach(function (element) {
-                if (element.isDescending) {
-                    result.sort(function (aa, bb) {
-                        return -local.sortCompare(
-                            local.dbRowGetItem(aa, element.fieldName),
-                            local.dbRowGetItem(bb, element.fieldName)
-                        );
-                    });
-                } else {
-                    result.sort(function (aa, bb) {
-                        return local.sortCompare(
-                            local.dbRowGetItem(aa, element.fieldName),
-                            local.dbRowGetItem(bb, element.fieldName)
-                        );
-                    });
-                }
-            });
-            // skip and limit dbRow's with the given options.skip and options.limit
-            result = result.slice(
-                options.skip || 0,
-                (options.skip || 0) + (options.limit || Infinity)
-            );
             return local.setTimeoutOnError(onError, null, local.dbRowProject(
-                result,
+                this._crudGetManyByQuery(
+                    options.query,
+                    options.sort || this.sortDefault,
+                    options.skip,
+                    options.limit,
+                    options.shuffle
+                ),
                 options.fieldList
             ));
         };
@@ -882,16 +904,6 @@
             this._cleanup();
             return local.setTimeoutOnError(onError, null, local.dbRowProject(
                 this._crudGetOneById(idDict)
-            ));
-        };
-
-        local._DbTable.prototype.crudGetOneByRandom = function (onError) {
-        /*
-         * this function will get a random dbRow in the dbTable
-         */
-            this._cleanup();
-            return local.setTimeoutOnError(onError, null, local.dbRowProject(
-                this.dbRowList[Math.floor(Math.random() * this.dbRowList.length)]
             ));
         };
 
@@ -909,6 +921,16 @@
                 }
             }
             return local.setTimeoutOnError(onError, null, local.dbRowProject(result));
+        };
+
+        local._DbTable.prototype.crudGetOneByRandom = function (onError) {
+        /*
+         * this function will get a random dbRow in the dbTable
+         */
+            this._cleanup();
+            return local.setTimeoutOnError(onError, null, local.dbRowProject(
+                this.dbRowList[Math.floor(Math.random() * this.dbRowList.length)]
+            ));
         };
 
         local._DbTable.prototype.crudRemoveAll = function (onError) {
@@ -1027,10 +1049,13 @@
          * this function will drop the dbTable
          */
             console.error('dropping dbTable ' + this.name + ' ...');
+            // cancel pending save
+            this.timerSave = null;
+            while (this.onSaveList.length) {
+                this.onSaveList.shift()();
+            }
             // reset dbTable
             local._DbTable.call(this, this);
-            // cancel pending persist
-            this.timerPersist = null;
             // clear persistence
             local.storageRemoveItem('dbTable.' + this.name, onError);
         };
@@ -1039,22 +1064,21 @@
         /*
          * this function will export the db
          */
-            var ii, result, self;
+            var result, self;
             this._cleanup();
             self = this;
             result = '';
-            result += self.name + ' ttlSet ' + self.ttl + '\n';
             self.idIndexList.forEach(function (idIndex) {
                 result += self.name + ' idIndexCreate ' + JSON.stringify({
                     isInteger: idIndex.isInteger,
                     name: idIndex.name
                 }) + '\n';
             });
-            // optimization - for-loop
-            for (ii = 0; ii < self.dbRowList.length; ii += 1) {
-                result += self.name + ' dbRowSet ' +
-                    JSON.stringify(local.dbRowProject(self.dbRowList[ii])) + '\n';
-            }
+            result += self.name + ' sizeLimit ' + self.sizeLimit + '\n';
+            result += self.name + ' sortDefault ' + JSON.stringify(self.sortDefault) + '\n';
+            self.crudGetManyByQuery({}).forEach(function (dbRow) {
+                result += self.name + ' dbRowSet ' + JSON.stringify(dbRow) + '\n';
+            });
             return local.setTimeoutOnError(onError, null, result.trim());
         };
 
@@ -1087,8 +1111,7 @@
                     idIndex.dict[local.dbRowSetId(dbRow, idIndex)] = dbRow;
                 }
             }
-            // persist
-            this._persist();
+            this.save();
             return local.setTimeoutOnError(onError);
         };
 
@@ -1102,27 +1125,33 @@
             this.idIndexList = this.idIndexList.filter(function (idIndex) {
                 return idIndex.name !== name || idIndex.name === '_id';
             });
-            // persist
-            this._persist();
+            this.save();
             return local.setTimeoutOnError(onError);
         };
 
-        local._DbTable.prototype.ttlSet = function (ttl, onError) {
+        local._DbTable.prototype.save = function (onError) {
         /*
-         * this function will set the ttl in milliseconds
+         * this function will save the dbTable to storage
          */
-            var ii;
-            // set ttl in milliseconds
-            this.ttl = ttl;
-            // update dbRowList
-            ttl += Date.now();
-            // optimization - for-loop
-            for (ii = 0; ii < this.dbRowList.length; ii += 1) {
-                this.dbRowList[ii].$meta.ttl = ttl;
+            var self;
+            self = this;
+            if (local.modeImport) {
+                return;
             }
-            // persist
-            this._persist();
-            return local.setTimeoutOnError(onError);
+            if (onError) {
+                self.onSaveList.push(onError);
+            }
+            // throttle storage-writes to once every 1000 ms
+            self.timerSave = self.timerSave || setTimeout(function () {
+                self.timerSave = null;
+                local.storageSetItem('dbTable.' + self.name + '.json', self.export(), function (
+                    error
+                ) {
+                    while (self.onSaveList.length) {
+                        self.onSaveList.shift()(error);
+                    }
+                });
+            }, 1000);
         };
 
         local.dbCrudRemoveAll = function (onError) {
@@ -1177,7 +1206,11 @@
          * this function will import the serialized text into the db
          */
             var dbTable;
-            text.replace((/^(\w\S*?) (\S+?) (\S.+?)$/gm), function (
+            local.modeImport = true;
+            setTimeout(function () {
+                local.modeImport = null;
+            });
+            text.replace((/^(\w\S*?) (\S+?) (\S.*?)$/gm), function (
                 match0,
                 match1,
                 match2,
@@ -1194,14 +1227,18 @@
                     dbTable = local.dbTableCreateOne({ isLoaded: true, name: match1 });
                     dbTable.idIndexCreate(JSON.parse(match3));
                     break;
-                case 'ttlSet':
+                case 'sizeLimit':
                     dbTable = local.dbTableCreateOne({ isLoaded: true, name: match1 });
-                    dbTable.ttlSet(JSON.parse(match3));
+                    dbTable.sizeLimit = JSON.parse(match3);
+                    break;
+                case 'sortDefault':
+                    dbTable = local.dbTableCreateOne({ isLoaded: true, name: match1 });
                     break;
                 default:
                     local.onErrorDefault(new Error('dbImport - invalid operation - ' + match0));
                 }
             });
+            local.modeImport = null;
             return local.setTimeoutOnError(onError);
         };
 
@@ -1249,7 +1286,7 @@
                 : value;
         };
 
-        local.dbRowListGetManyByOperator = function (dbRowList, fieldName, operator, bb) {
+        local.dbRowListGetManyByOperator = function (dbRowList, fieldName, operator, bb, not) {
         /*
          * this function will get the dbRow's in dbRowList with the given operator
          */
@@ -1356,7 +1393,7 @@
                 }
                 // optimization - for-loop
                 for (jj = fieldValue.length - 1; jj >= 0; jj -= 1) {
-                    if (test(fieldValue[jj], bb, typeof fieldValue[jj], typeof2)) {
+                    if (not ^ test(fieldValue[jj], bb, typeof fieldValue[jj], typeof2)) {
                         result.push(dbRowList[ii]);
                         break;
                     }
@@ -1365,22 +1402,29 @@
             return result;
         };
 
-        local.dbRowListGetManyByQuery = function (dbRowList, query, fieldName) {
+        local.dbRowListGetManyByQuery = function (dbRowList, query, fieldName, not) {
         /*
          * this function will get the dbRow's in dbRowList with the given query
          */
             var bb, dbRowDict, result;
+            // optimization - convert to boolean
+            not = !!not;
             result = dbRowList;
-            if (!result.length) {
-                return result;
-            }
             if (!(query && typeof query === 'object')) {
-                result = local.dbRowListGetManyByOperator(result, fieldName, '$eq', query);
+                result = local.dbRowListGetManyByOperator(result, fieldName, '$eq', query, not);
                 return result;
             }
             Object.keys(query).some(function (key) {
                 bb = query[key];
-                if (key === '$or' && Array.isArray(bb)) {
+                switch (key) {
+                case '$not':
+                    key = fieldName;
+                    not = !not;
+                    break;
+                case '$or':
+                    if (!Array.isArray(bb)) {
+                        break;
+                    }
                     dbRowDict = {};
                     bb.forEach(function (query) {
                         // recurse
@@ -1394,11 +1438,11 @@
                     return !result.length;
                 }
                 if (key[0] === '$') {
-                    result = local.dbRowListGetManyByOperator(result, fieldName, key, bb);
+                    result = local.dbRowListGetManyByOperator(result, fieldName, key, bb, not);
                     return !result.length;
                 }
                 // recurse
-                result = local.dbRowListGetManyByQuery(result, bb, key);
+                result = local.dbRowListGetManyByQuery(result, bb, key, not);
                 return !result.length;
             });
             return result;
@@ -1462,7 +1506,7 @@
             onParallel.counter += 1;
             Object.keys(local.dbTableDict).forEach(function (key) {
                 onParallel.counter += 1;
-                local.dbTableDict[key]._save(onParallel);
+                local.dbTableDict[key].save(onParallel);
             });
             onParallel();
         };
@@ -1492,6 +1536,9 @@
             // register dbTable
             self = local.dbTableDict[options.name] =
                 local.dbTableDict[options.name] || new local._DbTable(options);
+            self.sortDefault = options.sortDefault ||
+                self.sortDefault ||
+                [{ fieldName: '_timeUpdated', isDescending: true }];
             // remove idIndex
             local.normalizeList(options.idIndexRemoveList).forEach(function (index) {
                 self.idIndexRemove(index);
@@ -1504,7 +1551,7 @@
             self.crudSetManyById(options.dbRowList);
             self.isLoaded = self.isLoaded || options.isLoaded;
             if (!self.isLoaded) {
-                local.storageGetItem('dbTable.' + self.name, function (error, data) {
+                local.storageGetItem('dbTable.' + self.name + '.json', function (error, data) {
                     // validate no error occurred
                     console.assert(!error, error);
                     if (!self.isLoaded) {
@@ -1520,7 +1567,7 @@
 
         local.dbTableDict = {};
 
-        local.sortCompare = function (aa, bb) {
+        local.sortCompare = function (aa, bb, ii, jj) {
         /*
          * this function will compare aa vs bb and return:
          * -1 if aa < bb
@@ -1531,7 +1578,9 @@
          */
             var typeof1, typeof2;
             if (aa === bb) {
-                return 0;
+                return ii < jj
+                    ? -1
+                    : 1;
             }
             if (aa === null) {
                 return -1;
@@ -1573,7 +1622,7 @@
 
 
 
-    // run node js-env code - post-init
+    // run node js-env code - init-after
     case 'node':
         // require modules
         local.fs = require('fs');

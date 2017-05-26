@@ -15,7 +15,7 @@
 
 
 
-    // run shared js-env code - pre-init
+    // run shared js-env code - init-before
     (function () {
         // init local
         local = {};
@@ -47,11 +47,11 @@
             break;
         // re-init local from example.js
         case 'node':
-            local = (local.global.utility2_rollup || require('utility2'))
-                .requireExampleJsFromReadme();
+            local = (local.global.utility2_rollup ||
+                require('utility2')).requireReadme();
             break;
         }
-        // export local
+        // init exports
         local.global.local = local;
     }());
 
@@ -87,7 +87,10 @@
                 field1: 'dirty'
             }));
             // test null-case handling-behavior
-            options.data = options.dbTable.crudGetManyByQuery({});
+            options.data = options.dbTable.crudGetManyByQuery({
+                // test shuffle handling-behavior
+                shuffle: true
+            });
             local.assertJsonEqual(options.data.length, 0);
             local.assertJsonEqual(options.data, []);
             options.data = [
@@ -177,7 +180,7 @@
             });
             local.assertJsonEqual(options.data.length, 1);
             local.assertJsonEqual(options.data, [true]);
-            // test $eq's null handling-behavior
+            // test $eq's null-case handling-behavior
             options.data = options.dbTable.crudGetManyByQuery({
                 query: { field1: null },
                 sort: [{ fieldName: 'field1' }]
@@ -215,7 +218,7 @@
                 return dbRow.field1;
             });
             local.assertJsonEqual(options.data.length, 7);
-            // test $exists's null handling-behavior
+            // test $exists's null-case handling-behavior
             options.data = options.dbTable.crudGetManyByQuery({
                 query: { field1: { $exists: null } },
                 sort: [{ fieldName: 'field1' }]
@@ -239,8 +242,8 @@
             });
             local.assertJsonEqual(options.data.length, 0);
             local.assertJsonEqual(options.data, []);
-            // test $gt's null handling-behavior
-            // test $lt's null handling-behavior
+            // test $gt's null-case handling-behavior
+            // test $lt's null-case handling-behavior
             options.data = options.dbTable.crudGetManyByQuery({
                 query: { field1: { $gt: false, $lt: true } },
                 sort: [{ fieldName: 'field1' }]
@@ -278,9 +281,9 @@
             });
             local.assertJsonEqual(options.data.length, 2);
             local.assertJsonEqual(options.data.slice(0, -1), [true]);
-            // test $gte's null handling-behavior
-            // test $lte's null handling-behavior
-            // test $ne's null handling-behavior
+            // test $gte's null-case handling-behavior
+            // test $lte's null-case handling-behavior
+            // test $ne's null-case handling-behavior
             options.data = options.dbTable.crudGetManyByQuery({
                 query: { field1: { $gte: null, $lte: null, $ne: null } },
                 sort: [{ fieldName: 'field1' }]
@@ -338,7 +341,7 @@
             });
             local.assertJsonEqual(options.data.length, 2);
             local.assertJsonEqual(options.data, [true, 1]);
-            // test $in's null handling-behavior
+            // test $in's null-case handling-behavior
             options.data = options.dbTable.crudGetManyByQuery({
                 query: { field1: { $in: null } },
                 sort: [{ fieldName: 'field1' }]
@@ -362,7 +365,7 @@
                 return dbRow.field1;
             });
             local.assertJsonEqual(options.data.length, 22);
-            // test $nin's null handling-behavior
+            // test $nin's null-case handling-behavior
             options.data = options.dbTable.crudGetManyByQuery({
                 query: { field1: { $nin: null } },
                 sort: [{ fieldName: 'field1' }]
@@ -380,7 +383,62 @@
             });
             local.assertJsonEqual(options.data.length, 4);
             local.assertJsonEqual(options.data.slice(0, -1), ['-0.5', '-1', '0.5']);
-            // test $or's null handling-behavior
+            // test $not's number handling-behavior
+            options.data = options.dbTable.crudGetManyByQuery({
+                query: { field1: {
+                    $not: { $gte: 0 }
+                } },
+                sort: [{ fieldName: 'field1' }]
+            }).map(function (dbRow) {
+                return dbRow.field1;
+            });
+            local.assertJsonEqual(options.data.length, 26);
+            local.assertJsonEqual(options.data.slice(0, 15), [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                false,
+                true,
+                -1,
+                -0.5,
+                '-0.5',
+                '-1',
+                '0',
+                '0.5',
+                '1'
+            ]);
+            // test $not's string handling-behavior
+            options.data = options.dbTable.crudGetManyByQuery({
+                query: { field1: {
+                    $not: { $gte: '0' }
+                } },
+                sort: [{ fieldName: 'field1' }]
+            }).map(function (dbRow) {
+                return dbRow.field1;
+            });
+            local.assertJsonEqual(options.data.length, 17);
+            local.assertJsonEqual(options.data.slice(0, -1), [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                false,
+                true,
+                -1,
+                -0.5,
+                0,
+                0.5,
+                1,
+                '-0.5',
+                '-1',
+                {}
+            ]);
+            // test $or's null-case handling-behavior
             options.data = options.dbTable.crudGetManyByQuery({
                 query: { $or: null },
                 sort: [{ fieldName: 'field1' }]
@@ -416,7 +474,7 @@
             });
             local.assertJsonEqual(options.data.length, 6);
             local.assertJsonEqual(options.data, [true, -1, 1, '-1', '1', 'true']);
-            // test $regex's null handling-behavior
+            // test $regex's null-case handling-behavior
             options.data = options.dbTable.crudGetManyByQuery({
                 query: { field1: { $regex: null } },
                 sort: [{ fieldName: 'field1' }]
@@ -431,7 +489,7 @@
                 return dbRow.field1;
             });
             local.assertJsonEqual(options.data.length, 3);
-            // test $typeof's null handling-behavior
+            // test $typeof's null-case handling-behavior
             options.data = options.dbTable.crudGetManyByQuery({
                 query: { field1: { $typeof: null } },
                 sort: [{ fieldName: 'field1' }]
@@ -484,7 +542,7 @@
          * this function will test dbTable's crud null-case handling-behavior
          */
             options = {};
-            // test dbTableCreateMany's null handling-behavior
+            // test dbTableCreateMany's null-case handling-behavior
             local.dbTableCreateMany();
             // test dbTableCreateOne's onError handling-behavior
             options.dbTable = local.dbTableCreateOne({
@@ -496,6 +554,8 @@
             });
             // test crudRemoveAll's null-case handling-behavior
             options.dbTable.crudRemoveAll();
+            // test cancel-pending-save handling-behavior
+            options.dbTable.save(local.nop);
             // test drop's null-case handling-behavior
             options.dbTable.drop();
             // test idIndexCreate's null-case handling-behavior
@@ -900,9 +960,10 @@
             // load db
             local.dbLoad();
             // import db
-            local.dbImport('testCase_dbTable_persistence ttlSet 0\n' +
-                'testCase_dbTable_persistence idIndexCreate {"name":"_id"}\n' +
+            local.dbImport('testCase_dbTable_persistence idIndexCreate {"name":"_id"}\n' +
                 'testCase_dbTable_persistence idIndexCreate {"name":"id2"}\n' +
+                'testCase_dbTable_persistence sizeLimit 0\n' +
+                'testCase_dbTable_persistence sortDefault []\n' +
                 'testCase_dbTable_persistence dbRowSet {"_id":"id1"}\n' +
                 'undefined undefined undefined');
             options.dbTable = local.dbTableCreateOne({ name: 'testCase_dbTable_persistence' });
@@ -949,28 +1010,28 @@
             local.assert(options.data.indexOf(
                 'testCase_dbTable_persistence dbRowSet {"_id":"id1",'
             ) < 0, options.data);
-            setTimeout(function () {
-                options.dbTable._persist();
-                onError();
-            }, 2000);
+            options.dbTable.save(onError);
         };
 
-        local.testCase_dbTable_ttl = function (options, onError) {
+        local.testCase_dbTable_sizeLimit = function (options, onError) {
         /*
-         * this function will test dbTable's ttl handling-behavior
+         * this function will test dbTable's sizeLimit handling-behavior
          */
             options = {};
-            options.dbTable = local.dbTableCreateOne({ name: 'testCase_dbTable_ttl' });
+            options.dbTable = local.dbTableCreateOne({
+                name: 'testCase_dbTable_sizeLimit',
+                sizeLimit: 2
+            });
             options.dbTable.crudSetOneById({});
-            options.dbTable.ttlSet(100);
+            // validate dbRowCount
+            local.assertJsonEqual(options.dbTable.crudCountAll(), 1);
             options.dbTable.crudSetOneById({});
             // validate dbRowCount
             local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
-            setTimeout(function () {
-                // validate dbRowCount
-                local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
-                onError();
-            }, 500);
+            options.dbTable.crudSetOneById({});
+            // validate dbRowCount
+            local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
+            onError();
         };
 
         local.testCase_sortCompare_default = function (options, onError) {
@@ -1065,7 +1126,7 @@
 
 
 
-    // run shared js-env code - post-init
+    // run shared js-env code - init-after
     (function () {
         return;
     }());
@@ -1073,8 +1134,18 @@
 
 
 
-    // run browser js-env code - post-init
+    // run browser js-env code - init-after
     case 'browser':
+        local.testCase_browser_nullCase = local.testCase_browser_nullCase || function (
+            options,
+            onError
+        ) {
+        /*
+         * this function will test browsers's null-case handling-behavior-behavior
+         */
+            onError(null, options);
+        };
+
         // run tests
         local.nop(local.modeTest &&
             document.querySelector('#testRunButton1') &&
@@ -1083,7 +1154,7 @@
 
 
 
-    // run node js-env code - post-init
+    // run node js-env code - init-after
     /* istanbul ignore next */
     case 'node':
         local.testCase_buildApidoc_default = local.testCase_buildApidoc_default || function (
@@ -1094,10 +1165,6 @@
          * this function will test buildApidoc's default handling-behavior-behavior
          */
             options = { modulePathList: module.paths };
-            if (local.env.npm_package_buildNpmdoc) {
-                local.buildNpmdoc(options, onError);
-                return;
-            }
             local.buildApidoc(options, onError);
         };
 
@@ -1111,9 +1178,19 @@
             local.testCase_buildReadme_default(options, local.onErrorThrow);
             local.testCase_buildLib_default(options, local.onErrorThrow);
             local.testCase_buildTest_default(options, local.onErrorThrow);
+            local.testCase_buildCustomOrg_default(options, local.onErrorThrow);
             options = [];
             local.buildApp(options, onError);
         };
+
+        local.testCase_buildCustomOrg_default = local.testCase_buildCustomOrg_default ||
+            function (options, onError) {
+            /*
+             * this function will test buildCustomOrg's default handling-behavior
+             */
+                options = {};
+                local.buildCustomOrg(options, onError);
+            };
 
         local.testCase_buildLib_default = local.testCase_buildLib_default || function (
             options,
@@ -1133,10 +1210,6 @@
         /*
          * this function will test buildReadme's default handling-behavior-behavior
          */
-            if (local.env.npm_package_buildNpmdoc) {
-                onError();
-                return;
-            }
             options = {};
             local.buildReadme(options, onError);
         };
