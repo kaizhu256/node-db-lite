@@ -10,25 +10,14 @@
     },
     "homepage": "https://github.com/kaizhu256/node-db-lite",
     "keywords": [
-        "browser",
-        "db",
-        "indexed-db",
+        "browser-database",
+        "database",
+        "datastore",
         "indexeddb",
-        "localstorage",
-        "lru",
-        "lru-cache",
-        "mongo",
         "mongodb",
         "nedb",
         "no-sql",
-        "nosql",
-        "persist",
-        "persistence",
-        "persistent",
-        "ttl",
-        "ttl-cache",
-        "web-sql",
-        "websql"
+        "persistence"
     ],
     "license": "MIT",
     "main": "lib.db.js",
@@ -47,10 +36,10 @@
     "scripts": {
         "build-ci": "utility2 shReadmeTest build_ci.sh",
         "env": "env",
-        "heroku-postbuild": "(set -e; npm install \"kaizhu256/node-utility2#alpha\"; utility2 shDeployHeroku)",
-        "postinstall": "if [ -f npm_scripts.sh ]; then ./npm_scripts.sh postinstall; fi",
-        "start": "(set -e; export PORT=${PORT:-8080}; utility2 start test.js)",
-        "test": "(set -e; export PORT=$(utility2 shServerPortRandom); utility2 test test.js)"
+        "heroku-postbuild": "npm uninstall utility2 2>/dev/null; npm install kaizhu256/node-utility2#alpha && utility2 shDeployHeroku",
+        "postinstall": "[ ! -f npm_scripts.sh ] || ./npm_scripts.sh postinstall",
+        "start": "PORT=${PORT:-8080} utility2 start test.js",
+        "test": "PORT=$(utility2 shServerPortRandom) utility2 test test.js"
     },
-    "version": "2017.5.25"
+    "version": "2017.7.24"
 }

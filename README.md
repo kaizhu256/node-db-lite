@@ -1,7 +1,9 @@
 # db-lite
 this zero-dependency package will provide a persistent, in-browser database
 
-[![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-db-lite.svg)](https://travis-ci.org/kaizhu256/node-db-lite)
+[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app)
+
+[![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-db-lite.svg)](https://travis-ci.org/kaizhu256/node-db-lite) [![coverage](https://kaizhu256.github.io/node-db-lite/build/coverage.badge.svg)](https://kaizhu256.github.io/node-db-lite/build/coverage.html/index.html)
 
 [![NPM](https://nodei.co/npm/db-lite.png?downloads=true)](https://www.npmjs.com/package/db-lite)
 
@@ -15,9 +17,9 @@ this zero-dependency package will provide a persistent, in-browser database
 | coverage : | [![coverage](https://kaizhu256.github.io/node-db-lite/build..master..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-db-lite/build..master..travis-ci.org/coverage.html/index.html) | [![coverage](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/coverage.html/index.html) | [![coverage](https://kaizhu256.github.io/node-db-lite/build..alpha..travis-ci.org/coverage.badge.svg)](https://kaizhu256.github.io/node-db-lite/build..alpha..travis-ci.org/coverage.html/index.html)|
 | build-artifacts : | [![build-artifacts](https://kaizhu256.github.io/node-db-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-db-lite/tree/gh-pages/build..master..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-db-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-db-lite/tree/gh-pages/build..beta..travis-ci.org) | [![build-artifacts](https://kaizhu256.github.io/node-db-lite/glyphicons_144_folder_open.png)](https://github.com/kaizhu256/node-db-lite/tree/gh-pages/build..alpha..travis-ci.org)|
 
-[![npmPackageListing](https://kaizhu256.github.io/node-db-lite/build/screen-capture.npmPackageListing.svg)](https://github.com/kaizhu256/node-db-lite)
+[![npmPackageListing](https://kaizhu256.github.io/node-db-lite/build/screenshot.npmPackageListing.svg)](https://github.com/kaizhu256/node-db-lite)
 
-![npmPackageDependencyTree](https://kaizhu256.github.io/node-db-lite/build/screen-capture.npmPackageDependencyTree.svg)
+![npmPackageDependencyTree](https://kaizhu256.github.io/node-db-lite/build/screenshot.npmPackageDependencyTree.svg)
 
 
 
@@ -27,9 +29,9 @@ this zero-dependency package will provide a persistent, in-browser database
 1. [documentation](#documentation)
 1. [quickstart standalone app](#quickstart-standalone-app)
 1. [quickstart example.js](#quickstart-examplejs)
+1. [extra screenshots](#extra-screenshots)
 1. [package.json](#packagejson)
 1. [changelog of last 50 commits](#changelog-of-last-50-commits)
-1. [internal screen-capture](#internal-screen-capture)
 1. [internal build script](#internal-build-script)
 1. [misc](#misc)
 
@@ -43,7 +45,7 @@ this zero-dependency package will provide a persistent, in-browser database
 # live demo
 - [https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app)
 
-[![github.com test-server](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app)
+[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app)
 
 
 
@@ -51,25 +53,16 @@ this zero-dependency package will provide a persistent, in-browser database
 #### apidoc
 - [https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html)
 
-[![apidoc](https://kaizhu256.github.io/node-db-lite/build/screen-capture.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html)
+[![apidoc](https://kaizhu256.github.io/node-db-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html)
 
 #### todo
 - auto-reset db before running test
 - add remote http-api
-- rename to nedb-lite
 - none
 
-#### changelog for v2017.5.25
-- npm publish 2017.5.25
-- add \$not query-operator and 'shuffle' param in function dbTable.prototype.crudGetManyByQuery
-- add dbTable.sortDefault property
-- deduplicate file assets.db.rollup.js
-- do not update _timeModified when importing data
-- fix stable-sort bug in v8
-- add README section 'internal screen-capture'
-- add README section 'quickstart standalone app'
-- auto-create README section 'table of contents'
-- rename README section 'quickstart web example' -> 'quickstart example.js'
+#### changelog for v2017.7.24
+- npm publish 2017.7.24
+- update documentation
 - none
 
 #### this package requires
@@ -94,15 +87,15 @@ node ./assets.app.js
 ```
 
 #### output from browser
-[![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.testExampleSh.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/app/assets.example.html)
+[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.testExampleSh.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/app/assets.example.html)
 
 #### output from shell
-![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.testExampleSh.svg)
+![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.testExampleSh.svg)
 
 
 
 # quickstart example.js
-[![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.testExampleJs.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/app/assets.example.html)
+[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.testExampleJs.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/app/assets.example.html)
 
 #### to run this example, follow the instruction in the script below
 - [example.js](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/example.js)
@@ -110,13 +103,14 @@ node ./assets.app.js
 /*
 example.js
 
-this script will create a web demo of db-lite
+this script will run a web demo of db-lite
 
 instruction
     1. save this script as example.js
     2. run the shell command:
         $ npm install db-lite && PORT=8081 node example.js
     3. open a browser to http://127.0.0.1:8081 and play with the web demo
+    4. edit this script to suit your needs
 */
 
 
@@ -203,15 +197,15 @@ instruction
             switch (event && event.currentTarget && event.currentTarget.id) {
             case 'testRunButton1':
                 // show tests
-                if (document.querySelector('#testReportDiv1').style.display === 'none') {
-                    document.querySelector('#testReportDiv1').style.display = 'block';
+                if (document.querySelector('#testReportDiv1').style.maxHeight === '0px') {
+                    local.uiAnimateSlideDown(document.querySelector('#testReportDiv1'));
                     document.querySelector('#testRunButton1').textContent =
                         'hide internal test';
                     local.modeTest = true;
                     local.testRunDefault(local);
                 // hide tests
                 } else {
-                    document.querySelector('#testReportDiv1').style.display = 'none';
+                    local.uiAnimateSlideUp(document.querySelector('#testReportDiv1'));
                     document.querySelector('#testRunButton1').textContent = 'run internal test';
                 }
                 break;
@@ -311,6 +305,7 @@ instruction
 <head>\n\
 <meta charset="UTF-8">\n\
 <meta name="viewport" content="width=device-width, initial-scale=1">\n\
+<!-- "assets.index.default.template.html" -->\n\
 <title>{{env.npm_package_name}} (v{{env.npm_package_version}})</title>\n\
 <style>\n\
 /*csslint\n\
@@ -328,9 +323,26 @@ body {\n\
 body > * {\n\
     margin-bottom: 1rem;\n\
 }\n\
+body > button {\n\
+    width: 20rem;\n\
+}\n\
+button {\n\
+    cursor: pointer;\n\
+}\n\
+.uiAnimateSlide {\n\
+    overflow-y: hidden;\n\
+    transition: border-bottom 250ms, border-top 250ms, margin-bottom 250ms, margin-top 250ms, max-height 250ms, min-height 250ms, padding-bottom 250ms, padding-top 250ms;\n\
+}\n\
 .utility2FooterDiv {\n\
     margin-top: 20px;\n\
     text-align: center;\n\
+}\n\
+.zeroPixel {\n\
+    border: 0;\n\
+    height: 0;\n\
+    margin: 0;\n\
+    padding: 0;\n\
+    width: 0;\n\
 }\n\
 </style>\n\
 <style>\n\
@@ -340,9 +352,6 @@ body > * {\n\
     box-sizing: false,\n\
     universal-selector: false\n\
 */\n\
-body > button {\n\
-    width: 15rem;\n\
-}\n\
 textarea {\n\
     font-family: monospace;\n\
     height: 10rem;\n\
@@ -362,7 +371,32 @@ textarea[readonly] {\n\
 </head>\n\
 <body>\n\
 <!-- utility2-comment\n\
-<div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; width: 25%;"></div>\n\
+<div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 500ms, width 1500ms; width: 0%;"></div>\n\
+<script>\n\
+/*jslint\n\
+    bitwise: true,\n\
+    browser: true,\n\
+    maxerr: 8,\n\
+    maxlen: 96,\n\
+    node: true,\n\
+    nomen: true,\n\
+    regexp: true,\n\
+    stupid: true\n\
+*/\n\
+(function () {\n\
+    "use strict";\n\
+    var ajaxProgressDiv1, ajaxProgressState;\n\
+    ajaxProgressDiv1 = document.querySelector("#ajaxProgressDiv1");\n\
+    ajaxProgressState = 0;\n\
+    window.timerIntervalAjaxProgressUpdate = setInterval(function () {\n\
+        ajaxProgressState += 1;\n\
+        ajaxProgressDiv1.style.width = Math.max(\n\
+            100 - 100 * Math.exp(-0.0625 * ajaxProgressState),\n\
+            Number(ajaxProgressDiv1.style.width.slice(0, -1)) || 0\n\
+        ) + "%";\n\
+    }, 1000);\n\
+}());\n\
+</script>\n\
 utility2-comment -->\n\
 <h1>\n\
 <!-- utility2-comment\n\
@@ -382,7 +416,7 @@ utility2-comment -->\n\
 <!-- utility2-comment\n\
 <h4><a download href="assets.app.js">download standalone app</a></h4>\n\
 <button class="onclick onreset" id="testRunButton1">run internal test</button><br>\n\
-<div id="testReportDiv1" style="display: none;"></div>\n\
+<div class="uiAnimateSlide" id="testReportDiv1" style="border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;"></div>\n\
 utility2-comment -->\n\
 \n\
 \n\
@@ -488,10 +522,11 @@ utility2-comment -->\n\
             'assets.swgg.swagger.json',
             'assets.swgg.swagger.server.json'
         ].forEach(function (file) {
-            local.assetsDict['/' + file] = local.assetsDict['/' + file] || '';
-            if (local.fs.existsSync(local.__dirname + '/' + file)) {
-                local.assetsDict['/' + file] = local.fs.readFileSync(
-                    local.__dirname + '/' + file,
+            file = '/' + file;
+            local.assetsDict[file] = local.assetsDict[file] || '';
+            if (local.fs.existsSync(local.__dirname + file)) {
+                local.assetsDict[file] = local.fs.readFileSync(
+                    local.__dirname + file,
                     'utf8'
                 );
             }
@@ -558,10 +593,52 @@ utility2-comment -->\n\
 ```
 
 #### output from browser
-[![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.testExampleJs.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/app/assets.example.html)
+[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.testExampleJs.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/app/assets.example.html)
 
 #### output from shell
-![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.testExampleJs.svg)
+![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.testExampleJs.svg)
+
+
+
+# extra screenshots
+1. [https://kaizhu256.github.io/node-db-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png](https://kaizhu256.github.io/node-db-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)
+[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://kaizhu256.github.io/node-db-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)
+
+1. [https://kaizhu256.github.io/node-db-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fcoverage.lib.html.png](https://kaizhu256.github.io/node-db-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fcoverage.lib.html.png)
+[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fcoverage.lib.html.png)](https://kaizhu256.github.io/node-db-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fcoverage.lib.html.png)
+
+1. [https://kaizhu256.github.io/node-db-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Ftest-report.html.png](https://kaizhu256.github.io/node-db-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Ftest-report.html.png)
+[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Ftest-report.html.png)](https://kaizhu256.github.io/node-db-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Ftest-report.html.png)
+
+1. [https://kaizhu256.github.io/node-db-lite/build/screenshot.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp%252Fassets.swgg.html.png](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp%252Fassets.swgg.html.png)
+[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp%252Fassets.swgg.html.png)](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp%252Fassets.swgg.html.png)
+
+1. [https://kaizhu256.github.io/node-db-lite/build/screenshot.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png)
+[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png)
+
+1. [https://kaizhu256.github.io/node-db-lite/build/screenshot.deployGithubTest.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployGithubTest.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png)
+[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployGithubTest.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployGithubTest.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png)
+
+1. [https://kaizhu256.github.io/node-db-lite/build/screenshot.deployHeroku.browser.%252Fassets.swgg.html.png](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployHeroku.browser.%252Fassets.swgg.html.png)
+[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployHeroku.browser.%252Fassets.swgg.html.png)](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployHeroku.browser.%252Fassets.swgg.html.png)
+
+1. [https://kaizhu256.github.io/node-db-lite/build/screenshot.deployHeroku.browser.%252F.png](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployHeroku.browser.%252F.png)
+[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployHeroku.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployHeroku.browser.%252F.png)
+
+1. [https://kaizhu256.github.io/node-db-lite/build/screenshot.deployHerokuTest.browser.%252F.png](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployHerokuTest.browser.%252F.png)
+[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployHerokuTest.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployHerokuTest.browser.%252F.png)
+
+1. [https://kaizhu256.github.io/node-db-lite/build/screenshot.npmTest.browser.%252F.png](https://kaizhu256.github.io/node-db-lite/build/screenshot.npmTest.browser.%252F.png)
+[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.npmTest.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/screenshot.npmTest.browser.%252F.png)
+
+1. [https://kaizhu256.github.io/node-db-lite/build/screenshot.npmTestPublished.browser.%252F.png](https://kaizhu256.github.io/node-db-lite/build/screenshot.npmTestPublished.browser.%252F.png)
+[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.npmTestPublished.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/screenshot.npmTestPublished.browser.%252F.png)
+
+1. [https://kaizhu256.github.io/node-db-lite/build/screenshot.testExampleJs.browser.%252F.png](https://kaizhu256.github.io/node-db-lite/build/screenshot.testExampleJs.browser.%252F.png)
+[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.testExampleJs.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/screenshot.testExampleJs.browser.%252F.png)
+
+1. [https://kaizhu256.github.io/node-db-lite/build/screenshot.testExampleSh.browser.%252F.png](https://kaizhu256.github.io/node-db-lite/build/screenshot.testExampleSh.browser.%252F.png)
+[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.testExampleSh.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/screenshot.testExampleSh.browser.%252F.png)
 
 
 
@@ -579,25 +656,14 @@ utility2-comment -->\n\
     },
     "homepage": "https://github.com/kaizhu256/node-db-lite",
     "keywords": [
-        "browser",
-        "db",
-        "indexed-db",
+        "browser-database",
+        "database",
+        "datastore",
         "indexeddb",
-        "localstorage",
-        "lru",
-        "lru-cache",
-        "mongo",
         "mongodb",
         "nedb",
         "no-sql",
-        "nosql",
-        "persist",
-        "persistence",
-        "persistent",
-        "ttl",
-        "ttl-cache",
-        "web-sql",
-        "websql"
+        "persistence"
     ],
     "license": "MIT",
     "main": "lib.db.js",
@@ -616,61 +682,19 @@ utility2-comment -->\n\
     "scripts": {
         "build-ci": "utility2 shReadmeTest build_ci.sh",
         "env": "env",
-        "heroku-postbuild": "(set -e; npm install \"kaizhu256/node-utility2#alpha\"; utility2 shDeployHeroku)",
-        "postinstall": "if [ -f npm_scripts.sh ]; then ./npm_scripts.sh postinstall; fi",
-        "start": "(set -e; export PORT=${PORT:-8080}; utility2 start test.js)",
-        "test": "(set -e; export PORT=$(utility2 shServerPortRandom); utility2 test test.js)"
+        "heroku-postbuild": "npm uninstall utility2 2>/dev/null; npm install kaizhu256/node-utility2#alpha && utility2 shDeployHeroku",
+        "postinstall": "[ ! -f npm_scripts.sh ] || ./npm_scripts.sh postinstall",
+        "start": "PORT=${PORT:-8080} utility2 start test.js",
+        "test": "PORT=$(utility2 shServerPortRandom) utility2 test test.js"
     },
-    "version": "2017.5.25"
+    "version": "2017.7.24"
 }
 ```
 
 
 
 # changelog of last 50 commits
-[![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.gitLog.svg)](https://github.com/kaizhu256/node-db-lite/commits)
-
-
-
-# internal screen-capture
-1. [https://kaizhu256.github.io/node-db-lite/build/screen-capture.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png](https://kaizhu256.github.io/node-db-lite/build/screen-capture.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)
-[![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://kaizhu256.github.io/node-db-lite/build/screen-capture.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)
-
-1. [https://kaizhu256.github.io/node-db-lite/build/screen-capture.buildCi.browser.%252Ftmp%252Fbuild%252Fcoverage.lib.html.png](https://kaizhu256.github.io/node-db-lite/build/screen-capture.buildCi.browser.%252Ftmp%252Fbuild%252Fcoverage.lib.html.png)
-[![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.buildCi.browser.%252Ftmp%252Fbuild%252Fcoverage.lib.html.png)](https://kaizhu256.github.io/node-db-lite/build/screen-capture.buildCi.browser.%252Ftmp%252Fbuild%252Fcoverage.lib.html.png)
-
-1. [https://kaizhu256.github.io/node-db-lite/build/screen-capture.buildCi.browser.%252Ftmp%252Fbuild%252Ftest-report.html.png](https://kaizhu256.github.io/node-db-lite/build/screen-capture.buildCi.browser.%252Ftmp%252Fbuild%252Ftest-report.html.png)
-[![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.buildCi.browser.%252Ftmp%252Fbuild%252Ftest-report.html.png)](https://kaizhu256.github.io/node-db-lite/build/screen-capture.buildCi.browser.%252Ftmp%252Fbuild%252Ftest-report.html.png)
-
-1. [https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp%252Fassets.swgg.html.png](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp%252Fassets.swgg.html.png)
-[![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp%252Fassets.swgg.html.png)](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp%252Fassets.swgg.html.png)
-
-1. [https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png)
-[![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png)
-
-1. [https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployGithubTest.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployGithubTest.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png)
-[![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployGithubTest.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployGithubTest.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png)
-
-1. [https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployHeroku.browser.%252Fassets.swgg.html.png](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployHeroku.browser.%252Fassets.swgg.html.png)
-[![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployHeroku.browser.%252Fassets.swgg.html.png)](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployHeroku.browser.%252Fassets.swgg.html.png)
-
-1. [https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployHeroku.browser.%252F.png](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployHeroku.browser.%252F.png)
-[![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployHeroku.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployHeroku.browser.%252F.png)
-
-1. [https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployHerokuTest.browser.%252F.png](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployHerokuTest.browser.%252F.png)
-[![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployHerokuTest.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/screen-capture.deployHerokuTest.browser.%252F.png)
-
-1. [https://kaizhu256.github.io/node-db-lite/build/screen-capture.npmTest.browser.%252F.png](https://kaizhu256.github.io/node-db-lite/build/screen-capture.npmTest.browser.%252F.png)
-[![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.npmTest.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/screen-capture.npmTest.browser.%252F.png)
-
-1. [https://kaizhu256.github.io/node-db-lite/build/screen-capture.npmTestPublished.browser.%252F.png](https://kaizhu256.github.io/node-db-lite/build/screen-capture.npmTestPublished.browser.%252F.png)
-[![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.npmTestPublished.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/screen-capture.npmTestPublished.browser.%252F.png)
-
-1. [https://kaizhu256.github.io/node-db-lite/build/screen-capture.testExampleJs.browser.%252F.png](https://kaizhu256.github.io/node-db-lite/build/screen-capture.testExampleJs.browser.%252F.png)
-[![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.testExampleJs.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/screen-capture.testExampleJs.browser.%252F.png)
-
-1. [https://kaizhu256.github.io/node-db-lite/build/screen-capture.testExampleSh.browser.%252F.png](https://kaizhu256.github.io/node-db-lite/build/screen-capture.testExampleSh.browser.%252F.png)
-[![screen-capture](https://kaizhu256.github.io/node-db-lite/build/screen-capture.testExampleSh.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/screen-capture.testExampleSh.browser.%252F.png)
+[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.gitLog.svg)](https://github.com/kaizhu256/node-db-lite/commits)
 
 
 
@@ -682,15 +706,14 @@ utility2-comment -->\n\
 # this shell script will run the build for this package
 
 shBuildCiAfter() {(set -e
-    shNpmTestPublished
-    shReadmeTest example.js
     shDeployGithub
     shDeployHeroku
     shReadmeTest example.sh
 )}
 
 shBuildCiBefore() {(set -e
-    return
+    shNpmTestPublished
+    shReadmeTest example.js
 )}
 
 # run shBuildCi
