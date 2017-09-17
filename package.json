@@ -1,5 +1,8 @@
 {
     "author": "kai zhu <kaizhu256@gmail.com>",
+    "bin": {
+        "db-lite": "lib.db.js"
+    },
     "description": "this zero-dependency package will provide a persistent, in-browser database",
     "devDependencies": {
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
@@ -10,14 +13,13 @@
     },
     "homepage": "https://github.com/kaizhu256/node-db-lite",
     "keywords": [
-        "browser-database",
+        "browser",
         "database",
-        "datastore",
+        "embedded",
         "indexeddb",
         "mongodb",
         "nedb",
-        "no-sql",
-        "persistence"
+        "persistent"
     ],
     "license": "MIT",
     "main": "lib.db.js",
@@ -41,5 +43,5 @@
         "start": "PORT=${PORT:-8080} utility2 start test.js",
         "test": "PORT=$(utility2 shServerPortRandom) utility2 test test.js"
     },
-    "version": "2017.7.24"
+    "version": "2017.9.16"
 }

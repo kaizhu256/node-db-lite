@@ -1,9 +1,14 @@
 # db-lite
 this zero-dependency package will provide a persistent, in-browser database
 
+# live demo
+- [https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app)
+
 [![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app)
 
-[![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-db-lite.svg)](https://travis-ci.org/kaizhu256/node-db-lite) [![coverage](https://kaizhu256.github.io/node-db-lite/build/coverage.badge.svg)](https://kaizhu256.github.io/node-db-lite/build/coverage.html/index.html)
+
+
+[![travis-ci.org build-status](https://api.travis-ci.org/kaizhu256/node-db-lite.svg)](https://travis-ci.org/kaizhu256/node-db-lite) [![coverage](https://kaizhu256.github.io/node-db-lite/build/coverage.badge.svg)](https://kaizhu256.github.io/node-db-lite/build/coverage.html/index.html) [![snyk.io vulnerabilities](https://snyk.io/test/github/kaizhu256/node-db-lite/badge.svg)](https://snyk.io/test/github/kaizhu256/node-db-lite)
 
 [![NPM](https://nodei.co/npm/db-lite.png?downloads=true)](https://www.npmjs.com/package/db-lite)
 
@@ -25,7 +30,6 @@ this zero-dependency package will provide a persistent, in-browser database
 
 # table of contents
 1. [cdn download](#cdn-download)
-1. [live demo](#live-demo)
 1. [documentation](#documentation)
 1. [quickstart standalone app](#quickstart-standalone-app)
 1. [quickstart example.js](#quickstart-examplejs)
@@ -42,14 +46,10 @@ this zero-dependency package will provide a persistent, in-browser database
 
 
 
-# live demo
-- [https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app)
-
-[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app)
-
-
-
 # documentation
+#### cli help
+![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.npmPackageCliHelp.svg)
+
 #### apidoc
 - [https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html)
 
@@ -60,9 +60,9 @@ this zero-dependency package will provide a persistent, in-browser database
 - add remote http-api
 - none
 
-#### changelog for v2017.7.24
-- npm publish 2017.7.24
-- update documentation
+#### changelog for v2017.9.16
+- npm publish 2017.9.16
+- add cli-help doc to README.md
 - none
 
 #### this package requires
@@ -169,8 +169,7 @@ instruction
 
 
 
-    // init-after
-    // run browser js-env code - init-after
+    // run browser js-env code - init-test
     /* istanbul ignore next */
     case 'browser':
         local.testRunBrowser = function (event) {
@@ -287,15 +286,17 @@ instruction
 
 
 
-    // run node js-env code - init-after
+    // run node js-env code - init-test
     /* istanbul ignore next */
     case 'node':
         // init exports
         module.exports = local;
-        // require modules
-        local.fs = require('fs');
-        local.http = require('http');
-        local.url = require('url');
+        // require builtins
+        Object.keys(process.binding('natives')).forEach(function (key) {
+            if (!local[key] && !(/\/|^_|^sys$/).test(key)) {
+                local[key] = require(key);
+            }
+        });
         // init assets
         local.assetsDict = local.assetsDict || {};
         /* jslint-ignore-begin */
@@ -550,8 +551,8 @@ utility2-comment -->\n\
                     return match0;
                 }
             });
-        // run the cli
-        if (local.global.utility2_rollup || module !== require.main) {
+        // init cli
+        if (module !== require.main || local.global.utility2_rollup) {
             break;
         }
         local.assetsDict['/assets.example.js'] =
@@ -646,6 +647,9 @@ utility2-comment -->\n\
 ```json
 {
     "author": "kai zhu <kaizhu256@gmail.com>",
+    "bin": {
+        "db-lite": "lib.db.js"
+    },
     "description": "this zero-dependency package will provide a persistent, in-browser database",
     "devDependencies": {
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
@@ -656,14 +660,13 @@ utility2-comment -->\n\
     },
     "homepage": "https://github.com/kaizhu256/node-db-lite",
     "keywords": [
-        "browser-database",
+        "browser",
         "database",
-        "datastore",
+        "embedded",
         "indexeddb",
         "mongodb",
         "nedb",
-        "no-sql",
-        "persistence"
+        "persistent"
     ],
     "license": "MIT",
     "main": "lib.db.js",
@@ -687,7 +690,7 @@ utility2-comment -->\n\
         "start": "PORT=${PORT:-8080} utility2 start test.js",
         "test": "PORT=$(utility2 shServerPortRandom) utility2 test test.js"
     },
-    "version": "2017.7.24"
+    "version": "2017.9.16"
 }
 ```
 
