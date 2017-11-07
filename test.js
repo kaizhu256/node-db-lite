@@ -3,7 +3,7 @@
     bitwise: true,
     browser: true,
     maxerr: 8,
-    maxlen: 96,
+    maxlen: 100,
     node: true,
     nomen: true,
     regexp: true,
@@ -37,26 +37,11 @@
         local.global = local.modeJs === 'browser'
             ? window
             : global;
-        switch (local.modeJs) {
-        // re-init local from window.local
-        case 'browser':
-            local = local.global.utility2.objectSetDefault(
-                local.global.utility2_rollup || local.global.local,
-                local.global.utility2
-            );
-            break;
-        // re-init local from example.js
-        case 'node':
-            local = (local.global.utility2_rollup ||
-                require('utility2')).requireReadme();
-            break;
-        }
+        // re-init local
+        local = local.global.local = (local.global.utility2 ||
+            require('utility2')).requireReadme();
         // init test
-        setTimeout(function () {
-            local.testRunAll(local);
-        });
-        // init exports
-        local.global.local = local;
+        local.testRunInit(local);
     }());
 
 

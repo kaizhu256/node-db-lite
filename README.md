@@ -1,7 +1,7 @@
 # db-lite
-this zero-dependency package will provide a persistent, in-browser database
+this zero-dependency package will provide a persistent, in-browser database, with a working web-demo
 
-# live demo
+# live web demo
 - [https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app)
 
 [![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.deployGithub.browser.%252Fnode-db-lite%252Fbuild%252Fapp.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app)
@@ -50,19 +50,18 @@ this zero-dependency package will provide a persistent, in-browser database
 #### cli help
 ![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.npmPackageCliHelp.svg)
 
-#### apidoc
+#### api doc
 - [https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html)
 
 [![apidoc](https://kaizhu256.github.io/node-db-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html)
 
 #### todo
-- auto-reset db before running test
-- add remote http-api
 - none
 
-#### changelog for v2017.9.16
-- npm publish 2017.9.16
-- add cli-help doc to README.md
+#### changelog for v2017.11.7
+- npm publish 2017.11.7
+- run tests with testRunInit instead of testRunAll
+- update build
 - none
 
 #### this package requires
@@ -76,13 +75,13 @@ this zero-dependency package will provide a persistent, in-browser database
 ```shell
 # example.sh
 
-# this shell script will download and run a web demo of db-lite as a standalone app
+# this shell script will download and run a web-demo of db-lite as a standalone app
 
 # 1. download standalone app
 curl -O https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/assets.app.js
 # 2. run standalone app
 node ./assets.app.js
-# 3. open a browser to http://127.0.0.1:8081 and play with the web demo
+# 3. open a browser to http://127.0.0.1:8081 and play with the web-demo
 # 4. edit file assets.app.js to suit your needs
 ```
 
@@ -103,13 +102,13 @@ node ./assets.app.js
 /*
 example.js
 
-this script will run a web demo of db-lite
+this script will run a web-demo of db-lite
 
 instruction
     1. save this script as example.js
     2. run the shell command:
         $ npm install db-lite && PORT=8081 node example.js
-    3. open a browser to http://127.0.0.1:8081 and play with the web demo
+    3. open a browser to http://127.0.0.1:8081 and play with the web-demo
     4. edit this script to suit your needs
 */
 
@@ -120,7 +119,7 @@ instruction
     bitwise: true,
     browser: true,
     maxerr: 8,
-    maxlen: 96,
+    maxlen: 100,
     node: true,
     nomen: true,
     regexp: true,
@@ -310,6 +309,7 @@ instruction
 <title>{{env.npm_package_name}} (v{{env.npm_package_version}})</title>\n\
 <style>\n\
 /*csslint\n\
+    box-model: false,\n\
     box-sizing: false,\n\
     universal-selector: false\n\
 */\n\
@@ -319,10 +319,10 @@ instruction
 body {\n\
     background: #dde;\n\
     font-family: Arial, Helvetica, sans-serif;\n\
-    margin: 2rem;\n\
+    margin: 20px;\n\
 }\n\
 body > * {\n\
-    margin-bottom: 1rem;\n\
+    margin-bottom: 10px;\n\
 }\n\
 body > button {\n\
     width: 20rem;\n\
@@ -334,8 +334,21 @@ button {\n\
     overflow-y: hidden;\n\
     transition: border-bottom 250ms, border-top 250ms, margin-bottom 250ms, margin-top 250ms, max-height 250ms, min-height 250ms, padding-bottom 250ms, padding-top 250ms;\n\
 }\n\
+@keyframes uiAnimateSpin {\n\
+    0% { transform: rotate(0deg); }\n\
+    100% { transform: rotate(360deg); }\n\
+}\n\
+.uiAnimateSpin {\n\
+    animation: uiAnimateSpin 2s linear infinite;\n\
+    border: 0.5rem solid #999;\n\
+    border-radius: 50%;\n\
+    border-top: 0.5rem solid #7d7;\n\
+    display: inline-block;\n\
+    height: 2rem;\n\
+    vertical-align: middle;\n\
+    width: 2rem;\n\
+}\n\
 .utility2FooterDiv {\n\
-    margin-top: 20px;\n\
     text-align: center;\n\
 }\n\
 .zeroPixel {\n\
@@ -371,14 +384,13 @@ textarea[readonly] {\n\
 </style>\n\
 </head>\n\
 <body>\n\
-<!-- utility2-comment\n\
 <div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 500ms, width 1500ms; width: 0%;"></div>\n\
 <script>\n\
 /*jslint\n\
     bitwise: true,\n\
     browser: true,\n\
     maxerr: 8,\n\
-    maxlen: 96,\n\
+    maxlen: 100,\n\
     node: true,\n\
     nomen: true,\n\
     regexp: true,\n\
@@ -386,19 +398,38 @@ textarea[readonly] {\n\
 */\n\
 (function () {\n\
     "use strict";\n\
-    var ajaxProgressDiv1, ajaxProgressState;\n\
+    var ajaxProgressDiv1,\n\
+        ajaxProgressState,\n\
+        ajaxProgressUpdate,\n\
+        timerIntervalAjaxProgressUpdate;\n\
     ajaxProgressDiv1 = document.querySelector("#ajaxProgressDiv1");\n\
+    setTimeout(function () {\n\
+        ajaxProgressDiv1.style.width = "25%";\n\
+    });\n\
     ajaxProgressState = 0;\n\
-    window.timerIntervalAjaxProgressUpdate = setInterval(function () {\n\
+    ajaxProgressUpdate = (window.local &&\n\
+        window.local.ajaxProgressUpdate) || function () {\n\
+        ajaxProgressDiv1.style.width = "100%";\n\
+        setTimeout(function () {\n\
+            ajaxProgressDiv1.style.background = "transparent";\n\
+            setTimeout(function () {\n\
+                ajaxProgressDiv1.style.width = "0%";\n\
+            }, 500);\n\
+        }, 1500);\n\
+    };\n\
+    timerIntervalAjaxProgressUpdate = setInterval(function () {\n\
         ajaxProgressState += 1;\n\
         ajaxProgressDiv1.style.width = Math.max(\n\
-            100 - 100 * Math.exp(-0.0625 * ajaxProgressState),\n\
+            100 - 75 * Math.exp(-0.125 * ajaxProgressState),\n\
             Number(ajaxProgressDiv1.style.width.slice(0, -1)) || 0\n\
         ) + "%";\n\
     }, 1000);\n\
+    window.addEventListener("load", function () {\n\
+        clearInterval(timerIntervalAjaxProgressUpdate);\n\
+        ajaxProgressUpdate();\n\
+    });\n\
 }());\n\
 </script>\n\
-utility2-comment -->\n\
 <h1>\n\
 <!-- utility2-comment\n\
     <a\n\
@@ -543,7 +574,7 @@ utility2-comment -->\n\
                     return 'the greatest app in the world!';
                 case 'npm_package_name':
                     return 'db-lite';
-                case 'npm_package_nameAlias':
+                case 'npm_package_nameLib':
                     return 'db';
                 case 'npm_package_version':
                     return '0.0.1';
@@ -563,7 +594,7 @@ utility2-comment -->\n\
         local.assetsDict['/assets.db.js'] =
             local.assetsDict['/assets.db.js'] ||
             local.fs.readFileSync(
-                local.db.__dirname + '/lib.db.js',
+                local.__dirname + '/lib.db.js',
                 'utf8'
             ).replace((/^#!/), '//');
         /* jslint-ignore-end */
@@ -632,9 +663,6 @@ utility2-comment -->\n\
 1. [https://kaizhu256.github.io/node-db-lite/build/screenshot.npmTest.browser.%252F.png](https://kaizhu256.github.io/node-db-lite/build/screenshot.npmTest.browser.%252F.png)
 [![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.npmTest.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/screenshot.npmTest.browser.%252F.png)
 
-1. [https://kaizhu256.github.io/node-db-lite/build/screenshot.npmTestPublished.browser.%252F.png](https://kaizhu256.github.io/node-db-lite/build/screenshot.npmTestPublished.browser.%252F.png)
-[![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.npmTestPublished.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/screenshot.npmTestPublished.browser.%252F.png)
-
 1. [https://kaizhu256.github.io/node-db-lite/build/screenshot.testExampleJs.browser.%252F.png](https://kaizhu256.github.io/node-db-lite/build/screenshot.testExampleJs.browser.%252F.png)
 [![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.testExampleJs.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/screenshot.testExampleJs.browser.%252F.png)
 
@@ -650,7 +678,7 @@ utility2-comment -->\n\
     "bin": {
         "db-lite": "lib.db.js"
     },
-    "description": "this zero-dependency package will provide a persistent, in-browser database",
+    "description": "this zero-dependency package will provide a persistent, in-browser database, with a working web-demo",
     "devDependencies": {
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
         "utility2": "kaizhu256/node-utility2#alpha"
@@ -660,19 +688,16 @@ utility2-comment -->\n\
     },
     "homepage": "https://github.com/kaizhu256/node-db-lite",
     "keywords": [
-        "browser",
         "database",
         "embedded",
         "indexeddb",
-        "mongodb",
-        "nedb",
-        "persistent"
+        "nedb"
     ],
     "license": "MIT",
     "main": "lib.db.js",
     "name": "db-lite",
-    "nameAlias": "db",
-    "nameAliasPublish": "nanodb nedb2",
+    "nameAliasPublish": "elasticdb-lite esdb nanodb nedb2",
+    "nameLib": "db",
     "nameOriginal": "db-lite",
     "os": [
         "darwin",
@@ -690,7 +715,7 @@ utility2-comment -->\n\
         "start": "PORT=${PORT:-8080} utility2 start test.js",
         "test": "PORT=$(utility2 shServerPortRandom) utility2 test test.js"
     },
-    "version": "2017.9.16"
+    "version": "2017.11.7"
 }
 ```
 

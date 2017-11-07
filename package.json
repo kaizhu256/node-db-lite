@@ -3,7 +3,7 @@
     "bin": {
         "db-lite": "lib.db.js"
     },
-    "description": "this zero-dependency package will provide a persistent, in-browser database",
+    "description": "this zero-dependency package will provide a persistent, in-browser database, with a working web-demo",
     "devDependencies": {
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
         "utility2": "kaizhu256/node-utility2#alpha"
@@ -13,19 +13,16 @@
     },
     "homepage": "https://github.com/kaizhu256/node-db-lite",
     "keywords": [
-        "browser",
         "database",
         "embedded",
         "indexeddb",
-        "mongodb",
-        "nedb",
-        "persistent"
+        "nedb"
     ],
     "license": "MIT",
     "main": "lib.db.js",
     "name": "db-lite",
-    "nameAlias": "db",
-    "nameAliasPublish": "nanodb nedb2",
+    "nameAliasPublish": "elasticdb-lite esdb nanodb nedb2",
+    "nameLib": "db",
     "nameOriginal": "db-lite",
     "os": [
         "darwin",
@@ -43,5 +40,5 @@
         "start": "PORT=${PORT:-8080} utility2 start test.js",
         "test": "PORT=$(utility2 shServerPortRandom) utility2 test test.js"
     },
-    "version": "2017.9.16"
+    "version": "2017.11.7"
 }
