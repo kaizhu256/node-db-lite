@@ -219,68 +219,68 @@
             fnc();
         };
 
-        local.jsonCopy = function (arg) {
+        local.jsonCopy = function (jsonObj) {
         /*
-         * this function will return a deep-copy of the JSON-arg
+         * this function will return a deep-copy of the jsonObj
          */
-            return arg === undefined
+            return jsonObj === undefined
                 ? undefined
-                : JSON.parse(JSON.stringify(arg));
+                : JSON.parse(JSON.stringify(jsonObj));
         };
 
-        local.jsonStringifyOrdered = function (element, replacer, space) {
+        local.jsonStringifyOrdered = function (jsonObj, replacer, space) {
         /*
-         * this function will JSON.stringify the element,
+         * this function will JSON.stringify the jsonObj,
          * with object-keys sorted and circular-references removed
          */
             var circularList, stringify, tmp;
-            stringify = function (element) {
+            stringify = function (jsonObj) {
             /*
-             * this function will recursively JSON.stringify the element,
+             * this function will recursively JSON.stringify the jsonObj,
              * with object-keys sorted and circular-references removed
              */
-                // if element is an object, then recurse its items with object-keys sorted
-                if (element &&
-                        typeof element === 'object' &&
-                        typeof element.toJSON !== 'function') {
+                // if jsonObj is an object, then recurse its items with object-keys sorted
+                if (jsonObj &&
+                        typeof jsonObj === 'object' &&
+                        typeof jsonObj.toJSON !== 'function') {
                     // ignore circular-reference
-                    if (circularList.indexOf(element) >= 0) {
+                    if (circularList.indexOf(jsonObj) >= 0) {
                         return;
                     }
-                    circularList.push(element);
-                    // if element is an array, then recurse its elements
-                    if (Array.isArray(element)) {
-                        return '[' + element.map(function (element) {
+                    circularList.push(jsonObj);
+                    // if jsonObj is an array, then recurse its jsonObjs
+                    if (Array.isArray(jsonObj)) {
+                        return '[' + jsonObj.map(function (jsonObj) {
                             // recurse
-                            tmp = stringify(element);
+                            tmp = stringify(jsonObj);
                             return typeof tmp === 'string'
                                 ? tmp
                                 : 'null';
                         }).join(',') + ']';
                     }
-                    return '{' + Object.keys(element)
+                    return '{' + Object.keys(jsonObj)
                         // sort object-keys
                         .sort()
                         .map(function (key) {
                             // recurse
-                            tmp = stringify(element[key]);
+                            tmp = stringify(jsonObj[key]);
                             if (typeof tmp === 'string') {
                                 return JSON.stringify(key) + ':' + tmp;
                             }
                         })
-                        .filter(function (element) {
-                            return typeof element === 'string';
+                        .filter(function (jsonObj) {
+                            return typeof jsonObj === 'string';
                         })
                         .join(',') + '}';
                 }
                 // else JSON.stringify as normal
-                return JSON.stringify(element);
+                return JSON.stringify(jsonObj);
             };
             circularList = [];
-            return JSON.stringify(typeof element === 'object' && element
+            return JSON.stringify(typeof jsonObj === 'object' && jsonObj
                 // recurse
-                ? JSON.parse(stringify(element))
-                : element, replacer, space);
+                ? JSON.parse(stringify(jsonObj))
+                : jsonObj, replacer, space);
         };
 
         local.listShuffle = function (list) {
@@ -311,10 +311,6 @@
          * this function will normalize the value by type
          */
             switch (type) {
-            case 'dict':
-                return typeof value === 'object' && value && !Array.isArray(value)
-                    ? value
-                    : valueDefault || {};
             case 'list':
                 return Array.isArray(value)
                     ? value
@@ -581,14 +577,14 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
             }()));
         };
 
-        local.setTimeoutOnError = function (onError, error, data) {
+        local.setTimeoutOnError = function (onError, timeout, error, data) {
         /*
          * this function will async-call onError
          */
             if (typeof onError === 'function') {
                 setTimeout(function () {
                     onError(error, data);
-                });
+                }, timeout);
             }
             return data;
         };
@@ -895,7 +891,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
         /*
          * this function will create a dbTable
          */
-            options = local.normalizeValue('dict', options);
+            options = local.objectSetOverride(options);
             this.name = String(options.name);
             // register dbTable in dbTableDict
             local.dbTableDict[this.name] = this;
@@ -994,7 +990,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          * this function will get the dbRow in the dbTable with the given idDict
          */
             var id, result;
-            idDict = local.normalizeValue('dict', idDict);
+            idDict = local.objectSetOverride(idDict);
             result = null;
             this.idIndexList.some(function (idIndex) {
                 id = idDict[idIndex.name];
@@ -1102,7 +1098,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          * will be removed
          */
             var id, result;
-            dbRow = local.jsonCopy(local.normalizeValue('dict', dbRow));
+            dbRow = local.jsonCopy(local.objectSetOverride(dbRow));
             result = null;
             this.idIndexList.some(function (idIndex) {
                 id = dbRow[idIndex.name];
@@ -1128,7 +1124,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          * this function will count all of dbRow's in the dbTable
          */
             this._cleanup();
-            return local.setTimeoutOnError(onError, null, this.dbRowList.length);
+            return local.setTimeoutOnError(onError, 0, null, this.dbRowList.length);
         };
 
         local._DbTable.prototype.crudCountManyByQuery = function (query, onError) {
@@ -1138,6 +1134,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
             this._cleanup();
             return local.setTimeoutOnError(
                 onError,
+                0,
                 null,
                 this._crudGetManyByQuery(query).length
             );
@@ -1150,7 +1147,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
             var self;
             this._cleanup();
             self = this;
-            return local.setTimeoutOnError(onError, null, local.dbRowProject(
+            return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
                 local.normalizeValue('list', idDictList).map(function (idDict) {
                     return self._crudGetOneById(idDict);
                 })
@@ -1162,8 +1159,8 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          * this function will get the dbRow's in the dbTable with the given options.query
          */
             this._cleanup();
-            options = local.normalizeValue('dict', options);
-            return local.setTimeoutOnError(onError, null, local.dbRowProject(
+            options = local.objectSetOverride(options);
+            return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
                 this._crudGetManyByQuery(
                     options.query,
                     options.sort || this.sortDefault,
@@ -1180,7 +1177,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          * this function will get the dbRow in the dbTable with the given idDict
          */
             this._cleanup();
-            return local.setTimeoutOnError(onError, null, local.dbRowProject(
+            return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
                 this._crudGetOneById(idDict)
             ));
         };
@@ -1198,7 +1195,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
                     break;
                 }
             }
-            return local.setTimeoutOnError(onError, null, local.dbRowProject(result));
+            return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(result));
         };
 
         local._DbTable.prototype.crudGetOneByRandom = function (onError) {
@@ -1206,7 +1203,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          * this function will get a random dbRow in the dbTable
          */
             this._cleanup();
-            return local.setTimeoutOnError(onError, null, local.dbRowProject(
+            return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
                 this.dbRowList[Math.floor(Math.random() * this.dbRowList.length)]
             ));
         };
@@ -1233,7 +1230,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          */
             var self;
             self = this;
-            return local.setTimeoutOnError(onError, null, local.dbRowProject(
+            return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
                 local.normalizeValue('list', idDictList).map(function (dbRow) {
                     return self._crudRemoveOneById(dbRow);
                 })
@@ -1246,7 +1243,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          */
             var self;
             self = this;
-            return local.setTimeoutOnError(onError, null, local.dbRowProject(
+            return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
                 self._crudGetManyByQuery(query).map(function (dbRow) {
                     return self._crudRemoveOneById(dbRow);
                 })
@@ -1257,7 +1254,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
         /*
          * this function will remove the dbRow from the dbTable with the given idDict
          */
-            return local.setTimeoutOnError(onError, null, local.dbRowProject(
+            return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
                 this._crudRemoveOneById(idDict)
             ));
         };
@@ -1268,7 +1265,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          */
             var self;
             self = this;
-            return local.setTimeoutOnError(onError, null, local.dbRowProject(
+            return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
                 local.normalizeValue('list', dbRowList).map(function (dbRow) {
                     return self._crudSetOneById(dbRow);
                 })
@@ -1279,7 +1276,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
         /*
          * this function will set the dbRow into the dbTable with the given dbRow._id
          */
-            return local.setTimeoutOnError(onError, null, local.dbRowProject(
+            return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
                 this._crudSetOneById(dbRow)
             ));
         };
@@ -1291,7 +1288,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          */
             var self;
             self = this;
-            return local.setTimeoutOnError(onError, null, local.dbRowProject(
+            return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
                 local.normalizeValue('list', dbRowList).map(function (dbRow) {
                     return self._crudUpdateOneById(dbRow);
                 })
@@ -1304,12 +1301,12 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          */
             var result, self, tmp;
             self = this;
-            tmp = local.jsonCopy(local.normalizeValue('dict', dbRow));
+            tmp = local.jsonCopy(local.objectSetOverride(dbRow));
             result = self._crudGetManyByQuery(query).map(function (dbRow) {
                 tmp._id = dbRow._id;
                 return self._crudUpdateOneById(tmp);
             });
-            return local.setTimeoutOnError(onError, null, result);
+            return local.setTimeoutOnError(onError, 0, null, result);
         };
 
         local._DbTable.prototype.crudUpdateOneById = function (dbRow, onError) {
@@ -1317,7 +1314,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          * this function will update the dbRow in the dbTable,
          * if it exists with the given dbRow._id
          */
-            return local.setTimeoutOnError(onError, null, local.dbRowProject(
+            return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
                 this._crudUpdateOneById(dbRow)
             ));
         };
@@ -1357,7 +1354,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
             self.crudGetManyByQuery({}).forEach(function (dbRow) {
                 result += self.name + ' dbRowSet ' + JSON.stringify(dbRow) + '\n';
             });
-            return local.setTimeoutOnError(onError, null, result.trim());
+            return local.setTimeoutOnError(onError, 0, null, result.trim());
         };
 
         local._DbTable.prototype.idIndexCreate = function (options, onError) {
@@ -1365,7 +1362,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          * this function will create an idIndex with the given options.name
          */
             var dbRow, idIndex, ii, name;
-            options = local.normalizeValue('dict', options);
+            options = local.objectSetOverride(options);
             name = String(options.name);
             // disallow idIndex with dot-name
             if (name.indexOf('.') >= 0 || name === '_id') {
@@ -1398,7 +1395,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          * this function will remove the idIndex with the given options.name
          */
             var name;
-            options = local.normalizeValue('dict', options);
+            options = local.objectSetOverride(options);
             name = String(options.name);
             this.idIndexList = this.idIndexList.filter(function (idIndex) {
                 return idIndex.name !== name || idIndex.name === '_id';
@@ -1438,7 +1435,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          */
             var onParallel;
             onParallel = local.onParallel(function (error) {
-                local.setTimeoutOnError(onError, error);
+                local.setTimeoutOnError(onError, 0, error);
             });
             onParallel.counter += 1;
             Object.keys(local.dbTableDict).forEach(function (key) {
@@ -1454,7 +1451,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          */
             var onParallel;
             onParallel = local.onParallel(function (error) {
-                local.setTimeoutOnError(onError, error);
+                local.setTimeoutOnError(onError, 0, error);
             });
             onParallel.counter += 1;
             onParallel.counter += 1;
@@ -1476,7 +1473,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
                 result += local.dbTableDict[key].export();
                 result += '\n\n';
             });
-            return local.setTimeoutOnError(onError, null, result.trim());
+            return local.setTimeoutOnError(onError, 0, null, result.trim());
         };
 
         local.dbImport = function (text, onError) {
@@ -1526,7 +1523,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          */
             var onParallel;
             onParallel = local.onParallel(function (error) {
-                local.setTimeoutOnError(onError, error);
+                local.setTimeoutOnError(onError, 0, error);
             });
             local.storageKeys(function (error, data) {
                 onParallel.counter += 1;
@@ -1779,7 +1776,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          */
             var onParallel;
             onParallel = local.onParallel(function (error) {
-                local.setTimeoutOnError(onError, error);
+                local.setTimeoutOnError(onError, 0, error);
             });
             onParallel.counter += 1;
             Object.keys(local.dbTableDict).forEach(function (key) {
@@ -1795,14 +1792,14 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          */
             var onParallel, result;
             onParallel = local.onParallel(function (error) {
-                local.setTimeoutOnError(onError, error, result);
+                local.setTimeoutOnError(onError, 0, error, result);
             });
             onParallel.counter += 1;
             result = local.normalizeValue('list', optionsList).map(function (options) {
                 onParallel.counter += 1;
                 return local.dbTableCreateOne(options, onParallel);
             });
-            return local.setTimeoutOnError(onParallel, null, result);
+            return local.setTimeoutOnError(onParallel, 0, null, result);
         };
 
         local.dbTableCreateOne = function (options, onError) {
@@ -1810,7 +1807,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
          * this function will create a dbTable with the given options
          */
             var self;
-            options = local.normalizeValue('dict', options);
+            options = local.objectSetOverride(options);
             // register dbTable
             self = local.dbTableDict[options.name] =
                 local.dbTableDict[options.name] || new local._DbTable(options);
@@ -1827,6 +1824,7 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
             });
             // upsert dbRow
             self.crudSetManyById(options.dbRowList);
+            // restore dbTable from persistent-storage
             self.isLoaded = self.isLoaded || options.isLoaded;
             if (!self.isLoaded) {
                 local.storageGetItem('dbTable.' + self.name + '.json', function (error, data) {
@@ -1836,11 +1834,11 @@ vendor\\)s\\{0,1\\}\\(\\b\\|_\\)\
                         local.dbImport(data);
                     }
                     self.isLoaded = true;
-                    local.setTimeoutOnError(onError, null, self);
+                    local.setTimeoutOnError(onError, 0, null, self);
                 });
                 return self;
             }
-            return local.setTimeoutOnError(onError, null, self);
+            return local.setTimeoutOnError(onError, 0, null, self);
         };
 
         local.dbTableDict = {};
