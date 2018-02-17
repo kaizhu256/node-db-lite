@@ -58,9 +58,9 @@ this zero-dependency package will provide a persistent, in-browser database, wit
 #### todo
 - none
 
-#### changelog for v2017.12.4
-- npm publish 2017.12.4
-- change function setTimeoutOnError signature to function (onError, timeout, error, data)
+#### changelog for v2018.2.16
+- npm publish v2018.2.16
+- update build
 - none
 
 #### this package requires
@@ -196,8 +196,7 @@ instruction
                 // show tests
                 if (document.querySelector('#testReportDiv1').style.maxHeight === '0px') {
                     local.uiAnimateSlideDown(document.querySelector('#testReportDiv1'));
-                    document.querySelector('#testRunButton1').textContent =
-                        'hide internal test';
+                    document.querySelector('#testRunButton1').textContent = 'hide internal test';
                     local.modeTest = true;
                     local.testRunDefault(local);
                 // hide tests
@@ -308,9 +307,7 @@ instruction
 <title>{{env.npm_package_name}} (v{{env.npm_package_version}})</title>\n\
 <style>\n\
 /*csslint\n\
-    box-model: false,\n\
     box-sizing: false,\n\
-    important: false,\n\
     universal-selector: false\n\
 */\n\
 *,\n\
@@ -339,15 +336,24 @@ body > button {\n\
 button {\n\
     cursor: pointer;\n\
 }\n\
+code,\n\
+pre,\n\
+textarea {\n\
+    font-family: Menlo, Consolas, Courier New, monospace;\n\
+}\n\
+pre {\n\
+    overflow-wrap: break-word;\n\
+    white-space: pre-wrap;\n\
+}\n\
 @keyframes uiAnimateShake {\n\
-    100% {\n\
-        transform: translateX(0);\n\
-    }\n\
-    0%, 20%, 60% {\n\
+    0%, 50% {\n\
         transform: translateX(10px);\n\
     }\n\
-    40%, 80% {\n\
+    25%, 75% {\n\
         transform: translateX(-10px);\n\
+    }\n\
+    100% {\n\
+        transform: translateX(0);\n\
     }\n\
 }\n\
 .uiAnimateShake {\n\
@@ -375,25 +381,13 @@ button {\n\
 </style>\n\
 <style>\n\
 /*csslint\n\
-    adjoining-classes: false,\n\
-    box-model: false,\n\
-    box-sizing: false,\n\
-    universal-selector: false\n\
 */\n\
 textarea {\n\
-    font-family: monospace;\n\
     height: 10rem;\n\
     width: 100%;\n\
 }\n\
 textarea[readonly] {\n\
     background: #ddd;\n\
-}\n\
-.zeroPixel {\n\
-    border: 0;\n\
-    height: 0;\n\
-    margin: 0;\n\
-    padding: 0;\n\
-    width: 0;\n\
 }\n\
 </style>\n\
 </head>\n\
@@ -723,14 +717,17 @@ utility2-comment -->\n\
         "url": "https://github.com/kaizhu256/node-db-lite.git"
     },
     "scripts": {
+        "apidocRawCreate": "[ ! -f npm_scripts.sh ] || ./npm_scripts.sh shNpmScriptApidocRawCreate",
+        "apidocRawFetch": "[ ! -f npm_scripts.sh ] || ./npm_scripts.sh shNpmScriptApidocRawFetch",
         "build-ci": "utility2 shReadmeTest build_ci.sh",
         "env": "env",
         "heroku-postbuild": "npm uninstall utility2 2>/dev/null; npm install kaizhu256/node-utility2#alpha && utility2 shDeployHeroku",
-        "postinstall": "[ ! -f npm_scripts.sh ] || ./npm_scripts.sh postinstall",
+        "nameAliasPublish": "",
+        "postinstall": "[ ! -f npm_scripts.sh ] || ./npm_scripts.sh shNpmScriptPostinstall",
         "start": "PORT=${PORT:-8080} utility2 start test.js",
         "test": "PORT=$(utility2 shServerPortRandom) utility2 test test.js"
     },
-    "version": "2017.12.4"
+    "version": "2018.2.16"
 }
 ```
 
@@ -749,6 +746,7 @@ utility2-comment -->\n\
 # this shell script will run the build for this package
 
 shBuildCiAfter() {(set -e
+    # shDeployCustom
     shDeployGithub
     shDeployHeroku
     shReadmeTest example.sh
