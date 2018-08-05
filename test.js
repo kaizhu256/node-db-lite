@@ -20,22 +20,13 @@
     (function () {
         // init local
         local = {};
-        // init modeJs
-        local.modeJs = (function () {
-            try {
-                return typeof navigator.userAgent === 'string' &&
-                    typeof document.querySelector('body') === 'object' &&
-                    typeof XMLHttpRequest.prototype.open === 'function' &&
-                    'browser';
-            } catch (errorCaughtBrowser) {
-                return module.exports &&
-                    typeof process.versions.node === 'string' &&
-                    typeof require('http').createServer === 'function' &&
-                    'node';
-            }
-        }());
+        // init isBrowser
+        local.isBrowser = typeof window === "object" &&
+            typeof window.XMLHttpRequest === "function" &&
+            window.document &&
+            typeof window.document.querySelectorAll === "function";
         // init global
-        local.global = local.modeJs === 'browser'
+        local.global = local.isBrowser
             ? window
             : global;
         // re-init local
@@ -49,16 +40,21 @@
 
     // run shared js-env code - function
     (function () {
-        local.testCase_consoleLog_default = function (options, onError) {
+        local.testCase_dbLoad_error = function (options, onError) {
         /*
-         * this function will test consoleLog's default handling-behavior
+         * this function will test dbLoad's error handling-behavior
          */
-            options = {};
-            options.data = null;
-            console.log(options.data);
-            options.data = '\n';
-            console.log(options.data);
-            onError();
+            local.testMock([
+                [local, { storageKeys: function (fnc) {
+                    fnc(local.errorDefault);
+                } }]
+            ], function (onError) {
+                local.dbLoad(function (error) {
+                    // validate error occurred
+                    local.assert(error, error);
+                });
+                onError(null, options);
+            }, onError);
         };
 
         local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
@@ -1096,7 +1092,7 @@
             local.storageSetItem('undefined', 'undefined', onParallel);
             onParallel.counter += 1;
             local.storageKeys(function () {
-                if (local.modeJs === 'browser') {
+                if (local.isBrowser) {
                     // test indexedDB's onupgradeneeded handling-behavior
                     local._debugStorageRequestIndexedDB.onupgradeneeded();
                 }
