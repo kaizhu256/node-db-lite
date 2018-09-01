@@ -33,7 +33,7 @@
         local = local.global.local = (local.global.utility2 ||
             require('utility2')).requireReadme();
         // init test
-        local.testRunInit(local);
+        local.testRunDefault(local);
     }());
 
 
@@ -1024,6 +1024,63 @@
             // validate dbRowCount
             local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
             onError();
+        };
+
+        local.testCase_onEventDomDb_default = function (options, onError) {
+        /*
+         * this function will test onEventDomDb's default handling-behavior
+         */
+            if (!local.isBrowser) {
+                onError(null, options);
+                return;
+            }
+            options = {};
+            options.addEventListener = local.nop;
+            options.click = local.nop;
+            options.files = [];
+            local.testMock([
+                [document, { querySelector: function () {
+                    return options;
+                } }],
+                [local, {
+                    dbDrop: function (onError) {
+                        onError();
+                    },
+                    dbExport: local.nop,
+                    dbImport: local.nop
+                }],
+                [local.global, {
+                    FileReader: function () {
+                        this.addEventListener = function (_, fnc) {
+                            fnc(_);
+                        };
+                        this.readAsText = local.nop;
+                    },
+                    setTimeout: function (fnc) {
+                        fnc();
+                    },
+                    utility2: null,
+                    utility2_dbSeedList: null,
+                    utility2_onReadyAfter: null,
+                    utility2_onReadyBefore: null
+                }]
+            ], function (onError) {
+                [
+                    'dbExportButton1',
+                    'dbImportButton1',
+                    'dbImportInput1',
+                    'dbResetButton1'
+                ].forEach(function (id) {
+                    ['change', 'click'].forEach(function (type) {
+                        [0, 1].forEach(function (ii) {
+                            options.files[0] = ii;
+                            local.onEventDomDb({ target: { dataset: {}, id: id }, type: type });
+                            local.global.utility2_dbSeedList = ii && [{name: 'dbTable1'}];
+                        });
+                    });
+                });
+                onError();
+            }, onError);
         };
 
         local.testCase_sortCompare_default = function (options, onError) {

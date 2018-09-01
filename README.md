@@ -58,10 +58,11 @@ this zero-dependency package will provide a persistent, in-browser database, wit
 #### todo
 - none
 
-#### changelog 2018.8.5
-- npm publish 2018.8.5
-- migrate from modeJs -> isBrowser
-- update build
+#### changelog 2018.9.1
+- npm publish 2018.9.1
+- revamp bootstrap-mechanism before running tests
+- integrate function db.onEventDomDb with utility2_onReadyBefore
+- add functions dbReset, dbSeed
 - none
 
 #### this package requires
@@ -153,7 +154,7 @@ instruction
         local.global.local = local;
         // load db
         local.db.dbLoad(function () {
-            console.log('db loaded from ' + local.storageDir);
+            console.error('db loaded from ' + local.storageDir);
         });
     }());
 
@@ -166,16 +167,15 @@ instruction
             return;
         }
         local.testRunBrowser = function (event) {
-            var reader, tmp;
             if (!event || (event &&
                     event.currentTarget &&
                     event.currentTarget.className &&
                     event.currentTarget.className.includes &&
                     event.currentTarget.className.includes('onreset'))) {
                 // reset output
-                Array.from(
-                    document.querySelectorAll('body > .resettable')
-                ).forEach(function (element) {
+                Array.from(document.querySelectorAll(
+                    'body > .resettable'
+                )).forEach(function (element) {
                     switch (element.tagName) {
                     case 'INPUT':
                     case 'TEXTAREA':
@@ -192,7 +192,7 @@ instruction
                 if (document.querySelector('#testReportDiv1').style.maxHeight === '0px') {
                     local.uiAnimateSlideDown(document.querySelector('#testReportDiv1'));
                     document.querySelector('#testRunButton1').textContent = 'hide internal test';
-                    local.modeTest = true;
+                    local.modeTest = 1;
                     local.testRunDefault(local);
                 // hide tests
                 } else {
@@ -202,34 +202,10 @@ instruction
                 break;
             // custom-case
             case 'dbExportButton1':
-                tmp = window.URL.createObjectURL(new window.Blob([local.db.dbExport()]));
-                document.querySelector('#dbExportA1').href = tmp;
-                document.querySelector('#dbExportA1').click();
-                setTimeout(function () {
-                    window.URL.revokeObjectURL(tmp);
-                }, 30000);
-                break;
             case 'dbImportButton1':
-                document.querySelector('#dbImportInput1').click();
-                break;
             case 'dbImportInput1':
-                console.log('importing db-lite database ...');
-                reader = new window.FileReader();
-                tmp = document.querySelector('#dbImportInput1').files[0];
-                if (!tmp) {
-                    return;
-                }
-                reader.addEventListener('load', function () {
-                    local.db.dbImport(reader.result);
-                    console.log('... imported db-lite database');
-                });
-                reader.readAsText(tmp);
-                break;
             case 'dbResetButton1':
-                console.log('resetting db-lite database ...');
-                local.db.dbDrop(function () {
-                    console.log('... resetted db-lite database');
-                });
+                local.db.onEventDomDb(event);
                 break;
             }
             if (document.querySelector('#inputTextareaEval1') && (!event || (event &&
@@ -246,22 +222,23 @@ instruction
                 }
             }
         };
-        // log stderr and stdout to #outputTextareaStdout1
+
+        // log stderr and stdout to #outputStdoutTextarea1
         ['error', 'log'].forEach(function (key) {
-            console[key + '_original'] = console[key];
+            console[key + '_original'] = console[key + '_original'] || console[key];
             console[key] = function () {
                 var element;
                 console[key + '_original'].apply(console, arguments);
-                element = document.querySelector('#outputTextareaStdout1');
+                element = document.querySelector('#outputStdoutTextarea1');
                 if (!element) {
                     return;
                 }
-                // append text to #outputTextareaStdout1
+                // append text to #outputStdoutTextarea1
                 element.value += Array.from(arguments).map(function (arg) {
                     return typeof arg === 'string'
                         ? arg
                         : JSON.stringify(arg, null, 4);
-                }).join(' ') + '\n';
+                }).join(' ').replace((/\u001b\[\d*m/g), '') + '\n';
                 // scroll textarea to bottom
                 element.scrollTop = element.scrollHeight;
             };
@@ -291,8 +268,6 @@ instruction
         local.buffer = require('buffer');
         local.child_process = require('child_process');
         local.cluster = require('cluster');
-        local.console = require('console');
-        local.constants = require('constants');
         local.crypto = require('crypto');
         local.dgram = require('dgram');
         local.dns = require('dns');
@@ -301,12 +276,9 @@ instruction
         local.fs = require('fs');
         local.http = require('http');
         local.https = require('https');
-        local.module = require('module');
         local.net = require('net');
         local.os = require('os');
         local.path = require('path');
-        local.process = require('process');
-        local.punycode = require('punycode');
         local.querystring = require('querystring');
         local.readline = require('readline');
         local.repl = require('repl');
@@ -317,7 +289,6 @@ instruction
         local.tty = require('tty');
         local.url = require('url');
         local.util = require('util');
-        local.v8 = require('v8');
         local.vm = require('vm');
         local.zlib = require('zlib');
         /* validateLineSortedReset */
@@ -342,7 +313,7 @@ instruction
 <!doctype html>\n\
 <html lang="en">\n\
 <head>\n\
-<meta charset="UTF-8">\n\
+<meta charset="utf-8">\n\
 <meta name="viewport" content="width=device-width, initial-scale=1">\n\
 <!-- "assets.utility2.template.html" -->\n\
 <title>{{env.npm_package_name}} ({{env.npm_package_version}})</title>\n\
@@ -470,6 +441,8 @@ textarea {\n\
 <body>\n\
 <div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 500ms, width 1500ms; width: 0%; z-index: 1;"></div>\n\
 <div class="uiAnimateSpin" style="animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;"></div>\n\
+<a class="zeroPixel" download="db.persistence.json" href="" id="dbExportA1"></a>\n\
+<input class="zeroPixel" id="dbImportInput1" type="file">\n\
 <script>\n\
 /* jslint-utility2 */\n\
 /*jslint\n\
@@ -482,6 +455,25 @@ textarea {\n\
     regexp: true,\n\
     stupid: true\n\
 */\n\
+// init domOnEventWindowOnloadTimeElapsed\n\
+(function () {\n\
+/*\n\
+ * this function will measure and print the time-elapsed for window.onload\n\
+ */\n\
+    "use strict";\n\
+    if (window.domOnEventWindowOnloadTimeElapsed) {\n\
+        return;\n\
+    }\n\
+    window.domOnEventWindowOnloadTimeElapsed = Date.now() + 100;\n\
+    window.addEventListener("load", function () {\n\
+        setTimeout(function () {\n\
+            window.domOnEventWindowOnloadTimeElapsed = Date.now() -\n\
+                window.domOnEventWindowOnloadTimeElapsed;\n\
+            console.error("domOnEventWindowOnloadTimeElapsed = " +\n\
+                window.domOnEventWindowOnloadTimeElapsed);\n\
+        }, 100);\n\
+    });\n\
+}());\n\
 // init timerIntervalAjaxProgressUpdate\n\
 (function () {\n\
 /*\n\
@@ -491,7 +483,7 @@ textarea {\n\
     var ajaxProgressDiv1,\n\
         ajaxProgressState,\n\
         ajaxProgressUpdate;\n\
-    if (window.timerIntervalAjaxProgressUpdate) {\n\
+    if (window.timerIntervalAjaxProgressUpdate || !document.querySelector("#ajaxProgressDiv1")) {\n\
         return;\n\
     }\n\
     ajaxProgressDiv1 = document.querySelector("#ajaxProgressDiv1");\n\
@@ -520,87 +512,6 @@ textarea {\n\
         clearInterval(window.timerIntervalAjaxProgressUpdate);\n\
         ajaxProgressUpdate();\n\
     });\n\
-}());\n\
-// init domOnEventMediaHotkeys\n\
-(function () {\n\
-/*\n\
- * this function will add media-hotkeys to elements with class=".domOnEventMediaHotkeysInit"\n\
- */\n\
-    "use strict";\n\
-    var input, onEvent;\n\
-    if (window.domOnEventMediaHotkeys) {\n\
-        return;\n\
-    }\n\
-    onEvent = window.domOnEventMediaHotkeys = function (event) {\n\
-        var media;\n\
-        if (event === "init") {\n\
-            Array.from(\n\
-                document.querySelectorAll(".domOnEventMediaHotkeysInit")\n\
-            ).forEach(function (media) {\n\
-                media.classList.remove("domOnEventMediaHotkeysInit");\n\
-                media.classList.add("domOnEventMediaHotkeys");\n\
-                ["play", "pause", "seeking"].forEach(function (event) {\n\
-                    media.addEventListener(event, onEvent);\n\
-                });\n\
-            });\n\
-            return;\n\
-        }\n\
-        if (event.currentTarget.classList.contains("domOnEventMediaHotkeys")) {\n\
-            window.domOnEventMediaHotkeysMedia1 = event.currentTarget;\n\
-            window.domOnEventMediaHotkeysInput.focus();\n\
-            return;\n\
-        }\n\
-        media = window.domOnEventMediaHotkeysMedia1;\n\
-        try {\n\
-            switch (event.key || event.type) {\n\
-            case ",":\n\
-            case ".":\n\
-                media.currentTime += (event.key === "," && -0.03125) || 0.03125;\n\
-                break;\n\
-            case "<":\n\
-            case ">":\n\
-                media.playbackRate *= (event.key === "<" && 0.5) || 2;\n\
-                break;\n\
-            case "ArrowDown":\n\
-            case "ArrowUp":\n\
-                media.volume += (event.key === "ArrowDown" && -0.05) || 0.05;\n\
-                break;\n\
-            case "ArrowLeft":\n\
-            case "ArrowRight":\n\
-                media.currentTime += (event.key === "ArrowLeft" && -5) || 5;\n\
-                break;\n\
-            case "j":\n\
-            case "l":\n\
-                media.currentTime += (event.key === "j" && -10) || 10;\n\
-                break;\n\
-            case "k":\n\
-            case " ":\n\
-                if (media.paused) {\n\
-                    media.play();\n\
-                } else {\n\
-                    media.pause();\n\
-                }\n\
-                break;\n\
-            case "m":\n\
-                media.muted = !media.muted;\n\
-                break;\n\
-            default:\n\
-                if (event.key >= 0) {\n\
-                    media.currentTime = 0.1 * event.key * media.duration;\n\
-                    break;\n\
-                }\n\
-                return;\n\
-            }\n\
-        } catch (ignore) {\n\
-        }\n\
-        event.preventDefault();\n\
-    };\n\
-    input = window.domOnEventMediaHotkeysInput = document.createElement("button");\n\
-    input.style = "border:0;height:0;margin:0;padding:0;position:fixed;width:0;z-index:-1;";\n\
-    input.addEventListener("click", onEvent);\n\
-    input.addEventListener("keydown", onEvent);\n\
-    document.body.appendChild(input);\n\
-    onEvent("init");\n\
 }());\n\
 // init domOnEventSelectAllWithinPre\n\
 (function () {\n\
@@ -654,9 +565,7 @@ utility2-comment -->\n\
 \n\
 <button class="button onclick onreset" id="dbResetButton1">reset database</button><br>\n\
 <button class="button onclick" id="dbExportButton1">export database -&gt; file</button><br>\n\
-<a download="db.persistence.json" href="" id="dbExportA1"></a>\n\
 <button class="button onclick" id="dbImportButton1">import database &lt;- file</button><br>\n\
-<input class="onchange onreset zeroPixel" type="file" id="dbImportInput1">\n\
 <label>edit or paste script below to\n\
     <a\n\
         href="https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html"\n\
@@ -708,11 +617,11 @@ onNext = function (error, data) {\n\
         }, onNext);\n\
         break;\n\
     case 10:\n\
-        console.log(data);\n\
+        console.error(data);\n\
         dbTable1.crudCountAll(onNext);\n\
         break;\n\
     case 11:\n\
-        console.log("number of rows: " + data);\n\
+        console.error("number of rows: " + data);\n\
         break;\n\
     default:\n\
         console.error(error.stack);\n\
@@ -722,19 +631,19 @@ onNext();\n\
 </textarea>\n\
 <button class="button onclick oneval onreset" id="dbEvalButton1">eval script</button><br>\n\
 <label>stderr and stdout</label>\n\
-<textarea class="resettable" id="outputTextareaStdout1" readonly></textarea>\n\
+<textarea class="resettable" id="outputStdoutTextarea1" readonly></textarea>\n\
 <!-- utility2-comment\n\
 {{#if isRollup}}\n\
 <script src="assets.app.js"></script>\n\
 {{#unless isRollup}}\n\
 utility2-comment -->\n\
 <script src="assets.utility2.rollup.js"></script>\n\
-<script>window.utility2.onResetBefore.counter += 1;</script>\n\
+<script>window.utility2_onReadyBefore.counter += 1;</script>\n\
 <script src="jsonp.utility2.stateInit?callback=window.utility2.stateInit"></script>\n\
 <script src="assets.db.js"></script>\n\
 <script src="assets.example.js"></script>\n\
 <script src="assets.test.js"></script>\n\
-<script>window.utility2.onResetBefore();</script>\n\
+<script>window.utility2_onReadyBefore();</script>\n\
 <!-- utility2-comment\n\
 {{/if isRollup}}\n\
 utility2-comment -->\n\
@@ -758,6 +667,7 @@ utility2-comment -->\n\
         /* validateLineSortedReset */
         local.assetsDict['/'] =
             local.assetsDict['/assets.example.html'] =
+            local.assetsDict['/index.html'] =
             local.assetsDict['/assets.index.template.html']
             .replace((/\{\{env\.(\w+?)\}\}/g), function (match0, match1) {
                 switch (match1) {
@@ -898,7 +808,7 @@ utility2-comment -->\n\
         "test": "./npm_scripts.sh",
         "utility2": "./npm_scripts.sh"
     },
-    "version": "2018.8.5"
+    "version": "2018.9.1"
 }
 ```
 

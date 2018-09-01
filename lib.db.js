@@ -59,21 +59,18 @@
         // init debug_inline
         (function () {
             var consoleError, context, key;
-            context = (typeof window === "object" && window) || global;
-            key = "debug_inline".replace("_i", "I");
-            if (context[key]) {
-                return;
-            }
             consoleError = console.error;
-            context[key] = function (arg0) {
+            context = (typeof window === 'object' && window) || global;
+            key = 'debug_inline'.replace('_i', 'I');
+            context[key] = context[key] || function (arg0) {
             /*
              * this function will both print arg0 to stderr and return it
              */
                 // debug arguments
-                context["_" + key + "Arguments"] = arguments;
-                consoleError("\n\n" + key);
+                context['_' + key + 'Arguments'] = arguments;
+                consoleError('\n\n' + key);
                 consoleError.apply(console, arguments);
-                consoleError("\n");
+                consoleError(new Error().stack + '\n');
                 // return arg0 for inspection
                 return arg0;
             };
@@ -81,10 +78,10 @@
         // init local
         local = {};
         // init isBrowser
-        local.isBrowser = typeof window === "object" &&
-            typeof window.XMLHttpRequest === "function" &&
+        local.isBrowser = typeof window === 'object' &&
+            typeof window.XMLHttpRequest === 'function' &&
             window.document &&
-            typeof window.document.querySelectorAll === "function";
+            typeof window.document.querySelectorAll === 'function';
         // init global
         local.global = local.isBrowser
             ? window
@@ -93,13 +90,6 @@
         local = local.global.utility2_rollup ||
             // local.global.utility2_rollup_old || require('./assets.utility2.rollup.js') ||
             local;
-        // init nop
-        local.nop = function () {
-        /*
-         * this function will do nothing
-         */
-            return;
-        };
         // init exports
         if (local.isBrowser) {
             local.global.utility2_db = local;
@@ -109,8 +99,6 @@
             local.buffer = require('buffer');
             local.child_process = require('child_process');
             local.cluster = require('cluster');
-            local.console = require('console');
-            local.constants = require('constants');
             local.crypto = require('crypto');
             local.dgram = require('dgram');
             local.dns = require('dns');
@@ -119,12 +107,9 @@
             local.fs = require('fs');
             local.http = require('http');
             local.https = require('https');
-            local.module = require('module');
             local.net = require('net');
             local.os = require('os');
             local.path = require('path');
-            local.process = require('process');
-            local.punycode = require('punycode');
             local.querystring = require('querystring');
             local.readline = require('readline');
             local.repl = require('repl');
@@ -135,7 +120,6 @@
             local.tty = require('tty');
             local.url = require('url');
             local.util = require('util');
-            local.v8 = require('v8');
             local.vm = require('vm');
             local.zlib = require('zlib');
             module.exports = local;
@@ -155,7 +139,7 @@
             if (passed) {
                 return;
             }
-            error = message && message.message
+            error = message && message.stack
                 // if message is an error-object, then leave it as is
                 ? message
                 : new Error(typeof message === 'string'
@@ -185,7 +169,7 @@
             local.cliDict._eval = local.cliDict._eval || function () {
             /*
              * <code>
-             * # eval code
+             * will eval <code>
              */
                 local.global.local = local;
                 require('vm').runInThisContext(process.argv[3]);
@@ -195,13 +179,17 @@
             local.cliDict._help = local.cliDict._help || function (options) {
             /*
              *
-             * # print help
+             * will print help
              */
                 var commandList, file, packageJson, text, textDict;
                 commandList = [{
-                    arg: '<arg2> ...',
+                    argList: '<arg2>  ...',
                     description: 'usage:',
                     command: ['<arg1>']
+                }, {
+                    argList: '\'console.log("hello world")\'',
+                    description: 'example:',
+                    command: ['--eval']
                 }];
                 file = __filename.replace((/.*\//), '');
                 packageJson = require('./package.json');
@@ -212,9 +200,9 @@
                     }
                     text = String(local.cliDict[key]);
                     if (key === '_default') {
-                        key = '<>';
+                        key = '';
                     }
-                    ii = textDict[text] = textDict[text] || (ii + 1);
+                    ii = textDict[text] = textDict[text] || (ii + 2);
                     if (commandList[ii]) {
                         commandList[ii].command.push(key);
                     } else {
@@ -224,7 +212,7 @@
                             commandList[ii] = commandList[ii] || ['', '', ''];
                         }()));
                         commandList[ii] = {
-                            arg: commandList[ii][1].trim(),
+                            argList: commandList[ii][1].trim(),
                             command: [key],
                             description: commandList[ii][2].trim()
                         };
@@ -232,21 +220,37 @@
                 });
                 (options && options.modeError
                     ? console.error
-                    : console.log)((options && options.modeError
+                    : console.log)(
+                    (options && options.modeError
                     ? '\u001b[31merror: missing <arg1>\u001b[39m\n\n'
-                    : '') + packageJson.name + ' (' + packageJson.version + ')\n\n' + commandList
-                    .filter(function (element) {
-                        return element;
-                    }).map(function (element) {
-                        return (element.description + '\n' +
-                            file + '  ' +
-                            element.command.sort().join('|') + '  ' +
-                            element.arg.replace((/ +/g), '  '))
-                                .replace((/<>\||\|<>|<> {2}/), '')
-                                .trim();
-                    })
-                    .join('\n\n') + '\n\nexample:\n' + file +
-                    '  --eval  \'console.log("hello world")\'');
+                    : '') +
+                        packageJson.name + ' (' + packageJson.version + ')\n\n' +
+                        commandList
+                        .filter(function (element) {
+                            return element;
+                        })
+                        .map(function (element, ii) {
+                            element.command = element.command.filter(function (element) {
+                                return element;
+                            });
+                            switch (ii) {
+                            case 0:
+                            case 1:
+                                element.argList = [element.argList];
+                                break;
+                            default:
+                                element.argList = element.argList.split(' ');
+                                element.description = '# COMMAND ' +
+                                    (element.command[0] || '<none>') + '\n# ' +
+                                    element.description;
+                            }
+                            return element.description + '\n  ' + file +
+                                ('  ' + element.command.sort().join('|') + '  ')
+                                .replace((/^ {4}$/), '  ') +
+                                element.argList.join('  ');
+                        })
+                        .join('\n\n')
+                );
             };
             local.cliDict['--help'] = local.cliDict['--help'] || local.cliDict._help;
             local.cliDict['-h'] = local.cliDict['-h'] || local.cliDict._help;
@@ -255,12 +259,12 @@
             local.cliDict._interactive = local.cliDict._interactive || function () {
             /*
              *
-             * # start interactive-mode
+             * will start interactive-mode
              */
                 local.global.local = local;
                 local.replStart();
             };
-            if (local.replStart) {
+            if (typeof local.replStart === 'function') {
                 local.cliDict['--interactive'] = local.cliDict['--interactive'] ||
                     local.cliDict._interactive;
                 local.cliDict['-i'] = local.cliDict['-i'] || local.cliDict._interactive;
@@ -268,7 +272,7 @@
             local.cliDict._version = local.cliDict._version || function () {
             /*
              *
-             * # print version
+             * will print version
              */
                 console.log(require(__dirname + '/package.json').version);
             };
@@ -364,7 +368,7 @@
 
         local.listShuffle = function (list) {
         /*
-         * this function will inplace shuffle the list, via fisher-yates algorithm
+         * this function will inplace shuffle the list using fisher-yates algorithm
          * https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
          */
             var ii, random, swap;
@@ -377,47 +381,55 @@
             return list;
         };
 
-        local.objectSetOverride = function (arg0, overrides, depth, env) {
+        local.nop = function () {
         /*
-         * this function will recursively set overrides for items in arg0
+         * this function will do nothing
          */
-            arg0 = arg0 || {};
+            return;
+        };
+
+        local.objectSetOverride = function (dict, overrides, depth, env) {
+        /*
+         * this function will recursively set overrides for items in dict
+         */
+            dict = dict || {};
             env = env || (typeof process === 'object' && process.env) || {};
             overrides = overrides || {};
             Object.keys(overrides).forEach(function (key) {
-                var arg2, overrides2;
-                arg2 = arg0[key];
+                var dict2, overrides2;
+                dict2 = dict[key];
                 overrides2 = overrides[key];
                 if (overrides2 === undefined) {
                     return;
                 }
-                // if both arg2 and overrides2 are non-null and non-array objects,
-                // then recurse with arg2 and overrides2
+                // if both dict2 and overrides2 are non-null and non-array objects,
+                // then recurse with dict2 and overrides2
                 if (depth > 1 &&
-                        // arg2 is a non-null and non-array object
-                        typeof arg2 === 'object' && arg2 && !Array.isArray(arg2) &&
+                        // dict2 is a non-null and non-array object
+                        typeof dict2 === 'object' && dict2 && !Array.isArray(dict2) &&
                         // overrides2 is a non-null and non-array object
                         typeof overrides2 === 'object' && overrides2 &&
                         !Array.isArray(overrides2)) {
-                    local.objectSetOverride(arg2, overrides2, depth - 1, env);
+                    local.objectSetOverride(dict2, overrides2, depth - 1, env);
                     return;
                 }
-                // else set arg0[key] with overrides[key]
-                arg0[key] = arg0 === env
-                    // if arg0 is env, then overrides falsey value with empty string
+                // else set dict[key] with overrides[key]
+                dict[key] = dict === env
+                    // if dict is env, then overrides falsey value with empty string
                     ? overrides2 || ''
                     : overrides2;
             });
-            return arg0;
+            return dict;
         };
 
         local.onErrorDefault = function (error) {
         /*
-         * this function will if error exists, then print error.stack to stderr
+         * this function will if error exists, then print it to stderr
          */
             if (error && !local.global.__coverage__) {
                 console.error(error);
             }
+            return error;
         };
 
         local.onErrorWithStack = function (onError) {
@@ -460,12 +472,10 @@
                 // decrement counter
                 onParallel.counter -= 1;
                 // validate counter
-                local.assert(
-                    onParallel.counter >= 0 || error || onParallel.error,
-                    'invalid onParallel.counter = ' + onParallel.counter
-                );
+                if (!(onParallel.counter >= 0 || error || onParallel.error)) {
+                    error = new Error('invalid onParallel.counter = ' + onParallel.counter);
                 // ensure onError is run only once
-                if (onParallel.counter < 0) {
+                } else if (onParallel.counter < 0) {
                     return;
                 }
                 // handle error
@@ -516,47 +526,53 @@
             self.evalDefault = self.eval;
             // hook custom repl eval function
             self.eval = function (script, context, file, onError) {
-                var match, onError2;
-                match = (/^(\S+)(.*?)\n/).exec(script) || {};
+                var  onError2;
                 onError2 = function (error, data) {
                     // debug error
                     global.utility2_debugReplError = error || global.utility2_debugReplError;
                     onError(error, data);
                 };
-                switch (match[1]) {
-                // syntax sugar to run async shell command
-                case '$':
-                    switch (match[2]) {
-                    // syntax sugar to run git diff
-                    case ' git diff':
-                        match[2] = ' git diff --color | cat';
+                script.replace((/^(\S+)(.*?)\n/), function (match0, match1, match2) {
+                    match0 = match1;
+                    switch (match0) {
+                    // syntax sugar to run async shell command
+                    case '$':
+                        switch (match2) {
+                        // syntax sugar to run git diff
+                        case ' git diff':
+                            match2 = ' git diff --color | cat';
+                            break;
+                        // syntax sugar to run git log
+                        case ' git log':
+                            match2 = ' git log -n 4 | cat';
+                            break;
+                        }
+                        // source lib.utility2.sh
+                        if (process.env.npm_config_dir_utility2 && (match2 !== ' :')) {
+                            match2 = '. ' + process.env.npm_config_dir_utility2 +
+                                '/lib.utility2.sh;' + match2;
+                        }
+                        // run async shell command
+                        require('child_process').spawn(match2, {
+                            shell: true,
+                            stdio: ['ignore', 1, 2]
+                        })
+                            // on shell exit, print return prompt
+                            .on('exit', function (exitCode) {
+                                console.error('exit-code ' + exitCode);
+                                self.evalDefault(
+                                    '\n',
+                                    context,
+                                    file,
+                                    onError2
+                                );
+                            });
+                        script = '\n';
                         break;
-                    // syntax sugar to run git log
-                    case ' git log':
-                        match[2] = ' git log -n 4 | cat';
-                        break;
-                    }
-                    // run async shell command
-                    require('child_process').spawn(match[2], {
-                        shell: true,
-                        stdio: ['ignore', 1, 2]
-                    })
-                        // on shell exit, print return prompt
-                        .on('exit', function (exitCode) {
-                            console.error('exit-code ' + exitCode);
-                            self.evalDefault(
-                                '\n',
-                                context,
-                                file,
-                                onError2
-                            );
-                        });
-                    script = '\n';
-                    break;
-                // syntax sugar to grep current dir
-                case 'grep':
-                    // run async shell command
-                    require('child_process').spawn('find . -type f | grep -v -E ' +
+                    // syntax sugar to grep current dir
+                    case 'grep':
+                        // run async shell command
+                        require('child_process').spawn('find . -type f | grep -v -E ' +
 /* jslint-ignore-begin */
 '"\
 /\\.|(\\b|_)(\\.\\d|\
@@ -577,32 +593,33 @@ tmp|\
 vendor)s{0,1}(\\b|_)\
 " ' +
 /* jslint-ignore-end */
-                            '| tr "\\n" "\\000" | xargs -0 grep -HIin -E "' +
-                            match[2].trim() + '"', { shell: true, stdio: ['ignore', 1, 2] })
-                        // on shell exit, print return prompt
-                        .on('exit', function (exitCode) {
-                            console.error('exit-code ' + exitCode);
-                            self.evalDefault(
-                                '\n',
-                                context,
-                                file,
-                                onError2
-                            );
-                        });
-                    script = '\n';
-                    break;
-                // syntax sugar to list object's keys, sorted by item-type
-                case 'keys':
-                    script = 'console.error(Object.keys(' + match[2] +
-                        ').map(function (key) {' +
-                        'return typeof ' + match[2] + '[key] + " " + key + "\\n";' +
-                        '}).sort().join("") + Object.keys(' + match[2] + ').length)\n';
-                    break;
-                // syntax sugar to print stringified arg
-                case 'print':
-                    script = 'console.error(String(' + match[2] + '))\n';
-                    break;
-                }
+                                '| tr "\\n" "\\000" | xargs -0 grep -HIin -E "' +
+                                match2.trim() + '"', { shell: true, stdio: ['ignore', 1, 2] })
+                            // on shell exit, print return prompt
+                            .on('exit', function (exitCode) {
+                                console.error('exit-code ' + exitCode);
+                                self.evalDefault(
+                                    '\n',
+                                    context,
+                                    file,
+                                    onError2
+                                );
+                            });
+                        script = '\n';
+                        break;
+                    // syntax sugar to list object's keys, sorted by item-type
+                    case 'keys':
+                        script = 'console.error(Object.keys(' + match2 +
+                            ').map(function (key) {' +
+                            'return typeof ' + match2 + '[key] + " " + key + "\\n";' +
+                            '}).sort().join("") + Object.keys(' + match2 + ').length)\n';
+                        break;
+                    // syntax sugar to print stringified arg
+                    case 'print':
+                        script = 'console.error(String(' + match2 + '))\n';
+                        break;
+                    }
+                });
                 // eval the script
                 self.evalDefault(script, context, file, onError2);
             };
@@ -634,7 +651,7 @@ vendor)s{0,1}(\\b|_)\
 
         local.setTimeoutOnError = function (onError, timeout, error, data) {
         /*
-         * this function will async-call onError
+         * this function will after timeout has passed, then call onError(error, data)
          */
             if (typeof onError === 'function') {
                 setTimeout(function () {
@@ -925,7 +942,6 @@ vendor)s{0,1}(\\b|_)\
         /*
          * this function will create a dbTable
          */
-            options = local.objectSetOverride(options);
             this.name = String(options.name);
             // register dbTable in dbTableDict
             local.dbTableDict[this.name] = this;
@@ -957,12 +973,7 @@ vendor)s{0,1}(\\b|_)\
                 }
             }
             if (this.sizeLimit && this.dbRowList.length >= 1.5 * this.sizeLimit) {
-                this.dbRowList = this._crudGetManyByQuery(
-                    {},
-                    this.sortDefault,
-                    0,
-                    this.sizeLimit
-                );
+                this.dbRowList = this._crudGetManyByQuery({}, this.sortDefault, 0, this.sizeLimit);
             }
         };
 
@@ -984,7 +995,7 @@ vendor)s{0,1}(\\b|_)\
                 result = local.dbRowListGetManyByQuery(this.dbRowList, query);
             }
             // sort
-            Array.from(sort || []).forEach(function (element) {
+            (sort || []).forEach(function (element) {
                 // bug-workaround - v8 does not have stable-sort
                 // optimization - for-loop
                 for (ii = 0; ii < result.length; ii += 1) {
@@ -1182,7 +1193,7 @@ vendor)s{0,1}(\\b|_)\
             this._cleanup();
             self = this;
             return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
-                Array.from(idDictList || []).map(function (idDict) {
+                (idDictList || []).map(function (idDict) {
                     return self._crudGetOneById(idDict);
                 })
             ));
@@ -1252,10 +1263,7 @@ vendor)s{0,1}(\\b|_)\
             // reset dbTable
             local._DbTable.call(this, this);
             // restore idIndexList
-            local.dbTableCreateOne({
-                name: this.name,
-                idIndexCreateList: idIndexList
-            }, onError);
+            local.dbTableCreateOne({ name: this.name, idIndexCreateList: idIndexList }, onError);
         };
 
         local._DbTable.prototype.crudRemoveManyById = function (idDictList, onError) {
@@ -1265,7 +1273,7 @@ vendor)s{0,1}(\\b|_)\
             var self;
             self = this;
             return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
-                Array.from(idDictList || []).map(function (dbRow) {
+                (idDictList || []).map(function (dbRow) {
                     return self._crudRemoveOneById(dbRow);
                 })
             ));
@@ -1300,7 +1308,7 @@ vendor)s{0,1}(\\b|_)\
             var self;
             self = this;
             return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
-                Array.from(dbRowList || []).map(function (dbRow) {
+                (dbRowList || []).map(function (dbRow) {
                     return self._crudSetOneById(dbRow);
                 })
             ));
@@ -1323,7 +1331,7 @@ vendor)s{0,1}(\\b|_)\
             var self;
             self = this;
             return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
-                Array.from(dbRowList || []).map(function (dbRow) {
+                (dbRowList || []).map(function (dbRow) {
                     return self._crudUpdateOneById(dbRow);
                 })
             ));
@@ -1357,7 +1365,7 @@ vendor)s{0,1}(\\b|_)\
         /*
          * this function will drop the dbTable
          */
-            console.error('dropping dbTable ' + this.name + ' ...');
+            console.error('db - dropping dbTable ' + this.name + ' ...');
             // cancel pending save
             this.timerSave = null;
             while (this.onSaveList.length) {
@@ -1484,6 +1492,7 @@ vendor)s{0,1}(\\b|_)\
          * this function will drop the db
          */
             var onParallel;
+            console.error('db - dropping database ...');
             onParallel = local.onParallel(function (error) {
                 local.setTimeoutOnError(onError, 0, error);
             });
@@ -1504,6 +1513,7 @@ vendor)s{0,1}(\\b|_)\
             var result;
             result = '';
             Object.keys(local.dbTableDict).forEach(function (key) {
+                console.error('db - exporting dbTable ' + local.dbTableDict[key].name + ' ...');
                 result += local.dbTableDict[key].export();
                 result += '\n\n';
             });
@@ -1514,7 +1524,8 @@ vendor)s{0,1}(\\b|_)\
         /*
          * this function will import the serialized text into the db
          */
-            var dbTable;
+            var dbTable, dbTableDict;
+            dbTableDict = {};
             local.modeImport = true;
             setTimeout(function () {
                 local.modeImport = null;
@@ -1529,23 +1540,32 @@ vendor)s{0,1}(\\b|_)\
                 local.nop(match0);
                 switch (match2) {
                 case 'dbRowSet':
+                    dbTableDict[match1] = true;
                     dbTable = local.dbTableCreateOne({ isLoaded: true, name: match1 });
                     dbTable.crudSetOneById(JSON.parse(match3));
                     break;
                 case 'idIndexCreate':
+                    dbTableDict[match1] = true;
                     dbTable = local.dbTableCreateOne({ isLoaded: true, name: match1 });
                     dbTable.idIndexCreate(JSON.parse(match3));
                     break;
                 case 'sizeLimit':
+                    dbTableDict[match1] = true;
                     dbTable = local.dbTableCreateOne({ isLoaded: true, name: match1 });
                     dbTable.sizeLimit = JSON.parse(match3);
                     break;
                 case 'sortDefault':
+                    dbTableDict[match1] = true;
                     dbTable = local.dbTableCreateOne({ isLoaded: true, name: match1 });
+                    dbTable.sortDefault = JSON.parse(match3);
                     break;
                 default:
-                    local.onErrorDefault(new Error('dbImport - invalid operation - ' + match0));
+                    local.onErrorDefault(new Error('db - dbImport - invalid operation - ' +
+                        match0));
                 }
+            });
+            Object.keys(dbTableDict).forEach(function (name) {
+                console.error('db - importing dbTable ' + name + ' ...');
             });
             local.modeImport = null;
             return local.setTimeoutOnError(onError);
@@ -1563,7 +1583,7 @@ vendor)s{0,1}(\\b|_)\
                 onParallel.counter += 1;
                 onParallel.counter += 1;
                 onParallel(error);
-                Array.from(data || []).forEach(function (key) {
+                (data || []).forEach(function (key) {
                     if (key.indexOf('dbTable.') !== 0) {
                         return;
                     }
@@ -1576,6 +1596,25 @@ vendor)s{0,1}(\\b|_)\
                 });
                 onParallel();
             });
+        };
+
+        local.dbReset = function (dbSeedList, onError) {
+        /*
+         * this function will drop and seed the db with the given dbSeedList
+         */
+            var onParallel;
+            onParallel = local.global.utility2_onReadyBefore || local.onParallel(onError);
+            onParallel.counter += 1;
+            // drop db
+            onParallel.counter += 1;
+            local.dbDrop(function (error) {
+                local.onErrorDefault(error);
+                // seed db
+                local.dbSeed(dbSeedList, !local.global.utility2_onReadyBefore && onParallel);
+                (local.global.utility2_onReadyBefore || local.nop)();
+            });
+            (local.global.utility2_onReadyAfter || local.nop)(onError);
+            onParallel();
         };
 
         local.dbRowGetItem = function (dbRow, key) {
@@ -1819,16 +1858,37 @@ vendor)s{0,1}(\\b|_)\
             onParallel();
         };
 
+        local.dbSeed = function (dbSeedList, onError) {
+        /*
+         * this function will seed the db with the given dbSeedList
+         */
+            var dbTableDict, onParallel;
+            dbTableDict = {};
+            onParallel = local.global.utility2_onReadyBefore || local.onParallel(onError);
+            onParallel.counter += 1;
+            // seed db
+            onParallel.counter += 1;
+            local.dbTableCreateMany(dbSeedList, onParallel);
+            (dbSeedList || []).forEach(function (options) {
+                dbTableDict[options.name] = true;
+            });
+            Object.keys(dbTableDict).forEach(function (name) {
+                console.error('db - seeding dbTable ' + name + ' ...');
+            });
+            (local.global.utility2_onReadyAfter || local.nop)(onError);
+            onParallel();
+        };
+
         local.dbTableCreateMany = function (optionsList, onError) {
         /*
-         * this function will set the optionsList into the db
+         * this function will create many dbTables with the given optionsList
          */
             var onParallel, result;
             onParallel = local.onParallel(function (error) {
                 local.setTimeoutOnError(onError, 0, error, result);
             });
             onParallel.counter += 1;
-            result = Array.from(optionsList || []).map(function (options) {
+            result = (optionsList || []).map(function (options) {
                 onParallel.counter += 1;
                 return local.dbTableCreateOne(options, onParallel);
             });
@@ -1848,11 +1908,11 @@ vendor)s{0,1}(\\b|_)\
                 self.sortDefault ||
                 [{ fieldName: '_timeUpdated', isDescending: true }];
             // remove idIndex
-            Array.from(options.idIndexRemoveList || []).forEach(function (idIndex) {
+            (options.idIndexRemoveList || []).forEach(function (idIndex) {
                 self.idIndexRemove(idIndex);
             });
             // create idIndex
-            Array.from(options.idIndexCreateList || []).forEach(function (idIndex) {
+            (options.idIndexCreateList || []).forEach(function (idIndex) {
                 self.idIndexCreate(idIndex);
             });
             // upsert dbRow
@@ -1875,6 +1935,56 @@ vendor)s{0,1}(\\b|_)\
         };
 
         local.dbTableDict = {};
+
+        local.onEventDomDb = function (event) {
+        /*
+         * this function will handle db dom-events
+         */
+            var ajaxProgressUpdate, reader, tmp, utility2;
+            utility2 = local.global.utility2 || {};
+            ajaxProgressUpdate = utility2.ajaxProgressUpdate || local.nop;
+            switch (event.target.dataset.onEventDomDb || event.target.id) {
+            case 'dbExportButton1':
+                tmp = local.global.URL.createObjectURL(new local.global.Blob([local.dbExport()]));
+                document.querySelector('#dbExportA1').href = tmp;
+                document.querySelector('#dbExportA1').click();
+                setTimeout(function () {
+                    local.global.URL.revokeObjectURL(tmp);
+                }, 30000);
+                break;
+            case 'dbImportButton1':
+                tmp = document.querySelector('#dbImportInput1');
+                if (!tmp.onEventDomDb) {
+                    tmp.onEventDomDb = local.onEventDomDb;
+                    tmp.addEventListener('change', local.onEventDomDb);
+                }
+                tmp.click();
+                break;
+            case 'dbImportInput1':
+                if (event.type !== 'change') {
+                    return;
+                }
+                ajaxProgressUpdate();
+                reader = new local.global.FileReader();
+                tmp = document.querySelector('#dbImportInput1').files[0];
+                if (!tmp) {
+                    return;
+                }
+                reader.addEventListener('load', function () {
+                    local.dbImport(reader.result);
+                    ajaxProgressUpdate();
+                });
+                reader.readAsText(tmp);
+                break;
+            case 'dbResetButton1':
+                ajaxProgressUpdate();
+                local.dbReset(local.global.utility2_dbSeedList, function (error) {
+                    local.onErrorDefault(error);
+                    ((utility2.uiEventListenerDict || {})['.onEventUiReload'] || local.nop)();
+                });
+                break;
+            }
+        };
 
         local.sortCompare = function (aa, bb, ii, jj) {
         /*
@@ -1944,7 +2054,7 @@ vendor)s{0,1}(\\b|_)\
         local.cliDict.dbTableCrudGetManyByQuery = function () {
         /*
          * <dbTable> <query>
-         * # get <dbRowList> from <dbTable> with the given json-format <query>
+         * will get from <dbTable> with json <query>, <dbRowList>
          */
             local.dbTableCreateOne({ name: process.argv[3] }, function (error, self) {
                 // validate no error occurred
@@ -1957,7 +2067,7 @@ vendor)s{0,1}(\\b|_)\
         local.cliDict.dbTableCrudRemoveManyByQuery = function () {
         /*
          * <dbTable> <query>
-         * # remove <dbRowList> from <dbTable> with the given json-format <query>
+         * will remove from <dbTable> with json <query>, <dbRowList>
          */
             local.dbTableCreateOne({ name: process.argv[3] }, function (error, self) {
                 // validate no error occurred
@@ -1970,7 +2080,7 @@ vendor)s{0,1}(\\b|_)\
         local.cliDict.dbTableCrudSetManyById = function () {
         /*
          * <dbTable> <dbRowList>
-         * # set json-format <dbRowList> into <dbTable>
+         * will set in <dbTable>, <dbRowList>
          */
             local.dbTableCreateOne({ name: process.argv[3] }, function (error, self) {
                 // validate no error occurred
@@ -1981,7 +2091,7 @@ vendor)s{0,1}(\\b|_)\
         local.cliDict.dbTableHeaderDictGet = function () {
         /*
          * <dbTable>
-         * # get <headerDict> from <dbTable>
+         * will get from <dbTable>, <headerDict>
          */
             local.dbTableCreateOne({ name: process.argv[3] }, function (error, self) {
                 // validate no error occurred
@@ -2001,7 +2111,7 @@ vendor)s{0,1}(\\b|_)\
         local.cliDict.dbTableHeaderDictSet = function () {
         /*
          * <dbTable> <headerDict>
-         * # set json-format <headerDict> into <dbTable>
+         * will set in <dbTable>, <headerDict>
          */
             local.dbTableCreateOne({ name: process.argv[3] }, function (error, self) {
                 // validate no error occurred
@@ -2020,7 +2130,7 @@ vendor)s{0,1}(\\b|_)\
         local.cliDict.dbTableIdIndexCreate = function () {
         /*
          * <dbTable> <idIndex>
-         * # create json-format <idIndex> in <dbTable>
+         * will create in <dbTable>, <idIndex>
          */
             local.dbTableCreateOne({ name: process.argv[3] }, function (error, self) {
                 // validate no error occurred
@@ -2037,7 +2147,7 @@ vendor)s{0,1}(\\b|_)\
         local.cliDict.dbTableIdIndexRemove = function () {
         /*
          * <dbTable> <idIndex>
-         * # remove json-format <idIndex> from <dbTable>
+         * will remove from <dbTable>, <idIndex>
          */
             local.dbTableCreateOne({ name: process.argv[3] }, function (error, self) {
                 // validate no error occurred
@@ -2050,7 +2160,7 @@ vendor)s{0,1}(\\b|_)\
         local.cliDict.dbTableList = function () {
         /*
          *
-         * # list <dbTable>'s in db
+         * will get from db, <dbTableList>
          */
             local.storageKeys(function (error, data) {
                 // validate no error occurred
@@ -2063,7 +2173,7 @@ vendor)s{0,1}(\\b|_)\
         local.cliDict.dbTableRemove = function () {
         /*
          * <dbTable>
-         * # remove <dbTable> from db
+         * will remove from db, <dbTable>
          */
             local.storageRemoveItem('dbTable.' + process.argv[3] + '.json', function (error) {
                 // validate no error occurred
