@@ -1,5 +1,5 @@
 #!/bin/sh
-# jslint-utility2
+# jslint utility2:true
 
 shMain () {(set -e
 # this function will run the main program
@@ -18,6 +18,10 @@ shMain () {(set -e
         fi
         utility2 shReadmeTest build_ci.sh
         ;;
+    eval)
+        shift
+        "$@"
+        ;;
     heroku-postbuild)
         if [ "$npm_package_nameLib" = utility2 ]
         then
@@ -26,10 +30,6 @@ shMain () {(set -e
         fi
         npm install kaizhu256/node-utility2#alpha --prefix .
         utility2 shDeployHeroku
-        ;;
-    eval)
-        shift
-        "$@"
         ;;
     start)
         export PORT=${PORT:-8080}
@@ -73,6 +73,6 @@ shMain () {(set -e
 )}
 
 # run command
-shMain "$npm_lifecycle_event" "$(node -e "console.log(
-    JSON.parse(process.env.npm_config_argv).original.join(' ').replace((/^(?:run )?\S+ /), '')
-)")"
+shMain "$npm_lifecycle_event" "$(node -e 'console.log(
+    JSON.parse(process.env.npm_config_argv).original.join(" ").replace((/^(?:run )?\S+ /), "")
+)')"
