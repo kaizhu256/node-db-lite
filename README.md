@@ -58,9 +58,9 @@ this zero-dependency package will provide a persistent, in-browser database, wit
 #### todo
 - none
 
-#### changelog 2018.12.29
-- npm publish 2018.12.29
-- refactor files with new jslint (v2018.11.14)
+#### changelog 2018.12.30
+- npm publish 2018.12.30
+- fix ui buttons
 - update build
 - none
 
@@ -704,6 +704,7 @@ textarea {\n\
             event.preventDefault();\n\
         }\n\
     };\n\
+    // init event-handling\n\
     document.addEventListener(\n\
         "keydown",\n\
         window.domOnEventSelectAllWithinPre\n\
@@ -733,9 +734,15 @@ utility2-comment -->\n\
 \n\
 \n\
 \n\
-<button class="button onreset" id="dbResetButton1">reset database</button><br>\n\
-<button class="button onclick" id="dbExportButton1">export database -&gt; file</button><br>\n\
-<button class="button onclick" id="dbImportButton1">import database &lt;- file</button><br>\n\
+<button class="button eventDelegateClick" data-onevent="testRunBrowser" data-on-event-dom-db="dbResetButton1" id="dbResetButton1">\n\
+    reset database\n\
+</button><br>\n\
+<button class="button eventDelegateClick" data-onevent="testRunBrowser" data-on-event-dom-db="dbExportButton1" id="dbExportButton1">\n\
+    export database -&gt; file\n\
+</button><br>\n\
+<button class="button eventDelegateClick" data-onevent="testRunBrowser" data-on-event-dom-db="dbImportButton1" id="dbImportButton1">\n\
+    import database &lt;- file\n\
+</button><br>\n\
 <label>edit or paste script below to\n\
     <a\n\
         href="https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html"\n\
@@ -799,7 +806,7 @@ onNext = function (error, data) {\n\
 };\n\
 onNext();\n\
 </textarea>\n\
-<button class="button oneval onreset" id="dbEvalButton1">eval script</button><br>\n\
+<button class="button eventDelegateClick oneval onreset" data-onevent="testRunBrowser" id="dbEvalButton1">eval script</button><br>\n\
 <label>stderr and stdout</label>\n\
 <textarea class="resettable" id="outputStdoutTextarea1" readonly></textarea>\n\
 <!-- utility2-comment\n\
@@ -983,7 +990,7 @@ local.http.createServer(function (request, response) {
         "test": "./npm_scripts.sh",
         "utility2": "./npm_scripts.sh"
     },
-    "version": "2018.12.29"
+    "version": "2018.12.30"
 }
 ```
 

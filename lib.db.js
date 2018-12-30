@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * lib.db.js (2018.12.29)
+ * lib.db.js (2018.12.30)
  * https://github.com/kaizhu256/node-db-lite
  * this zero-dependency package will provide a persistent, in-browser database, with a working web-demo
  *
