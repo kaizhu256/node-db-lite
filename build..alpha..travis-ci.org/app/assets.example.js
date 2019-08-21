@@ -343,7 +343,7 @@ local.testRunBrowser = function (evt) {
         // try to eval input-code
         try {
             eval( // jslint ignore:line
-                document.querySelector("#inputEval1").value
+                document.querySelector("#inputTextarea1").value
             );
         } catch (errCaught) {
             console.error(errCaught);
@@ -504,24 +504,17 @@ pre {\n\
     white-space: pre-wrap;\n\
 }\n\
 .button {\n\
-    background-color: #fff;\n\
-    border: 1px solid;\n\
-    border-bottom-color: rgb(186, 186, 186);\n\
-    border-left-color: rgb(209, 209, 209);\n\
-    border-radius: 4px;\n\
-    border-right-color: rgb(209, 209, 209);\n\
-    border-top-color: rgb(216, 216, 216);\n\
-    color: #00d;\n\
+    background: #ddd;\n\
+    border: 1px solid #999;\n\
+    color: #000;\n\
     cursor: pointer;\n\
     display: inline-block;\n\
-    font-family: Arial, Helvetica, sans-serif;\n\
-    font-size: 12px;\n\
-    font-style: normal;\n\
-    font-weight: normal;\n\
-    margin: 0;\n\
-    padding: 2px 7px 3px 7px;\n\
+    padding: 2px 5px;\n\
     text-align: center;\n\
-    text-decoration: underline;\n\
+    text-decoration: none;\n\
+}\n\
+.button:hover {\n\
+    background: #bbb;\n\
 }\n\
 .colorError {\n\
     color: #d00;\n\
@@ -785,7 +778,7 @@ utility2-comment -->\n\
 <h3>{{env.npm_package_description}}</h3>\n\
 <!-- utility2-comment\n\
 <a class="button" download href="assets.app.js">download standalone app</a><br>\n\
-<button class="button" data-onevent="testRunBrowser" data-onevent-reset-output="1" id="testRunButton1">run internal test</button><br>\n\
+<button class="button" data-onevent="testRunBrowser" id="testRunButton1">run internal test</button><br>\n\
 <div class="uiAnimateSlide" id="testReportDiv1" style="border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;"></div>\n\
 utility2-comment -->\n\
 \n\
@@ -800,7 +793,7 @@ utility2-comment -->\n\
         target="_blank"\n\
     >eval</a>\n\
 </label>\n\
-<textarea class="textarea" data-onevent="testRunBrowser" id="inputEval1">\n\
+<textarea class="textarea" data-onevent="testRunBrowser" id="inputTextarea1">\n\
 /*jslint browser: true, node: true*/\n\
 "use strict";\n\
 var dbTable1, gotoState, gotoNext;\n\

@@ -36993,24 +36993,17 @@ pre {\n\
     white-space: pre-wrap;\n\
 }\n\
 .button {\n\
-    background-color: #fff;\n\
-    border: 1px solid;\n\
-    border-bottom-color: rgb(186, 186, 186);\n\
-    border-left-color: rgb(209, 209, 209);\n\
-    border-radius: 4px;\n\
-    border-right-color: rgb(209, 209, 209);\n\
-    border-top-color: rgb(216, 216, 216);\n\
-    color: #00d;\n\
+    background: #ddd;\n\
+    border: 1px solid #999;\n\
+    color: #000;\n\
     cursor: pointer;\n\
     display: inline-block;\n\
-    font-family: Arial, Helvetica, sans-serif;\n\
-    font-size: 12px;\n\
-    font-style: normal;\n\
-    font-weight: normal;\n\
-    margin: 0;\n\
-    padding: 2px 7px 3px 7px;\n\
+    padding: 2px 5px;\n\
     text-align: center;\n\
-    text-decoration: underline;\n\
+    text-decoration: none;\n\
+}\n\
+.button:hover {\n\
+    background: #bbb;\n\
 }\n\
 .colorError {\n\
     color: #d00;\n\
@@ -37274,7 +37267,7 @@ utility2-comment -->\n\
 <h3>{{env.npm_package_description}}</h3>\n\
 <!-- utility2-comment\n\
 <a class="button" download href="assets.app.js">download standalone app</a><br>\n\
-<button class="button" data-onevent="testRunBrowser" data-onevent-reset-output="1" id="testRunButton1">run internal test</button><br>\n\
+<button class="button" data-onevent="testRunBrowser" id="testRunButton1">run internal test</button><br>\n\
 <div class="uiAnimateSlide" id="testReportDiv1" style="border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;"></div>\n\
 utility2-comment -->\n\
 \n\
@@ -50841,9 +50834,7 @@ local.uiEventListenerDict.onEventOperationAjax = function (opt) {
  */
     // ensure opt is stateless
     opt = {
-        targetOnEvent: opt.targetOnEvent.closest(
-            ".operation"
-        )
+        targetOnEvent: opt.targetOnEvent.closest(".operation")
     };
     local.gotoNext(opt, function (err, data) {
         switch (opt.gotoState) {
@@ -51930,15 +51921,13 @@ local.testRunBrowser = function (evt) {\n\
     ) {\n\
     // custom-case\n\
     case \"click.jslintAutofixButton1\":\n\
-    case \"keydown.inputEval1\":\n\
+    case \"keydown.inputTextarea1\":\n\
     case true:\n\
         globalThis.domOnEventDelegateDict.domOnEventResetOutput();\n\
-        // jslint #inputEval1\n\
+        // jslint #inputTextarea1\n\
         local.jslint.jslintAndPrint(\n\
-            document.querySelector(\n\
-                \"#inputEval1\"\n\
-            ).value,\n\
-            \"inputEval1.js\",\n\
+            document.querySelector(\"#inputTextarea1\").value,\n\
+            \"inputTextarea1.js\",\n\
             {\n\
                 autofix: (\n\
                     evt\n\
@@ -51949,51 +51938,39 @@ local.testRunBrowser = function (evt) {\n\
             }\n\
         );\n\
         if (local.jslint.jslintResult.autofix) {\n\
-            document.querySelector(\n\
-                \"#inputEval1\"\n\
-            ).value = (\n\
+            document.querySelector(\"#inputTextarea1\").value = (\n\
                 local.jslint.jslintResult.code\n\
             );\n\
         }\n\
-        document.querySelector(\n\
-            \"#outputJslintPre1\"\n\
-        ).textContent = (\n\
+        document.querySelector(\"#outputJslintPre1\").textContent = (\n\
             local.jslint.jslintResult.errText\n\
         ).replace((\n\
             /\\u001b\\[\\d*m/g\n\
         ), \"\").trim();\n\
         // try to cleanup __coverage__\n\
         try {\n\
-            delete globalThis.__coverage__[\"/inputEval1.js\"];\n\
+            delete globalThis.__coverage__[\"/inputTextarea1.js\"];\n\
         } catch (ignore) {}\n\
-        // try to cover and eval input-code\n\
+        // try to cover and eval #inputTextarea1\n\
         try {\n\
-            document.querySelector(\n\
-                \"#outputCode1\"\n\
-            ).textContent = (\n\
+            document.querySelector(\"#outputCode1\").textContent = (\n\
                 local.istanbul.instrumentSync(\n\
-                    document.querySelector(\n\
-                        \"#inputEval1\"\n\
-                    ).value,\n\
-                    \"/inputEval1.js\"\n\
+                    document.querySelector(\"#inputTextarea1\").value,\n\
+                    \"/inputTextarea1.js\"\n\
                 )\n\
             );\n\
             eval( // jslint ignore:line\n\
-                document.querySelector(\n\
-                    \"#outputCode1\"\n\
-                ).textContent.replace((\n\
-                    /^#!\\//\n\
-                ), \"// \")\n\
+                document.querySelector(\"#outputCode1\").textContent.replace((\n\
+                    /^#!/\n\
+                ), \"//\")\n\
             );\n\
-            document.querySelector(\n\
-                \"#coverageReportDiv1\"\n\
-            ).innerHTML = (\n\
+            document.querySelector(\"#coverageReportDiv1\").innerHTML = (\n\
                 local.istanbul.coverageReportCreate({\n\
-                    coverage: window.__coverage__\n\
+                    coverage: globalThis.__coverage__\n\
                 })\n\
             );\n\
-        } catch (errCaught2) {\n\
-            console.error(errCaught2);\n\
+        } catch (errCaught) {\n\
+            console.error(errCaught);\n\
         }\n\
         return;\n\
     case \"click.testRunButton1\":\n\
@@ -52155,24 +52132,17 @@ pre {\\n\\\n\
     white-space: pre-wrap;\\n\\\n\
 }\\n\\\n\
 .button {\\n\\\n\
-    background-color: #fff;\\n\\\n\
-    border: 1px solid;\\n\\\n\
-    border-bottom-color: rgb(186, 186, 186);\\n\\\n\
-    border-left-color: rgb(209, 209, 209);\\n\\\n\
-    border-radius: 4px;\\n\\\n\
-    border-right-color: rgb(209, 209, 209);\\n\\\n\
-    border-top-color: rgb(216, 216, 216);\\n\\\n\
-    color: #00d;\\n\\\n\
+    background: #ddd;\\n\\\n\
+    border: 1px solid #999;\\n\\\n\
+    color: #000;\\n\\\n\
     cursor: pointer;\\n\\\n\
     display: inline-block;\\n\\\n\
-    font-family: Arial, Helvetica, sans-serif;\\n\\\n\
-    font-size: 12px;\\n\\\n\
-    font-style: normal;\\n\\\n\
-    font-weight: normal;\\n\\\n\
-    margin: 0;\\n\\\n\
-    padding: 2px 7px 3px 7px;\\n\\\n\
+    padding: 2px 5px;\\n\\\n\
     text-align: center;\\n\\\n\
-    text-decoration: underline;\\n\\\n\
+    text-decoration: none;\\n\\\n\
+}\\n\\\n\
+.button:hover {\\n\\\n\
+    background: #bbb;\\n\\\n\
 }\\n\\\n\
 .colorError {\\n\\\n\
     color: #d00;\\n\\\n\
@@ -52442,7 +52412,7 @@ utility2-comment -->\\n\\\n\
 \\n\\\n\
 \\n\\\n\
 <label>edit or paste script below to cover and test</label>\\n\\\n\
-<textarea class=\"textarea\" data-onevent=\"testRunBrowser\" id=\"inputEval1\">\\n\\\n\
+<textarea class=\"textarea\" data-onevent=\"testRunBrowser\" id=\"inputTextarea1\">\\n\\\n\
 // remove comment below to disable jslint\\n\\\n\
 /*jslint browser, devel*/\\n\\\n\
 /*global window*/\\n\\\n\
@@ -52682,24 +52652,17 @@ pre {\n\
     white-space: pre-wrap;\n\
 }\n\
 .button {\n\
-    background-color: #fff;\n\
-    border: 1px solid;\n\
-    border-bottom-color: rgb(186, 186, 186);\n\
-    border-left-color: rgb(209, 209, 209);\n\
-    border-radius: 4px;\n\
-    border-right-color: rgb(209, 209, 209);\n\
-    border-top-color: rgb(216, 216, 216);\n\
-    color: #00d;\n\
+    background: #ddd;\n\
+    border: 1px solid #999;\n\
+    color: #000;\n\
     cursor: pointer;\n\
     display: inline-block;\n\
-    font-family: Arial, Helvetica, sans-serif;\n\
-    font-size: 12px;\n\
-    font-style: normal;\n\
-    font-weight: normal;\n\
-    margin: 0;\n\
-    padding: 2px 7px 3px 7px;\n\
+    padding: 2px 5px;\n\
     text-align: center;\n\
-    text-decoration: underline;\n\
+    text-decoration: none;\n\
+}\n\
+.button:hover {\n\
+    background: #bbb;\n\
 }\n\
 .colorError {\n\
     color: #d00;\n\
@@ -52969,7 +52932,7 @@ pre {\n\
 \n\
 \n\
 <label>edit or paste script below to cover and test</label>\n\
-<textarea class=\"textarea\" data-onevent=\"testRunBrowser\" id=\"inputEval1\">\n\
+<textarea class=\"textarea\" data-onevent=\"testRunBrowser\" id=\"inputTextarea1\">\n\
 // remove comment below to disable jslint\n\
 /*jslint browser, devel*/\n\
 /*global window*/\n\

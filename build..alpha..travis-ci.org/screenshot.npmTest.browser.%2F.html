@@ -82,24 +82,17 @@ pre {
     white-space: pre-wrap;
 }
 .button {
-    background-color: #fff;
-    border: 1px solid;
-    border-bottom-color: rgb(186, 186, 186);
-    border-left-color: rgb(209, 209, 209);
-    border-radius: 4px;
-    border-right-color: rgb(209, 209, 209);
-    border-top-color: rgb(216, 216, 216);
-    color: #00d;
+    background: #ddd;
+    border: 1px solid #999;
+    color: #000;
     cursor: pointer;
     display: inline-block;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: normal;
-    margin: 0;
-    padding: 2px 7px 3px 7px;
+    padding: 2px 5px;
     text-align: center;
-    text-decoration: underline;
+    text-decoration: none;
+}
+.button:hover {
+    background: #bbb;
 }
 .colorError {
     color: #d00;
@@ -358,7 +351,7 @@ pre {
 <h3>this zero-dependency package will provide a persistent, in-browser database, with a working web-demo</h3>
 
 <a class="button" download="" href="assets.app.js">download standalone app</a><br>
-<button class="button" data-onevent="testRunBrowser" data-onevent-reset-output="1" id="testRunButton1">run internal test</button><br>
+<button class="button" data-onevent="testRunBrowser" id="testRunButton1">run internal test</button><br>
 <div class="uiAnimateSlide" id="testReportDiv1" style="max-height: 100%;">
 
 
@@ -445,24 +438,17 @@ pre {
     white-space: pre-wrap;
 }
 .button {
-    background-color: #fff;
-    border: 1px solid;
-    border-bottom-color: rgb(186, 186, 186);
-    border-left-color: rgb(209, 209, 209);
-    border-radius: 4px;
-    border-right-color: rgb(209, 209, 209);
-    border-top-color: rgb(216, 216, 216);
-    color: #00d;
+    background: #ddd;
+    border: 1px solid #999;
+    color: #000;
     cursor: pointer;
     display: inline-block;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: normal;
-    margin: 0;
-    padding: 2px 7px 3px 7px;
+    padding: 2px 5px;
     text-align: center;
-    text-decoration: underline;
+    text-decoration: none;
+}
+.button:hover {
+    background: #bbb;
 }
 .colorError {
     color: #d00;
@@ -769,7 +755,7 @@ pre {
 <h4>
     <span>version</span>-
         2018.12.31<br>
-    <span>test date</span>- 2019-08-21T08:44:21.896Z<br>
+    <span>test date</span>- 2019-08-21T10:31:23.105Z<br>
     <span>commit info</span>-
         
         undefined<br>
@@ -785,7 +771,7 @@ pre {
     </tr>
 </thead>
 <tbody><tr>
-    <td>2004 ms</td>
+    <td>2006 ms</td>
     <td class="testPassed">0</td>
     <td>11</td>
     <td>0</td>
@@ -795,12 +781,12 @@ pre {
 
 <div class="platform">
 <h4>
-    1. browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Electron/2.0.18 Safari/537.36 - 2019-08-21T08:44:21.223Z<br>
+    1. browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Electron/2.0.18 Safari/537.36 - 2019-08-21T10:31:22.434Z<br>
     
     
-    <span>onload-time</span>- 778 ms<br>
+    <span>onload-time</span>- 799 ms<br>
     
-    <span>time-elapsed</span>- 2004 ms<br>
+    <span>time-elapsed</span>- 2006 ms<br>
     <span>tests failed</span>- 0<br>
     <span>tests passed</span>- 11<br>
     <span>tests pending</span>- 0<br>
@@ -816,42 +802,42 @@ pre {
 
 <tr>
     <td>1</td>
-    <td>5 ms</td>
+    <td>4 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbLoad_err</td>
 </tr>
 
 <tr>
     <td>2</td>
-    <td>45 ms</td>
+    <td>54 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_crudGetManyByQuery</td>
 </tr>
 
 <tr>
     <td>3</td>
-    <td>7 ms</td>
+    <td>14 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_crudNullCase</td>
 </tr>
 
 <tr>
     <td>4</td>
-    <td>38 ms</td>
+    <td>14 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_crudXxxById</td>
 </tr>
 
 <tr>
     <td>5</td>
-    <td>12 ms</td>
+    <td>10 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_crudXxxByQuery</td>
 </tr>
 
 <tr>
     <td>6</td>
-    <td>1035 ms</td>
+    <td>1043 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_persistence</td>
 </tr>
@@ -872,21 +858,21 @@ pre {
 
 <tr>
     <td>9</td>
-    <td>2 ms</td>
+    <td>11 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_onEventDomDb_default</td>
 </tr>
 
 <tr>
     <td>10</td>
-    <td>2 ms</td>
+    <td>1 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_sortCompare_default</td>
 </tr>
 
 <tr>
     <td>11</td>
-    <td>40 ms</td>
+    <td>53 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_storageXxx_misc</td>
 </tr>
@@ -916,7 +902,7 @@ pre {
 <label>edit or paste script below to
     <a href="https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html" target="_blank">eval</a>
 </label>
-<textarea class="textarea" data-onevent="testRunBrowser" id="inputEval1">/*jslint browser: true, node: true*/
+<textarea class="textarea" data-onevent="testRunBrowser" id="inputTextarea1">/*jslint browser: true, node: true*/
 "use strict";
 var dbTable1, gotoState, gotoNext;
 gotoState = 0;
@@ -975,17 +961,17 @@ gotoNext();
 <button class="button" data-onevent="testRunBrowser" data-onevent-reset-output="1" id="buttonEval1">eval script</button><br>
 <label>stderr and stdout</label>
 <pre class="onevent-reset-output readonly textarea" id="outputStdout1" tabindex="0">db - dropping database ...
-testRunDefault - 10 ms - [browser test-case 1 of 11 passed] - testCase_dbLoad_err
-testRunDefault - 68 ms - [browser test-case 2 of 11 passed] - testCase_dbTable_crudGetManyByQuery
-testRunDefault - 83 ms - [browser test-case 3 of 11 passed] - testCase_dbTable_crudNullCase
-testRunDefault - 152 ms - [browser test-case 4 of 11 passed] - testCase_dbTable_crudXxxById
-testRunDefault - 172 ms - [browser test-case 5 of 11 passed] - testCase_dbTable_crudXxxByQuery
-testRunDefault - 186 ms - [browser test-case 6 of 11 passed] - testCase_dbTable_sizeLimit
-testRunDefault - 189 ms - [browser test-case 7 of 11 passed] - testCase_nop_default
-testRunDefault - 193 ms - [browser test-case 8 of 11 passed] - testCase_onEventDomDb_default
-testRunDefault - 197 ms - [browser test-case 9 of 11 passed] - testCase_sortCompare_default
-testRunDefault - 239 ms - [browser test-case 10 of 11 passed] - testCase_storageXxx_misc
-testRunDefault - 1211 ms - [browser test-case 11 of 11 passed] - testCase_dbTable_persistence
+testRunDefault - 11 ms - [browser test-case 1 of 11 passed] - testCase_dbLoad_err
+testRunDefault - 82 ms - [browser test-case 2 of 11 passed] - testCase_dbTable_crudGetManyByQuery
+testRunDefault - 103 ms - [browser test-case 3 of 11 passed] - testCase_dbTable_crudNullCase
+testRunDefault - 133 ms - [browser test-case 4 of 11 passed] - testCase_dbTable_crudXxxById
+testRunDefault - 157 ms - [browser test-case 5 of 11 passed] - testCase_dbTable_crudXxxByQuery
+testRunDefault - 190 ms - [browser test-case 6 of 11 passed] - testCase_dbTable_sizeLimit
+testRunDefault - 193 ms - [browser test-case 7 of 11 passed] - testCase_nop_default
+testRunDefault - 205 ms - [browser test-case 8 of 11 passed] - testCase_onEventDomDb_default
+testRunDefault - 207 ms - [browser test-case 9 of 11 passed] - testCase_sortCompare_default
+testRunDefault - 276 ms - [browser test-case 10 of 11 passed] - testCase_storageXxx_misc
+testRunDefault - 1223 ms - [browser test-case 11 of 11 passed] - testCase_dbTable_persistence
 ----------|-----------|-----------|-----------|-----------|
 File      |   % Stmts |% Branches |   % Funcs |   % Lines |
 ----------|-----------|-----------|-----------|-----------|

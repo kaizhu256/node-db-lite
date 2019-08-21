@@ -84,24 +84,17 @@ pre {
     white-space: pre-wrap;
 }
 .button {
-    background-color: #fff;
-    border: 1px solid;
-    border-bottom-color: rgb(186, 186, 186);
-    border-left-color: rgb(209, 209, 209);
-    border-radius: 4px;
-    border-right-color: rgb(209, 209, 209);
-    border-top-color: rgb(216, 216, 216);
-    color: #00d;
+    background: #ddd;
+    border: 1px solid #999;
+    color: #000;
     cursor: pointer;
     display: inline-block;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: normal;
-    margin: 0;
-    padding: 2px 7px 3px 7px;
+    padding: 2px 5px;
     text-align: center;
-    text-decoration: underline;
+    text-decoration: none;
+}
+.button:hover {
+    background: #bbb;
 }
 .colorError {
     color: #d00;
@@ -365,7 +358,7 @@ utility2-comment -->
 <h3>the greatest app in the world!</h3>
 <!-- utility2-comment
 <a class="button" download href="assets.app.js">download standalone app</a><br>
-<button class="button" data-onevent="testRunBrowser" data-onevent-reset-output="1" id="testRunButton1">run internal test</button><br>
+<button class="button" data-onevent="testRunBrowser" id="testRunButton1">run internal test</button><br>
 <div class="uiAnimateSlide" id="testReportDiv1" style="border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;"></div>
 utility2-comment -->
 
@@ -380,7 +373,7 @@ utility2-comment -->
         target="_blank"
     >eval</a>
 </label>
-<textarea class="textarea" data-onevent="testRunBrowser" id="inputEval1">
+<textarea class="textarea" data-onevent="testRunBrowser" id="inputTextarea1">
 /*jslint browser: true, node: true*/
 "use strict";
 var dbTable1, gotoState, gotoNext;
