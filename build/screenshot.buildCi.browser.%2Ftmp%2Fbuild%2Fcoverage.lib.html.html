@@ -46,7 +46,7 @@
 .x-istanbul .cover-empty,
 .x-istanbul .cover-fill {
     background: white;
-    border: 1px solid #444;
+    border: 1px solid #999;
     display: inline-block;
     height: 12px;
 }
@@ -56,7 +56,7 @@
 }
 .x-istanbul .cover-fill {
     background: #ccc;
-    border-right: 1px solid #444;
+    border-right: 1px solid #999;
 }
 .x-istanbul .cover-full {
     border-right: none !important;
@@ -96,8 +96,8 @@
     text-decoration: none;
 }
 .x-istanbul .coverage .line-coverage {
-    border-left: 1px solid #666;
-    border-right: 1px solid #666;
+    border-left: 1px solid #999;
+    border-right: 1px solid #999;
     color: #777 !important;
     text-align: right;
 }
@@ -112,7 +112,7 @@
     width: 100%
 }
 .x-istanbul .coverage-summary td {
-    border: 1px solid #666;
+    border: 1px solid #999;
     margin: 0;
     padding: 5px;
     white-space: nowrap;
@@ -142,7 +142,7 @@
     padding: 20px;
 }
 .x-istanbul .footer {
-    border-top: 1px solid #666;
+    border-top: 1px solid #999;
 }
 .x-istanbul .fstat-no {
     background: #ffc520;
@@ -153,7 +153,7 @@
     color: #111 !important;
 }
 .x-istanbul .header {
-    border-bottom: 1px solid #666;
+    border-bottom: 1px solid #999;
     top: 0;
     width: 100%;
 }
@@ -175,7 +175,7 @@
 }
 .x-istanbul .metric {
     background: white;
-    border: 1px solid #333;
+    border: 1px solid #999;
     display: inline-block;
     padding: .3em;
 }
@@ -228,7 +228,7 @@
 }
 .x-istanbul .tableHeader td {
     background: #fff;
-    border: 1px solid #666;
+    border: 1px solid #999;
     padding: 5px;
 }
 .x-istanbul .tableHeader th {
@@ -293,10 +293,10 @@
     </thead>
     <tbody>
         <tr><td>statements: 209<br>branches: 126<br>functions: 48</td>
-        <td>94.91%<br>(1044 / 1100)</td>
-        <td>94.72%<br>(466 / 492)</td>
-        <td>95.07%<br>(193 / 203)</td>
-        <td>94.91%<br>(1044 / 1100)</td>
+        <td>95.09%<br>(1046 / 1100)</td>
+        <td>94.92%<br>(467 / 492)</td>
+        <td>95.57%<br>(194 / 203)</td>
+        <td>95.09%<br>(1046 / 1100)</td>
     </tr></tbody>
     </table>
     <div class="path"><a href="../index.html">All files</a> » <a href="index.html">node-db-lite/</a> » lib.db.js</div>
@@ -3905,8 +3905,8 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -5181,22 +5181,22 @@
 <span class="cline-any cline-yes">1358</span>
 <span class="cline-any cline-yes">1358</span>
 <span class="cline-any cline-yes">1358</span>
-<span class="cline-any cline-yes">148</span>
+<span class="cline-any cline-yes">149</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1210</span>
+<span class="cline-any cline-yes">1209</span>
 <span class="cline-any cline-yes">111</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1099</span>
+<span class="cline-any cline-yes">1098</span>
 <span class="cline-any cline-yes">119</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">980</span>
-<span class="cline-any cline-yes">980</span>
-<span class="cline-any cline-yes">980</span>
-<span class="cline-any cline-yes">522</span>
+<span class="cline-any cline-yes">979</span>
+<span class="cline-any cline-yes">979</span>
+<span class="cline-any cline-yes">979</span>
+<span class="cline-any cline-yes">521</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -6457,9 +6457,9 @@ init = function () {
                 globalThis[storageDir] = req.result;
                 onError();
             };
-            req.onupgradeneeded = <span class="fstat-no" title="function not covered">function () {</span>
-<span class="cstat-no" title="statement not covered">                if (!req.result.objectStoreNames.contains(storageDir)) {</span>
-<span class="cstat-no" title="statement not covered">                    req.result.createObjectStore(storageDir);</span>
+            req.onupgradeneeded = function () {
+                <span class="missing-if-branch" title="else path not taken">E</span>if (!req.result.objectStoreNames.contains(storageDir)) {
+                    req.result.createObjectStore(storageDir);
                 }
             };
         } catch (ignore) {}
@@ -7967,7 +7967,7 @@ local.cliDict.dbTableRemove = <span class="fstat-skip" title="function not cover
 </tbody></table></pre>
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a> at Wed, 21 Aug 2019 10:31:29 GMT</div>
+    <div class="meta">Generated by <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a> at Wed, 21 Aug 2019 13:21:14 GMT</div>
 </div>
 
 

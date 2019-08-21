@@ -483,14 +483,14 @@ pre {
 /*csslint
 */
 .testReportDiv img {
-    border: 1px solid black;
+    border: 1px solid #999;
     margin: 5px 0 5px 0;
     max-height: 256px;
     max-width: 512px;
 }
 .testReportDiv pre {
     background: #fdd;
-    border-top: 1px solid black;
+    border-top: 1px solid #999;
     margin-bottom: 0;
     padding: 10px;
 }
@@ -499,7 +499,7 @@ pre {
     width: 120px;
 }
 .testReportDiv table {
-    border-top: 1px solid black;
+    border-top: 1px solid #999;
     text-align: left;
     width: 100%;
 }
@@ -514,7 +514,7 @@ pre {
 }
 .testReportDiv .platform {
     background: #fff;
-    border: 1px solid black;
+    border: 1px solid #999;
     margin-bottom: 20px;
     padding: 0 10px 10px 10px;
     text-align: left;
@@ -755,7 +755,7 @@ pre {
 <h4>
     <span>version</span>-
         2018.12.31<br>
-    <span>test date</span>- 2019-08-21T10:31:23.105Z<br>
+    <span>test date</span>- 2019-08-21T13:21:08.544Z<br>
     <span>commit info</span>-
         
         undefined<br>
@@ -771,7 +771,7 @@ pre {
     </tr>
 </thead>
 <tbody><tr>
-    <td>2006 ms</td>
+    <td>2013 ms</td>
     <td class="testPassed">0</td>
     <td>11</td>
     <td>0</td>
@@ -781,12 +781,12 @@ pre {
 
 <div class="platform">
 <h4>
-    1. browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Electron/2.0.18 Safari/537.36 - 2019-08-21T10:31:22.434Z<br>
+    1. browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Electron/2.0.18 Safari/537.36 - 2019-08-21T13:21:07.876Z<br>
     
     
-    <span>onload-time</span>- 799 ms<br>
+    <span>onload-time</span>- 742 ms<br>
     
-    <span>time-elapsed</span>- 2006 ms<br>
+    <span>time-elapsed</span>- 2013 ms<br>
     <span>tests failed</span>- 0<br>
     <span>tests passed</span>- 11<br>
     <span>tests pending</span>- 0<br>
@@ -809,35 +809,35 @@ pre {
 
 <tr>
     <td>2</td>
-    <td>54 ms</td>
+    <td>57 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_crudGetManyByQuery</td>
 </tr>
 
 <tr>
     <td>3</td>
-    <td>14 ms</td>
+    <td>7 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_crudNullCase</td>
 </tr>
 
 <tr>
     <td>4</td>
-    <td>14 ms</td>
+    <td>12 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_crudXxxById</td>
 </tr>
 
 <tr>
     <td>5</td>
-    <td>10 ms</td>
+    <td>11 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_crudXxxByQuery</td>
 </tr>
 
 <tr>
     <td>6</td>
-    <td>1043 ms</td>
+    <td>1037 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_persistence</td>
 </tr>
@@ -858,21 +858,21 @@ pre {
 
 <tr>
     <td>9</td>
-    <td>11 ms</td>
+    <td>2 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_onEventDomDb_default</td>
 </tr>
 
 <tr>
     <td>10</td>
-    <td>1 ms</td>
+    <td>2 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_sortCompare_default</td>
 </tr>
 
 <tr>
     <td>11</td>
-    <td>53 ms</td>
+    <td>63 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_storageXxx_misc</td>
 </tr>
@@ -961,17 +961,17 @@ gotoNext();
 <button class="button" data-onevent="testRunBrowser" data-onevent-reset-output="1" id="buttonEval1">eval script</button><br>
 <label>stderr and stdout</label>
 <pre class="onevent-reset-output readonly textarea" id="outputStdout1" tabindex="0">db - dropping database ...
-testRunDefault - 11 ms - [browser test-case 1 of 11 passed] - testCase_dbLoad_err
-testRunDefault - 82 ms - [browser test-case 2 of 11 passed] - testCase_dbTable_crudGetManyByQuery
-testRunDefault - 103 ms - [browser test-case 3 of 11 passed] - testCase_dbTable_crudNullCase
-testRunDefault - 133 ms - [browser test-case 4 of 11 passed] - testCase_dbTable_crudXxxById
-testRunDefault - 157 ms - [browser test-case 5 of 11 passed] - testCase_dbTable_crudXxxByQuery
-testRunDefault - 190 ms - [browser test-case 6 of 11 passed] - testCase_dbTable_sizeLimit
-testRunDefault - 193 ms - [browser test-case 7 of 11 passed] - testCase_nop_default
-testRunDefault - 205 ms - [browser test-case 8 of 11 passed] - testCase_onEventDomDb_default
-testRunDefault - 207 ms - [browser test-case 9 of 11 passed] - testCase_sortCompare_default
-testRunDefault - 276 ms - [browser test-case 10 of 11 passed] - testCase_storageXxx_misc
-testRunDefault - 1223 ms - [browser test-case 11 of 11 passed] - testCase_dbTable_persistence
+testRunDefault - 18 ms - [browser test-case 1 of 11 passed] - testCase_dbLoad_err
+testRunDefault - 89 ms - [browser test-case 2 of 11 passed] - testCase_dbTable_crudGetManyByQuery
+testRunDefault - 98 ms - [browser test-case 3 of 11 passed] - testCase_dbTable_crudNullCase
+testRunDefault - 112 ms - [browser test-case 4 of 11 passed] - testCase_dbTable_crudXxxById
+testRunDefault - 125 ms - [browser test-case 5 of 11 passed] - testCase_dbTable_crudXxxByQuery
+testRunDefault - 142 ms - [browser test-case 6 of 11 passed] - testCase_dbTable_sizeLimit
+testRunDefault - 145 ms - [browser test-case 7 of 11 passed] - testCase_nop_default
+testRunDefault - 149 ms - [browser test-case 8 of 11 passed] - testCase_onEventDomDb_default
+testRunDefault - 152 ms - [browser test-case 9 of 11 passed] - testCase_sortCompare_default
+testRunDefault - 217 ms - [browser test-case 10 of 11 passed] - testCase_storageXxx_misc
+testRunDefault - 1164 ms - [browser test-case 11 of 11 passed] - testCase_dbTable_persistence
 ----------|-----------|-----------|-----------|-----------|
 File      |   % Stmts |% Branches |   % Funcs |   % Lines |
 ----------|-----------|-----------|-----------|-----------|
