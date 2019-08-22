@@ -68,7 +68,6 @@ instruction
             return;
         }
         err = (
-            // ternary-operator
             (
                 message
                 && typeof message.message === "string"

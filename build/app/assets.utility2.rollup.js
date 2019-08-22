@@ -29807,11 +29807,17 @@ function tokenize(source) {
 // matched an expected value.
 
         if (match !== undefined && char !== match) {
-            return stop_at((
-                char === ""
-                ? "expected_a"
-                : "expected_a_b"
-            ), line, column - 1, match, char);
+            return stop_at(
+                (
+                    char === ""
+                    ? "expected_a"
+                    : "expected_a_b"
+                ),
+                line,
+                column - 1,
+                match,
+                char
+            );
         }
         if (source_line) {
             char = source_line[0];
@@ -30934,10 +30940,14 @@ function enroll(name, role, readonly) {
                         warn("unexpected_a", name);
                     }
                 } else {
-                    if ((
-                        role !== "exception"
-                        || earlier.role !== "exception"
-                    ) && role !== "parameter" && role !== "function") {
+                    if (
+                        (
+                            role !== "exception"
+                            || earlier.role !== "exception"
+                        )
+                        && role !== "parameter"
+                        && role !== "function"
+                    ) {
                         warn(
                             "redefinition_a_b",
                             name,
@@ -31670,21 +31680,26 @@ infix("(", 160, function (left) {
 infix(".", 170, function (left) {
     const the_token = token;
     const name = next_token;
-    if ((
-        left.id !== "(string)"
-        || (name.id !== "indexOf" && name.id !== "repeat")
-    ) && (
-        left.id !== "["
-        || (
-            name.id !== "concat"
-            && name.id !== "forEach"
-            && name.id !== "join"
-            && name.id !== "map"
+    if (
+        (
+            left.id !== "(string)"
+            || (name.id !== "indexOf" && name.id !== "repeat")
         )
-    ) && (left.id !== "+" || name.id !== "slice") && (
-        left.id !== "(regexp)"
-        || (name.id !== "exec" && name.id !== "test")
-    )) {
+        && (
+            left.id !== "["
+            || (
+                name.id !== "concat"
+                && name.id !== "forEach"
+                && name.id !== "join"
+                && name.id !== "map"
+            )
+        )
+        && (left.id !== "+" || name.id !== "slice")
+        && (
+            left.id !== "(regexp)"
+            || (name.id !== "exec" && name.id !== "test")
+        )
+    ) {
         left_check(left, the_token);
     }
     if (!name.identifier) {
@@ -31702,21 +31717,26 @@ infix(".", 170, function (left) {
 infix("?.", 170, function (left) {
     const the_token = token;
     const name = next_token;
-    if ((
-        left.id !== "(string)"
-        || (name.id !== "indexOf" && name.id !== "repeat")
-    ) && (
-        left.id !== "["
-        || (
-            name.id !== "concat"
-            && name.id !== "forEach"
-            && name.id !== "join"
-            && name.id !== "map"
+    if (
+        (
+            left.id !== "(string)"
+            || (name.id !== "indexOf" && name.id !== "repeat")
         )
-    ) && (left.id !== "+" || name.id !== "slice") && (
-        left.id !== "(regexp)"
-        || (name.id !== "exec" && name.id !== "test")
-    )) {
+        && (
+            left.id !== "["
+            || (
+                name.id !== "concat"
+                && name.id !== "forEach"
+                && name.id !== "join"
+                && name.id !== "map"
+            )
+        )
+        && (left.id !== "+" || name.id !== "slice")
+        && (
+            left.id !== "(regexp)"
+            || (name.id !== "exec" && name.id !== "test")
+        )
+    ) {
         left_check(left, the_token);
     }
     if (!name.identifier) {
@@ -33689,9 +33709,7 @@ function whitage() {
             right,
             artifact(right),
             fudge + at,
-            // hack-jslint
-            artifact_column(right),
-            left.line
+            artifact_column(right)
         );
     }
 
@@ -33917,14 +33935,7 @@ function whitage() {
                     ) {
                         no_space_only();
                     } else if (right.id === "." || right.id === "?.") {
-                        no_space();
-                        //!! // hack-jslint - method-chain
-                        //!! // https://github.com/douglascrockford/JSLint/commit/752c82d860ac14d35d492dc5c6ad0a0ed8227e76#diff-01d3d81a6eb6d82af3c377b55dc4fa28L4692
-                        //!! if (left.line === right.line) {
-                            //!! no_space();
-                        //!! } else {
-                            //!! at_margin(0);
-                        //!! }
+                        no_space_only();
                     } else if (left.id === ";") {
                         if (open) {
                             at_margin(0);
@@ -33976,15 +33987,18 @@ function whitage() {
                         )
                         || left.id === "function"
                         || left.id === ":"
-                        || ((
-                            left.identifier
-                            || left.id === "(string)"
-                            || left.id === "(number)"
-                        ) && (
-                            right.identifier
-                            || right.id === "(string)"
-                            || right.id === "(number)"
-                        ))
+                        || (
+                            (
+                                left.identifier
+                                || left.id === "(string)"
+                                || left.id === "(number)"
+                            )
+                            && (
+                                right.identifier
+                                || right.id === "(string)"
+                                || right.id === "(number)"
+                            )
+                        )
                         || (left.arity === "statement" && right.id !== ";")
                     ) {
                         one_space();
@@ -34292,9 +34306,6 @@ warn_at_extra = function (warning, warnings) {
     switch (option.autofix && warning.code) {
     // expected_a_at_b_c: "Expected '{a}' at column {b}, not column {c}.",
     case "expected_a_at_b_c":
-        if (warning.a === ".") {
-            break;
-        }
         // autofix indent - increment
         tmp = warning.b - warning.c;
         if (tmp >= 0) {
@@ -36695,7 +36706,7 @@ if (local.isBrowser) {
 /* script-begin /assets.utility2.js */
 // usr/bin/env node
 /*
- * lib.utility2.js (2019.8.17)
+ * lib.utility2.js (2019.8.22)
  * https://github.com/kaizhu256/node-utility2
  * this zero-dependency package will provide a collection of high-level functions to to build, test, and deploy webapps
  *
@@ -51614,7 +51625,7 @@ this script will demo automated browser-tests with coverage\n\
 instruction\n\
     1. save this script as example.js\n\
     2. run the shell-command:\n\
-        $ npm install kaizhu256/node-utility2#alpha electron-lite && \\\n\
+        $ npm install utility2 electron-lite && \\\n\
             PATH=\"$(pwd)/node_modules/.bin:$PATH\" \\\n\
             PORT=8081 \\\n\
             npm_config_mode_coverage=utility2 \\\n\
