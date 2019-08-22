@@ -37533,7 +37533,7 @@ if (!local.isBrowser) {\n\
         elem.scrollTop = elem.scrollHeight;\n\
     };\n\
 });\n\
-Object.assign(local, globalThis.domOnEventDelegateDict);\n\
+local.objectAssignDefault(local, globalThis.domOnEventDelegateDict);\n\
 globalThis.domOnEventDelegateDict = local;\n\
 local.onEventDomDb = local.db && local.db.onEventDomDb;\n\
 local.testRunBrowser = function (evt) {\n\
@@ -51900,7 +51900,7 @@ if (!local.isBrowser) {\n\
         elem.scrollTop = elem.scrollHeight;\n\
     };\n\
 });\n\
-Object.assign(local, globalThis.domOnEventDelegateDict);\n\
+local.objectAssignDefault(local, globalThis.domOnEventDelegateDict);\n\
 globalThis.domOnEventDelegateDict = local;\n\
 local.onEventDomDb = local.db && local.db.onEventDomDb;\n\
 local.testRunBrowser = function (evt) {\n\

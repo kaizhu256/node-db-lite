@@ -1,1 +1,316 @@
-{"testPlatformList":[{"name":"buildApidoc - node - linux v12.9.0 - 2019-08-22T04:33:35.180Z","testCaseList":[{"isBrowser":false,"name":"testCase_buildApp_default","status":"passed","errorStack":"","timeElapsed":7609,"timeStart":1566448420873,"isDone":true}],"timeElapsed":13156,"testsFailed":0,"testsPassed":1,"testsPending":0,"status":"passed","timeStart":1566448415327},{"name":"buildApp - node - linux v12.9.0 - 2019-08-22T04:33:40.734Z","testCaseList":[],"timeElapsed":0,"testsFailed":0,"testsPassed":0,"testsPending":0,"status":"passed"},{"domOnEventWindowOnloadTimeElapsed":1162,"name":"deployGithubTest - browser - /node-db-lite/build..alpha..travis-ci.org/app/ - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Electron/2.0.18 Safari/537.36 - 2019-08-22T04:34:35.948Z","status":"passed","testCaseList":[{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbLoad_err","status":"passed","timeElapsed":5,"timeStart":1566448476848},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_crudGetManyByQuery","status":"passed","timeElapsed":49,"timeStart":1566448476880},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_crudNullCase","status":"passed","timeElapsed":16,"timeStart":1566448476930},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_crudXxxById","status":"passed","timeElapsed":26,"timeStart":1566448476947},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_crudXxxByQuery","status":"passed","timeElapsed":23,"timeStart":1566448476974},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_persistence","status":"passed","timeElapsed":1144,"timeStart":1566448477000},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_sizeLimit","status":"passed","timeElapsed":10,"timeStart":1566448477115},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_nop_default","status":"passed","timeElapsed":1,"timeStart":1566448477129},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_onEventDomDb_default","status":"passed","timeElapsed":11,"timeStart":1566448477140},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_sortCompare_default","status":"passed","timeElapsed":3,"timeStart":1566448477162},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_storageXxx_misc","status":"passed","timeElapsed":201,"timeStart":1566448477169}],"testsFailed":0,"testsPassed":11,"testsPending":0,"timeElapsed":2006,"timeStart":1566448476840,"screenshot":"screenshot.deployGithubTest.browser.%2Fnode-db-lite%2Fbuild%2Fapp.png"},{"name":"deployGithubTest - node - linux v12.9.0 - 2019-08-22T04:34:33.279Z","testCaseList":[],"timeElapsed":0,"testsFailed":0,"testsPassed":0,"testsPending":0,"status":"passed"},{"domOnEventWindowOnloadTimeElapsed":878,"name":"deployHerokuTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Electron/2.0.18 Safari/537.36 - 2019-08-22T04:35:24.171Z","status":"passed","testCaseList":[{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbLoad_err","status":"passed","timeElapsed":1,"timeStart":1566448530099},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_crudGetManyByQuery","status":"passed","timeElapsed":16,"timeStart":1566448530117},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_crudNullCase","status":"passed","timeElapsed":5,"timeStart":1566448530135},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_crudXxxById","status":"passed","timeElapsed":4,"timeStart":1566448530142},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_crudXxxByQuery","status":"passed","timeElapsed":7,"timeStart":1566448530147},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_persistence","status":"passed","timeElapsed":1077,"timeStart":1566448530156},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_sizeLimit","status":"passed","timeElapsed":1,"timeStart":1566448530196},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_nop_default","status":"passed","timeElapsed":0,"timeStart":1566448530200},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_onEventDomDb_default","status":"passed","timeElapsed":1,"timeStart":1566448530202},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_sortCompare_default","status":"passed","timeElapsed":0,"timeStart":1566448530209},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_storageXxx_misc","status":"passed","timeElapsed":27,"timeStart":1566448530212}],"testsFailed":0,"testsPassed":11,"testsPending":0,"timeElapsed":2013,"timeStart":1566448530085,"screenshot":"screenshot.deployHerokuTest.browser.%2F.png"},{"domOnEventWindowOnloadTimeElapsed":863,"name":"deployHerokuTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Electron/2.0.18 Safari/537.36 - 2019-08-22T04:35:24.182Z","status":"passed","testCaseList":[{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbLoad_err","status":"passed","timeElapsed":2,"timeStart":1566448524928},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_crudGetManyByQuery","status":"passed","timeElapsed":51,"timeStart":1566448524957},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_crudNullCase","status":"passed","timeElapsed":13,"timeStart":1566448525014},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_crudXxxById","status":"passed","timeElapsed":6,"timeStart":1566448525032},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_crudXxxByQuery","status":"passed","timeElapsed":11,"timeStart":1566448525043},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_persistence","status":"passed","timeElapsed":1104,"timeStart":1566448525060},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_sizeLimit","status":"passed","timeElapsed":2,"timeStart":1566448525125},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_nop_default","status":"passed","timeElapsed":0,"timeStart":1566448525129},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_onEventDomDb_default","status":"passed","timeElapsed":2,"timeStart":1566448525132},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_sortCompare_default","status":"passed","timeElapsed":3,"timeStart":1566448525136},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_storageXxx_misc","status":"passed","timeElapsed":59,"timeStart":1566448525142}],"testsFailed":0,"testsPassed":11,"testsPending":0,"timeElapsed":2021,"timeStart":1566448524904,"screenshot":"screenshot.deployHerokuTest.browser.%2F.png"},{"name":"deployHerokuTest - node - linux v12.9.0 - 2019-08-22T04:35:21.332Z","testCaseList":[],"timeElapsed":0,"testsFailed":0,"testsPassed":0,"testsPending":0,"status":"passed"},{"domOnEventWindowOnloadTimeElapsed":756,"name":"npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Electron/2.0.18 Safari/537.36 - 2019-08-22T04:33:27.279Z","status":"passed","testCaseList":[{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbLoad_err","status":"passed","timeElapsed":4,"timeStart":1566448407987},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_crudGetManyByQuery","status":"passed","timeElapsed":48,"timeStart":1566448408005},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_crudNullCase","status":"passed","timeElapsed":8,"timeStart":1566448408056},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_crudXxxById","status":"passed","timeElapsed":6,"timeStart":1566448408066},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_crudXxxByQuery","status":"passed","timeElapsed":10,"timeStart":1566448408074},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_persistence","status":"passed","timeElapsed":1048,"timeStart":1566448408086},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_dbTable_sizeLimit","status":"passed","timeElapsed":0,"timeStart":1566448408099},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_nop_default","status":"passed","timeElapsed":0,"timeStart":1566448408104},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_onEventDomDb_default","status":"passed","timeElapsed":2,"timeStart":1566448408107},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_sortCompare_default","status":"passed","timeElapsed":1,"timeStart":1566448408113},{"errorStack":"","isBrowser":true,"isDone":true,"name":"testCase_storageXxx_misc","status":"passed","timeElapsed":99,"timeStart":1566448408121}],"testsFailed":0,"testsPassed":11,"testsPending":0,"timeElapsed":2005,"timeStart":1566448407981,"screenshot":"screenshot.npmTest.browser.%2F.png"},{"name":"npmTest - node - linux v12.9.0 - 2019-08-22T04:33:24.598Z","testCaseList":[{"isBrowser":false,"name":"testCase_buildApidoc_default","status":"passed","errorStack":"","timeElapsed":388,"timeStart":1566448405224,"isDone":true},{"isBrowser":false,"name":"testCase_buildApp_default","status":"passed","errorStack":"","timeElapsed":5510,"timeStart":1566448405613,"isDone":true},{"isBrowser":false,"name":"testCase_buildLib_default","status":"passed","errorStack":"","timeElapsed":1,"timeStart":1566448405637,"isDone":true},{"isBrowser":false,"name":"testCase_buildReadme_default","status":"passed","errorStack":"","timeElapsed":3,"timeStart":1566448405639,"isDone":true},{"isBrowser":false,"name":"testCase_buildTest_default","status":"passed","errorStack":"","timeElapsed":0,"timeStart":1566448405643,"isDone":true},{"isBrowser":false,"name":"testCase_dbLoad_err","status":"passed","errorStack":"","timeElapsed":4,"timeStart":1566448405644,"isDone":true},{"isBrowser":false,"name":"testCase_dbTable_crudGetManyByQuery","status":"passed","errorStack":"","timeElapsed":33,"timeStart":1566448405648,"isDone":true},{"isBrowser":false,"name":"testCase_dbTable_crudNullCase","status":"passed","errorStack":"","timeElapsed":4,"timeStart":1566448405682,"isDone":true},{"isBrowser":false,"name":"testCase_dbTable_crudXxxById","status":"passed","errorStack":"","timeElapsed":5,"timeStart":1566448405686,"isDone":true},{"isBrowser":false,"name":"testCase_dbTable_crudXxxByQuery","status":"passed","errorStack":"","timeElapsed":5,"timeStart":1566448405691,"isDone":true},{"isBrowser":false,"name":"testCase_dbTable_persistence","status":"passed","errorStack":"","timeElapsed":1020,"timeStart":1566448405697,"isDone":true},{"isBrowser":false,"name":"testCase_dbTable_sizeLimit","status":"passed","errorStack":"","timeElapsed":0,"timeStart":1566448405710,"isDone":true},{"isBrowser":false,"name":"testCase_nop_default","status":"passed","errorStack":"","timeElapsed":0,"timeStart":1566448405711,"isDone":true},{"isBrowser":false,"name":"testCase_onEventDomDb_default","status":"passed","errorStack":"","timeElapsed":0,"timeStart":1566448405711,"isDone":true},{"isBrowser":false,"name":"testCase_sortCompare_default","status":"passed","errorStack":"","timeElapsed":1,"timeStart":1566448405712,"isDone":true},{"isBrowser":false,"name":"testCase_storageXxx_misc","status":"passed","errorStack":"","timeElapsed":110,"timeStart":1566448405713,"isDone":true},{"isBrowser":false,"name":"testCase_webpage_default","status":"passed","errorStack":"","timeElapsed":7361,"timeStart":1566448405723,"isDone":true}],"timeElapsed":7879,"testsFailed":0,"testsPassed":17,"testsPending":0,"status":"passed","timeStart":1566448405205}],"date":"2019-08-22T04:35:21.336Z","errorStackList":[],"timeElapsed":11127,"testsFailed":0,"testsPassed":62,"testsPending":0,"timeStart":1566448521339}
+{
+    "testPlatformList": [
+        {
+            "name": "buildApidoc - node - linux v12.9.0 - 2019-08-22T05:28:44.001Z",
+            "testCaseList": [
+                {
+                    "isBrowser": false,
+                    "name": "testCase_buildApp_default",
+                    "status": "passed",
+                    "errorStack": "",
+                    "timeElapsed": 7575,
+                    "timeStart": 1566451729730,
+                    "isDone": true
+                }
+            ],
+            "timeElapsed": 13169,
+            "testsFailed": 0,
+            "testsPassed": 1,
+            "testsPending": 0,
+            "status": "passed",
+            "timeStart": 1566451724136
+        },
+        {
+            "name": "buildApp - node - linux v12.9.0 - 2019-08-22T05:28:49.579Z",
+            "testCaseList": [],
+            "timeElapsed": 0,
+            "testsFailed": 0,
+            "testsPassed": 0,
+            "testsPending": 0,
+            "status": "passed"
+        },
+        {
+            "domOnEventWindowOnloadTimeElapsed": 711,
+            "name": "npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Electron/2.0.18 Safari/537.36 - 2019-08-22T05:28:36.032Z",
+            "status": "passed",
+            "testCaseList": [
+                {
+                    "errorStack": "",
+                    "isBrowser": true,
+                    "isDone": true,
+                    "name": "testCase_dbLoad_err",
+                    "status": "passed",
+                    "timeElapsed": 4,
+                    "timeStart": 1566451716714
+                },
+                {
+                    "errorStack": "",
+                    "isBrowser": true,
+                    "isDone": true,
+                    "name": "testCase_dbTable_crudGetManyByQuery",
+                    "status": "passed",
+                    "timeElapsed": 53,
+                    "timeStart": 1566451716732
+                },
+                {
+                    "errorStack": "",
+                    "isBrowser": true,
+                    "isDone": true,
+                    "name": "testCase_dbTable_crudNullCase",
+                    "status": "passed",
+                    "timeElapsed": 6,
+                    "timeStart": 1566451716788
+                },
+                {
+                    "errorStack": "",
+                    "isBrowser": true,
+                    "isDone": true,
+                    "name": "testCase_dbTable_crudXxxById",
+                    "status": "passed",
+                    "timeElapsed": 7,
+                    "timeStart": 1566451716795
+                },
+                {
+                    "errorStack": "",
+                    "isBrowser": true,
+                    "isDone": true,
+                    "name": "testCase_dbTable_crudXxxByQuery",
+                    "status": "passed",
+                    "timeElapsed": 9,
+                    "timeStart": 1566451716803
+                },
+                {
+                    "errorStack": "",
+                    "isBrowser": true,
+                    "isDone": true,
+                    "name": "testCase_dbTable_persistence",
+                    "status": "passed",
+                    "timeElapsed": 1045,
+                    "timeStart": 1566451716814
+                },
+                {
+                    "errorStack": "",
+                    "isBrowser": true,
+                    "isDone": true,
+                    "name": "testCase_dbTable_sizeLimit",
+                    "status": "passed",
+                    "timeElapsed": 1,
+                    "timeStart": 1566451716822
+                },
+                {
+                    "errorStack": "",
+                    "isBrowser": true,
+                    "isDone": true,
+                    "name": "testCase_nop_default",
+                    "status": "passed",
+                    "timeElapsed": 0,
+                    "timeStart": 1566451716825
+                },
+                {
+                    "errorStack": "",
+                    "isBrowser": true,
+                    "isDone": true,
+                    "name": "testCase_onEventDomDb_default",
+                    "status": "passed",
+                    "timeElapsed": 2,
+                    "timeStart": 1566451716827
+                },
+                {
+                    "errorStack": "",
+                    "isBrowser": true,
+                    "isDone": true,
+                    "name": "testCase_sortCompare_default",
+                    "status": "passed",
+                    "timeElapsed": 1,
+                    "timeStart": 1566451716831
+                },
+                {
+                    "errorStack": "",
+                    "isBrowser": true,
+                    "isDone": true,
+                    "name": "testCase_storageXxx_misc",
+                    "status": "passed",
+                    "timeElapsed": 95,
+                    "timeStart": 1566451716834
+                }
+            ],
+            "testsFailed": 0,
+            "testsPassed": 11,
+            "testsPending": 0,
+            "timeElapsed": 2007,
+            "timeStart": 1566451716708,
+            "screenshot": "screenshot.npmTest.browser.%2F.png"
+        },
+        {
+            "name": "npmTest - node - linux v12.9.0 - 2019-08-22T05:28:33.093Z",
+            "testCaseList": [
+                {
+                    "isBrowser": false,
+                    "name": "testCase_buildApidoc_default",
+                    "status": "passed",
+                    "errorStack": "",
+                    "timeElapsed": 359,
+                    "timeStart": 1566451714006,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_buildApp_default",
+                    "status": "passed",
+                    "errorStack": "",
+                    "timeElapsed": 5542,
+                    "timeStart": 1566451714366,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_buildLib_default",
+                    "status": "passed",
+                    "errorStack": "",
+                    "timeElapsed": 0,
+                    "timeStart": 1566451714391,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_buildReadme_default",
+                    "status": "passed",
+                    "errorStack": "",
+                    "timeElapsed": 3,
+                    "timeStart": 1566451714392,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_buildTest_default",
+                    "status": "passed",
+                    "errorStack": "",
+                    "timeElapsed": 1,
+                    "timeStart": 1566451714396,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_dbLoad_err",
+                    "status": "passed",
+                    "errorStack": "",
+                    "timeElapsed": 3,
+                    "timeStart": 1566451714397,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_dbTable_crudGetManyByQuery",
+                    "status": "passed",
+                    "errorStack": "",
+                    "timeElapsed": 36,
+                    "timeStart": 1566451714401,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_dbTable_crudNullCase",
+                    "status": "passed",
+                    "errorStack": "",
+                    "timeElapsed": 5,
+                    "timeStart": 1566451714437,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_dbTable_crudXxxById",
+                    "status": "passed",
+                    "errorStack": "",
+                    "timeElapsed": 5,
+                    "timeStart": 1566451714443,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_dbTable_crudXxxByQuery",
+                    "status": "passed",
+                    "errorStack": "",
+                    "timeElapsed": 5,
+                    "timeStart": 1566451714448,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_dbTable_persistence",
+                    "status": "passed",
+                    "errorStack": "",
+                    "timeElapsed": 1032,
+                    "timeStart": 1566451714453,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_dbTable_sizeLimit",
+                    "status": "passed",
+                    "errorStack": "",
+                    "timeElapsed": 1,
+                    "timeStart": 1566451714470,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_nop_default",
+                    "status": "passed",
+                    "errorStack": "",
+                    "timeElapsed": 0,
+                    "timeStart": 1566451714473,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_onEventDomDb_default",
+                    "status": "passed",
+                    "errorStack": "",
+                    "timeElapsed": 0,
+                    "timeStart": 1566451714474,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_sortCompare_default",
+                    "status": "passed",
+                    "errorStack": "",
+                    "timeElapsed": 0,
+                    "timeStart": 1566451714475,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_storageXxx_misc",
+                    "status": "passed",
+                    "errorStack": "",
+                    "timeElapsed": 112,
+                    "timeStart": 1566451714476,
+                    "isDone": true
+                },
+                {
+                    "isBrowser": false,
+                    "name": "testCase_webpage_default",
+                    "status": "passed",
+                    "errorStack": "",
+                    "timeElapsed": 7438,
+                    "timeStart": 1566451714485,
+                    "isDone": true
+                }
+            ],
+            "timeElapsed": 7935,
+            "testsFailed": 0,
+            "testsPassed": 17,
+            "testsPending": 0,
+            "status": "passed",
+            "timeStart": 1566451713988
+        }
+    ],
+    "date": "2019-08-22T05:28:49.585Z",
+    "errorStackList": [],
+    "timeElapsed": 7720,
+    "testsFailed": 0,
+    "testsPassed": 29,
+    "testsPending": 0,
+    "timeStart": 1566451729586
+}

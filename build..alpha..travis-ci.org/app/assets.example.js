@@ -315,7 +315,7 @@ if (!local.isBrowser) {
         elem.scrollTop = elem.scrollHeight;
     };
 });
-Object.assign(local, globalThis.domOnEventDelegateDict);
+local.objectAssignDefault(local, globalThis.domOnEventDelegateDict);
 globalThis.domOnEventDelegateDict = local;
 local.onEventDomDb = local.db && local.db.onEventDomDb;
 local.testRunBrowser = function (evt) {
@@ -340,6 +340,7 @@ local.testRunBrowser = function (evt) {
     case "click.buttonEval1":
     case true:
         // try to eval input-code
+        globalThis.domOnEventDelegateDict.domOnEventResetOutput();
         try {
             eval( // jslint ignore:line
                 document.querySelector("#inputTextarea1").value
