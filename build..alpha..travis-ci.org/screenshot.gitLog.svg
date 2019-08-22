@@ -1,0 +1,403 @@
+<svg height="3214" width="720" xmlns="http://www.w3.org/2000/svg">
+<rect height="3214" fill="#555" width="720"></rect>
+<text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
+<tspan x="10" y="26">2019-08-21 03:42:29 -0500</tspan>
+
+<tspan x="10" y="42">build.app</tspan>
+
+<tspan x="10" y="58"></tspan>
+
+<tspan x="10" y="74">2019-08-21 08:21:05 +0000</tspan>
+
+<tspan x="10" y="90">array.from</tspan>
+
+<tspan x="10" y="106"></tspan>
+
+<tspan x="10" y="122">2019-08-21 03:11:09 -0500</tspan>
+
+<tspan x="10" y="138">- fix demo</tspan>
+
+<tspan x="10" y="154"></tspan>
+
+<tspan x="10" y="170">2019-08-21 03:10:13 -0500</tspan>
+
+<tspan x="10" y="186">- fix demo</tspan>
+
+<tspan x="10" y="202"></tspan>
+
+<tspan x="10" y="218">2019-08-21 02:12:25 -0500</tspan>
+
+<tspan x="10" y="234">update.build</tspan>
+
+<tspan x="10" y="250"></tspan>
+
+<tspan x="10" y="266">2019-08-14 07:49:52 +0000</tspan>
+
+<tspan x="10" y="282">update.build</tspan>
+
+<tspan x="10" y="298"></tspan>
+
+<tspan x="10" y="314">2019-08-11 03:07:26 -0500</tspan>
+
+<tspan x="10" y="330">update.build</tspan>
+
+<tspan x="10" y="346"></tspan>
+
+<tspan x="10" y="362">2019-08-11 03:02:52 -0500</tspan>
+
+<tspan x="10" y="378">update.build</tspan>
+
+<tspan x="10" y="394"></tspan>
+
+<tspan x="10" y="410">2019-08-11 07:59:18 +0000</tspan>
+
+<tspan x="10" y="426">update.build</tspan>
+
+<tspan x="10" y="442"></tspan>
+
+<tspan x="10" y="458">2019-08-04 05:06:42 -0500</tspan>
+
+<tspan x="10" y="474">- rename var request to req, and response to res</tspan>
+
+<tspan x="10" y="490"></tspan>
+
+<tspan x="10" y="506">2019-08-04 03:59:57 -0500</tspan>
+
+<tspan x="10" y="522">- disable travis-ci cache</tspan>
+
+<tspan x="10" y="538"></tspan>
+
+<tspan x="10" y="554">2019-08-04 08:39:46 +0000</tspan>
+
+<tspan x="10" y="570">- rename var error to err</tspan>
+
+<tspan x="10" y="586"></tspan>
+
+<tspan x="10" y="602">2019-08-04 08:11:18 +0000</tspan>
+
+<tspan x="10" y="618">- rename var local.errorDefault to local.errDefault</tspan>
+
+<tspan x="10" y="634"></tspan>
+
+<tspan x="10" y="650">2019-08-04 01:46:58 -0500</tspan>
+
+<tspan x="10" y="666">- rename var error to err</tspan>
+
+<tspan x="10" y="682"></tspan>
+
+<tspan x="10" y="698">2019-08-04 01:28:50 -0500</tspan>
+
+<tspan x="10" y="714">update.build</tspan>
+
+<tspan x="10" y="730"></tspan>
+
+<tspan x="10" y="746">2019-08-04 01:26:35 -0500</tspan>
+
+<tspan x="10" y="762">update.build</tspan>
+
+<tspan x="10" y="778"></tspan>
+
+<tspan x="10" y="794">2019-02-05 23:39:58 -0600</tspan>
+
+<tspan x="10" y="810">- replace circurlarList with circularSet</tspan>
+
+<tspan x="10" y="826"></tspan>
+
+<tspan x="10" y="842">2019-02-05 23:36:02 -0600</tspan>
+
+<tspan x="10" y="858">build.update</tspan>
+
+<tspan x="10" y="874"></tspan>
+
+<tspan x="10" y="890">2019-02-05 01:11:55 -0600</tspan>
+
+<tspan x="10" y="906">build.update</tspan>
+
+<tspan x="10" y="922"></tspan>
+
+<tspan x="10" y="938">2019-02-05 01:08:34 -0600</tspan>
+
+<tspan x="10" y="954">build.update</tspan>
+
+<tspan x="10" y="970"></tspan>
+
+<tspan x="10" y="986">2019-01-07 00:06:19 -0600</tspan>
+
+<tspan x="10" y="1002">click.buttonEval1</tspan>
+
+<tspan x="10" y="1018"></tspan>
+
+<tspan x="10" y="1034">2019-01-06 23:56:47 -0600</tspan>
+
+<tspan x="10" y="1050">- revamp ui event-handling with window.domOnEventDelegateDict</tspan>
+
+<tspan x="10" y="1066"></tspan>
+
+<tspan x="10" y="1082">2019-01-04 19:45:38 -0600</tspan>
+
+<tspan x="10" y="1098">update.build</tspan>
+
+<tspan x="10" y="1114"></tspan>
+
+<tspan x="10" y="1130">2018-12-31 02:09:06 -0600</tspan>
+
+<tspan x="10" y="1146">fix.ui.import.data</tspan>
+
+<tspan x="10" y="1162"></tspan>
+
+<tspan x="10" y="1178">2018-12-31 02:03:42 -0600</tspan>
+
+<tspan x="10" y="1194">fix.ui.import.data</tspan>
+
+<tspan x="10" y="1210"></tspan>
+
+<tspan x="10" y="1226">2018-12-31 01:02:23 -0600</tspan>
+
+<tspan x="10" y="1242">globalThis.domOnEventDelegateDict.testRunBrowser</tspan>
+
+<tspan x="10" y="1258"></tspan>
+
+<tspan x="10" y="1274">2018-12-31 00:50:06 -0600</tspan>
+
+<tspan x="10" y="1290">onEventDomDb</tspan>
+
+<tspan x="10" y="1306"></tspan>
+
+<tspan x="10" y="1322">2018-12-30 23:39:32 -0600</tspan>
+
+<tspan x="10" y="1338">onevent-reset-output</tspan>
+
+<tspan x="10" y="1354"></tspan>
+
+<tspan x="10" y="1370">2018-12-30 22:55:36 -0600</tspan>
+
+<tspan x="10" y="1386">- revamp ui event-handling with window.domOnEventDelegateDict</tspan>
+
+<tspan x="10" y="1402"></tspan>
+
+<tspan x="10" y="1418">2018-12-30 22:14:50 -0600</tspan>
+
+<tspan x="10" y="1434">- revamp ui event-handling with window.domOnEventDelegateDict</tspan>
+
+<tspan x="10" y="1450"></tspan>
+
+<tspan x="10" y="1466">2018-12-30 17:56:05 -0600</tspan>
+
+<tspan x="10" y="1482">[build clean]</tspan>
+
+<tspan x="10" y="1498"></tspan>
+
+<tspan x="10" y="1514">2018-12-30 00:26:18 -0600</tspan>
+
+<tspan x="10" y="1530">[npm publish] - npm publish 2018.12.30</tspan>
+
+<tspan x="10" y="1546">- fix ui buttons</tspan>
+
+<tspan x="10" y="1562">- update build</tspan>
+
+<tspan x="10" y="1578"></tspan>
+
+<tspan x="10" y="1594">2018-12-29 18:03:55 -0600</tspan>
+
+<tspan x="10" y="1610">[npm publish] - npm publish 2018.12.29</tspan>
+
+<tspan x="10" y="1626">- refactor files with new jslint (v2018.11.14)</tspan>
+
+<tspan x="10" y="1642">- update build</tspan>
+
+<tspan x="10" y="1658"></tspan>
+
+<tspan x="10" y="1674">2018-09-01 08:18:04 +0700</tspan>
+
+<tspan x="10" y="1690">[npm publish] - npm publish 2018.9.1</tspan>
+
+<tspan x="10" y="1706">- revamp bootstrap-mechanism before running tests</tspan>
+
+<tspan x="10" y="1722">- integrate function db.onEventDomDb with utility2_onReadyBefore</tspan>
+
+<tspan x="10" y="1738">- add functions dbReset, dbSeed</tspan>
+
+<tspan x="10" y="1754"></tspan>
+
+<tspan x="10" y="1770">2018-08-06 02:21:32 +0700</tspan>
+
+<tspan x="10" y="1786">[npm publish] - npm publish 2018.8.5</tspan>
+
+<tspan x="10" y="1802">- migrate from modeJs -&gt; isBrowser</tspan>
+
+<tspan x="10" y="1818">- update build</tspan>
+
+<tspan x="10" y="1834">- none</tspan>
+
+<tspan x="10" y="1850"></tspan>
+
+<tspan x="10" y="1866">2018-04-22 16:49:56 +0800</tspan>
+
+<tspan x="10" y="1882">[npm publish] - npm publish v2018.4.23</tspan>
+
+<tspan x="10" y="1898">- update build</tspan>
+
+<tspan x="10" y="1914"></tspan>
+
+<tspan x="10" y="1930">2018-02-17 07:26:50 +0700</tspan>
+
+<tspan x="10" y="1946">[npm publish] - npm publish v2018.2.16</tspan>
+
+<tspan x="10" y="1962">- update build</tspan>
+
+<tspan x="10" y="1978"></tspan>
+
+<tspan x="10" y="1994">2017-12-05 00:29:28 +0700</tspan>
+
+<tspan x="10" y="2010">[npm publish] - npm publish 2017.12.4</tspan>
+
+<tspan x="10" y="2026">- change function setTimeoutOnError signature to function (onError, timeout, error, data)</tspan>
+
+<tspan x="10" y="2042"></tspan>
+
+<tspan x="10" y="2058">2017-11-08 00:51:36 +0800</tspan>
+
+<tspan x="10" y="2074">[npm publish] - npm publish 2017.11.7</tspan>
+
+<tspan x="10" y="2090">- run tests with testRunInit instead of testRunAll</tspan>
+
+<tspan x="10" y="2106">- update build</tspan>
+
+<tspan x="10" y="2122"></tspan>
+
+<tspan x="10" y="2138">2017-09-17 22:59:58 +0700</tspan>
+
+<tspan x="10" y="2154">[npm publish] - npm publish 2017.9.16</tspan>
+
+<tspan x="10" y="2170">- add cli-help doc to README.md</tspan>
+
+<tspan x="10" y="2186"></tspan>
+
+<tspan x="10" y="2202">2017-07-25 14:47:03 +0800</tspan>
+
+<tspan x="10" y="2218">[npm publish] - npm publish 2017.7.24</tspan>
+
+<tspan x="10" y="2234">- update documentation</tspan>
+
+<tspan x="10" y="2250"></tspan>
+
+<tspan x="10" y="2266">2017-05-26 12:05:34 +0800</tspan>
+
+<tspan x="10" y="2282">[npm publish] - npm publish 2017.5.25</tspan>
+
+<tspan x="10" y="2298">- add $not query-operator and 'shuffle' param in function dbTable.prototype.crudGetManyByQuery</tspan>
+
+<tspan x="10" y="2314">- add dbTable.sortDefault property</tspan>
+
+<tspan x="10" y="2330">- deduplicate file assets.db.rollup.js</tspan>
+
+<tspan x="10" y="2346">- do not update _timeModified when importing data</tspan>
+
+<tspan x="10" y="2362">- fix stable-sort bug in v8</tspan>
+
+<tspan x="10" y="2378">- add README section 'internal screen-capture'</tspan>
+
+<tspan x="10" y="2394">- add README section 'quickstart standalone app'</tspan>
+
+<tspan x="10" y="2410">- auto-create README section 'table of contents'</tspan>
+
+<tspan x="10" y="2426">- rename README section 'quickstart web example' -&gt; 'quickstart example.js'</tspan>
+
+<tspan x="10" y="2442"></tspan>
+
+<tspan x="10" y="2458">2017-03-30 21:50:17 +0800</tspan>
+
+<tspan x="10" y="2474">[npm publish] - npm publish 2017.3.29</tspan>
+
+<tspan x="10" y="2490">- change function _DbTable.prototype.crudUpdateOneById to auto-insert missing record</tspan>
+
+<tspan x="10" y="2506">- add function _DbTable.prototype.crudGetOneByRandom</tspan>
+
+<tspan x="10" y="2522"></tspan>
+
+<tspan x="10" y="2538">2017-03-17 05:00:34 +0800</tspan>
+
+<tspan x="10" y="2554">[npm publish]</tspan>
+
+<tspan x="10" y="2570"></tspan>
+
+<tspan x="10" y="2586">2017-03-17 04:45:37 +0800</tspan>
+
+<tspan x="10" y="2602">[npm publish] - npm publish 2017.3.16</tspan>
+
+<tspan x="10" y="2618">- remove build-function shBuildCiTestPre</tspan>
+
+<tspan x="10" y="2634">- rename name api-doc -&gt; apidoc</tspan>
+
+<tspan x="10" y="2650"></tspan>
+
+<tspan x="10" y="2666">2017-02-24 12:14:48 +0800</tspan>
+
+<tspan x="10" y="2682">- npm publish 2017.2.2</tspan>
+
+<tspan x="10" y="2698">- add ttl-cache</tspan>
+
+<tspan x="10" y="2714">- do not auto-uglify js-assets in production</tspan>
+
+<tspan x="10" y="2730">- replace env var npm_package_name with npm_package_nameAlias in istanbul code-coverage</tspan>
+
+<tspan x="10" y="2746">- use async-api's in example.js</tspan>
+
+<tspan x="10" y="2762"></tspan>
+
+<tspan x="10" y="2778">2017-02-18 16:51:25 +0800</tspan>
+
+<tspan x="10" y="2794">- npm publish 2017.2.1</tspan>
+
+<tspan x="10" y="2810">- add file assets.db.rollup.js</tspan>
+
+<tspan x="10" y="2826">- revamp README.md</tspan>
+
+<tspan x="10" y="2842"></tspan>
+
+<tspan x="10" y="2858">2016-12-13 21:52:24 +0800</tspan>
+
+<tspan x="10" y="2874">- npm publish 2016.12.1</tspan>
+
+<tspan x="10" y="2890">- fix persistence-cancel handling-behavior</tspan>
+
+<tspan x="10" y="2906">- rename function clear to crudRemoveAll</tspan>
+
+<tspan x="10" y="2922">- rename function reset to drop</tspan>
+
+<tspan x="10" y="2938">- rename files index.* -&gt; lib.db.*</tspan>
+
+<tspan x="10" y="2954">- rename field _timeModified -&gt; _timeUpdated</tspan>
+
+<tspan x="10" y="2970"></tspan>
+
+<tspan x="10" y="2986">2016-11-21 10:04:55 +0800</tspan>
+
+<tspan x="10" y="3002">- npm publish 2016.10.3</tspan>
+
+<tspan x="10" y="3018">- re-implement persistence</tspan>
+
+<tspan x="10" y="3034"></tspan>
+
+<tspan x="10" y="3050">2016-11-15 12:43:31 +0800</tspan>
+
+<tspan x="10" y="3066">- npm publish 2016.10.2</tspan>
+
+<tspan x="10" y="3082">- rewrite replacing trees with native javascript dict</tspan>
+
+<tspan x="10" y="3098">- fix function storageGetItem in node js-env</tspan>
+
+<tspan x="10" y="3114">- rename createdAt to _timeCreated and updatedAt to _timeModified</tspan>
+
+<tspan x="10" y="3130">- optimization - soft-delete dbRow's in dbTable, and mark it as dirty</tspan>
+
+<tspan x="10" y="3146">- function _DbTable.prototype.crudFindMany - add or operator</tspan>
+
+<tspan x="10" y="3162">- function _DbTable.prototype.crudFindMany - add projection feature</tspan>
+
+<tspan x="10" y="3178">- README.md - add cdn-download links</tspan>
+
+<tspan x="10" y="3194">- README.md - replace alpha api-doc with beta api-doc</tspan>
+
+</text>
+</svg>

@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- "" -->
+<title>swgg</title>
+<style>
+/* jslint-utility2 */
+/*csslint
+*/
+/* jslint-ignore-begin */
+*,
+*:after,
+*:before {
+    box-sizing: border-box;
+}
+/* jslint-ignore-end */
+@keyframes uiAnimateShake {
+    0%, 50% {
+        transform: translateX(10px);
+    }
+    25%, 75% {
+        transform: translateX(-10px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+@keyframes uiAnimateSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+a {
+    overflow-wrap: break-word;
+}
+body > div,
+body > pre,
+body > textarea,
+body > .button {
+    margin-bottom: 20px;
+}
+body > textarea {
+    height: 10rem;
+    width: 100%;
+}
+body > textarea[readonly] {
+    background: #ddd;
+}
+body > .button {
+    width: 20rem;
+}
+code,
+pre,
+textarea {
+    font-family: Consolas, Menlo, monospace;
+    font-size: small;
+}
+pre {
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+}
+textarea {
+    overflow: auto;
+    white-space: pre;
+}
+.button {
+    background-color: #fff;
+    border: 1px solid;
+    border-bottom-color: rgb(186, 186, 186);
+    border-left-color: rgb(209, 209, 209);
+    border-radius: 4px;
+    border-right-color: rgb(209, 209, 209);
+    border-top-color: rgb(216, 216, 216);
+    color: #00d;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    margin: 0;
+    padding: 2px 7px 3px 7px;
+    text-align: center;
+    text-decoration: underline;
+}
+.colorError {
+    color: #d00;
+}
+.uiAnimateShake {
+    animation-duration: 500ms;
+    animation-name: uiAnimateShake;
+}
+.uiAnimateSlide {
+    overflow-y: hidden;
+    transition: max-height ease-in 250ms, min-height ease-in 250ms, padding-bottom ease-in 250ms, padding-top ease-in 250ms;
+}
+.utility2FooterDiv {
+    text-align: center;
+}
+.zeroPixel {
+    border: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    width: 0;
+}
+</style>
+<style>
+/* jslint-utility2 */
+/*csslint
+*/
+/* jslint-ignore-begin */
+.swggUiContainer,
+.swggUiContainer * {
+    border: 0;
+    border-radius: 0;
+    margin: 0;
+    max-width: 100%;
+    padding: 0;
+}
+.swggUiContainer pre,
+.swggUiContainer .operation > .thead:focus,
+.swggUiContainer .resource > .thead > .td:focus {
+    outline: none;
+}
+.swggUiContainer .description > * {
+    margin-top: 20px;
+}
+.swggUiContainer .description > *:first-child {
+    margin-top: 0;
+}
+/* jslint-ignore-end */
+/* validateLineSortedReset */
+/* general */
+.swggUiContainer code,
+.swggUiContainer pre,
+.swggUiContainer textarea {
+    line-height: 1.25rem;
+    max-height: 50rem;
+    overflow: auto;
+}
+.swggUiContainer input,
+.swggUiContainer pre,
+.swggUiContainer textarea {
+    min-height: 1.5rem;
+}
+.swggUiContainer pre {
+    white-space: pre;
+}
+.swggUiContainer .button,
+.swggUiContainer .operation > .thead,
+.swggUiContainer .resource > .thead {
+    cursor: pointer;
+}
+.swggUiContainer .button,
+.swggUiContainer .operation > .thead > .td3,
+.swggUiContainer .resource > .thead > .td {
+    font-weight: bold;
+    text-decoration: underline;
+}
+.swggUiContainer .markdown pre {
+    max-height: none;
+}
+.swggUiContainer .multilinePlaceholderContainer {
+    min-height: 10rem;
+    position: relative;
+}
+.swggUiContainer .multilinePlaceholderPre {
+    position: absolute;
+    white-space: pre;
+}
+.swggUiContainer .multilinePlaceholderTextarea {
+    position: absolute;
+}
+.swggUiContainer .operation > .thead > .td1 {
+    text-align: left;
+    width: 2rem;
+}
+.swggUiContainer .operation > .thead > .td2 {
+    text-align: center;
+    width: 5rem;
+}
+.swggUiContainer .responseBody,
+.swggUiContainer .responseHeaders,
+.swggUiContainer .responseStatusCode {
+    font-weight: bold;
+}
+.swggUiContainer .schemaP pre,
+.swggUiContainer .schemaP select[multiple],
+.swggUiContainer .schemaP textarea,
+.swggUiContainer .schemaP .multilinePlaceholderContainer {
+    height: 10rem;
+}
+.swggUiContainer .schemaP > .td3 {
+    overflow: visible;
+}
+.swggUiContainer .td {
+    overflow: auto;
+    overflow-wrap: break-word;
+}
+.swggUiContainer .td input,
+.swggUiContainer .td pre,
+.swggUiContainer .td select,
+.swggUiContainer .td textarea {
+    width: 100%;
+}
+/* validateLineSortedReset */
+/* background */
+.swggUiContainer code,
+.swggUiContainer pre {
+    background: #ddd;
+}
+.swggUiContainer .button {
+    background: #ddf;
+}
+.swggUiContainer .description {
+    background: #bdb;
+}
+.swggUiContainer .methodDELETE {
+    background: #b07;
+}
+.swggUiContainer .methodGET {
+    background: #373;
+}
+.swggUiContainer .methodHEAD {
+    background: #7b7;
+}
+.swggUiContainer .methodOPTIONS {
+    background: #777;
+}
+.swggUiContainer .methodPATCH {
+    background: #99f;
+}
+.swggUiContainer .methodPOST {
+    background: #33d;
+}
+.swggUiContainer .methodPUT {
+    background: #77d;
+}
+.swggUiContainer .multilinePlaceholderPre {
+    background: #fff;
+}
+.swggUiContainer .operation {
+    background: #dfd;
+}
+.swggUiContainer .resource > .thead,
+.swggUiContainer > .thead {
+    background: #7b7;
+}
+.swggUiContainer > .thead > .td1 {
+    background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAqRJREFUeNrEVz1s00AUfnGXii5maMXoEUEHVwIpEkPNgkBdMnQoU5ytiKHJwpp2Q2JIO8DCUDOxIJFIVOoWZyJSh3pp1Q2PVVlcCVBH3ufeVZZ9Zye1Ay86nXV+ue/9fO/lheg/Se02X1rvksmbnTiKvuxQMBNgBnN4a/LCbmnUAP6JV58NCUsBC8CuAJxGPF47OgNqBaA93tolUhnx6jC4NxGwyOEwlccyAs+3kwdzKq0HDn2vEBTi8J2XpyMaywNDE157BhXUE3zJhlq8GKq+Zd2zaWHepPA8oN9XkfLmRdOiJV4XUUg/IyWncLjCYY/SHndV2u7zHr3bPKZtdxgboJOnthvrfGj/oMf3G0r7JVmNlLfKklmrt2MvvcNO7LFOhoFHfuAJI5o6ta10jpt5CQLgwXhXG2YIwvu+34qf78ybOjWTnWwkgR36d7JqJOrW0hHmNrKg9xhiS4+1jFmrxymh03B0w+6kURIAu3yHtOD5oaUNojMnGgbcctNvwdAnyxvxRR+/vaJnjzbpzcZX+nN1SdGv85i9eH8w3qPO+mdm/y4dnQ1iI8Fq6Nf4cxL6GWSjiFDSs0VRnxC5g0xSB2cgHpaseTxfqOv5uoHkNQ6Ha/N1Yz9mNMppEkEkYKj79q6uCq4bCHcSX3fJ0Vk/k9siASjCm1N6gZH6Ec9IXt2WkFES2K/ixoIyktJPAu/ptOA1SgO5zqtr6KASJPF0nMV8dgMsRhRPOcMwqQAOoi0VAIMLAEWJ6YYC1c8ibj1GP51RqwzYwZVMHQuvOzMCBUtb2tGHx5NAdLKqp5AX7Ng4d+Zi8AGDI9z1ijx9yaCH04y3GCP2S+QcvaGl+pcxyUBvinFlawoDQjHSelX8hQEoIrAq8p/mgC88HOS1YCl/BRgAmiD/1gn6Nu8AAAAASUVORK5CYII=) no-repeat left center;
+}
+/* validateLineSortedReset */
+/* border */
+.swggUiContainer input,
+.swggUiContainer pre,
+.swggUiContainer select,
+.swggUiContainer textarea {
+    border: 1px solid #999;
+}
+.swggUiContainer .borderBottom1Px {
+    border-bottom: 1px solid #777;
+}
+.swggUiContainer .button {
+    border: 1px solid #35b;
+    border-radius: 5px;
+}
+.swggUiContainer .resource > .thead > .td2 {
+    border-left: 1px solid #037;
+}
+/* validateLineSortedReset */
+/* color */
+.swggUiContainer a,
+.swggUiContainer .button,
+.swggUiContainer .operation > .thead,
+.swggUiContainer .resource > .thead {
+    color: #35b;
+}
+.swggUiContainer code {
+    color: #333;
+}
+.swggUiContainer .color777 {
+    color: #777;
+}
+.swggUiContainer .label {
+    color: #373;
+}
+.swggUiContainer .multilinePlaceholderPre {
+    color: #999;
+}
+.swggUiContainer .operation > .thead > .td2,
+.swggUiContainer .resource > .thead,
+.swggUiContainer > .thead > .td1 {
+    color: #fff;
+}
+.swggUiContainer .thead,
+.swggUiContainer .tr {
+    display: flex;
+}
+/* validateLineSortedReset */
+/* flex */
+.swggUiContainer .operation > .thead > .td3 {
+    flex: 1;
+}
+.swggUiContainer .operation > .thead > .td4 {
+    flex: 1;
+}
+.swggUiContainer .resource > .thead > .td1 {
+    flex: 1;
+}
+.swggUiContainer .schemaP > .td1 {
+    flex: 2;
+}
+.swggUiContainer .schemaP > .td2 {
+    flex: 1;
+}
+.swggUiContainer .schemaP > .td3 {
+    flex: 4;
+}
+.swggUiContainer .schemaP > .td4 {
+    flex: 3;
+}
+.swggUiContainer .schemaResponse > .td1 {
+    flex: 1;
+}
+.swggUiContainer .schemaResponse > .td2 {
+    flex: 4;
+}
+.swggUiContainer > .thead > .td2 {
+    flex: 4;
+}
+.swggUiContainer > .thead > .td3 {
+    flex: 1;
+}
+/* validateLineSortedReset */
+/* margin */
+.swggUiContainer li {
+    margin-top: 10px;
+}
+.swggUiContainer ol,
+.swggUiContainer ul,
+.swggUiContainer .td {
+    margin-left: 20px;
+}
+.swggUiContainer .description,
+.swggUiContainer .label,
+.swggUiContainer .operation,
+.swggUiContainer .operation > form > div,
+.swggUiContainer .operation > form > pre,
+.swggUiContainer .resource,
+.swggUiContainer > div,
+.swggUiContainer > ol,
+.swggUiContainer > pre,
+.swggUiContainer > .info > div,
+.swggUiContainer > .info > ul,
+.swggUiContainer > .info > .button,
+.swggUiContainer > .info > .hx {
+    margin-top: 20px;
+}
+.swggUiContainer .label {
+    margin-bottom: -19px;
+}
+.swggUiContainer .operation > form > .button {
+    margin: 40px 0 20px 0;
+}
+.swggUiContainer .resource > ol,
+.swggUiContainer .resource > .thead > .td,
+.swggUiContainer .td:first-child,
+.swggUiContainer > ol {
+    margin-left: 0;
+}
+.swggUiContainer .resource > ol > .description {
+    margin-top: 0;
+}
+/* validateLineSortedReset */
+/* padding */
+.swggUiContainer code {
+    padding: 2px;
+}
+.swggUiContainer input {
+    padding: 0 5px;
+}
+.swggUiContainer pre,
+.swggUiContainer textarea {
+    padding: 5px;
+}
+.swggUiContainer .button,
+.swggUiContainer .resource > .thead > .td,
+.swggUiContainer > .thead {
+    padding: 10px 20px;
+}
+.swggUiContainer .description {
+    padding: 20px;
+}
+.swggUiContainer .operation > form {
+    padding: 0 20px;
+}
+.swggUiContainer .operation > form .td1 {
+    padding-left: 0;
+}
+.swggUiContainer .operation > .thead {
+    padding: 0 20px;
+}
+.swggUiContainer .operation > .thead > .td {
+    padding: 10px 0;
+}
+.swggUiContainer > .thead > .td1 {
+    padding-left: 40px;
+    padding-top: 4px;
+}
+/* validateLineSortedReset */
+/* .textOverflowEllipsis */
+.swggUiContainer .textOverflowEllipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/* validateLineSortedReset */
+/* @media */
+@media screen and (max-width: 640px) {
+    .swggUiContainer .operation {
+        font-size: small;
+    }
+    .swggUiContainer .resource > .thead > .td {
+        flex: 1;
+    }
+    .swggUiContainer > .thead {
+        display: block;
+        padding: 0;
+    }
+    .swggUiContainer > .thead > .td {
+        display: block;
+        margin: 0;
+        width: 100%;
+    }
+}
+/* validateLineSortedReset */
+/* hover */
+.swggUiContainer a:hover,
+.swggUiContainer .resource > .thead > .td:hover,
+.swggUiContainer > .thead > .td1:hover {
+    color: #037;
+}
+.swggUiContainer .button:hover,
+.swggUiContainer .operation > .thead:hover {
+    background: #bbf;
+}
+/* validateLineSortedReset */
+/* error */
+.swggUiContainer button.hasError,
+.swggUiContainer pre.hasError,
+.swggUiContainer textarea.hasError {
+    background: #fbb;
+}
+.swggUiContainer input.hasError,
+.swggUiContainer select.hasError {
+    border: 5px solid #d00;
+}
+</style>
+</head>
+<body style="background: #eef; font-family: Arial, Helvetica, sans-serif; margin: 0 40px;">
+<div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 500ms, width 1500ms; width: 0%; z-index: 1;"></div>
+<div class="uiAnimateSpin" style="animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;"></div>
+<code style="display: none;"></code><div class="button uiAnimateShake uiAnimateSlide utility2FooterDiv zeroPixel" style="display: none;"></div><pre style="display: none;"></pre><textarea readonly style="display: none;"></textarea>
+<script>
+/* jslint-utility2 */
+/*jslint
+    bitwise: true,
+    browser: true,
+    maxerr: 4,
+    maxlen: 100,
+    node: true,
+    nomen: true,
+    regexp: true,
+    stupid: true
+*/
+(function () {
+    "use strict";
+    var ajaxProgressDiv1,
+        ajaxProgressState,
+        ajaxProgressUpdate,
+        timerIntervalAjaxProgressUpdate;
+    ajaxProgressDiv1 = document.querySelector("#ajaxProgressDiv1");
+    setTimeout(function () {
+        ajaxProgressDiv1.style.width = "25%";
+    });
+    ajaxProgressState = 0;
+    ajaxProgressUpdate = (window.local &&
+        window.local.ajaxProgressUpdate) || function () {
+        ajaxProgressDiv1.style.width = "100%";
+        setTimeout(function () {
+            ajaxProgressDiv1.style.background = "transparent";
+            setTimeout(function () {
+                ajaxProgressDiv1.style.width = "0%";
+            }, 500);
+        }, 1500);
+    };
+    timerIntervalAjaxProgressUpdate = setInterval(function () {
+        ajaxProgressState += 1;
+        ajaxProgressDiv1.style.width = Math.max(
+            100 - 75 * Math.exp(-0.125 * ajaxProgressState),
+            Number(ajaxProgressDiv1.style.width.slice(0, -1)) || 0
+        ) + "%";
+    }, 1000);
+    window.addEventListener("load", function () {
+        clearInterval(timerIntervalAjaxProgressUpdate);
+        ajaxProgressUpdate();
+    });
+}());
+</script>
+<div class="swggUiContainer" style="margin: 0 auto; max-width: 1200px;">
+<!-- <div class="swggUiContainer"> -->
+<h2 class="eventDelegateKeyup eventDelegateSubmit hx onEventUiReload thead">
+    <a class="td td1" href="https://github.com/kaizhu256/node-swgg" target="_blank">swgg</a>
+    <input
+        class="td td2"
+        placeholder="http://petstore.swagger.io/v2/swagger.json"
+        type="text"
+        value=""
+    >
+    <input
+        class="td td3"
+        id="swggApiKeyInput1"
+        placeholder="api-key"
+        type="text"
+        value=""
+    >
+    <button class="button eventDelegateClick onEventUiReload td td4">explore</button>
+    <button
+        class="button eventDelegateClick onEventUiReload td td5"
+        id="swggApiKeyClearButton1"
+    >
+        clear api-keys
+    </button>
+</h2>
+<div
+    class="colorError"
+    id="swggUiReloadErrorDiv1"
+    style="background: none; border: 0;"
+></div>
+<div class="info reset">
+    
+</div>
+
+<div id="swggAjaxProgressDiv1" style="text-align: center;">
+    <span>loading script</span>
+    <div class="uiAnimateSpin" style="animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: inline-block; height: 25px; vertical-align: middle; width: 25px;"></div>
+</div>
+<ol class="reset resourceList" style="list-style-type: upper-roman;"></ol>
+<div class="utility2FooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-swgg" target="_blank">swgg</a>
+    ]
+</div>
+<!-- </div> -->
+</div>
+<script>
+/*jslint
+    bitwise: true,
+    browser: true,
+    maxerr: 4,
+    maxlen: 100,
+    node: true,
+    nomen: true,
+    regexp: true,
+    stupid: true
+*/
+"use strict";
+document.querySelector(".swggUiContainer > .thead > .td2").value =
+    ((/\bmodeSwaggerJsonUrl=([^&]+)/g).exec(location.search) || {})[1] ||
+        "assets.swgg.swagger.json";
+</script>
+<script src="assets.utility2.rollup.js"></script>
+<script>
+/*jslint browser: true*/
+window.local = window.local || window.swgg;
+window.swgg.uiEventListenerDict[".onEventUiReload"]({ swggInit: true });
+</script>
+</body>
+</html>

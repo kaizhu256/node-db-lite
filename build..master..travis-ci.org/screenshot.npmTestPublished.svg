@@ -1,0 +1,479 @@
+<svg height="4798" width="720" xmlns="http://www.w3.org/2000/svg">
+<rect height="4798" fill="#555" width="720"></rect>
+<text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
+<tspan x="10" y="26"></tspan>
+
+<tspan x="10" y="42">[MODE_BUILD=npmTestPublished] - 2018-04-25T12:21:14.677Z - npm-testing /tmp/npmTestPublished/nod\</tspan>
+<tspan x="10" y="58">e_modules/db-lite</tspan>
+
+<tspan x="10" y="74"></tspan>
+
+<tspan x="10" y="90"></tspan>
+
+<tspan x="10" y="106">covering $ /home/travis/.nvm/versions/node/v10.0.0/bin/node /tmp/npmTestPublished/node_modules/d\</tspan>
+<tspan x="10" y="122">b-lite/test.js</tspan>
+
+<tspan x="10" y="138">&gt; server listening on http-port 43690</tspan>
+
+<tspan x="10" y="154">db loaded from tmp/storage.test</tspan>
+
+<tspan x="10" y="170">apidocCreate - readExample /tmp/npmTestPublished/node_modules/db-lite/package.json</tspan>
+
+<tspan x="10" y="186">apidocCreate - readExample /tmp/npmTestPublished/node_modules/db-lite/lib.db.js</tspan>
+
+<tspan x="10" y="202">apidocCreate - readExample /tmp/npmTestPublished/node_modules/db-lite/LICENSE</tspan>
+
+<tspan x="10" y="218">apidocCreate - readExample /tmp/npmTestPublished/node_modules/db-lite/package.json</tspan>
+
+<tspan x="10" y="234">apidocCreate - readExample /tmp/npmTestPublished/node_modules/db-lite/package-lock.json</tspan>
+
+<tspan x="10" y="250">apidocCreate - readExample /tmp/npmTestPublished/node_modules/db-lite/README.md</tspan>
+
+<tspan x="10" y="266">apidocCreate - readExample /tmp/npmTestPublished/node_modules/db-lite/test.js</tspan>
+
+<tspan x="10" y="282">apidocCreate - requiring /tmp/npmTestPublished/node_modules/db-lite ...</tspan>
+
+<tspan x="10" y="298">apidocCreate - ... required /tmp/npmTestPublished/node_modules/db-lite</tspan>
+
+<tspan x="10" y="314">created apidoc file /home/travis/build/kaizhu256/node-db-lite/tmp/build/apidoc.html</tspan>
+
+<tspan x="10" y="330"></tspan>
+
+<tspan x="10" y="346">[node test-case 1 of 17 passed] - testCase_buildApidoc_default</tspan>
+
+<tspan x="10" y="362">[node test-case 2 of 17 passed] - testCase_buildCustomOrg_default</tspan>
+
+<tspan x="10" y="378">[node test-case 3 of 17 passed] - testCase_buildLib_default</tspan>
+
+<tspan x="10" y="394">[node test-case 4 of 17 passed] - testCase_buildReadme_default</tspan>
+
+<tspan x="10" y="410">[node test-case 5 of 17 passed] - testCase_buildTest_default</tspan>
+
+<tspan x="10" y="426">null</tspan>
+
+<tspan x="10" y="442"></tspan>
+
+<tspan x="10" y="458"></tspan>
+
+<tspan x="10" y="474">[node test-case 6 of 17 passed] - testCase_consoleLog_default</tspan>
+
+<tspan x="10" y="490">[node test-case 7 of 17 passed] - testCase_dbTable_crudGetManyByQuery</tspan>
+
+<tspan x="10" y="506">dropping dbTable testCase_dbTable_crudNullCase ...</tspan>
+
+<tspan x="10" y="522">[node test-case 8 of 17 passed] - testCase_dbTable_crudNullCase</tspan>
+
+<tspan x="10" y="538">[node test-case 9 of 17 passed] - testCase_dbTable_crudXxxById</tspan>
+
+<tspan x="10" y="554">dropping dbTable testCase_dbTable_crudXxxByQuery ...</tspan>
+
+<tspan x="10" y="570">[node test-case 10 of 17 passed] - testCase_dbTable_crudXxxByQuery</tspan>
+
+<tspan x="10" y="586">dropping dbTable testCase_dbTable_crudGetManyByQuery ...</tspan>
+
+<tspan x="10" y="602">dropping dbTable testCase_dbTable_crudNullCase ...</tspan>
+
+<tspan x="10" y="618">dropping dbTable testCase_dbTable_crudXxxById ...</tspan>
+
+<tspan x="10" y="634">dropping dbTable testCase_dbTable_crudXxxByQuery ...</tspan>
+
+<tspan x="10" y="650">dropping dbTable testCase_dbTable_persistence ...</tspan>
+
+<tspan x="10" y="666">[node test-case 11 of 17 passed] - testCase_dbTable_sizeLimit</tspan>
+
+<tspan x="10" y="682">[node test-case 12 of 17 passed] - testCase_nop_default</tspan>
+
+<tspan x="10" y="698">[node test-case 13 of 17 passed] - testCase_sortCompare_default</tspan>
+
+<tspan x="10" y="714"></tspan>
+
+<tspan x="10" y="730">browserTest - created electron entry-page /tmp/npmTestPublished/node_modules/db-lite/tmp/electro\</tspan>
+<tspan x="10" y="746">n.162fcc02e600.8ac9cff82c978.html</tspan>
+
+<tspan x="10" y="762"></tspan>
+
+<tspan x="10" y="778">(node:5315) ExperimentalWarning: The fs/promises API is experimental</tspan>
+
+<tspan x="10" y="794">(node:5315) ExperimentalWarning: The http2 module is an experimental API.</tspan>
+
+<tspan x="10" y="810">(node:5315) [DEP0025] DeprecationWarning: sys is deprecated. Use util instead.</tspan>
+
+<tspan x="10" y="826">(node:5315) [DEP0084] DeprecationWarning: Requiring Node.js-bundled 'v8/tools/splaytree' module \</tspan>
+<tspan x="10" y="842">is deprecated. Please install the necessary module locally.</tspan>
+
+<tspan x="10" y="858">(node:5315) [DEP0084] DeprecationWarning: Requiring Node.js-bundled 'v8/tools/codemap' module is\</tspan>
+<tspan x="10" y="874"> deprecated. Please install the necessary module locally.</tspan>
+
+<tspan x="10" y="890">(node:5315) [DEP0084] DeprecationWarning: Requiring Node.js-bundled 'v8/tools/consarray' module \</tspan>
+<tspan x="10" y="906">is deprecated. Please install the necessary module locally.</tspan>
+
+<tspan x="10" y="922">(node:5315) [DEP0084] DeprecationWarning: Requiring Node.js-bundled 'v8/tools/csvparser' module \</tspan>
+<tspan x="10" y="938">is deprecated. Please install the necessary module locally.</tspan>
+
+<tspan x="10" y="954">(node:5315) [DEP0084] DeprecationWarning: Requiring Node.js-bundled 'v8/tools/profile' module is\</tspan>
+<tspan x="10" y="970"> deprecated. Please install the necessary module locally.</tspan>
+
+<tspan x="10" y="986">(node:5315) [DEP0084] DeprecationWarning: Requiring Node.js-bundled 'v8/tools/profile_view' modu\</tspan>
+<tspan x="10" y="1002">le is deprecated. Please install the necessary module locally.</tspan>
+
+<tspan x="10" y="1018">(node:5315) [DEP0084] DeprecationWarning: Requiring Node.js-bundled 'v8/tools/logreader' module \</tspan>
+<tspan x="10" y="1034">is deprecated. Please install the necessary module locally.</tspan>
+
+<tspan x="10" y="1050">(node:5315) [DEP0084] DeprecationWarning: Requiring Node.js-bundled 'v8/tools/arguments' module \</tspan>
+<tspan x="10" y="1066">is deprecated. Please install the necessary module locally.</tspan>
+
+<tspan x="10" y="1082">(node:5315) [DEP0084] DeprecationWarning: Requiring Node.js-bundled 'v8/tools/tickprocessor' mod\</tspan>
+<tspan x="10" y="1098">ule is deprecated. Please install the necessary module locally.</tspan>
+
+<tspan x="10" y="1114">(node:5315) [DEP0084] DeprecationWarning: Requiring Node.js-bundled 'v8/tools/SourceMap' module \</tspan>
+<tspan x="10" y="1130">is deprecated. Please install the necessary module locally.</tspan>
+
+<tspan x="10" y="1146">(node:5315) [DEP0084] DeprecationWarning: Requiring Node.js-bundled 'v8/tools/tickprocessor-driv\</tspan>
+<tspan x="10" y="1162">er' module is deprecated. Please install the necessary module locally.</tspan>
+
+<tspan x="10" y="1178">(node:5315) [DEP0084] DeprecationWarning: Requiring Node.js-bundled 'node-inspect/lib/_inspect' \</tspan>
+<tspan x="10" y="1194">module is deprecated. Please install the necessary module locally.</tspan>
+
+<tspan x="10" y="1210">(node:5315) [DEP0084] DeprecationWarning: Requiring Node.js-bundled 'node-inspect/lib/internal/i\</tspan>
+<tspan x="10" y="1226">nspect_client' module is deprecated. Please install the necessary module locally.</tspan>
+
+<tspan x="10" y="1242">(node:5315) [DEP0084] DeprecationWarning: Requiring Node.js-bundled 'node-inspect/lib/internal/i\</tspan>
+<tspan x="10" y="1258">nspect_repl' module is deprecated. Please install the necessary module locally.</tspan>
+
+<tspan x="10" y="1274">[node test-case 14 of 17 passed] - testCase_storageXxx_misc</tspan>
+
+<tspan x="10" y="1290">Xlib:  extension "RANDR" missing on display ":99.0".</tspan>
+
+<tspan x="10" y="1306">&gt; server listening on http-port 36822</tspan>
+
+<tspan x="10" y="1322">db loaded from tmp/storage.test</tspan>
+
+<tspan x="10" y="1338">Xlib:  extension "RANDR" missing on display ":99.0".</tspan>
+
+<tspan x="10" y="1354">[node test-case 15 of 17 passed] - testCase_dbTable_persistence</tspan>
+
+<tspan x="10" y="1370">[5388:0425/122117.038959:WARNING:audio_manager.cc(295)] Multiple instances of AudioManager detec\</tspan>
+<tspan x="10" y="1386">ted</tspan>
+
+<tspan x="10" y="1402">[5388:0425/122117.039025:WARNING:audio_manager.cc(254)] Multiple instances of AudioManager detec\</tspan>
+<tspan x="10" y="1418">ted</tspan>
+
+<tspan x="10" y="1434">[5425:0425/122117.097321:ERROR:sandbox_linux.cc(343)] InitializeSandbox() called with multiple t\</tspan>
+<tspan x="10" y="1450">hreads in process gpu-process. </tspan>
+
+<tspan x="10" y="1466">[5388:0425/122117.182765:ERROR:browser_gpu_channel_host_factory.cc(125)] Failed to create channe\</tspan>
+<tspan x="10" y="1482">l.</tspan>
+
+<tspan x="10" y="1498">[5388:0425/122117.183025:ERROR:browser_gpu_channel_host_factory.cc(125)] Failed to create channe\</tspan>
+<tspan x="10" y="1514">l.</tspan>
+
+<tspan x="10" y="1530">[5388:0425/122117.183276:ERROR:browser_gpu_channel_host_factory.cc(125)] Failed to create channe\</tspan>
+<tspan x="10" y="1546">l.</tspan>
+
+<tspan x="10" y="1562">[5388:0425/122117.184026:ERROR:browser_gpu_channel_host_factory.cc(125)] Failed to create channe\</tspan>
+<tspan x="10" y="1578">l.</tspan>
+
+<tspan x="10" y="1594">[5388:0425/122117.184164:ERROR:browser_gpu_channel_host_factory.cc(125)] Failed to create channe\</tspan>
+<tspan x="10" y="1610">l.</tspan>
+
+<tspan x="10" y="1626"></tspan>
+
+<tspan x="10" y="1642">browserTest - opened http://127.0.0.1:43690?modeTest=1</tspan>
+
+<tspan x="10" y="1658"></tspan>
+
+<tspan x="10" y="1674">[5388:0425/122117.905690:WARNING:quota_manager.cc(1590)] No storage quota provided in QuotaSetti\</tspan>
+<tspan x="10" y="1690">ngs.</tspan>
+
+<tspan x="10" y="1706">[5388:0425/122117.931958:INFO:CONSOLE(238)] "[browser test-case 1 of 17 passed] - testCase_build\</tspan>
+<tspan x="10" y="1722">Apidoc_default", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02\</tspan>
+<tspan x="10" y="1738">e600.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="1754">[5388:0425/122117.943207:INFO:CONSOLE(238)] "[browser test-case 2 of 17 passed] - testCase_build\</tspan>
+<tspan x="10" y="1770">App_default", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e60\</tspan>
+<tspan x="10" y="1786">0.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="1802">[5388:0425/122117.945804:INFO:CONSOLE(238)] "[browser test-case 3 of 17 passed] - testCase_build\</tspan>
+<tspan x="10" y="1818">CustomOrg_default", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fc\</tspan>
+<tspan x="10" y="1834">c02e600.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="1850">[5388:0425/122117.948172:INFO:CONSOLE(238)] "[browser test-case 4 of 17 passed] - testCase_build\</tspan>
+<tspan x="10" y="1866">Lib_default", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e60\</tspan>
+<tspan x="10" y="1882">0.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="1898">[5388:0425/122117.950786:INFO:CONSOLE(238)] "[browser test-case 5 of 17 passed] - testCase_build\</tspan>
+<tspan x="10" y="1914">Readme_default", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02\</tspan>
+<tspan x="10" y="1930">e600.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="1946">[5388:0425/122117.953252:INFO:CONSOLE(238)] "[browser test-case 6 of 17 passed] - testCase_build\</tspan>
+<tspan x="10" y="1962">Test_default", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e6\</tspan>
+<tspan x="10" y="1978">00.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="1994">[5388:0425/122117.955749:INFO:CONSOLE(238)] "null", source: file:///tmp/npmTestPublished/node_mo\</tspan>
+<tspan x="10" y="2010">dules/db-lite/tmp/electron.162fcc02e600.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="2026">[5388:0425/122117.961077:INFO:CONSOLE(238)] "</tspan>
+
+<tspan x="10" y="2042">", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff82\</tspan>
+<tspan x="10" y="2058">c978.html (238)</tspan>
+
+<tspan x="10" y="2074">[5388:0425/122117.961112:INFO:CONSOLE(238)] "[browser test-case 7 of 17 passed] - testCase_conso\</tspan>
+<tspan x="10" y="2090">leLog_default", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e\</tspan>
+<tspan x="10" y="2106">600.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="2122">[5388:0425/122118.013259:INFO:CONSOLE(238)] "[browser test-case 8 of 17 passed] - testCase_dbTab\</tspan>
+<tspan x="10" y="2138">le_crudGetManyByQuery", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.1\</tspan>
+<tspan x="10" y="2154">62fcc02e600.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="2170">[5388:0425/122118.017754:INFO:CONSOLE(238)] "dropping dbTable testCase_dbTable_crudNullCase ..."\</tspan>
+<tspan x="10" y="2186">, source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff82c\</tspan>
+<tspan x="10" y="2202">978.html (238)</tspan>
+
+<tspan x="10" y="2218">[5388:0425/122118.023889:INFO:CONSOLE(238)] "[browser test-case 9 of 17 passed] - testCase_dbTab\</tspan>
+<tspan x="10" y="2234">le_crudNullCase", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc0\</tspan>
+<tspan x="10" y="2250">2e600.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="2266">[5388:0425/122118.037945:INFO:CONSOLE(238)] "[browser test-case 10 of 17 passed] - testCase_dbTa\</tspan>
+<tspan x="10" y="2282">ble_crudXxxById", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc0\</tspan>
+<tspan x="10" y="2298">2e600.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="2314">[5388:0425/122118.048304:INFO:CONSOLE(238)] "dropping dbTable testCase_dbTable_crudXxxByQuery ..\</tspan>
+<tspan x="10" y="2330">.", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff8\</tspan>
+<tspan x="10" y="2346">2c978.html (238)</tspan>
+
+<tspan x="10" y="2362">[5388:0425/122118.050933:INFO:CONSOLE(238)] "[browser test-case 11 of 17 passed] - testCase_dbTa\</tspan>
+<tspan x="10" y="2378">ble_crudXxxByQuery", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162f\</tspan>
+<tspan x="10" y="2394">cc02e600.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="2410">[5388:0425/122118.058057:INFO:CONSOLE(238)] "dropping dbTable dbTable1 ...", source: file:///tmp\</tspan>
+<tspan x="10" y="2426">/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="2442">[5388:0425/122118.060275:INFO:CONSOLE(238)] "dropping dbTable testCase_dbTable_crudGetManyByQuer\</tspan>
+<tspan x="10" y="2458">y ...", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9\</tspan>
+<tspan x="10" y="2474">cff82c978.html (238)</tspan>
+
+<tspan x="10" y="2490">[5388:0425/122118.062709:INFO:CONSOLE(238)] "dropping dbTable testCase_dbTable_crudNullCase ..."\</tspan>
+<tspan x="10" y="2506">, source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff82c\</tspan>
+<tspan x="10" y="2522">978.html (238)</tspan>
+
+<tspan x="10" y="2538">[5388:0425/122118.064924:INFO:CONSOLE(238)] "dropping dbTable testCase_dbTable_crudXxxById ...",\</tspan>
+<tspan x="10" y="2554"> source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff82c9\</tspan>
+<tspan x="10" y="2570">78.html (238)</tspan>
+
+<tspan x="10" y="2586">[5388:0425/122118.070590:INFO:CONSOLE(238)] "dropping dbTable testCase_dbTable_crudXxxByQuery ..\</tspan>
+<tspan x="10" y="2602">.", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff8\</tspan>
+<tspan x="10" y="2618">2c978.html (238)</tspan>
+
+<tspan x="10" y="2634">[5388:0425/122118.074373:INFO:CONSOLE(238)] "dropping dbTable testCase_dbTable_persistence ...",\</tspan>
+<tspan x="10" y="2650"> source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff82c9\</tspan>
+<tspan x="10" y="2666">78.html (238)</tspan>
+
+<tspan x="10" y="2682">[5388:0425/122118.078346:INFO:CONSOLE(238)] "[browser test-case 12 of 17 passed] - testCase_dbTa\</tspan>
+<tspan x="10" y="2698">ble_sizeLimit", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e\</tspan>
+<tspan x="10" y="2714">600.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="2730">[5388:0425/122118.081075:INFO:CONSOLE(238)] "[browser test-case 13 of 17 passed] - testCase_nop_\</tspan>
+<tspan x="10" y="2746">default", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8a\</tspan>
+<tspan x="10" y="2762">c9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="2778">[5388:0425/122118.084819:INFO:CONSOLE(238)] "[browser test-case 14 of 17 passed] - testCase_sort\</tspan>
+<tspan x="10" y="2794">Compare_default", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc0\</tspan>
+<tspan x="10" y="2810">2e600.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="2826">[5388:0425/122118.092555:INFO:CONSOLE(238)] "validateDocumentStyleUnmatched 0. 0 .colorError {",\</tspan>
+<tspan x="10" y="2842"> source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff82c9\</tspan>
+<tspan x="10" y="2858">78.html (238)</tspan>
+
+<tspan x="10" y="2874">[5388:0425/122118.094717:INFO:CONSOLE(238)] "validateDocumentStyleUnmatched 1. 0 .colorError {",\</tspan>
+<tspan x="10" y="2890"> source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff82c9\</tspan>
+<tspan x="10" y="2906">78.html (238)</tspan>
+
+<tspan x="10" y="2922">[5388:0425/122118.097106:INFO:CONSOLE(238)] "validateDocumentStyleUnmatched 2. 0 .testReportDiv \</tspan>
+<tspan x="10" y="2938">.testFailed {", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e\</tspan>
+<tspan x="10" y="2954">600.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="2970">[5388:0425/122118.099577:INFO:CONSOLE(238)] "validateDocumentStyleUnmatched 3. 0 .testReportDiv \</tspan>
+<tspan x="10" y="2986">img {", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9\</tspan>
+<tspan x="10" y="3002">cff82c978.html (238)</tspan>
+
+<tspan x="10" y="3018">[5388:0425/122118.102064:INFO:CONSOLE(238)] "validateDocumentStyleUnmatched 4. 1 .testReportDiv \</tspan>
+<tspan x="10" y="3034">.displayNone {", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02\</tspan>
+<tspan x="10" y="3050">e600.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="3066">[5388:0425/122118.104568:INFO:CONSOLE(238)] "validateDocumentStyleUnmatched 5. 1 .testReportDiv \</tspan>
+<tspan x="10" y="3082">.footer {", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.\</tspan>
+<tspan x="10" y="3098">8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="3114">[5388:0425/122118.107021:INFO:CONSOLE(238)] "validateDocumentStyleUnmatched 6. 1 .testReportDiv \</tspan>
+<tspan x="10" y="3130">.summary {", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600\</tspan>
+<tspan x="10" y="3146">.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="3162">[5388:0425/122118.109684:INFO:CONSOLE(238)] "validateDocumentStyleUnmatched 7. 1 .testReportDiv \</tspan>
+<tspan x="10" y="3178">pre {", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9\</tspan>
+<tspan x="10" y="3194">cff82c978.html (238)</tspan>
+
+<tspan x="10" y="3210">[5388:0425/122118.116348:INFO:CONSOLE(238)] "validateDocumentStyleUnmatched 8. 1 .testReportDiv \</tspan>
+<tspan x="10" y="3226">{", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff8\</tspan>
+<tspan x="10" y="3242">2c978.html (238)</tspan>
+
+<tspan x="10" y="3258">[5388:0425/122118.118141:INFO:CONSOLE(238)] "validateDocumentStyleUnmatched 9. 1 .uiAnimateShake\</tspan>
+<tspan x="10" y="3274"> {", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff\</tspan>
+<tspan x="10" y="3290">82c978.html (238)</tspan>
+
+<tspan x="10" y="3306">[5388:0425/122118.119348:INFO:CONSOLE(238)] "validateDocumentStyleUnmatched 10. 1 .uiAnimateShak\</tspan>
+<tspan x="10" y="3322">e {", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cf\</tspan>
+<tspan x="10" y="3338">f82c978.html (238)</tspan>
+
+<tspan x="10" y="3354">[5388:0425/122118.121732:INFO:CONSOLE(238)] "validateDocumentStyleUnmatched 11. 1 body &gt; pre,", \</tspan>
+<tspan x="10" y="3370">source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff82c97\</tspan>
+<tspan x="10" y="3386">8.html (238)</tspan>
+
+<tspan x="10" y="3402">[5388:0425/122118.124423:INFO:CONSOLE(238)] "validateDocumentStyleUnmatched 12. 1 body &gt; pre,", \</tspan>
+<tspan x="10" y="3418">source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff82c97\</tspan>
+<tspan x="10" y="3434">8.html (238)</tspan>
+
+<tspan x="10" y="3450">[5388:0425/122118.127987:INFO:CONSOLE(238)] "validateDocumentStyleUnmatched 13. 1 code,", source\</tspan>
+<tspan x="10" y="3466">: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff82c978.html\</tspan>
+<tspan x="10" y="3482"> (238)</tspan>
+
+<tspan x="10" y="3498">[5388:0425/122118.130605:INFO:CONSOLE(238)] "validateDocumentStyleUnmatched 14. 1 code,", source\</tspan>
+<tspan x="10" y="3514">: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff82c978.html\</tspan>
+<tspan x="10" y="3530"> (238)</tspan>
+
+<tspan x="10" y="3546">[5388:0425/122118.133496:INFO:CONSOLE(238)] "[browser test-case 15 of 17 passed] - testCase_webp\</tspan>
+<tspan x="10" y="3562">age_default", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e60\</tspan>
+<tspan x="10" y="3578">0.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="3594">[5388:0425/122118.152512:INFO:CONSOLE(238)] "db loaded from tmp/storage.undefined", source: file\</tspan>
+<tspan x="10" y="3610">:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="3626">[5388:0425/122118.181919:INFO:CONSOLE(238)] "[browser test-case 16 of 17 passed] - testCase_stor\</tspan>
+<tspan x="10" y="3642">ageXxx_misc", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e60\</tspan>
+<tspan x="10" y="3658">0.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="3674">[5388:0425/122118.195695:INFO:CONSOLE(238)] "[object Object],[object Object],[object Object]", s\</tspan>
+<tspan x="10" y="3690">ource: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff82c978\</tspan>
+<tspan x="10" y="3706">.html (238)</tspan>
+
+<tspan x="10" y="3722">[5388:0425/122118.208389:INFO:CONSOLE(238)] "number of rows: 3", source: file:///tmp/npmTestPubl\</tspan>
+<tspan x="10" y="3738">ished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="3754">[5388:0425/122119.551347:INFO:CONSOLE(238)] "[browser test-case 17 of 17 passed] - testCase_dbTa\</tspan>
+<tspan x="10" y="3770">ble_persistence", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc0\</tspan>
+<tspan x="10" y="3786">2e600.8ac9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="3802">[5388:0425/122120.560561:INFO:CONSOLE(238)] "----------|-----------|-----------|-----------|----\</tspan>
+<tspan x="10" y="3818">-------|</tspan>
+
+<tspan x="10" y="3834">File      |   % Stmts |% Branches |   % Funcs |   % Lines |</tspan>
+
+<tspan x="10" y="3850">----------|-----------|-----------|-----------|-----------|</tspan>
+
+<tspan x="10" y="3866">----------|-----------|-----------|-----------|-----------|</tspan>
+
+<tspan x="10" y="3882">All files |       100 |       100 |       100 |       100 |</tspan>
+
+<tspan x="10" y="3898">----------|-----------|-----------|-----------|-----------|</tspan>
+
+<tspan x="10" y="3914">", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac9cff82\</tspan>
+<tspan x="10" y="3930">c978.html (238)</tspan>
+
+<tspan x="10" y="3946">[5388:0425/122120.571016:INFO:CONSOLE(238)] "created coverage file /tmp/build/coverage.html/inde\</tspan>
+<tspan x="10" y="3962">x.html", source: file:///tmp/npmTestPublished/node_modules/db-lite/tmp/electron.162fcc02e600.8ac\</tspan>
+<tspan x="10" y="3978">9cff82c978.html (238)</tspan>
+
+<tspan x="10" y="3994">[node test-case 16 of 17 passed] - testCase_buildApp_default</tspan>
+
+<tspan x="10" y="4010"></tspan>
+
+<tspan x="10" y="4026">browserTest - created screenshot file /home/travis/build/kaizhu256/node-db-lite/tmp/build/screen\</tspan>
+<tspan x="10" y="4042">shot.npmTestPublished.browser.%2F.png</tspan>
+
+<tspan x="10" y="4058"></tspan>
+
+<tspan x="10" y="4074">browserTest - created screenshot file /home/travis/build/kaizhu256/node-db-lite/tmp/build/screen\</tspan>
+<tspan x="10" y="4090">shot.npmTestPublished.browser.%2F.html</tspan>
+
+<tspan x="10" y="4106"></tspan>
+
+<tspan x="10" y="4122">browserTest - exit-code 0 - http://127.0.0.1:43690?modeTest=1</tspan>
+
+<tspan x="10" y="4138"></tspan>
+
+<tspan x="10" y="4154"></tspan>
+
+<tspan x="10" y="4170">browserTest - merged coverage from file /tmp/npmTestPublished/node_modules/db-lite/tmp/coverage.\</tspan>
+<tspan x="10" y="4186">npmTestPublished.browser.%2F.json</tspan>
+
+<tspan x="10" y="4202"></tspan>
+
+<tspan x="10" y="4218"></tspan>
+
+<tspan x="10" y="4234">browserTest - merged test-report from file /tmp/npmTestPublished/node_modules/db-lite/tmp/test-r\</tspan>
+<tspan x="10" y="4250">eport.npmTestPublished.browser.%2F.json</tspan>
+
+<tspan x="10" y="4266"></tspan>
+
+<tspan x="10" y="4282">[node test-case 17 of 17 passed] - testCase_webpage_default</tspan>
+
+<tspan x="10" y="4298">-----------------|-----------|-----------|-----------|-----------|</tspan>
+
+<tspan x="10" y="4314">File             |   % Stmts |% Branches |   % Funcs |   % Lines |</tspan>
+
+<tspan x="10" y="4330">-----------------|-----------|-----------|-----------|-----------|</tspan>
+
+<tspan x="10" y="4346">   db-lite/      |       100 |       100 |       100 |       100 |</tspan>
+
+<tspan x="10" y="4362">      example.js |       100 |       100 |       100 |       100 |</tspan>
+
+<tspan x="10" y="4378">      lib.db.js  |       100 |       100 |       100 |       100 |</tspan>
+
+<tspan x="10" y="4394">      test.js    |       100 |       100 |       100 |       100 |</tspan>
+
+<tspan x="10" y="4410">-----------------|-----------|-----------|-----------|-----------|</tspan>
+
+<tspan x="10" y="4426">All files        |       100 |       100 |       100 |       100 |</tspan>
+
+<tspan x="10" y="4442">-----------------|-----------|-----------|-----------|-----------|</tspan>
+
+<tspan x="10" y="4458"></tspan>
+
+<tspan x="10" y="4474">created coverage file /tmp/npmTestPublished/node_modules/db-lite/tmp/build/coverage.html/index.h\</tspan>
+<tspan x="10" y="4490">tml</tspan>
+
+<tspan x="10" y="4506"></tspan>
+
+<tspan x="10" y="4522">-------------------------------------------------------</tspan>
+
+<tspan x="10" y="4538">| test-report - npmTestPublished - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537\</tspan>
+<tspan x="10" y="4554">.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Electron/1.7.13 Safari/537.36 - 2018-04-25T12:21:17\</tspan>
+<tspan x="10" y="4570">.828Z</tspan>
+
+<tspan x="10" y="4586">|    1631 ms            0 failed       17 passed      |</tspan>
+
+<tspan x="10" y="4602">-------------------------------------------------------</tspan>
+
+<tspan x="10" y="4618">| test-report - npmTestPublished - node - linux v10.0.0 - 2018-04-25T12:21:14.991Z</tspan>
+
+<tspan x="10" y="4634">|   17115 ms            0 failed       17 passed      |</tspan>
+
+<tspan x="10" y="4650">-------------------------------------------------------</tspan>
+
+<tspan x="10" y="4666"></tspan>
+
+<tspan x="10" y="4682">created test-report file /home/travis/build/kaizhu256/node-db-lite/tmp/build/test-report.html</tspan>
+
+<tspan x="10" y="4698"></tspan>
+
+<tspan x="10" y="4714"></tspan>
+
+<tspan x="10" y="4730">npmTestPublished - 0 failed tests</tspan>
+
+<tspan x="10" y="4746"></tspan>
+
+<tspan x="10" y="4762"></tspan>
+
+<tspan x="10" y="4778">[MODE_BUILD=npmTestPublished] - 2018-04-25T12:21:34.110Z - EXIT_CODE - 0</tspan>
+
+</text>
+</svg>

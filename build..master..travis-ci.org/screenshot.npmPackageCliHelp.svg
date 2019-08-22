@@ -1,0 +1,54 @@
+<svg height="430" width="720" xmlns="http://www.w3.org/2000/svg">
+<rect height="430" fill="#555" width="720"></rect>
+<text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
+<tspan x="10" y="26">db-lite v2018.4.23</tspan>
+
+<tspan x="10" y="42">usage:   /home/travis/build/kaizhu256/node-db-lite/lib.db.js [command] [args]</tspan>
+
+<tspan x="10" y="58">example: /home/travis/build/kaizhu256/node-db-lite/lib.db.js --eval    "console.log('hello world\</tspan>
+<tspan x="10" y="74">')"</tspan>
+
+<tspan x="10" y="90"></tspan>
+
+<tspan x="10" y="106">[command]                         [args]                 [description]</tspan>
+
+<tspan x="10" y="122">--eval -------------------------- code ----------------- eval code</tspan>
+
+<tspan x="10" y="138">-e ------------------------------ code ----------------- eval code</tspan>
+
+<tspan x="10" y="154">--help -------------------------- [none] --------------- print help</tspan>
+
+<tspan x="10" y="170">-h ------------------------------ [none] --------------- print help</tspan>
+
+<tspan x="10" y="186">[none] -------------------------- [none] --------------- print help</tspan>
+
+<tspan x="10" y="202">help ---------------------------- [none] --------------- print help</tspan>
+
+<tspan x="10" y="218">--interactive ------------------- [none] --------------- start interactive-mode</tspan>
+
+<tspan x="10" y="234">-i ------------------------------ [none] --------------- start interactive-mode</tspan>
+
+<tspan x="10" y="250">--version ----------------------- [none] --------------- print version</tspan>
+
+<tspan x="10" y="266">-v ------------------------------ [none] --------------- print version</tspan>
+
+<tspan x="10" y="282">dbTableCrudGetManyByQuery ------- dbTable query -------- query dbRowList from dbTable</tspan>
+
+<tspan x="10" y="298">dbTableCrudRemoveManyByQuery ---- dbTable query -------- query and remove dbRowList from dbTable</tspan>
+
+<tspan x="10" y="314">dbTableCrudSetManyById ---------- dbTable dbRowList ---- set dbRowList into dbTable</tspan>
+
+<tspan x="10" y="330">dbTableHeaderDictGet ------------ dbTable -------------- get headerDict from dbTable</tspan>
+
+<tspan x="10" y="346">dbTableHeaderDictSet ------------ dbTable -------------- set headerDict into dbTable</tspan>
+
+<tspan x="10" y="362">dbTableIdIndexCreate ------------ dbTable idIndex ------ create idIndex in dbTable</tspan>
+
+<tspan x="10" y="378">dbTableIdIndexRemove ------------ dbTable idIndex ------ remove idIndex from dbTable</tspan>
+
+<tspan x="10" y="394">dbTableList --------------------- [none] --------------- list dbTable's in db</tspan>
+
+<tspan x="10" y="410">dbTableRemove ------------------- dbTable -------------- remove dbTable from db</tspan>
+
+</text>
+</svg>

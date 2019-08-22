@@ -1,0 +1,4947 @@
+<html><head></head><body><div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    overflow-wrap: break-word;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a href="https://github.com/kaizhu256/node-db-lite">db-lite (2018.12.31)</a>
+</h1>
+<h4>this zero-dependency package will provide a persistent, in-browser database, with a working web-demo</h4>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.db-lite">module db-lite</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable">
+            function <span class="apidocSignatureSpan">db-lite.</span>_DbTable
+            <span class="apidocSignatureSpan">(opt)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.assertThrow">
+            function <span class="apidocSignatureSpan">db-lite.</span>assertThrow
+            <span class="apidocSignatureSpan">(passed, message)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.cliRun">
+            function <span class="apidocSignatureSpan">db-lite.</span>cliRun
+            <span class="apidocSignatureSpan">(opt)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.dbCrudRemoveAll">
+            function <span class="apidocSignatureSpan">db-lite.</span>dbCrudRemoveAll
+            <span class="apidocSignatureSpan">(onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.dbDrop">
+            function <span class="apidocSignatureSpan">db-lite.</span>dbDrop
+            <span class="apidocSignatureSpan">(onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.dbExport">
+            function <span class="apidocSignatureSpan">db-lite.</span>dbExport
+            <span class="apidocSignatureSpan">(onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.dbImport">
+            function <span class="apidocSignatureSpan">db-lite.</span>dbImport
+            <span class="apidocSignatureSpan">(text, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.dbLoad">
+            function <span class="apidocSignatureSpan">db-lite.</span>dbLoad
+            <span class="apidocSignatureSpan">(onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.dbReset">
+            function <span class="apidocSignatureSpan">db-lite.</span>dbReset
+            <span class="apidocSignatureSpan">(dbSeedList, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.dbRowGetItem">
+            function <span class="apidocSignatureSpan">db-lite.</span>dbRowGetItem
+            <span class="apidocSignatureSpan">(dbRow, key)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.dbRowListGetManyByOperator">
+            function <span class="apidocSignatureSpan">db-lite.</span>dbRowListGetManyByOperator
+            <span class="apidocSignatureSpan">( dbRowList, fieldName, operator, bb, not )</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.dbRowListGetManyByQuery">
+            function <span class="apidocSignatureSpan">db-lite.</span>dbRowListGetManyByQuery
+            <span class="apidocSignatureSpan">(dbRowList, query, fieldName, not)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.dbRowProject">
+            function <span class="apidocSignatureSpan">db-lite.</span>dbRowProject
+            <span class="apidocSignatureSpan">(dbRow, fieldList)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.dbRowSetId">
+            function <span class="apidocSignatureSpan">db-lite.</span>dbRowSetId
+            <span class="apidocSignatureSpan">(dbRow, idIndex)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.dbSave">
+            function <span class="apidocSignatureSpan">db-lite.</span>dbSave
+            <span class="apidocSignatureSpan">(onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.dbSeed">
+            function <span class="apidocSignatureSpan">db-lite.</span>dbSeed
+            <span class="apidocSignatureSpan">(dbSeedList, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.dbTableCreateMany">
+            function <span class="apidocSignatureSpan">db-lite.</span>dbTableCreateMany
+            <span class="apidocSignatureSpan">(optionList, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.dbTableCreateOne">
+            function <span class="apidocSignatureSpan">db-lite.</span>dbTableCreateOne
+            <span class="apidocSignatureSpan">(opt, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.functionOrNop">
+            function <span class="apidocSignatureSpan">db-lite.</span>functionOrNop
+            <span class="apidocSignatureSpan">(fnc)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.identity">
+            function <span class="apidocSignatureSpan">db-lite.</span>identity
+            <span class="apidocSignatureSpan">(value)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.jsonCopy">
+            function <span class="apidocSignatureSpan">db-lite.</span>jsonCopy
+            <span class="apidocSignatureSpan">(obj)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.jsonStringifyOrdered">
+            function <span class="apidocSignatureSpan">db-lite.</span>jsonStringifyOrdered
+            <span class="apidocSignatureSpan">(obj, replacer, space)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.listShuffle">
+            function <span class="apidocSignatureSpan">db-lite.</span>listShuffle
+            <span class="apidocSignatureSpan">(list)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.nop">
+            function <span class="apidocSignatureSpan">db-lite.</span>nop
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.objectAssignDefault">
+            function <span class="apidocSignatureSpan">db-lite.</span>objectAssignDefault
+            <span class="apidocSignatureSpan">(target, source)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.objectSetOverride">
+            function <span class="apidocSignatureSpan">db-lite.</span>objectSetOverride
+            <span class="apidocSignatureSpan">(dict, overrides, depth, env)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.onErrorDefault">
+            function <span class="apidocSignatureSpan">db-lite.</span>onErrorDefault
+            <span class="apidocSignatureSpan">(err)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.onErrorWithStack">
+            function <span class="apidocSignatureSpan">db-lite.</span>onErrorWithStack
+            <span class="apidocSignatureSpan">(onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.onEventDomDb">
+            function <span class="apidocSignatureSpan">db-lite.</span>onEventDomDb
+            <span class="apidocSignatureSpan">(evt)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.onParallel">
+            function <span class="apidocSignatureSpan">db-lite.</span>onParallel
+            <span class="apidocSignatureSpan">(onError, onEach, onRetry)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.replStart">
+            function <span class="apidocSignatureSpan">db-lite.</span>replStart
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.setTimeoutOnError">
+            function <span class="apidocSignatureSpan">db-lite.</span>setTimeoutOnError
+            <span class="apidocSignatureSpan">(onError, timeout, err, data)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.sortCompare">
+            function <span class="apidocSignatureSpan">db-lite.</span>sortCompare
+            <span class="apidocSignatureSpan">(aa, bb, ii, jj)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.storageClear">
+            function <span class="apidocSignatureSpan">db-lite.</span>storageClear
+            <span class="apidocSignatureSpan">(onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.storageDefer">
+            function <span class="apidocSignatureSpan">db-lite.</span>storageDefer
+            <span class="apidocSignatureSpan">(opt, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.storageGetItem">
+            function <span class="apidocSignatureSpan">db-lite.</span>storageGetItem
+            <span class="apidocSignatureSpan">(key, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.storageInit">
+            function <span class="apidocSignatureSpan">db-lite.</span>storageInit
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.storageKeys">
+            function <span class="apidocSignatureSpan">db-lite.</span>storageKeys
+            <span class="apidocSignatureSpan">(onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.storageLength">
+            function <span class="apidocSignatureSpan">db-lite.</span>storageLength
+            <span class="apidocSignatureSpan">(onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.storageRemoveItem">
+            function <span class="apidocSignatureSpan">db-lite.</span>storageRemoveItem
+            <span class="apidocSignatureSpan">(key, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.storageSetItem">
+            function <span class="apidocSignatureSpan">db-lite.</span>storageSetItem
+            <span class="apidocSignatureSpan">(key, value, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">number <span class="apidocSignatureSpan">db-lite.</span>timeExit</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">db-lite.</span>_DbTable.prototype</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">db-lite.</span>cliDict</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">db-lite.</span>db</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">db-lite.</span>dbTableDict</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">db-lite.</span>local</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">db-lite.</span>storageDeferList</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">string <span class="apidocSignatureSpan">db-lite.</span>__dirname</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">string <span class="apidocSignatureSpan">db-lite.</span>storageDir</span>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.db-lite._DbTable">module db-lite._DbTable</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable._DbTable">
+            function <span class="apidocSignatureSpan">db-lite.</span>_DbTable
+            <span class="apidocSignatureSpan">(opt)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.db-lite._DbTable.prototype">module db-lite._DbTable.prototype</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype._cleanup">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>_cleanup
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype._crudGetManyByQuery">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>_crudGetManyByQuery
+            <span class="apidocSignatureSpan">( query, sort, skip, limit, shuffle )</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype._crudGetOneById">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>_crudGetOneById
+            <span class="apidocSignatureSpan">(idDict)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype._crudRemoveOneById">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>_crudRemoveOneById
+            <span class="apidocSignatureSpan">(idDict, circularSet)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype._crudSetOneById">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>_crudSetOneById
+            <span class="apidocSignatureSpan">(dbRow)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype._crudUpdateOneById">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>_crudUpdateOneById
+            <span class="apidocSignatureSpan">(dbRow)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.crudCountAll">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudCountAll
+            <span class="apidocSignatureSpan">(onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.crudCountManyByQuery">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudCountManyByQuery
+            <span class="apidocSignatureSpan">(query, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.crudGetManyById">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudGetManyById
+            <span class="apidocSignatureSpan">(idDictList, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.crudGetManyByQuery">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudGetManyByQuery
+            <span class="apidocSignatureSpan">(opt, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.crudGetOneById">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudGetOneById
+            <span class="apidocSignatureSpan">(idDict, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.crudGetOneByQuery">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudGetOneByQuery
+            <span class="apidocSignatureSpan">(query, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.crudGetOneByRandom">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudGetOneByRandom
+            <span class="apidocSignatureSpan">(onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.crudRemoveAll">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudRemoveAll
+            <span class="apidocSignatureSpan">(onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.crudRemoveManyById">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudRemoveManyById
+            <span class="apidocSignatureSpan">(idDictList, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.crudRemoveManyByQuery">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudRemoveManyByQuery
+            <span class="apidocSignatureSpan">(query, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.crudRemoveOneById">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudRemoveOneById
+            <span class="apidocSignatureSpan">(idDict, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.crudSetManyById">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudSetManyById
+            <span class="apidocSignatureSpan">(dbRowList, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.crudSetOneById">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudSetOneById
+            <span class="apidocSignatureSpan">(dbRow, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.crudUpdateManyById">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudUpdateManyById
+            <span class="apidocSignatureSpan">(dbRowList, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.crudUpdateManyByQuery">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudUpdateManyByQuery
+            <span class="apidocSignatureSpan">( query, dbRow, onError )</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.crudUpdateOneById">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudUpdateOneById
+            <span class="apidocSignatureSpan">(dbRow, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.drop">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>drop
+            <span class="apidocSignatureSpan">(onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.export">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>export
+            <span class="apidocSignatureSpan">(onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.idIndexCreate">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>idIndexCreate
+            <span class="apidocSignatureSpan">(opt, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.idIndexRemove">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>idIndexRemove
+            <span class="apidocSignatureSpan">(opt, onError)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite._DbTable.prototype.save">
+            function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>save
+            <span class="apidocSignatureSpan">(onError)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.db-lite.cliDict">module db-lite.cliDict</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.cliDict.dbTableCrudGetManyByQuery">
+            function <span class="apidocSignatureSpan">db-lite.cliDict.</span>dbTableCrudGetManyByQuery
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.cliDict.dbTableCrudRemoveManyByQuery">
+            function <span class="apidocSignatureSpan">db-lite.cliDict.</span>dbTableCrudRemoveManyByQuery
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.cliDict.dbTableCrudSetManyById">
+            function <span class="apidocSignatureSpan">db-lite.cliDict.</span>dbTableCrudSetManyById
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.cliDict.dbTableHeaderDictGet">
+            function <span class="apidocSignatureSpan">db-lite.cliDict.</span>dbTableHeaderDictGet
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.cliDict.dbTableHeaderDictSet">
+            function <span class="apidocSignatureSpan">db-lite.cliDict.</span>dbTableHeaderDictSet
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.cliDict.dbTableIdIndexCreate">
+            function <span class="apidocSignatureSpan">db-lite.cliDict.</span>dbTableIdIndexCreate
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.cliDict.dbTableIdIndexRemove">
+            function <span class="apidocSignatureSpan">db-lite.cliDict.</span>dbTableIdIndexRemove
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.cliDict.dbTableList">
+            function <span class="apidocSignatureSpan">db-lite.cliDict.</span>dbTableList
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.elem.db-lite.cliDict.dbTableRemove">
+            function <span class="apidocSignatureSpan">db-lite.cliDict.</span>dbTableRemove
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.db-lite" id="apidoc.module.db-lite">module db-lite</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable" id="apidoc.elem.db-lite._DbTable">
+        function <span class="apidocSignatureSpan">db-lite.</span>_DbTable
+        <span class="apidocSignatureSpan">(opt)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">_DbTable = function (opt) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will create a dbTable
+ */
+</span>    this.name = String(opt.name);
+    // register dbTable in dbTableDict
+    local.dbTableDict[this.name] = this;
+    this.dbRowList = [];
+    this.isDirty = null;
+    this.idIndexList = [
+        {
+            isInteger: false,
+            name: "_id",
+            dict: {}
+        }
+    ];
+    this.onSaveList = [];
+    this.sizeLimit = opt.sizeLimit || 0;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.assertThrow" id="apidoc.elem.db-lite.assertThrow">
+        function <span class="apidocSignatureSpan">db-lite.</span>assertThrow
+        <span class="apidocSignatureSpan">(passed, message)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">assertThrow = function (passed, message) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will throw err.&lt;message&gt; if &lt;passed&gt; is falsy
+ */
+</span>    var err;
+    if (passed) {
+        return;
+    }
+    err = (
+        // ternary-operator
+        (
+            message
+            &amp;&amp; typeof message.message === "string"
+            &amp;&amp; typeof message.stack === "string"
+        )
+        // if message is errObj, then leave as is
+        ? message
+        : new Error(
+            typeof message === "string"
+            // if message is a string, then leave as is
+            ? message
+            // else JSON.stringify message
+            : JSON.stringify(message, null, 4)
+        )
+    );
+    throw err;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+        argList: (commandList[ii][1] || "").trim(),
+        command: [
+            key
+        ],
+        description: commandList[ii][2]
+    };
+} catch (ignore) {
+    local.<span class="apidocCodeKeywordSpan">assertThrow</span>(null, new Error(
+        "cliRun - cannot parse comment in COMMAND "
+        + key
+        + ":\nnew RegExp("
+        + JSON.stringify(opt.rgxComment.source)
+        + ").exec(" + JSON.stringify(text).replace((
+            /\\\\/g
+        ), "\u0000").replace((
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.cliRun" id="apidoc.elem.db-lite.cliRun">
+        function <span class="apidocSignatureSpan">db-lite.</span>cliRun
+        <span class="apidocSignatureSpan">(opt)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">cliRun = function (opt) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will run the cli with given &lt;opt&gt;
+ */
+</span>    local.cliDict._eval = local.cliDict._eval || function () {
+    /*
+     * &lt;code&gt;
+     * will eval &lt;code&gt;
+     */
+        globalThis.local = local;
+        local.vm.runInThisContext(process.argv[3]);
+    };
+    local.cliDict["--eval"] = local.cliDict["--eval"] || local.cliDict._eval;
+    local.cliDict["-e"] = local.cliDict["-e"] || local.cliDict._eval;
+    local.cliDict._help = local.cliDict._help || function () {
+    /*
+     *
+     * will print help
+     */
+        var commandList;
+        var file;
+        var packageJson;
+        var text;
+        var textDict;
+        commandList = [
+            {
+                argList: "&lt;arg2&gt;  ...",
+                description: "usage:",
+                command: [
+                    "&lt;arg1&gt;"
+                ]
+            }, {
+                argList: "'console.log(\"hello world\")'",
+                description: "example:",
+                command: [
+                    "--eval"
+                ]
+            }
+        ];
+        file = __filename.replace((
+            /.*\//
+        ), "");
+        opt = Object.assign({}, opt);
+        packageJson = require("./package.json");
+        // validate comment
+        opt.rgxComment = opt.rgxComment || (
+            /\)\u0020\{\n(?:|\u0020{4})\/\*\n(?:\u0020|\u0020{5})\*((?:\u0020&lt;[^&gt;]*?&gt;|\u0020\.\.\.)*?)\n(?:\u0020|\u0020{5})\*\u0020
+(will\u0020.*?\S)\n(?:\u0020|\u0020{5})\*\/\n(?:\u0020{4}|\u0020{8})\S/
+        );
+        textDict = {};
+        Object.keys(local.cliDict).sort().forEach(function (key, ii) {
+            if (key[0] === "_" &amp;&amp; key !== "_default") {
+                return;
+            }
+            text = String(local.cliDict[key]);
+            if (key === "_default") {
+                key = "";
+            }
+            textDict[text] = textDict[text] || (ii + 2);
+            ii = textDict[text];
+            if (commandList[ii]) {
+                commandList[ii].command.push(key);
+                return;
+            }
+            try {
+                commandList[ii] = opt.rgxComment.exec(text);
+                commandList[ii] = {
+                    argList: (commandList[ii][1] || "").trim(),
+                    command: [
+                        key
+                    ],
+                    description: commandList[ii][2]
+                };
+            } catch (ignore) {
+                local.assertThrow(null, new Error(
+                    "cliRun - cannot parse comment in COMMAND "
+                    + key
+                    + ":\nnew RegExp("
+                    + JSON.stringify(opt.rgxComment.source)
+                    + ").exec(" + JSON.stringify(text).replace((
+                        /\\\\/g
+                    ), "\u0000").replace((
+                        /\\n/g
+                    ), "\\n\\\n").replace((
+                        /\u0000/g
+                    ), "\\\\") + ");"
+                ));
+            }
+        });
+        text = "";
+        text += packageJson.name + " (" + packageJson.version + ")\n\n";
+        text += commandList.filter(function (elem) {
+            return elem;
+        }).map(function (elem, ii) {
+            elem.command = elem.command.filter(function (elem) {
+                return elem;
+            });
+            switch (ii) {
+            case 0:
+            case 1:
+                elem.argList = [
+                    elem.argList
+                ];
+                break;
+            default:
+                elem.argList = elem.argList.split(" ");
+                elem.description = (
+                    "# COMMAND "
+                    + (elem.command[0] || "&lt;none&gt;") + "\n# &amp;...</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+        local.assertThrow(!err, err);
+        local.cliDict.dbTableList();
+    });
+};
+
+// run the cli
+if (module === require.main &amp;&amp; !globalThis.utility2_rollup) {
+    local.<span class="apidocCodeKeywordSpan">cliRun</span>();
+}
+}());
+}());
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.dbCrudRemoveAll" id="apidoc.elem.db-lite.dbCrudRemoveAll">
+        function <span class="apidocSignatureSpan">db-lite.</span>dbCrudRemoveAll
+        <span class="apidocSignatureSpan">(onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbCrudRemoveAll = function (onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will remove all dbRow's from the db
+ */
+</span>    var onParallel;
+    onParallel = local.onParallel(function (err) {
+        local.setTimeoutOnError(onError, 0, err);
+    });
+    onParallel.counter += 1;
+    Object.keys(local.dbTableDict).forEach(function (key) {
+        onParallel.counter += 1;
+        local.dbTableDict[key].crudRemoveAll(onParallel);
+    });
+    onParallel();
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+local.testCase_dbTable_persistence = function (opt, onError) {
+/*
+* this function will test dbTable's persistence handling-behavior
+*/
+   opt = {};
+   // remove all dbRow's from db
+   local.<span class="apidocCodeKeywordSpan">dbCrudRemoveAll</span>();
+   // drop db
+   local.dbDrop();
+   // save db
+   local.dbSave();
+   // load db
+   local.dbLoad();
+   // import db
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.dbDrop" id="apidoc.elem.db-lite.dbDrop">
+        function <span class="apidocSignatureSpan">db-lite.</span>dbDrop
+        <span class="apidocSignatureSpan">(onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbDrop = function (onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will drop the db
+ */
+</span>    var onParallel;
+    console.error("db - dropping database ...");
+    onParallel = local.onParallel(function (err) {
+        local.setTimeoutOnError(onError, 0, err);
+    });
+    onParallel.counter += 1;
+    onParallel.counter += 1;
+    local.storageClear(onParallel);
+    Object.keys(local.dbTableDict).forEach(function (key) {
+        onParallel.counter += 1;
+        local.dbTableDict[key].drop(onParallel);
+    });
+    onParallel();
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+* this function will drop and seed the db with given dbSeedList
+*/
+   var onParallel;
+   onParallel = globalThis.utility2_onReadyBefore || local.onParallel(onError);
+   onParallel.counter += 1;
+   // drop db
+   onParallel.counter += 1;
+   local.<span class="apidocCodeKeywordSpan">dbDrop</span>(function (err) {
+       local.onErrorDefault(err);
+       // seed db
+       local.dbSeed(
+           dbSeedList,
+           !globalThis.utility2_onReadyBefore &amp;&amp; onParallel
+       );
+       local.functionOrNop(globalThis.utility2_onReadyBefore)();
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.dbExport" id="apidoc.elem.db-lite.dbExport">
+        function <span class="apidocSignatureSpan">db-lite.</span>dbExport
+        <span class="apidocSignatureSpan">(onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbExport = function (onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will export the db as serialized text
+ */
+</span>    var result;
+    result = "";
+    Object.keys(local.dbTableDict).forEach(function (key) {
+        console.error(
+            "db - exporting dbTable " + local.dbTableDict[key].name + " ..."
+        );
+        result += local.dbTableDict[key].export();
+        result += "\n\n";
+    });
+    return local.setTimeoutOnError(onError, 0, null, result.trim());
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+var tmp;
+var utility2;
+utility2 = globalThis.utility2 || {};
+ajaxProgressUpdate = utility2.ajaxProgressUpdate || local.nop;
+switch (evt.target.dataset.oneventDb) {
+case "dbExport":
+    tmp = URL.createObjectURL(new globalThis.Blob([
+        local.<span class="apidocCodeKeywordSpan">dbExport</span>()
+    ]));
+    document.querySelector(
+        "#dbExportA1"
+    ).href = tmp;
+    document.querySelector(
+        "#dbExportA1"
+    ).click();
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.dbImport" id="apidoc.elem.db-lite.dbImport">
+        function <span class="apidocSignatureSpan">db-lite.</span>dbImport
+        <span class="apidocSignatureSpan">(text, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbImport = function (text, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will import the serialized text into the db
+ */
+</span>    var dbTable;
+    var dbTableDict;
+    dbTableDict = {};
+    local.modeImport = true;
+    setTimeout(function () {
+        local.modeImport = null;
+    });
+    text.replace((
+        /^(\w\S*?)\u0020(\S+?)\u0020(\S.*?)$/gm
+    ), function (match0, match1, match2, match3) {
+        switch (match2) {
+        case "dbRowSet":
+            dbTableDict[match1] = true;
+            dbTable = local.dbTableCreateOne({
+                isLoaded: true,
+                name: match1
+            });
+            dbTable.crudSetOneById(JSON.parse(match3));
+            break;
+        case "idIndexCreate":
+            dbTableDict[match1] = true;
+            dbTable = local.dbTableCreateOne({
+                isLoaded: true,
+                name: match1
+            });
+            dbTable.idIndexCreate(JSON.parse(match3));
+            break;
+        case "sizeLimit":
+            dbTableDict[match1] = true;
+            dbTable = local.dbTableCreateOne({
+                isLoaded: true,
+                name: match1
+            });
+            dbTable.sizeLimit = JSON.parse(match3);
+            break;
+        case "sortDefault":
+            dbTableDict[match1] = true;
+            dbTable = local.dbTableCreateOne({
+                isLoaded: true,
+                name: match1
+            });
+            dbTable.sortDefault = JSON.parse(match3);
+            break;
+        default:
+            local.onErrorDefault(new Error(
+                "db - dbImport - invalid operation - " + match0
+            ));
+        }
+    });
+    Object.keys(dbTableDict).forEach(function (name) {
+        console.error("db - importing dbTable " + name + " ...");
+    });
+    local.modeImport = null;
+    return local.setTimeoutOnError(onError);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+            if (key.indexOf("dbTable.") !== 0) {
+                return;
+            }
+            onParallel.counter += 1;
+            local.storageGetItem(key, function (err, data) {
+                onParallel.counter += 1;
+                onParallel(err);
+                local.<span class="apidocCodeKeywordSpan">dbImport</span>(data, onParallel);
+            });
+        });
+        onParallel();
+    });
+};
+
+local.dbReset = function (dbSeedList, onError) {
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.dbLoad" id="apidoc.elem.db-lite.dbLoad">
+        function <span class="apidocSignatureSpan">db-lite.</span>dbLoad
+        <span class="apidocSignatureSpan">(onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbLoad = function (onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will load the db from storage
+ */
+</span>    var onParallel;
+    onParallel = local.onParallel(function (err) {
+        local.setTimeoutOnError(onError, 0, err);
+    });
+    local.storageKeys(function (err, data) {
+        onParallel.counter += 1;
+        // validate no err occurred
+        onParallel.counter += 1;
+        onParallel(err);
+        (data || []).forEach(function (key) {
+            if (key.indexOf("dbTable.") !== 0) {
+                return;
+            }
+            onParallel.counter += 1;
+            local.storageGetItem(key, function (err, data) {
+                onParallel.counter += 1;
+                onParallel(err);
+                local.dbImport(data, onParallel);
+            });
+        });
+        onParallel();
+    });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+            local, {
+                storageKeys: function (fnc) {
+                    fnc(local.errDefault);
+                }
+            }
+        ]
+    ], function (onError) {
+        local.<span class="apidocCodeKeywordSpan">dbLoad</span>(function (err) {
+            // validate err occurred
+            local.assertThrow(err, err);
+        });
+        onError(null, opt);
+    }, onError);
+};
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.dbReset" id="apidoc.elem.db-lite.dbReset">
+        function <span class="apidocSignatureSpan">db-lite.</span>dbReset
+        <span class="apidocSignatureSpan">(dbSeedList, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbReset = function (dbSeedList, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will drop and seed the db with given dbSeedList
+ */
+</span>    var onParallel;
+    onParallel = globalThis.utility2_onReadyBefore || local.onParallel(onError);
+    onParallel.counter += 1;
+    // drop db
+    onParallel.counter += 1;
+    local.dbDrop(function (err) {
+        local.onErrorDefault(err);
+        // seed db
+        local.dbSeed(
+            dbSeedList,
+            !globalThis.utility2_onReadyBefore &amp;&amp; onParallel
+        );
+        local.functionOrNop(globalThis.utility2_onReadyBefore)();
+    });
+    local.functionOrNop(globalThis.utility2_onReadyAfter)(onError);
+    onParallel();
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+        local.dbImport(reader.result);
+        ajaxProgressUpdate();
+    });
+    reader.readAsText(evt.target.files[0]);
+    break;
+case "dbReset":
+    ajaxProgressUpdate();
+    local.<span class="apidocCodeKeywordSpan">dbReset</span>(globalThis.utility2_dbSeedList, function (err) {
+        local.onErrorDefault(err);
+        if (
+            utility2.uiEventListenerDict
+            &amp;&amp; typeof utility2.uiEventListenerDict[".onEventUiReload"]
+            === "function"
+        ) {
+            utility2.uiEventListenerDict[".onEventUiReload"]();
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.dbRowGetItem" id="apidoc.elem.db-lite.dbRowGetItem">
+        function <span class="apidocSignatureSpan">db-lite.</span>dbRowGetItem
+        <span class="apidocSignatureSpan">(dbRow, key)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbRowGetItem = function (dbRow, key) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will get the item with given key from dbRow
+ */
+</span>    var ii;
+    var value;
+    value = dbRow;
+    key = String(key).split(".");
+    // optimization - while-loop
+    ii = 0;
+    while (ii &lt; key.length &amp;&amp; typeof value === "object" &amp;&amp; value) {
+        value = value[key[ii]];
+        ii += 1;
+    }
+    return (
+        value === undefined
+        ? null
+        : value
+    );
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+ii = 0;
+while (ii &lt; result.length) {
+    result[ii].$ii = ii;
+    ii += 1;
+}
+result.sort(function (aa, bb) {
+    return local.sortCompare(
+        local.<span class="apidocCodeKeywordSpan">dbRowGetItem</span>(aa, element.fieldName),
+        local.dbRowGetItem(bb, element.fieldName),
+        aa.$ii,
+        bb.$ii
+    );
+});
+if (element.isDescending) {
+    result.reverse();
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.dbRowListGetManyByOperator" id="apidoc.elem.db-lite.dbRowListGetManyByOperator">
+        function <span class="apidocSignatureSpan">db-lite.</span>dbRowListGetManyByOperator
+        <span class="apidocSignatureSpan">( dbRowList, fieldName, operator, bb, not )</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbRowListGetManyByOperator = function ( dbRowList, fieldName, operator, bb, not ) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will get the dbRow's in dbRowList with given operator
+ */
+</span>    var fieldValue;
+    var ii;
+    var jj;
+    var result;
+    var test;
+    var typeof2;
+    result = [];
+    typeof2 = typeof bb;
+    if (bb &amp;&amp; typeof2 === "object") {
+        switch (operator) {
+        case "$in":
+        case "$nin":
+        case "$regex":
+            break;
+        default:
+            return result;
+        }
+    }
+    switch (operator) {
+    case "$eq":
+        test = function (aa, bb) {
+            return aa === bb;
+        };
+        break;
+    case "$exists":
+        bb = !bb;
+        test = function (aa, bb) {
+            return !((aa === null) ^ bb); // jslint ignore:line
+        };
+        break;
+    case "$gt":
+        test = function (aa, bb, typeof1, typeof2) {
+            return typeof1 === typeof2 &amp;&amp; aa &gt; bb;
+        };
+        break;
+    case "$gte":
+        test = function (aa, bb, typeof1, typeof2) {
+            return typeof1 === typeof2 &amp;&amp; aa &gt;= bb;
+        };
+        break;
+    case "$in":
+        if (bb &amp;&amp; typeof bb.indexOf === "function") {
+            if (typeof2 === "string") {
+                test = function (aa, bb, typeof1, typeof2) {
+                    return typeof1 === typeof2 &amp;&amp; bb.indexOf(aa) &gt;= 0;
+                };
+            } else {
+                test = function (aa, bb) {
+                    return bb.indexOf(aa) &gt;= 0;
+                };
+            }
+        }
+        break;
+    case "$lt":
+        test = function (aa, bb, typeof1, typeof2) {
+            return typeof1 === typeof2 &amp;&amp; aa &lt; bb;
+        };
+        break;
+    case "$lte":
+        test = function (aa, bb, typeof1, typeof2) {
+            return typeof1 === typeof2 &amp;&amp; aa &lt;= bb;
+        };
+        break;
+    case "$ne":
+        test = function (aa, bb) {
+            return aa !== bb;
+        };
+        break;
+    case "$nin":
+        if (bb &amp;&amp; typeof bb.indexOf === "function") {
+            if (typeof2 === "string") {
+                test = function (aa, bb, typeof1, typeof2) {
+                    return typeof1 === typeof2 &amp;&amp; bb.indexOf(aa) &lt; 0;
+                };
+            } else {
+                test = function (aa, bb) {
+                    return bb.indexOf(aa) &lt; 0;
+                };
+            }
+        }
+        break;
+    case "$regex":
+        if (bb &amp;&amp; typeof bb.test === "function") {
+            test = function (aa, bb) {
+                return bb.test(aa);
+            };
+        }
+        break;
+    case "$typeof":
+        test = function (ignore, bb, typeof1) {
+            return typeof1 === bb;
+        };
+        break;
+    }
+    if (!test) {
+        return result;
+    }
+    // optimization - while-loop
+    ii = dbRowList.length;
+    while (ii &gt;= 1) {
+        ii -= 1;
+        fieldValue = local.dbRowGetItem(dbRowList[ii], fieldName);
+        // normalize to list
+        if (!Array.isArray(fieldValue)) {
+            fieldValue = [
+                fieldValue
+            ];
+        }
+        // optimization - while-loop
+        jj = fieldValue.length;
+        while (jj &gt;= 1) {
+            jj -= 1;
+            if (Boolean(
+                not ^ test(fieldValue[jj], bb, typeof fieldValue[jj], typeof2)
+            )) {
+                result.push(dbRowList[ii]);
+                break;
+            }
+        }
+    }
+    return result;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+var bb;
+var dbRowDict;
+var result;
+// optimization - convert to boolean
+not = Boolean(not);
+result = dbRowList;
+if (!(typeof query === "object" &amp;&amp; query)) {
+    result = local.<span class="apidocCodeKeywordSpan">dbRowListGetManyByOperator</span>(
+        result,
+        fieldName,
+        "$eq",
+        query,
+        not
+    );
+    return result;
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.dbRowListGetManyByQuery" id="apidoc.elem.db-lite.dbRowListGetManyByQuery">
+        function <span class="apidocSignatureSpan">db-lite.</span>dbRowListGetManyByQuery
+        <span class="apidocSignatureSpan">(dbRowList, query, fieldName, not)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbRowListGetManyByQuery = function (dbRowList, query, fieldName, not) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will get the dbRow's in dbRowList with given query
+ */
+</span>    var bb;
+    var dbRowDict;
+    var result;
+    // optimization - convert to boolean
+    not = Boolean(not);
+    result = dbRowList;
+    if (!(typeof query === "object" &amp;&amp; query)) {
+        result = local.dbRowListGetManyByOperator(
+            result,
+            fieldName,
+            "$eq",
+            query,
+            not
+        );
+        return result;
+    }
+    Object.keys(query).some(function (key) {
+        bb = query[key];
+        switch (key) {
+        case "$not":
+            key = fieldName;
+            not = !not;
+            break;
+        case "$or":
+            if (!Array.isArray(bb)) {
+                break;
+            }
+            dbRowDict = {};
+            bb.forEach(function (query) {
+                // recurse
+                local.dbRowListGetManyByQuery(result, query).forEach(function (
+                    dbRow
+                ) {
+                    dbRowDict[dbRow._id] = dbRow;
+                });
+            });
+            result = Object.keys(dbRowDict).map(function (id) {
+                return dbRowDict[id];
+            });
+            return !result.length;
+        }
+        if (key[0] === "$") {
+            result = local.dbRowListGetManyByOperator(
+                result,
+                fieldName,
+                key,
+                bb,
+                not
+            );
+            return !result.length;
+        }
+        // recurse
+        result = local.dbRowListGetManyByQuery(result, bb, key, not);
+        return !result.length;
+    });
+    return result;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+* with given query, sort, skip, and limit
+*/
+   var ii;
+   var result;
+   result = this.dbRowList;
+   // get by query
+   if (result.length &amp;&amp; query &amp;&amp; Object.keys(query).length) {
+       result = local.<span class="apidocCodeKeywordSpan">dbRowListGetManyByQuery</span>(this.dbRowList, query);
+   }
+   // sort
+   (sort || []).forEach(function (element) {
+       // bug-workaround - v8 does not have stable-sort
+       // optimization - while-loop
+       ii = 0;
+       while (ii &lt; result.length) {
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.dbRowProject" id="apidoc.elem.db-lite.dbRowProject">
+        function <span class="apidocSignatureSpan">db-lite.</span>dbRowProject
+        <span class="apidocSignatureSpan">(dbRow, fieldList)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbRowProject = function (dbRow, fieldList) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will deepcopy and project the dbRow with given fieldList
+ */
+</span>    var result;
+    if (!dbRow) {
+        return null;
+    }
+    // handle list-case
+    if (Array.isArray(dbRow)) {
+        return dbRow.map(function (dbRow) {
+            // recurse
+            return local.dbRowProject(dbRow, fieldList);
+        });
+    }
+    // normalize to list
+    if (!(Array.isArray(fieldList) &amp;&amp; fieldList.length)) {
+        fieldList = Object.keys(dbRow);
+    }
+    result = {};
+    fieldList.forEach(function (key) {
+        if (key[0] !== "$") {
+            result[key] = dbRow[key];
+        }
+    });
+    return JSON.parse(local.jsonStringifyOrdered(result));
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+local._DbTable.prototype.crudGetManyById = function (idDictList, onError) {
+/*
+ * this function will get the dbRow's in the dbTable with given idDictList
+ */
+    var that;
+    this._cleanup();
+    that = this;
+    return local.setTimeoutOnError(onError, 0, null, local.<span class="apidocCodeKeywordSpan">dbRowProject</span>(
+        (idDictList || []).map(function (idDict) {
+            return that._crudGetOneById(idDict);
+        })
+    ));
+};
+
+local._DbTable.prototype.crudGetManyByQuery = function (opt, onError) {
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.dbRowSetId" id="apidoc.elem.db-lite.dbRowSetId">
+        function <span class="apidocSignatureSpan">db-lite.</span>dbRowSetId
+        <span class="apidocSignatureSpan">(dbRow, idIndex)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbRowSetId = function (dbRow, idIndex) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will if does not exist,
+ * then set a random and unique id into dbRow for given idIndex,
+ */
+</span>    var id;
+    id = dbRow[idIndex.name];
+    if (typeof id !== "number" &amp;&amp; typeof id !== "string") {
+        do {
+            id = (
+                idIndex.isInteger
+                ? (1 + Math.random()) * 0x10000000000000
+                : "a" + (
+                    (1 + Math.random()) * 0x10000000000000
+                ).toString(36).slice(1)
+            );
+        // optimization - hasOwnProperty
+        } while (idIndex.dict.hasOwnProperty(id));
+        dbRow[idIndex.name] = id;
+    }
+    return id;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+// normalize
+dbRow = normalize(dbRow);
+dbRow = local.jsonCopy(dbRow);
+// remove existing dbRow
+existing = this._crudRemoveOneById(dbRow) || dbRow;
+this.idIndexList.forEach(function (idIndex) {
+    // auto-set id
+    id = local.<span class="apidocCodeKeywordSpan">dbRowSetId</span>(existing, idIndex);
+    // copy id from existing to dbRow
+    dbRow[idIndex.name] = id;
+    // set dbRow
+    idIndex.dict[id] = dbRow;
+});
+// update dbRowList
+this.dbRowList.push(dbRow);
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.dbSave" id="apidoc.elem.db-lite.dbSave">
+        function <span class="apidocSignatureSpan">db-lite.</span>dbSave
+        <span class="apidocSignatureSpan">(onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbSave = function (onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will save the db to storage
+ */
+</span>    var onParallel;
+    onParallel = local.onParallel(function (err) {
+        local.setTimeoutOnError(onError, 0, err);
+    });
+    onParallel.counter += 1;
+    Object.keys(local.dbTableDict).forEach(function (key) {
+        onParallel.counter += 1;
+        local.dbTableDict[key].save(onParallel);
+    });
+    onParallel();
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+ */
+opt = {};
+// remove all dbRow's from db
+local.dbCrudRemoveAll();
+// drop db
+local.dbDrop();
+// save db
+local.<span class="apidocCodeKeywordSpan">dbSave</span>();
+// load db
+local.dbLoad();
+// import db
+local.dbImport(
+    "testCase_dbTable_persistence idIndexCreate {\"name\":\"_id\"}\n"
+    + "testCase_dbTable_persistence idIndexCreate {\"name\":\"id2\"}\n"
+    + "testCase_dbTable_persistence sizeLimit 0\n"
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.dbSeed" id="apidoc.elem.db-lite.dbSeed">
+        function <span class="apidocSignatureSpan">db-lite.</span>dbSeed
+        <span class="apidocSignatureSpan">(dbSeedList, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbSeed = function (dbSeedList, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will seed the db with given dbSeedList
+ */
+</span>    var dbTableDict;
+    var onParallel;
+    dbTableDict = {};
+    onParallel = globalThis.utility2_onReadyBefore || local.onParallel(onError);
+    onParallel.counter += 1;
+    // seed db
+    onParallel.counter += 1;
+    local.dbTableCreateMany(dbSeedList, onParallel);
+    (dbSeedList || []).forEach(function (opt) {
+        dbTableDict[opt.name] = true;
+    });
+    Object.keys(dbTableDict).forEach(function (name) {
+        console.error("db - seeding dbTable " + name + " ...");
+    });
+    local.functionOrNop(globalThis.utility2_onReadyAfter)(onError);
+    onParallel();
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+onParallel = globalThis.utility2_onReadyBefore || local.onParallel(onError);
+onParallel.counter += 1;
+// drop db
+onParallel.counter += 1;
+local.dbDrop(function (err) {
+    local.onErrorDefault(err);
+    // seed db
+    local.<span class="apidocCodeKeywordSpan">dbSeed</span>(
+        dbSeedList,
+        !globalThis.utility2_onReadyBefore &amp;&amp; onParallel
+    );
+    local.functionOrNop(globalThis.utility2_onReadyBefore)();
+});
+local.functionOrNop(globalThis.utility2_onReadyAfter)(onError);
+onParallel();
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.dbTableCreateMany" id="apidoc.elem.db-lite.dbTableCreateMany">
+        function <span class="apidocSignatureSpan">db-lite.</span>dbTableCreateMany
+        <span class="apidocSignatureSpan">(optionList, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbTableCreateMany = function (optionList, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will create many dbTables with given optionList
+ */
+</span>    var onParallel;
+    var result;
+    onParallel = local.onParallel(function (err) {
+        local.setTimeoutOnError(onError, 0, err, result);
+    });
+    onParallel.counter += 1;
+    result = (optionList || []).map(function (opt) {
+        onParallel.counter += 1;
+        return local.dbTableCreateOne(opt, onParallel);
+    });
+    return local.setTimeoutOnError(onParallel, 0, null, result);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+var dbTableDict;
+var onParallel;
+dbTableDict = {};
+onParallel = globalThis.utility2_onReadyBefore || local.onParallel(onError);
+onParallel.counter += 1;
+// seed db
+onParallel.counter += 1;
+local.<span class="apidocCodeKeywordSpan">dbTableCreateMany</span>(dbSeedList, onParallel);
+(dbSeedList || []).forEach(function (opt) {
+    dbTableDict[opt.name] = true;
+});
+Object.keys(dbTableDict).forEach(function (name) {
+    console.error("db - seeding dbTable " + name + " ...");
+});
+local.functionOrNop(globalThis.utility2_onReadyAfter)(onError);
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.dbTableCreateOne" id="apidoc.elem.db-lite.dbTableCreateOne">
+        function <span class="apidocSignatureSpan">db-lite.</span>dbTableCreateOne
+        <span class="apidocSignatureSpan">(opt, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbTableCreateOne = function (opt, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will create a dbTable with given &lt;opt&gt;
+ */
+</span>    var DbTable;
+    var that;
+    opt = local.objectSetOverride(opt);
+    // register dbTable
+    DbTable = local._DbTable;
+    local.dbTableDict[opt.name] = local.dbTableDict[opt.name] || new DbTable(
+        opt
+    );
+    that = local.dbTableDict[opt.name];
+    that.sortDefault = (
+        opt.sortDefault
+        || that.sortDefault
+        || [
+            {
+                fieldName: "_timeUpdated",
+                isDescending: true
+            }
+        ]
+    );
+    // remove idIndex
+    (opt.idIndexRemoveList || []).forEach(function (idIndex) {
+        that.idIndexRemove(idIndex);
+    });
+    // create idIndex
+    (opt.idIndexCreateList || []).forEach(function (idIndex) {
+        that.idIndexCreate(idIndex);
+    });
+    // upsert dbRow
+    that.crudSetManyById(opt.dbRowList);
+    // restore dbTable from persistent-storage
+    that.isLoaded = that.isLoaded || opt.isLoaded;
+    if (!that.isLoaded) {
+        local.storageGetItem("dbTable." + that.name + ".json", function (
+            err,
+            data
+        ) {
+            // validate no err occurred
+            local.assertThrow(!err, err);
+            if (!that.isLoaded) {
+                local.dbImport(data);
+            }
+            that.isLoaded = true;
+            local.setTimeoutOnError(onError, 0, null, that);
+        });
+        return that;
+    }
+    return local.setTimeoutOnError(onError, 0, null, that);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+* https://github.com/kaizhu256/node-db-lite
+* this zero-dependency package will provide a persistent, in-browser database, with a working web-demo
+*
+* browser example:
+   &lt;script src="assets.db-lite.js"&gt;&lt;/script&gt;
+   &lt;script&gt;
+   var dbTable1;
+   dbTable1 = window.dbTable1 = window.utility2_db.<span class="apidocCodeKeywordSpan">dbTableCreateOne</span>({
+       name: "dbTable1"
+   });
+   dbTable1.idIndexCreate({ name: "field1" });
+   dbTable1.crudSetOneById({ field1: "hello", field2: "world" });
+   console.log(dbTable1.crudGetManyByQuery({
+       limit: Infinity,
+       query: { field1: "hello" },
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.functionOrNop" id="apidoc.elem.db-lite.functionOrNop">
+        function <span class="apidocSignatureSpan">db-lite.</span>functionOrNop
+        <span class="apidocSignatureSpan">(fnc)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">functionOrNop = function (fnc) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will if &lt;fnc&gt; exists,
+ * them return &lt;fnc&gt;,
+ * else return &lt;nop&gt;
+ */
+</span>    return fnc || local.nop;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+        if (element.isDescending) {
+            result.reverse();
+        }
+    });
+    // skip
+    result = result.slice(skip || 0);
+    // shuffle
+    local.<span class="apidocCodeKeywordSpan">functionOrNop</span>(shuffle &amp;&amp; local.listShuffle)(result);
+    // limit
+    result = result.slice(0, limit || Infinity);
+    return result;
+};
+
+local._DbTable.prototype._crudGetOneById = function (idDict) {
+/*
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.identity" id="apidoc.elem.db-lite.identity">
+        function <span class="apidocSignatureSpan">db-lite.</span>identity
+        <span class="apidocSignatureSpan">(value)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">identity = function (value) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will return &lt;value&gt;
+ */
+</span>    return value;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+local.cliDict.help = local.cliDict.help || local.cliDict._help;
+local.cliDict._interactive = local.cliDict._interactive || function () {
+/*
+ *
+ * will start interactive-mode
+ */
+    globalThis.local = local;
+    local.<span class="apidocCodeKeywordSpan">identity</span>(local.replStart || require("repl").start)({
+        useGlobal: true
+    });
+};
+local.cliDict["--interactive"] = (
+    local.cliDict["--interactive"]
+    || local.cliDict._interactive
+);
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.jsonCopy" id="apidoc.elem.db-lite.jsonCopy">
+        function <span class="apidocSignatureSpan">db-lite.</span>jsonCopy
+        <span class="apidocSignatureSpan">(obj)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">jsonCopy = function (obj) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will deep-copy obj
+ */
+</span>    return (
+        obj === undefined
+        ? undefined
+        : JSON.parse(JSON.stringify(obj))
+    );
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+            ? undefined
+            // recurse
+            : normalize(dbRow[key])
+        );
+    });
+    return dbRow;
+};
+dbRow = local.<span class="apidocCodeKeywordSpan">jsonCopy</span>(local.objectSetOverride(dbRow));
+// update timestamp
+timeNow = new Date().toISOString();
+dbRow._timeCreated = dbRow._timeCreated || timeNow;
+if (!local.modeImport) {
+    dbRow._timeUpdated = timeNow;
+}
+// normalize
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.jsonStringifyOrdered" id="apidoc.elem.db-lite.jsonStringifyOrdered">
+        function <span class="apidocSignatureSpan">db-lite.</span>jsonStringifyOrdered
+        <span class="apidocSignatureSpan">(obj, replacer, space)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">jsonStringifyOrdered = function (obj, replacer, space) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will JSON.stringify &lt;obj&gt;,
+ * with object-keys sorted and circular-references removed
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#Syntax
+ */
+</span>    var circularSet;
+    var stringify;
+    var tmp;
+    stringify = function (obj) {
+    /*
+     * this function will recursively JSON.stringify obj,
+     * with object-keys sorted and circular-references removed
+     */
+        // if obj is not an object or function, then JSON.stringify as normal
+        if (!(
+            obj
+            &amp;&amp; typeof obj === "object"
+            &amp;&amp; typeof obj.toJSON !== "function"
+        )) {
+            return JSON.stringify(obj);
+        }
+        // ignore circular-reference
+        if (circularSet.has(obj)) {
+            return;
+        }
+        circularSet.add(obj);
+        // if obj is an array, then recurse its items
+        if (Array.isArray(obj)) {
+            tmp = "[" + obj.map(function (obj) {
+                // recurse
+                tmp = stringify(obj);
+                return (
+                    typeof tmp === "string"
+                    ? tmp
+                    : "null"
+                );
+            }).join(",") + "]";
+            circularSet.delete(obj);
+            return tmp;
+        }
+        // if obj is not an array,
+        // then recurse its items with object-keys sorted
+        tmp = "{" + Object.keys(obj).sort().map(function (key) {
+            // recurse
+            tmp = stringify(obj[key]);
+            if (typeof tmp === "string") {
+                return JSON.stringify(key) + ":" + tmp;
+            }
+        }).filter(function (obj) {
+            return typeof obj === "string";
+        }).join(",") + "}";
+        circularSet.delete(obj);
+        return tmp;
+    };
+    circularSet = new Set();
+    return JSON.stringify((
+        (typeof obj === "object" &amp;&amp; obj)
+        // recurse
+        ? JSON.parse(stringify(obj))
+        : obj
+    ), replacer, space);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+   }
+   result = {};
+   fieldList.forEach(function (key) {
+       if (key[0] !== "$") {
+           result[key] = dbRow[key];
+       }
+   });
+   return JSON.parse(local.<span class="apidocCodeKeywordSpan">jsonStringifyOrdered</span>(result));
+};
+
+local.dbRowSetId = function (dbRow, idIndex) {
+/*
+* this function will if does not exist,
+* then set a random and unique id into dbRow for given idIndex,
+*/
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.listShuffle" id="apidoc.elem.db-lite.listShuffle">
+        function <span class="apidocSignatureSpan">db-lite.</span>listShuffle
+        <span class="apidocSignatureSpan">(list)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">listShuffle = function (list) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will inplace shuffle &lt;list&gt; using fisher-yates algorithm
+ * https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+ */
+</span>    var ii;
+    var random;
+    var swap;
+    ii = list.length;
+    while (ii &gt; 1) {
+        ii -= 1;
+        random = Math.floor(Math.random() * (ii + 1));
+        swap = list[ii];
+        list[ii] = list[random];
+        list[random] = swap;
+    }
+    return list;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.nop" id="apidoc.elem.db-lite.nop">
+        function <span class="apidocSignatureSpan">db-lite.</span>nop
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">nop = function () {
+<span class="apidocCodeCommentSpan">/*
+ * this function will do nothing
+ */
+</span>    return;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+process.stdout._writeDefault = (
+    process.stdout._writeDefault
+    || process.stdout._write
+);
+process.stdout._write = function (chunk, encoding, callback) {
+    process.stdout._writeDefault(chunk, encoding, callback);
+    // hack-istanbul - ignore else-statement
+    local.<span class="apidocCodeKeywordSpan">nop</span>(that.socket.writable &amp;&amp; (function () {
+        that.socket.write(chunk, encoding);
+    }()));
+};
+// start serverRepl1
+globalThis.utility2_serverRepl1 = require("net").createServer(function (
+    socket
+) {
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.objectAssignDefault" id="apidoc.elem.db-lite.objectAssignDefault">
+        function <span class="apidocSignatureSpan">db-lite.</span>objectAssignDefault
+        <span class="apidocSignatureSpan">(target, source)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">objectAssignDefault = function (target, source) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will if items from &lt;target&gt; are
+ * null, undefined, or empty-string,
+ * then overwrite them with items from &lt;source&gt;
+ */
+</span>    target = target || {};
+    Object.keys(source || {}).forEach(function (key) {
+        if (
+            target[key] === null
+            || target[key] === undefined
+            || target[key] === ""
+        ) {
+            target[key] = target[key] || source[key];
+        }
+    });
+    return target;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.objectSetOverride" id="apidoc.elem.db-lite.objectSetOverride">
+        function <span class="apidocSignatureSpan">db-lite.</span>objectSetOverride
+        <span class="apidocSignatureSpan">(dict, overrides, depth, env)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">objectSetOverride = function (dict, overrides, depth, env) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will recursively set overrides for items in dict
+ */
+</span>    dict = dict || {};
+    env = env || (typeof process === "object" &amp;&amp; process.env) || {};
+    overrides = overrides || {};
+    Object.keys(overrides).forEach(function (key) {
+        var dict2;
+        var overrides2;
+        dict2 = dict[key];
+        overrides2 = overrides[key];
+        if (overrides2 === undefined) {
+            return;
+        }
+        // if both dict2 and overrides2 are non-null and non-array objects,
+        // then recurse with dict2 and overrides2
+        if (
+            depth &gt; 1
+            // dict2 is a non-null and non-array object
+            &amp;&amp; typeof dict2 === "object" &amp;&amp; dict2 &amp;&amp; !Array.isArray(dict2)
+            // overrides2 is a non-null and non-array object
+            &amp;&amp; typeof overrides2 === "object" &amp;&amp; overrides2
+            &amp;&amp; !Array.isArray(overrides2)
+        ) {
+            local.objectSetOverride(dict2, overrides2, depth - 1, env);
+            return;
+        }
+        // else set dict[key] with overrides[key]
+        dict[key] = (
+            dict === env
+            // if dict is env, then overrides falsy-value with empty-string
+            ? overrides2 || ""
+            : overrides2
+        );
+    });
+    return dict;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    depth &gt; 1
+    // dict2 is a non-null and non-array object
+    &amp;&amp; typeof dict2 === "object" &amp;&amp; dict2 &amp;&amp; !Array.isArray(dict2)
+    // overrides2 is a non-null and non-array object
+    &amp;&amp; typeof overrides2 === "object" &amp;&amp; overrides2
+    &amp;&amp; !Array.isArray(overrides2)
+) {
+    local.<span class="apidocCodeKeywordSpan">objectSetOverride</span>(dict2, overrides2, depth - 1, env);
+    return;
+}
+// else set dict[key] with overrides[key]
+dict[key] = (
+    dict === env
+    // if dict is env, then overrides falsy-value with empty-string
+    ? overrides2 || ""
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.onErrorDefault" id="apidoc.elem.db-lite.onErrorDefault">
+        function <span class="apidocSignatureSpan">db-lite.</span>onErrorDefault
+        <span class="apidocSignatureSpan">(err)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">onErrorDefault = function (err) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will if &lt;err&gt; exists, then print it to stderr
+ */
+</span>    if (err) {
+        console.error(err);
+    }
+    return err;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+        dbTable = local.dbTableCreateOne({
+            isLoaded: true,
+            name: match1
+        });
+        dbTable.sortDefault = JSON.parse(match3);
+        break;
+    default:
+        local.<span class="apidocCodeKeywordSpan">onErrorDefault</span>(new Error(
+            "db - dbImport - invalid operation - " + match0
+        ));
+    }
+});
+Object.keys(dbTableDict).forEach(function (name) {
+    console.error("db - importing dbTable " + name + " ...");
+});
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.onErrorWithStack" id="apidoc.elem.db-lite.onErrorWithStack">
+        function <span class="apidocSignatureSpan">db-lite.</span>onErrorWithStack
+        <span class="apidocSignatureSpan">(onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">onErrorWithStack = function (onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will create wrapper around &lt;onError&gt;
+ * that will append current-stack to err.stack
+ */
+</span>    var onError2;
+    var stack;
+    stack = new Error().stack.replace((
+        /(.*?)\n.*?$/m
+    ), "$1");
+    onError2 = function (err, data, meta) {
+        // append current-stack to err.stack
+        if (
+            err
+            &amp;&amp; typeof err.stack === "string"
+            &amp;&amp; err !== local.errDefault
+            &amp;&amp; String(err.stack).indexOf(stack.split("\n")[2]) &lt; 0
+        ) {
+            err.stack += "\n" + stack;
+        }
+        onError(err, data, meta);
+    };
+    // debug onError
+    onError2.toString = function () {
+        return String(onError);
+    };
+    return onError2;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+local.onParallel = function (onError, onEach, onRetry) {
+/*
+* this function will create a function that will
+* 1. run async tasks in parallel
+* 2. if counter === 0 or err occurred, then call onError(err)
+*/
+   var onParallel;
+   onError = local.<span class="apidocCodeKeywordSpan">onErrorWithStack</span>(onError);
+   onEach = onEach || local.nop;
+   onRetry = onRetry || local.nop;
+   onParallel = function (err, data) {
+       if (onRetry(err, data)) {
+           return;
+       }
+       // decrement counter
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.onEventDomDb" id="apidoc.elem.db-lite.onEventDomDb">
+        function <span class="apidocSignatureSpan">db-lite.</span>onEventDomDb
+        <span class="apidocSignatureSpan">(evt)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">onEventDomDb = function (evt) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will handle db dom-events
+ */
+</span>    var ajaxProgressUpdate;
+    var reader;
+    var tmp;
+    var utility2;
+    utility2 = globalThis.utility2 || {};
+    ajaxProgressUpdate = utility2.ajaxProgressUpdate || local.nop;
+    switch (evt.target.dataset.oneventDb) {
+    case "dbExport":
+        tmp = URL.createObjectURL(new globalThis.Blob([
+            local.dbExport()
+        ]));
+        document.querySelector(
+            "#dbExportA1"
+        ).href = tmp;
+        document.querySelector(
+            "#dbExportA1"
+        ).click();
+        setTimeout(function () {
+            URL.revokeObjectURL(tmp);
+        }, 30000);
+        break;
+    case "dbImport":
+        document.querySelector(
+            "[data-onevent-db='dbImportInput']"
+        ).click();
+        break;
+    case "dbImportInput":
+        if (evt.type !== "change") {
+            return;
+        }
+        ajaxProgressUpdate();
+        reader = new FileReader();
+        reader.addEventListener("load", function () {
+            local.dbImport(reader.result);
+            ajaxProgressUpdate();
+        });
+        reader.readAsText(evt.target.files[0]);
+        break;
+    case "dbReset":
+        ajaxProgressUpdate();
+        local.dbReset(globalThis.utility2_dbSeedList, function (err) {
+            local.onErrorDefault(err);
+            if (
+                utility2.uiEventListenerDict
+                &amp;&amp; typeof utility2.uiEventListenerDict[".onEventUiReload"]
+                === "function"
+            ) {
+                utility2.uiEventListenerDict[".onEventUiReload"]();
+            }
+        });
+        break;
+    }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    )
+) {
+// custom-case
+case "dbExportButton1":
+case "dbImportButton1":
+case "dbImportInput1":
+case "dbResetButton1":
+    local.db.<span class="apidocCodeKeywordSpan">onEventDomDb</span>(event);
+    break;
+case true:
+    // try to eval input-code
+    try {
+        eval( // jslint ignore:line
+            document.querySelector("#inputEval1").value
+        );
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.onParallel" id="apidoc.elem.db-lite.onParallel">
+        function <span class="apidocSignatureSpan">db-lite.</span>onParallel
+        <span class="apidocSignatureSpan">(onError, onEach, onRetry)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">onParallel = function (onError, onEach, onRetry) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will create a function that will
+ * 1. run async tasks in parallel
+ * 2. if counter === 0 or err occurred, then call onError(err)
+ */
+</span>    var onParallel;
+    onError = local.onErrorWithStack(onError);
+    onEach = onEach || local.nop;
+    onRetry = onRetry || local.nop;
+    onParallel = function (err, data) {
+        if (onRetry(err, data)) {
+            return;
+        }
+        // decrement counter
+        onParallel.counter -= 1;
+        // validate counter
+        if (!(onParallel.counter &gt;= 0 || err || onParallel.err)) {
+            err = new Error(
+                "invalid onParallel.counter = " + onParallel.counter
+            );
+        // ensure onError is run only once
+        } else if (onParallel.counter &lt; 0) {
+            return;
+        }
+        // handle err
+        if (err) {
+            onParallel.err = err;
+            // ensure counter &lt;= 0
+            onParallel.counter = -Math.abs(onParallel.counter);
+        }
+        // call onError when isDone
+        if (onParallel.counter &lt;= 0) {
+            onError(err, data);
+            return;
+        }
+        onEach();
+    };
+    // init counter
+    onParallel.counter = 0;
+    // return callback
+    return onParallel;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+};
+
+local.dbCrudRemoveAll = function (onError) {
+/*
+* this function will remove all dbRow's from the db
+*/
+   var onParallel;
+   onParallel = local.<span class="apidocCodeKeywordSpan">onParallel</span>(function (err) {
+       local.setTimeoutOnError(onError, 0, err);
+   });
+   onParallel.counter += 1;
+   Object.keys(local.dbTableDict).forEach(function (key) {
+       onParallel.counter += 1;
+       local.dbTableDict[key].crudRemoveAll(onParallel);
+   });
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.replStart" id="apidoc.elem.db-lite.replStart">
+        function <span class="apidocSignatureSpan">db-lite.</span>replStart
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">replStart = function () {
+<span class="apidocCodeCommentSpan">/*
+ * this function will start the repl-debugger
+ */
+</span>    var that;
+    if (globalThis.utility2_repl1) {
+        return;
+    }
+    // start repl
+    that = require("repl").start({
+        useGlobal: true
+    });
+    globalThis.utility2_repl1 = that;
+    that.onError = function (err) {
+    /*
+     * this function will debug repl-err
+     */
+        globalThis.utility2_debugReplError = err;
+        console.error(err);
+    };
+    // save eval-function
+    that.evalDefault = that.eval;
+    // hook custom-eval-function
+    that.eval = function (script, context, file, onError) {
+        var onError2;
+        onError2 = function (err, data) {
+            // debug err
+            globalThis.utility2_debugReplError = (
+                err || globalThis.utility2_debugReplError
+            );
+            onError(err, data);
+        };
+        script.replace((
+            /^(\S+)\u0020(.*?)\n/
+        ), function (ignore, match1, match2) {
+            switch (match1) {
+            // syntax-sugar - run async shell-command
+            case "$":
+                switch (match2) {
+                // syntax-sugar - run git diff
+                case "git diff":
+                    match2 = "git diff --color | cat";
+                    break;
+                // syntax-sugar - run git log
+                case "git log":
+                    match2 = "git log -n 4 | cat";
+                    break;
+                // syntax-sugar - run git log
+                case "ll":
+                    match2 = "ls -Fal";
+                    break;
+                }
+                // source lib.utility2.sh
+                if (
+                    process.platform !== "win32"
+                    &amp;&amp; process.env.npm_config_dir_utility2 &amp;&amp; (match2 !== ":")
+                ) {
+                    match2 = (
+                        ". " + process.env.npm_config_dir_utility2
+                        + "/lib.utility2.sh;" + match2
+                    );
+                }
+                // run async shell-command
+                require("child_process").spawn(match2, {
+                    shell: true,
+                    stdio: [
+                        "ignore", 1, 2
+                    ]
+                // on shell exit, print return prompt
+                }).on("exit", function (exitCode) {
+                    console.error("exit-code " + exitCode);
+                    that.evalDefault(
+                        "\n",
+                        context,
+                        file,
+                        onError2
+                    );
+                });
+                script = "\n";
+                break;
+            // syntax-sugar - map text with charCodeAt
+            case "charCode":
+                console.error(
+                    match2.split("").map(function (chr) {
+                        return (
+                            "\\u"
+                            + chr.charCodeAt(0).toString(16).padStart(4, 0)
+                        );
+                    }).join("")
+                );
+                script = "\n";
+                break;
+            // syntax-sugar - sort chr
+            case "charSort":
+                console.error(JSON.stringify(match2.split("").sort().join("")));
+                script = "\n";
+                break;
+            // syntax-sugar - grep current dir
+            case "grep":
+                // run async shell-command
+                require("child_process").spawn((
+                    "find . -type f | grep -v -E "
+/* jslint ignore:start */
++ '"\
+/\\.|~\$|(\\b|_)(\\.\\d|\
+archive|artifact|\
+bower_component|build|\
+coverage|\
+doc|\
+external|\
+fixture|\
+git_module|\
+jquery|\
+log|\
+min|misc|mock|\
+node_module|\
+raw|\rollup|\
+swp|\
+tmp...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.setTimeoutOnError" id="apidoc.elem.db-lite.setTimeoutOnError">
+        function <span class="apidocSignatureSpan">db-lite.</span>setTimeoutOnError
+        <span class="apidocSignatureSpan">(onError, timeout, err, data)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">setTimeoutOnError = function (onError, timeout, err, data) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will after timeout has passed,
+ * then call &lt;onError&gt;(&lt;err&gt;, &lt;data&gt;)
+ */
+</span>    if (typeof onError === "function") {
+        setTimeout(function () {
+            onError(err, data);
+        }, timeout);
+    }
+    return data;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+};
+
+local._DbTable.prototype.crudCountAll = function (onError) {
+/*
+* this function will count all of dbRow's in dbTable
+*/
+   this._cleanup();
+   return local.<span class="apidocCodeKeywordSpan">setTimeoutOnError</span>(onError, 0, null, this.dbRowList.length);
+};
+
+local._DbTable.prototype.crudCountManyByQuery = function (query, onError) {
+/*
+* this function will count the number of dbRow's in dbTable with given query
+*/
+   this._cleanup();
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.sortCompare" id="apidoc.elem.db-lite.sortCompare">
+        function <span class="apidocSignatureSpan">db-lite.</span>sortCompare
+        <span class="apidocSignatureSpan">(aa, bb, ii, jj)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">sortCompare = function (aa, bb, ii, jj) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will compare aa vs bb and return:
+ * -1 if aa &lt; bb
+ *  0 if aa === bb
+ *  1 if aa &gt; bb
+ * the priority for comparing different typeof's is:
+ * null &lt; boolean &lt; number &lt; string &lt; object &lt; undefined
+ */
+</span>    var typeof1;
+    var typeof2;
+    if (aa === bb) {
+        return (
+            ii &lt; jj
+            ? -1
+            : 1
+        );
+    }
+    if (aa === null) {
+        return -1;
+    }
+    if (bb === null) {
+        return 1;
+    }
+    typeof1 = typeof aa;
+    typeof2 = typeof bb;
+    if (typeof1 === typeof2) {
+        return (
+            typeof1 === "object"
+            ? 0
+            : aa &gt; bb
+            ? 1
+            : -1
+        );
+    }
+    if (typeof1 === "boolean") {
+        return -1;
+    }
+    if (typeof2 === "boolean") {
+        return 1;
+    }
+    if (typeof1 === "number") {
+        return -1;
+    }
+    if (typeof2 === "number") {
+        return 1;
+    }
+    if (typeof1 === "string") {
+        return -1;
+    }
+    if (typeof2 === "string") {
+        return 1;
+    }
+    return 0;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+// optimization - while-loop
+ii = 0;
+while (ii &lt; result.length) {
+    result[ii].$ii = ii;
+    ii += 1;
+}
+result.sort(function (aa, bb) {
+    return local.<span class="apidocCodeKeywordSpan">sortCompare</span>(
+        local.dbRowGetItem(aa, element.fieldName),
+        local.dbRowGetItem(bb, element.fieldName),
+        aa.$ii,
+        bb.$ii
+    );
+});
+if (element.isDescending) {
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.storageClear" id="apidoc.elem.db-lite.storageClear">
+        function <span class="apidocSignatureSpan">db-lite.</span>storageClear
+        <span class="apidocSignatureSpan">(onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">storageClear = function (onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will clear storage
+ */
+</span>    defer({
+        action: "clear"
+    }, onError);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    var onParallel;
+    console.error("db - dropping database ...");
+    onParallel = local.onParallel(function (err) {
+        local.setTimeoutOnError(onError, 0, err);
+    });
+    onParallel.counter += 1;
+    onParallel.counter += 1;
+    local.<span class="apidocCodeKeywordSpan">storageClear</span>(onParallel);
+    Object.keys(local.dbTableDict).forEach(function (key) {
+        onParallel.counter += 1;
+        local.dbTableDict[key].drop(onParallel);
+    });
+    onParallel();
+};
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.storageDefer" id="apidoc.elem.db-lite.storageDefer">
+        function <span class="apidocSignatureSpan">db-lite.</span>storageDefer
+        <span class="apidocSignatureSpan">(opt, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">storageDefer = function (opt, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will defer &lt;opt&gt;.action until storage is ready
+ */
+</span>    var data;
+    var isDone;
+    var objectStore;
+    var onError2;
+    var req;
+    var tmp;
+    onError = onError || function (err) {
+        // validate no err occurred
+        local.assertThrow(!err, err);
+    };
+    if (!storage) {
+        deferList.push(function () {
+            defer(opt, onError);
+        });
+        init();
+        return;
+    }
+    if (local.isBrowser) {
+        onError2 = function () {
+            /* istanbul ignore next */
+            if (isDone) {
+                return;
+            }
+            isDone = true;
+            onError(
+                req &amp;&amp; (req.error || req.transaction.error),
+                data || req.result || ""
+            );
+        };
+        switch (opt.action) {
+        case "clear":
+        case "removeItem":
+        case "setItem":
+            objectStore = storage.transaction(
+                storageDir,
+                "readwrite"
+            ).objectStore(storageDir);
+            break;
+        default:
+            objectStore = storage.transaction(
+                storageDir,
+                "readonly"
+            ).objectStore(storageDir);
+        }
+        switch (opt.action) {
+        case "clear":
+            req = objectStore.clear();
+            break;
+        case "getItem":
+            req = objectStore.get(String(opt.key));
+            break;
+        case "keys":
+            data = [];
+            req = objectStore.openCursor();
+            req.onsuccess = function () {
+                if (!req.result) {
+                    onError2();
+                    return;
+                }
+                data.push(req.result.key);
+                req.result.continue();
+            };
+            break;
+        case "length":
+            req = objectStore.count();
+            break;
+        case "removeItem":
+            req = objectStore.delete(String(opt.key));
+            break;
+        case "setItem":
+            req = objectStore.put(opt.value, String(opt.key));
+            break;
+        }
+        [
+            "onabort", "onerror", "onsuccess"
+        ].forEach(function (handler) {
+            req[handler] = req[handler] || onError2;
+        });
+        // debug req
+        local._debugStorageReq = req;
+    } else {
+        switch (opt.action) {
+        case "clear":
+            child_process.spawnSync("rm -f " + storage + "/*", {
+                shell: true,
+                stdio: [
+                    "ignore", 1, 2
+                ]
+            });
+            setTimeout(onError);
+            break;
+        case "getItem":
+            fs.readFile(
+                storage + "/" + encodeURIComponent(String(opt.key)),
+                "utf8",
+                function (ignore, data) {
+                    onError(null, data || "");
+                }
+            );
+            break;
+        case "keys":
+            fs.readdir(storage, function (err, data) {
+                onError(err, data &amp;&amp; data.map(decodeURIComponent));
+            });
+            break;
+        case "length":
+            fs.readdir(storage, function (err, data) {
+                onError(err, data &amp;&amp; data.length);
+            });
+            break;
+        case "removeItem":
+            fs.unlink(
+                storage + "/" + encodeURIComponent(String(opt.key)),
+                // ignore err
+                function () {
+                    onError();
+                }
+            );
+            break;
+        case "setItem":
+            tmp = os.tmpdir() + "/" + Date.now() + Math.random();
+            // save to tmp
+            fs.writeFile(tmp, opt.value, function (err) {
+                // validate no err occur...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.storageGetItem" id="apidoc.elem.db-lite.storageGetItem">
+        function <span class="apidocSignatureSpan">db-lite.</span>storageGetItem
+        <span class="apidocSignatureSpan">(key, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">storageGetItem = function (key, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will get the item with given key from storage
+ */
+</span>    defer({
+        action: "getItem",
+        key
+    }, onError);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    onParallel.counter += 1;
+    onParallel(err);
+    (data || []).forEach(function (key) {
+        if (key.indexOf("dbTable.") !== 0) {
+            return;
+        }
+        onParallel.counter += 1;
+        local.<span class="apidocCodeKeywordSpan">storageGetItem</span>(key, function (err, data) {
+            onParallel.counter += 1;
+            onParallel(err);
+            local.dbImport(data, onParallel);
+        });
+    });
+    onParallel();
+});
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.storageInit" id="apidoc.elem.db-lite.storageInit">
+        function <span class="apidocSignatureSpan">db-lite.</span>storageInit
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">storageInit = function () {
+<span class="apidocCodeCommentSpan">/*
+ * this function will init storage
+ */
+</span>    var onError;
+    var req;
+    onError = function (err) {
+        // validate no err occurred
+        local.assertThrow(!err, err);
+        if (local.isBrowser) {
+            storage = globalThis[storageDir];
+        }
+        while (deferList.length) {
+            deferList.shift()();
+        }
+    };
+    if (local.isBrowser) {
+        storage = globalThis[storageDir];
+    }
+    if (storage) {
+        onError();
+        return;
+    }
+    if (local.isBrowser) {
+        // init indexedDB
+        try {
+            req = globalThis.indexedDB.open(storageDir);
+            // debug req
+            local._debugStorageReqIndexedDB = req;
+            req.onerror = onError;
+            req.onsuccess = function () {
+                globalThis[storageDir] = req.result;
+                onError();
+            };
+            req.onupgradeneeded = function () {
+                if (!req.result.objectStoreNames.contains(storageDir)) {
+                    req.result.createObjectStore(storageDir);
+                }
+            };
+        } catch (ignore) {}
+    } else {
+        // mkdirp storage
+        storage = storageDir;
+        child_process.spawnSync("mkdir", [
+            "-p", storage
+        ], {
+            stdio: [
+                "ignore", 1, 2
+            ]
+        });
+        onError();
+    }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+ */
+var onParallel;
+// hack-jslint
+local.nop(opt);
+onParallel = local.onParallel(onError);
+onParallel.counter += 1;
+// test storageInit's init handling-behavior
+local.<span class="apidocCodeKeywordSpan">storageInit</span>();
+// test storageInit's re-init handling-behavior
+local.storageInit();
+// test crud handling-behavior
+onParallel.counter += 1;
+local.storageClear(onParallel);
+onParallel.counter += 1;
+local.storageGetItem("undefined", onParallel);
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.storageKeys" id="apidoc.elem.db-lite.storageKeys">
+        function <span class="apidocSignatureSpan">db-lite.</span>storageKeys
+        <span class="apidocSignatureSpan">(onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">storageKeys = function (onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will get all the keys in storage
+ */
+</span>    defer({
+        action: "keys"
+    }, onError);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+/*
+* this function will load the db from storage
+*/
+   var onParallel;
+   onParallel = local.onParallel(function (err) {
+       local.setTimeoutOnError(onError, 0, err);
+   });
+   local.<span class="apidocCodeKeywordSpan">storageKeys</span>(function (err, data) {
+       onParallel.counter += 1;
+       // validate no err occurred
+       onParallel.counter += 1;
+       onParallel(err);
+       (data || []).forEach(function (key) {
+           if (key.indexOf("dbTable.") !== 0) {
+               return;
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.storageLength" id="apidoc.elem.db-lite.storageLength">
+        function <span class="apidocSignatureSpan">db-lite.</span>storageLength
+        <span class="apidocSignatureSpan">(onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">storageLength = function (onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will get the number of items in storage
+ */
+</span>    defer({
+        action: "length"
+    }, onError);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+onParallel.counter += 1;
+local.storageClear(onParallel);
+onParallel.counter += 1;
+local.storageGetItem("undefined", onParallel);
+onParallel.counter += 1;
+local.storageKeys(onParallel);
+onParallel.counter += 1;
+local.<span class="apidocCodeKeywordSpan">storageLength</span>(onParallel);
+onParallel.counter += 1;
+local.storageRemoveItem("undefined", onParallel);
+onParallel.counter += 1;
+local.storageSetItem("undefined", "undefined", onParallel);
+//!! onParallel.counter += 1;
+//!! local.storageKeys(function () {
+    //!! if (local.isBrowser) {
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.storageRemoveItem" id="apidoc.elem.db-lite.storageRemoveItem">
+        function <span class="apidocSignatureSpan">db-lite.</span>storageRemoveItem
+        <span class="apidocSignatureSpan">(key, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">storageRemoveItem = function (key, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will remove the item with given key from storage
+ */
+</span>    defer({
+        action: "removeItem",
+        key
+    }, onError);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+   this.timerSave = null;
+   while (this.onSaveList.length) {
+       this.onSaveList.shift()();
+   }
+   // reset dbTable
+   local._DbTable.call(this, this);
+   // clear persistence
+   local.<span class="apidocCodeKeywordSpan">storageRemoveItem</span>("dbTable." + this.name + ".json", onError
+);
+};
+
+local._DbTable.prototype.export = function (onError) {
+/*
+* this function will export the db
+*/
+   var result;
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.storageSetItem" id="apidoc.elem.db-lite.storageSetItem">
+        function <span class="apidocSignatureSpan">db-lite.</span>storageSetItem
+        <span class="apidocSignatureSpan">(key, value, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">storageSetItem = function (key, value, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will set the item with given key and value to storage
+ */
+</span>    defer({
+        action: "setItem",
+        key,
+        value
+    }, onError);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+}
+if (onError) {
+    that.onSaveList.push(onError);
+}
+// throttle storage-writes to once every 1000 ms
+that.timerSave = that.timerSave || setTimeout(function () {
+    that.timerSave = null;
+    local.<span class="apidocCodeKeywordSpan">storageSetItem</span>(
+        "dbTable." + that.name + ".json",
+        that.export(),
+        function (err) {
+            while (that.onSaveList.length) {
+                that.onSaveList.shift()(err);
+            }
+        }
+...</pre></li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.db-lite._DbTable" id="apidoc.module.db-lite._DbTable">module db-lite._DbTable</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable._DbTable" id="apidoc.elem.db-lite._DbTable._DbTable">
+        function <span class="apidocSignatureSpan">db-lite.</span>_DbTable
+        <span class="apidocSignatureSpan">(opt)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">_DbTable = function (opt) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will create a dbTable
+ */
+</span>    this.name = String(opt.name);
+    // register dbTable in dbTableDict
+    local.dbTableDict[this.name] = this;
+    this.dbRowList = [];
+    this.isDirty = null;
+    this.idIndexList = [
+        {
+            isInteger: false,
+            name: "_id",
+            dict: {}
+        }
+    ];
+    this.onSaveList = [];
+    this.sizeLimit = opt.sizeLimit || 0;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.db-lite._DbTable.prototype" id="apidoc.module.db-lite._DbTable.prototype">module db-lite._DbTable.prototype</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype._cleanup" id="apidoc.elem.db-lite._DbTable.prototype._cleanup">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>_cleanup
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">_cleanup = function () {
+<span class="apidocCodeCommentSpan">/*
+ * this function will cleanup soft-deleted records from the dbTable
+ */
+</span>    var dbRow;
+    var ii;
+    var list;
+    if (!this.isDirty &amp;&amp; this.dbRowList.length &lt;= this.sizeLimit) {
+        return;
+    }
+    this.isDirty = null;
+    // cleanup dbRowList
+    list = this.dbRowList;
+    this.dbRowList = [];
+    // optimization - while-loop
+    ii = 0;
+    while (ii &lt; list.length) {
+        dbRow = list[ii];
+        // cleanup isRemoved
+        if (!dbRow.$isRemoved) {
+            this.dbRowList.push(dbRow);
+        }
+        ii += 1;
+    }
+    if (this.sizeLimit &amp;&amp; this.dbRowList.length &gt;= 1.5 * this.sizeLimit) {
+        this.dbRowList = this._crudGetManyByQuery(
+            {},
+            this.sortDefault,
+            0,
+            this.sizeLimit
+        );
+    }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+   return result;
+};
+
+local._DbTable.prototype.crudCountAll = function (onError) {
+/*
+* this function will count all of dbRow's in dbTable
+*/
+   this.<span class="apidocCodeKeywordSpan">_cleanup</span>();
+   return local.setTimeoutOnError(onError, 0, null, this.dbRowList.length);
+};
+
+local._DbTable.prototype.crudCountManyByQuery = function (query, onError) {
+/*
+* this function will count the number of dbRow's in dbTable with given query
+*/
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype._crudGetManyByQuery" id="apidoc.elem.db-lite._DbTable.prototype._crudGetManyByQuery">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>_crudGetManyByQuery
+        <span class="apidocSignatureSpan">( query, sort, skip, limit, shuffle )</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">_crudGetManyByQuery = function ( query, sort, skip, limit, shuffle ) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will get the dbRow's in the dbTable,
+ * with given query, sort, skip, and limit
+ */
+</span>    var ii;
+    var result;
+    result = this.dbRowList;
+    // get by query
+    if (result.length &amp;&amp; query &amp;&amp; Object.keys(query).length) {
+        result = local.dbRowListGetManyByQuery(this.dbRowList, query);
+    }
+    // sort
+    (sort || []).forEach(function (element) {
+        // bug-workaround - v8 does not have stable-sort
+        // optimization - while-loop
+        ii = 0;
+        while (ii &lt; result.length) {
+            result[ii].$ii = ii;
+            ii += 1;
+        }
+        result.sort(function (aa, bb) {
+            return local.sortCompare(
+                local.dbRowGetItem(aa, element.fieldName),
+                local.dbRowGetItem(bb, element.fieldName),
+                aa.$ii,
+                bb.$ii
+            );
+        });
+        if (element.isDescending) {
+            result.reverse();
+        }
+    });
+    // skip
+    result = result.slice(skip || 0);
+    // shuffle
+    local.functionOrNop(shuffle &amp;&amp; local.listShuffle)(result);
+    // limit
+    result = result.slice(0, limit || Infinity);
+    return result;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+        // cleanup isRemoved
+        if (!dbRow.$isRemoved) {
+            this.dbRowList.push(dbRow);
+        }
+        ii += 1;
+    }
+    if (this.sizeLimit &amp;&amp; this.dbRowList.length &gt;= 1.5 * this.sizeLimit) {
+        this.dbRowList = this.<span class="apidocCodeKeywordSpan">_crudGetManyByQuery</span>(
+            {},
+            this.sortDefault,
+            0,
+            this.sizeLimit
+        );
+    }
+};
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype._crudGetOneById" id="apidoc.elem.db-lite._DbTable.prototype._crudGetOneById">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>_crudGetOneById
+        <span class="apidocSignatureSpan">(idDict)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">_crudGetOneById = function (idDict) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will get the dbRow in the dbTable with given idDict
+ */
+</span>    var id;
+    var result;
+    idDict = local.objectSetOverride(idDict);
+    result = null;
+    this.idIndexList.some(function (idIndex) {
+        id = idDict[idIndex.name];
+        // optimization - hasOwnProperty
+        if (idIndex.dict.hasOwnProperty(id)) {
+            result = idIndex.dict[id];
+            return result;
+        }
+    });
+    return result;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+* this function will get the dbRow's in the dbTable with given idDictList
+*/
+   var that;
+   this._cleanup();
+   that = this;
+   return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
+       (idDictList || []).map(function (idDict) {
+           return that.<span class="apidocCodeKeywordSpan">_crudGetOneById</span>(idDict);
+       })
+   ));
+};
+
+local._DbTable.prototype.crudGetManyByQuery = function (opt, onError) {
+/*
+* this function will get the dbRow's in the dbTable with given &lt;opt&gt;.query
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype._crudRemoveOneById" id="apidoc.elem.db-lite._DbTable.prototype._crudRemoveOneById">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>_crudRemoveOneById
+        <span class="apidocSignatureSpan">(idDict, circularSet)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">_crudRemoveOneById = function (idDict, circularSet) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will remove the dbRow from the dbTable with given idDict
+ */
+</span>    var id;
+    var result;
+    var that;
+    if (!idDict) {
+        return null;
+    }
+    that = this;
+    circularSet = circularSet || new Set([
+        idDict
+    ]);
+    result = null;
+    that.idIndexList.forEach(function (idIndex) {
+        id = idDict[idIndex.name];
+        // optimization - hasOwnProperty
+        if (!idIndex.dict.hasOwnProperty(id)) {
+            return;
+        }
+        result = idIndex.dict[id];
+        delete idIndex.dict[id];
+        // optimization - soft-delete
+        result.$isRemoved = true;
+        that.isDirty = true;
+        if (circularSet.has(result)) {
+            return;
+        }
+        circularSet.add(result);
+        // recurse
+        that._crudRemoveOneById(result, circularSet);
+    });
+    that.save();
+    return result;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+        result.$isRemoved = true;
+        that.isDirty = true;
+        if (circularSet.has(result)) {
+            return;
+        }
+        circularSet.add(result);
+        // recurse
+        that.<span class="apidocCodeKeywordSpan">_crudRemoveOneById</span>(result, circularSet);
+    });
+    that.save();
+    return result;
+};
+
+local._DbTable.prototype._crudSetOneById = function (dbRow) {
+/*
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype._crudSetOneById" id="apidoc.elem.db-lite._DbTable.prototype._crudSetOneById">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>_crudSetOneById
+        <span class="apidocSignatureSpan">(dbRow)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">_crudSetOneById = function (dbRow) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will set the dbRow into the dbTable with given dbRow._id
+ * WARNING - existing dbRow with conflicting dbRow._id will be removed
+ */
+</span>    var existing;
+    var id;
+    var normalize;
+    var timeNow;
+    normalize = function (dbRow) {
+    /*
+     * this function will recursively normalize dbRow
+     */
+        switch (typeof dbRow) {
+        case "boolean":
+        case "string":
+            return dbRow;
+        case "number":
+            return (
+                Number.isFinite(dbRow)
+                ? dbRow
+                : undefined
+            );
+        case "object":
+            if (!dbRow) {
+                return;
+            }
+            break;
+        default:
+            return;
+        }
+        Object.keys(dbRow).forEach(function (key) {
+            dbRow[key] = (
+                (key[0] === "$" || key.indexOf(".") &gt;= 0)
+                // invalid-property
+                ? undefined
+                // recurse
+                : normalize(dbRow[key])
+            );
+        });
+        return dbRow;
+    };
+    dbRow = local.jsonCopy(local.objectSetOverride(dbRow));
+    // update timestamp
+    timeNow = new Date().toISOString();
+    dbRow._timeCreated = dbRow._timeCreated || timeNow;
+    if (!local.modeImport) {
+        dbRow._timeUpdated = timeNow;
+    }
+    // normalize
+    dbRow = normalize(dbRow);
+    dbRow = local.jsonCopy(dbRow);
+    // remove existing dbRow
+    existing = this._crudRemoveOneById(dbRow) || dbRow;
+    this.idIndexList.forEach(function (idIndex) {
+        // auto-set id
+        id = local.dbRowSetId(existing, idIndex);
+        // copy id from existing to dbRow
+        dbRow[idIndex.name] = id;
+        // set dbRow
+        idIndex.dict[id] = dbRow;
+    });
+    // update dbRowList
+    this.dbRowList.push(dbRow);
+    this.save();
+    return dbRow;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+   });
+   // remove existing dbRow
+   result = local.jsonCopy(this._crudRemoveOneById(result)) || result;
+   // update dbRow
+   delete dbRow._timeCreated;
+   local.objectSetOverride(result, dbRow, 10);
+   // replace dbRow
+   result = this.<span class="apidocCodeKeywordSpan">_crudSetOneById</span>(result);
+   return result;
+};
+
+local._DbTable.prototype.crudCountAll = function (onError) {
+/*
+* this function will count all of dbRow's in dbTable
+*/
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype._crudUpdateOneById" id="apidoc.elem.db-lite._DbTable.prototype._crudUpdateOneById">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>_crudUpdateOneById
+        <span class="apidocSignatureSpan">(dbRow)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">_crudUpdateOneById = function (dbRow) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will update the dbRow in the dbTable,
+ * if it exists with given dbRow._id
+ * WARNING
+ * existing dbRow's with conflicting unique-keys (besides the one being updated)
+ * will be removed
+ */
+</span>    var id;
+    var result;
+    dbRow = local.jsonCopy(local.objectSetOverride(dbRow));
+    result = {};
+    this.idIndexList.some(function (idIndex) {
+        id = dbRow[idIndex.name];
+        // optimization - hasOwnProperty
+        if (idIndex.dict.hasOwnProperty(id)) {
+            result = idIndex.dict[id];
+            return true;
+        }
+    });
+    // remove existing dbRow
+    result = local.jsonCopy(this._crudRemoveOneById(result)) || result;
+    // update dbRow
+    delete dbRow._timeCreated;
+    local.objectSetOverride(result, dbRow, 10);
+    // replace dbRow
+    result = this._crudSetOneById(result);
+    return result;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+ * this function will update the dbRowList in the dbTable,
+ * if they exist with given dbRow._id's
+ */
+var that;
+that = this;
+return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
+    (dbRowList || []).map(function (dbRow) {
+        return that.<span class="apidocCodeKeywordSpan">_crudUpdateOneById</span>(dbRow);
+    })
+));
+};
+
+local._DbTable.prototype.crudUpdateManyByQuery = function (
+query,
+dbRow,
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.crudCountAll" id="apidoc.elem.db-lite._DbTable.prototype.crudCountAll">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudCountAll
+        <span class="apidocSignatureSpan">(onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">crudCountAll = function (onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will count all of dbRow's in dbTable
+ */
+</span>    this._cleanup();
+    return local.setTimeoutOnError(onError, 0, null, this.dbRowList.length);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+        query: { field2: { $gte: -Infinity, $lte: Infinity } },\n\
+        skip: 0,\n\
+        sort: [{ fieldName: "_timeUpdated", idDescending: true }]\n\
+    }, gotoNext);\n\
+    break;\n\
+case 10:\n\
+    console.error(data);\n\
+    dbTable1.<span class="apidocCodeKeywordSpan">crudCountAll</span>(gotoNext);\n\
+    break;\n\
+case 11:\n\
+    console.error("number of rows: " + data);\n\
+    break;\n\
+default:\n\
+    console.error(err.stack);\n\
+}\n\
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.crudCountManyByQuery" id="apidoc.elem.db-lite._DbTable.prototype.crudCountManyByQuery">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudCountManyByQuery
+        <span class="apidocSignatureSpan">(query, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">crudCountManyByQuery = function (query, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will count the number of dbRow's in dbTable with given query
+ */
+</span>    this._cleanup();
+    return local.setTimeoutOnError(
+        onError,
+        0,
+        null,
+        this._crudGetManyByQuery(query).length
+    );
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+// test idIndexRemove's null-case handling-behavior
+opt.dbTable.idIndexRemove({
+    name: "_id"
+});
+// validate dbRowCount
+local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
+// test crudCountManyByQuery's null-case handling-behavior
+opt.data = opt.dbTable.<span class="apidocCodeKeywordSpan">crudCountManyByQuery</span>();
+// validate dbRowCount
+local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
+// validate data
+local.assertJsonEqual(opt.data, 0);
+// test crudGetManyById's null-case handling-behavior
+opt.data = opt.dbTable.crudGetManyById();
+// validate dbRowCount
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.crudGetManyById" id="apidoc.elem.db-lite._DbTable.prototype.crudGetManyById">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudGetManyById
+        <span class="apidocSignatureSpan">(idDictList, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">crudGetManyById = function (idDictList, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will get the dbRow's in the dbTable with given idDictList
+ */
+</span>    var that;
+    this._cleanup();
+    that = this;
+    return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
+        (idDictList || []).map(function (idDict) {
+            return that._crudGetOneById(idDict);
+        })
+    ));
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+// test crudCountManyByQuery's null-case handling-behavior
+opt.data = opt.dbTable.crudCountManyByQuery();
+// validate dbRowCount
+local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
+// validate data
+local.assertJsonEqual(opt.data, 0);
+// test crudGetManyById's null-case handling-behavior
+opt.data = opt.dbTable.<span class="apidocCodeKeywordSpan">crudGetManyById</span>();
+// validate dbRowCount
+local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
+// validate data
+local.assertJsonEqual(opt.data, []);
+// test crudGetManyByQuery's null-case handling-behavior
+opt.data = opt.dbTable.crudGetManyByQuery();
+// validate dbRowCount
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.crudGetManyByQuery" id="apidoc.elem.db-lite._DbTable.prototype.crudGetManyByQuery">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudGetManyByQuery
+        <span class="apidocSignatureSpan">(opt, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">crudGetManyByQuery = function (opt, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will get the dbRow's in the dbTable with given &lt;opt&gt;.query
+ */
+</span>    this._cleanup();
+    opt = local.objectSetOverride(opt);
+    return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
+        this._crudGetManyByQuery(
+            opt.query,
+            opt.sort || this.sortDefault,
+            opt.skip,
+            opt.limit,
+            opt.shuffle
+        ),
+        opt.fieldList
+    ));
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+   &lt;script&gt;
+   var dbTable1;
+   dbTable1 = window.dbTable1 = window.utility2_db.dbTableCreateOne({
+       name: "dbTable1"
+   });
+   dbTable1.idIndexCreate({ name: "field1" });
+   dbTable1.crudSetOneById({ field1: "hello", field2: "world" });
+   console.log(dbTable1.<span class="apidocCodeKeywordSpan">crudGetManyByQuery</span>({
+       limit: Infinity,
+       query: { field1: "hello" },
+       skip: 0,
+       sort: [{ fieldName: 'field1', isDescending: false }]
+   }));
+   &lt;/script&gt;
+*
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.crudGetOneById" id="apidoc.elem.db-lite._DbTable.prototype.crudGetOneById">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudGetOneById
+        <span class="apidocSignatureSpan">(idDict, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">crudGetOneById = function (idDict, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will get the dbRow in the dbTable with given idDict
+ */
+</span>    this._cleanup();
+    return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
+        this._crudGetOneById(idDict)
+    ));
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+// test crudGetManyByQuery's null-case handling-behavior
+opt.data = opt.dbTable.crudGetManyByQuery();
+// validate dbRowCount
+local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
+// validate data
+local.assertJsonEqual(opt.data, []);
+// test crudGetOneById's null-case handling-behavior
+opt.data = opt.dbTable.<span class="apidocCodeKeywordSpan">crudGetOneById</span>();
+// validate dbRowCount
+local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
+// validate data
+local.assertJsonEqual(opt.data, null);
+// test crudGetOneByRandom's null-case handling-behavior
+opt.data = opt.dbTable.crudGetOneByRandom();
+// validate dbRowCount
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.crudGetOneByQuery" id="apidoc.elem.db-lite._DbTable.prototype.crudGetOneByQuery">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudGetOneByQuery
+        <span class="apidocSignatureSpan">(query, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">crudGetOneByQuery = function (query, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will get the dbRow in the dbTable with given query
+ */
+</span>    var ii;
+    var result;
+    this._cleanup();
+    // optimization - while-loop
+    ii = 0;
+    while (ii &lt; this.dbRowList.length) {
+        result = local.dbRowListGetManyByQuery([
+            this.dbRowList[ii]
+        ], query)[0];
+        if (result) {
+            break;
+        }
+        ii += 1;
+    }
+    return local.setTimeoutOnError(
+        onError,
+        0,
+        null,
+        local.dbRowProject(result)
+    );
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+// test crudGetOneByRandom's null-case handling-behavior
+opt.data = opt.dbTable.crudGetOneByRandom();
+// validate dbRowCount
+local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
+// validate data
+local.assertJsonEqual(opt.data, null);
+// test crudGetOneByQuery's null-case handling-behavior
+opt.data = opt.dbTable.<span class="apidocCodeKeywordSpan">crudGetOneByQuery</span>();
+// validate dbRowCount
+local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
+// validate data
+local.assertJsonEqual(opt.data, null);
+// test crudRemoveManyById's null-case handling-behavior
+opt.data = opt.dbTable.crudRemoveManyById();
+// validate dbRowCount
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.crudGetOneByRandom" id="apidoc.elem.db-lite._DbTable.prototype.crudGetOneByRandom">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudGetOneByRandom
+        <span class="apidocSignatureSpan">(onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">crudGetOneByRandom = function (onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will get a random dbRow in the dbTable
+ */
+</span>    this._cleanup();
+    return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
+        this.dbRowList[Math.floor(Math.random() * this.dbRowList.length)]
+    ));
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+// test crudGetOneById's null-case handling-behavior
+opt.data = opt.dbTable.crudGetOneById();
+// validate dbRowCount
+local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
+// validate data
+local.assertJsonEqual(opt.data, null);
+// test crudGetOneByRandom's null-case handling-behavior
+opt.data = opt.dbTable.<span class="apidocCodeKeywordSpan">crudGetOneByRandom</span>();
+// validate dbRowCount
+local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
+// validate data
+local.assertJsonEqual(opt.data, null);
+// test crudGetOneByQuery's null-case handling-behavior
+opt.data = opt.dbTable.crudGetOneByQuery();
+// validate dbRowCount
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.crudRemoveAll" id="apidoc.elem.db-lite._DbTable.prototype.crudRemoveAll">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudRemoveAll
+        <span class="apidocSignatureSpan">(onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">crudRemoveAll = function (onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will remove all of the dbRow's from the dbTable
+ */
+</span>    var idIndexList;
+    // save idIndexList
+    idIndexList = this.idIndexList;
+    // reset dbTable
+    local._DbTable.call(this, this);
+    // restore idIndexList
+    local.dbTableCreateOne({
+        name: this.name,
+        idIndexCreateList: idIndexList
+    }, onError);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+   var onParallel;
+   onParallel = local.onParallel(function (err) {
+       local.setTimeoutOnError(onError, 0, err);
+   });
+   onParallel.counter += 1;
+   Object.keys(local.dbTableDict).forEach(function (key) {
+       onParallel.counter += 1;
+       local.dbTableDict[key].<span class="apidocCodeKeywordSpan">crudRemoveAll</span>(onParallel);
+   });
+   onParallel();
+};
+
+local.dbDrop = function (onError) {
+/*
+* this function will drop the db
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.crudRemoveManyById" id="apidoc.elem.db-lite._DbTable.prototype.crudRemoveManyById">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudRemoveManyById
+        <span class="apidocSignatureSpan">(idDictList, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">crudRemoveManyById = function (idDictList, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will remove the dbRow's from the dbTable with given idDictList
+ */
+</span>    var that;
+    that = this;
+    return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
+        (idDictList || []).map(function (dbRow) {
+            return that._crudRemoveOneById(dbRow);
+        })
+    ));
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+// test crudGetOneByQuery's null-case handling-behavior
+opt.data = opt.dbTable.crudGetOneByQuery();
+// validate dbRowCount
+local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
+// validate data
+local.assertJsonEqual(opt.data, null);
+// test crudRemoveManyById's null-case handling-behavior
+opt.data = opt.dbTable.<span class="apidocCodeKeywordSpan">crudRemoveManyById</span>();
+// validate dbRowCount
+local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
+// validate data
+local.assertJsonEqual(opt.data, []);
+// test crudRemoveManyByQuery's null-case handling-behavior
+opt.data = opt.dbTable.crudRemoveManyByQuery();
+// validate dbRowCount
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.crudRemoveManyByQuery" id="apidoc.elem.db-lite._DbTable.prototype.crudRemoveManyByQuery">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudRemoveManyByQuery
+        <span class="apidocSignatureSpan">(query, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">crudRemoveManyByQuery = function (query, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will remove the dbRow's from the dbTable with given query
+ */
+</span>    var that;
+    that = this;
+    return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
+        that._crudGetManyByQuery(query).map(function (dbRow) {
+            return that._crudRemoveOneById(dbRow);
+        })
+    ));
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+ * will remove from &lt;dbTable&gt; with json &lt;query&gt;, &lt;dbRowList&gt;
+ */
+    local.dbTableCreateOne({
+        name: process.argv[3]
+    }, function (err, that) {
+        // validate no err occurred
+        local.assertThrow(!err, err);
+        console.log(JSON.stringify(that.<span class="apidocCodeKeywordSpan">crudRemoveManyByQuery</span>(
+            JSON.parse(process.argv[4])
+        ), null, 4));
+    });
+};
+
+local.cliDict.dbTableCrudSetManyById = function () {
+/*
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.crudRemoveOneById" id="apidoc.elem.db-lite._DbTable.prototype.crudRemoveOneById">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudRemoveOneById
+        <span class="apidocSignatureSpan">(idDict, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">crudRemoveOneById = function (idDict, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will remove the dbRow from the dbTable with given idDict
+ */
+</span>    return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
+        this._crudRemoveOneById(idDict)
+    ));
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+case 4:\n\
+    dbTable1.crudSetOneById({ field1: "bb", field2: 2, field3: "bar" }, gotoNext);\n\
+    break;\n\
+case 5:\n\
+    dbTable1.crudSetOneById({ field1: "cc", field2: 3, field3: "baz" }, gotoNext);\n\
+    break;\n\
+case 6:\n\
+    dbTable1.<span class="apidocCodeKeywordSpan">crudRemoveOneById</span>({ field1: "aa" }, gotoNext);\n\
+    break;\n\
+case 7:\n\
+    dbTable1.crudUpdateOneById({ field1: "bb", field2: -1 }, gotoNext);\n\
+    break;\n\
+case 8:\n\
+    dbTable1.crudSetOneById({ field2: Math.random() }, gotoNext);\n\
+    break;\n\
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.crudSetManyById" id="apidoc.elem.db-lite._DbTable.prototype.crudSetManyById">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudSetManyById
+        <span class="apidocSignatureSpan">(dbRowList, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">crudSetManyById = function (dbRowList, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will set the dbRowList into the dbTable
+ */
+</span>    var that;
+    that = this;
+    return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
+        (dbRowList || []).map(function (dbRow) {
+            return that._crudSetOneById(dbRow);
+        })
+    ));
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    that.idIndexRemove(idIndex);
+});
+// create idIndex
+(opt.idIndexCreateList || []).forEach(function (idIndex) {
+    that.idIndexCreate(idIndex);
+});
+// upsert dbRow
+that.<span class="apidocCodeKeywordSpan">crudSetManyById</span>(opt.dbRowList);
+// restore dbTable from persistent-storage
+that.isLoaded = that.isLoaded || opt.isLoaded;
+if (!that.isLoaded) {
+    local.storageGetItem("dbTable." + that.name + ".json", function (
+        err,
+        data
+    ) {
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.crudSetOneById" id="apidoc.elem.db-lite._DbTable.prototype.crudSetOneById">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudSetOneById
+        <span class="apidocSignatureSpan">(dbRow, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">crudSetOneById = function (dbRow, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will set the dbRow into the dbTable with given dbRow._id
+ */
+</span>    return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
+        this._crudSetOneById(dbRow)
+    ));
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+&lt;script src="assets.db-lite.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+var dbTable1;
+dbTable1 = window.dbTable1 = window.utility2_db.dbTableCreateOne({
+    name: "dbTable1"
+});
+dbTable1.idIndexCreate({ name: "field1" });
+dbTable1.<span class="apidocCodeKeywordSpan">crudSetOneById</span>({ field1: "hello", field2: "world" });
+console.log(dbTable1.crudGetManyByQuery({
+    limit: Infinity,
+    query: { field1: "hello" },
+    skip: 0,
+    sort: [{ fieldName: 'field1', isDescending: false }]
+}));
+&lt;/script&gt;
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.crudUpdateManyById" id="apidoc.elem.db-lite._DbTable.prototype.crudUpdateManyById">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudUpdateManyById
+        <span class="apidocSignatureSpan">(dbRowList, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">crudUpdateManyById = function (dbRowList, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will update the dbRowList in the dbTable,
+ * if they exist with given dbRow._id's
+ */
+</span>    var that;
+    that = this;
+    return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
+        (dbRowList || []).map(function (dbRow) {
+            return that._crudUpdateOneById(dbRow);
+        })
+    ));
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+// test crudRemoveOneById's null-case handling-behavior
+opt.data = opt.dbTable.crudRemoveOneById();
+// validate dbRowCount
+local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
+// validate data
+local.assertJsonEqual(opt.data, null);
+// test crudUpdateManyById's null-case handling-behavior
+opt.data = opt.dbTable.<span class="apidocCodeKeywordSpan">crudUpdateManyById</span>();
+// validate dbRowCount
+local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
+// validate data
+local.assertJsonEqual(opt.data, []);
+// test crudUpdateManyByQuery's null-case handling-behavior
+opt.data = opt.dbTable.crudUpdateManyByQuery();
+// validate dbRowCount
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.crudUpdateManyByQuery" id="apidoc.elem.db-lite._DbTable.prototype.crudUpdateManyByQuery">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudUpdateManyByQuery
+        <span class="apidocSignatureSpan">( query, dbRow, onError )</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">crudUpdateManyByQuery = function ( query, dbRow, onError ) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will update the dbRow's in the dbTable with given query
+ */
+</span>    var result;
+    var that;
+    var tmp;
+    that = this;
+    tmp = local.jsonCopy(local.objectSetOverride(dbRow));
+    result = that._crudGetManyByQuery(query).map(function (dbRow) {
+        tmp._id = dbRow._id;
+        return that._crudUpdateOneById(tmp);
+    });
+    return local.setTimeoutOnError(onError, 0, null, result);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+// test crudUpdateManyById's null-case handling-behavior
+opt.data = opt.dbTable.crudUpdateManyById();
+// validate dbRowCount
+local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
+// validate data
+local.assertJsonEqual(opt.data, []);
+// test crudUpdateManyByQuery's null-case handling-behavior
+opt.data = opt.dbTable.<span class="apidocCodeKeywordSpan">crudUpdateManyByQuery</span>();
+// validate dbRowCount
+local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
+// validate data
+local.assertJsonEqual(opt.data, []);
+// test crudSetOneById's and crudUpdateOneById's null-case handling-behavior
+[
+    "crudSetOneById", "crudUpdateOneById"
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.crudUpdateOneById" id="apidoc.elem.db-lite._DbTable.prototype.crudUpdateOneById">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>crudUpdateOneById
+        <span class="apidocSignatureSpan">(dbRow, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">crudUpdateOneById = function (dbRow, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will update the dbRow in the dbTable,
+ * if it exists with given dbRow._id
+ */
+</span>    return local.setTimeoutOnError(onError, 0, null, local.dbRowProject(
+        this._crudUpdateOneById(dbRow)
+    ));
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+case 5:\n\
+    dbTable1.crudSetOneById({ field1: "cc", field2: 3, field3: "baz" }, gotoNext);\n\
+    break;\n\
+case 6:\n\
+    dbTable1.crudRemoveOneById({ field1: "aa" }, gotoNext);\n\
+    break;\n\
+case 7:\n\
+    dbTable1.<span class="apidocCodeKeywordSpan">crudUpdateOneById</span>({ field1: "bb", field2: -1 }, gotoNext);\n\
+    break;\n\
+case 8:\n\
+    dbTable1.crudSetOneById({ field2: Math.random() }, gotoNext);\n\
+    break;\n\
+case 9:\n\
+    dbTable1.crudGetManyByQuery({\n\
+        limit: Infinity,\n\
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.drop" id="apidoc.elem.db-lite._DbTable.prototype.drop">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>drop
+        <span class="apidocSignatureSpan">(onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">drop = function (onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will drop the dbTable
+ */
+</span>    console.error("db - dropping dbTable " + this.name + " ...");
+    // cancel pending save
+    this.timerSave = null;
+    while (this.onSaveList.length) {
+        this.onSaveList.shift()();
+    }
+    // reset dbTable
+    local._DbTable.call(this, this);
+    // clear persistence
+    local.storageRemoveItem("dbTable." + this.name + ".json", onError);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+       local.setTimeoutOnError(onError, 0, err);
+   });
+   onParallel.counter += 1;
+   onParallel.counter += 1;
+   local.storageClear(onParallel);
+   Object.keys(local.dbTableDict).forEach(function (key) {
+       onParallel.counter += 1;
+       local.dbTableDict[key].<span class="apidocCodeKeywordSpan">drop</span>(onParallel);
+   });
+   onParallel();
+};
+
+local.dbExport = function (onError) {
+/*
+* this function will export the db as serialized text
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.export" id="apidoc.elem.db-lite._DbTable.prototype.export">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>export
+        <span class="apidocSignatureSpan">(onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">export = function (onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will export the db
+ */
+</span>    var result;
+    var that;
+    this._cleanup();
+    that = this;
+    result = "";
+    that.idIndexList.forEach(function (idIndex) {
+        result += that.name + " idIndexCreate " + JSON.stringify({
+            isInteger: idIndex.isInteger,
+            name: idIndex.name
+        }) + "\n";
+    });
+    result += that.name + " sizeLimit " + that.sizeLimit + "\n";
+    result += that.name + " sortDefault " + JSON.stringify(
+        that.sortDefault
+    ) + "\n";
+    that.crudGetManyByQuery({}).forEach(function (dbRow) {
+        result += that.name + " dbRowSet " + JSON.stringify(dbRow) + "\n";
+    });
+    return local.setTimeoutOnError(onError, 0, null, result.trim());
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    that.onSaveList.push(onError);
+}
+// throttle storage-writes to once every 1000 ms
+that.timerSave = that.timerSave || setTimeout(function () {
+    that.timerSave = null;
+    local.storageSetItem(
+        "dbTable." + that.name + ".json",
+        that.<span class="apidocCodeKeywordSpan">export</span>(),
+        function (err) {
+            while (that.onSaveList.length) {
+                that.onSaveList.shift()(err);
+            }
+        }
+    );
+}, 1000);
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.idIndexCreate" id="apidoc.elem.db-lite._DbTable.prototype.idIndexCreate">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>idIndexCreate
+        <span class="apidocSignatureSpan">(opt, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">idIndexCreate = function (opt, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will create an idIndex with given &lt;opt&gt;.name
+ */
+</span>    var dbRow;
+    var idIndex;
+    var ii;
+    var name;
+    opt = local.objectSetOverride(opt);
+    name = String(opt.name);
+    // disallow idIndex with dot-name
+    if (name.indexOf(".") &gt;= 0 || name === "_id") {
+        return local.setTimeoutOnError(onError);
+    }
+    // remove existing idIndex
+    this.idIndexRemove(opt);
+    // init idIndex
+    idIndex = {
+        dict: {},
+        isInteger: Boolean(opt.isInteger),
+        name
+    };
+    this.idIndexList.push(idIndex);
+    // populate idIndex with dbRowList
+    // optimization - while-loop
+    ii = 0;
+    while (ii &lt; this.dbRowList.length) {
+        dbRow = this.dbRowList[ii];
+        // auto-set id
+        if (!dbRow.$isRemoved) {
+            idIndex.dict[local.dbRowSetId(dbRow, idIndex)] = dbRow;
+        }
+        ii += 1;
+    }
+    this.save();
+    return local.setTimeoutOnError(onError);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+ * browser example:
+&lt;script src="assets.db-lite.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+var dbTable1;
+dbTable1 = window.dbTable1 = window.utility2_db.dbTableCreateOne({
+    name: "dbTable1"
+});
+dbTable1.<span class="apidocCodeKeywordSpan">idIndexCreate</span>({ name: "field1" });
+dbTable1.crudSetOneById({ field1: "hello", field2: "world" });
+console.log(dbTable1.crudGetManyByQuery({
+    limit: Infinity,
+    query: { field1: "hello" },
+    skip: 0,
+    sort: [{ fieldName: 'field1', isDescending: false }]
+}));
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.idIndexRemove" id="apidoc.elem.db-lite._DbTable.prototype.idIndexRemove">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>idIndexRemove
+        <span class="apidocSignatureSpan">(opt, onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">idIndexRemove = function (opt, onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will remove the idIndex with given &lt;opt&gt;.name
+ */
+</span>    var name;
+    opt = local.objectSetOverride(opt);
+    name = String(opt.name);
+    this.idIndexList = this.idIndexList.filter(function (idIndex) {
+        return idIndex.name !== name || idIndex.name === "_id";
+    });
+    this.save();
+    return local.setTimeoutOnError(onError);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+opt = local.objectSetOverride(opt);
+name = String(opt.name);
+// disallow idIndex with dot-name
+if (name.indexOf(".") &gt;= 0 || name === "_id") {
+    return local.setTimeoutOnError(onError);
+}
+// remove existing idIndex
+this.<span class="apidocCodeKeywordSpan">idIndexRemove</span>(opt);
+// init idIndex
+idIndex = {
+    dict: {},
+    isInteger: Boolean(opt.isInteger),
+    name
+};
+this.idIndexList.push(idIndex);
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite._DbTable.prototype.save" id="apidoc.elem.db-lite._DbTable.prototype.save">
+        function <span class="apidocSignatureSpan">db-lite._DbTable.prototype.</span>save
+        <span class="apidocSignatureSpan">(onError)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">save = function (onError) {
+<span class="apidocCodeCommentSpan">/*
+ * this function will save the dbTable to storage
+ */
+</span>    var that;
+    that = this;
+    if (local.modeImport) {
+        return;
+    }
+    if (onError) {
+        that.onSaveList.push(onError);
+    }
+    // throttle storage-writes to once every 1000 ms
+    that.timerSave = that.timerSave || setTimeout(function () {
+        that.timerSave = null;
+        local.storageSetItem(
+            "dbTable." + that.name + ".json",
+            that.export(),
+            function (err) {
+                while (that.onSaveList.length) {
+                    that.onSaveList.shift()(err);
+                }
+            }
+        );
+    }, 1000);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+       if (circularSet.has(result)) {
+           return;
+       }
+       circularSet.add(result);
+       // recurse
+       that._crudRemoveOneById(result, circularSet);
+   });
+   that.<span class="apidocCodeKeywordSpan">save</span>();
+   return result;
+};
+
+local._DbTable.prototype._crudSetOneById = function (dbRow) {
+/*
+* this function will set the dbRow into the dbTable with given dbRow._id
+* WARNING - existing dbRow with conflicting dbRow._id will be removed
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.db-lite.cliDict" id="apidoc.module.db-lite.cliDict">module db-lite.cliDict</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.cliDict.dbTableCrudGetManyByQuery" id="apidoc.elem.db-lite.cliDict.dbTableCrudGetManyByQuery">
+        function <span class="apidocSignatureSpan">db-lite.cliDict.</span>dbTableCrudGetManyByQuery
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbTableCrudGetManyByQuery = function () {
+<span class="apidocCodeCommentSpan">/*
+ * &lt;dbTable&gt; &lt;query&gt;
+ * will get from &lt;dbTable&gt; with json &lt;query&gt;, &lt;dbRowList&gt;
+ */
+</span>    local.dbTableCreateOne({
+        name: process.argv[3]
+    }, function (err, that) {
+        // validate no err occurred
+        local.assertThrow(!err, err);
+        console.log(JSON.stringify(that.crudGetManyByQuery(
+            JSON.parse(process.argv[4] || "{}")
+        ), null, 4));
+    });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.cliDict.dbTableCrudRemoveManyByQuery" id="apidoc.elem.db-lite.cliDict.dbTableCrudRemoveManyByQuery">
+        function <span class="apidocSignatureSpan">db-lite.cliDict.</span>dbTableCrudRemoveManyByQuery
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbTableCrudRemoveManyByQuery = function () {
+<span class="apidocCodeCommentSpan">/*
+ * &lt;dbTable&gt; &lt;query&gt;
+ * will remove from &lt;dbTable&gt; with json &lt;query&gt;, &lt;dbRowList&gt;
+ */
+</span>    local.dbTableCreateOne({
+        name: process.argv[3]
+    }, function (err, that) {
+        // validate no err occurred
+        local.assertThrow(!err, err);
+        console.log(JSON.stringify(that.crudRemoveManyByQuery(
+            JSON.parse(process.argv[4])
+        ), null, 4));
+    });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.cliDict.dbTableCrudSetManyById" id="apidoc.elem.db-lite.cliDict.dbTableCrudSetManyById">
+        function <span class="apidocSignatureSpan">db-lite.cliDict.</span>dbTableCrudSetManyById
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbTableCrudSetManyById = function () {
+<span class="apidocCodeCommentSpan">/*
+ * &lt;dbTable&gt; &lt;dbRowList&gt;
+ * will set in &lt;dbTable&gt;, &lt;dbRowList&gt;
+ */
+</span>    local.dbTableCreateOne({
+        name: process.argv[3]
+    }, function (err, that) {
+        // validate no err occurred
+        local.assertThrow(!err, err);
+        that.crudSetManyById(JSON.parse(process.argv[4]));
+    });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.cliDict.dbTableHeaderDictGet" id="apidoc.elem.db-lite.cliDict.dbTableHeaderDictGet">
+        function <span class="apidocSignatureSpan">db-lite.cliDict.</span>dbTableHeaderDictGet
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbTableHeaderDictGet = function () {
+<span class="apidocCodeCommentSpan">/*
+ * &lt;dbTable&gt;
+ * will get from &lt;dbTable&gt;, &lt;headerDict&gt;
+ */
+</span>    local.dbTableCreateOne({
+        name: process.argv[3]
+    }, function (err, that) {
+        // validate no err occurred
+        local.assertThrow(!err, err);
+        var tmp;
+        tmp = [];
+        that.idIndexList.forEach(function (idIndex) {
+            tmp.push({
+                isInteger: idIndex.isInteger,
+                name: idIndex.name
+            });
+        });
+        console.log(JSON.stringify({
+            idIndexList: tmp,
+            sizeLimit: that.sizeLimit,
+            sortDefault: that.sortDefault
+        }, null, 4));
+    });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+       local.tmp = [];
+       that.idIndexList.forEach(function (idIndex) {
+           local.tmp.push({
+               isInteger: idIndex.isInteger,
+               name: idIndex.name
+           });
+       });
+       local.cliDict.<span class="apidocCodeKeywordSpan">dbTableHeaderDictGet</span>();
+   });
+};
+
+local.cliDict.dbTableIdIndexCreate = function () {
+/*
+* &lt;dbTable&gt; &lt;idIndex&gt;
+* will create in &lt;dbTable&gt;, &lt;idIndex&gt;
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.cliDict.dbTableHeaderDictSet" id="apidoc.elem.db-lite.cliDict.dbTableHeaderDictSet">
+        function <span class="apidocSignatureSpan">db-lite.cliDict.</span>dbTableHeaderDictSet
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbTableHeaderDictSet = function () {
+<span class="apidocCodeCommentSpan">/*
+ * &lt;dbTable&gt; &lt;headerDict&gt;
+ * will set in &lt;dbTable&gt;, &lt;headerDict&gt;
+ */
+</span>    local.dbTableCreateOne({
+        name: process.argv[3]
+    }, function (err, that) {
+        // validate no err occurred
+        local.assertThrow(!err, err);
+        local.tmp = JSON.parse(process.argv[4]);
+        that.sizeLimit = local.tmp.sizeLimit || that.sizeLimit;
+        that.sortDefault = local.tmp.sortDefault || that.sortDefault;
+        that.save();
+        local.tmp = [];
+        that.idIndexList.forEach(function (idIndex) {
+            local.tmp.push({
+                isInteger: idIndex.isInteger,
+                name: idIndex.name
+            });
+        });
+        local.cliDict.dbTableHeaderDictGet();
+    });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.cliDict.dbTableIdIndexCreate" id="apidoc.elem.db-lite.cliDict.dbTableIdIndexCreate">
+        function <span class="apidocSignatureSpan">db-lite.cliDict.</span>dbTableIdIndexCreate
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbTableIdIndexCreate = function () {
+<span class="apidocCodeCommentSpan">/*
+ * &lt;dbTable&gt; &lt;idIndex&gt;
+ * will create in &lt;dbTable&gt;, &lt;idIndex&gt;
+ */
+</span>    local.dbTableCreateOne({
+        name: process.argv[3]
+    }, function (err, that) {
+        // validate no err occurred
+        local.assertThrow(!err, err);
+        that.idIndexCreate(JSON.parse(process.argv[4]));
+        that.save();
+        local.tmp = [];
+        that.idIndexList.forEach(function (idIndex) {
+            local.tmp.push({
+                isInteger: idIndex.isInteger,
+                name: idIndex.name
+            });
+        });
+        local.cliDict.dbTableHeaderDictGet();
+    });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.cliDict.dbTableIdIndexRemove" id="apidoc.elem.db-lite.cliDict.dbTableIdIndexRemove">
+        function <span class="apidocSignatureSpan">db-lite.cliDict.</span>dbTableIdIndexRemove
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbTableIdIndexRemove = function () {
+<span class="apidocCodeCommentSpan">/*
+ * &lt;dbTable&gt; &lt;idIndex&gt;
+ * will remove from &lt;dbTable&gt;, &lt;idIndex&gt;
+ */
+</span>    local.dbTableCreateOne({
+        name: process.argv[3]
+    }, function (err, that) {
+        // validate no err occurred
+        local.assertThrow(!err, err);
+        that.idIndexRemove(JSON.parse(process.argv[4]));
+        that.save();
+        local.cliDict.dbTableHeaderDictGet();
+    });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.cliDict.dbTableList" id="apidoc.elem.db-lite.cliDict.dbTableList">
+        function <span class="apidocSignatureSpan">db-lite.cliDict.</span>dbTableList
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbTableList = function () {
+<span class="apidocCodeCommentSpan">/*
+ *
+ * will get from db, &lt;dbTableList&gt;
+ */
+</span>    local.storageKeys(function (err, data) {
+        // validate no err occurred
+        local.assertThrow(!err, err);
+        console.log(JSON.stringify(data.map(function (element) {
+            return element.split(".").slice(1, -1).join(".");
+        }), null, 4));
+    });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+ * will remove from db, &lt;dbTable&gt;
+ */
+    local.storageRemoveItem("dbTable." + process.argv[3] + ".json", function (
+        err
+    ) {
+        // validate no err occurred
+        local.assertThrow(!err, err);
+        local.cliDict.<span class="apidocCodeKeywordSpan">dbTableList</span>();
+    });
+};
+
+// run the cli
+if (module === require.main &amp;&amp; !globalThis.utility2_rollup) {
+    local.cliRun();
+}
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.elem.db-lite.cliDict.dbTableRemove" id="apidoc.elem.db-lite.cliDict.dbTableRemove">
+        function <span class="apidocSignatureSpan">db-lite.cliDict.</span>dbTableRemove
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">dbTableRemove = function () {
+<span class="apidocCodeCommentSpan">/*
+ * &lt;dbTable&gt;
+ * will remove from db, &lt;dbTable&gt;
+ */
+</span>    local.storageRemoveItem("dbTable." + process.argv[3] + ".json", function (
+        err
+    ) {
+        // validate no err occurred
+        local.assertThrow(!err, err);
+        local.cliDict.dbTableList();
+    });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
+</body></html>
