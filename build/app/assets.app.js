@@ -1670,7 +1670,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.lib.db.js */
 // usr/bin/env node
 /*
- * lib.db.js (2018.12.31)
+ * lib.db.js (2019.8.20)
  * https://github.com/kaizhu256/node-db-lite
  * this zero-dependency package will provide a persistent, in-browser database, with a working web-demo
  *
@@ -52137,9 +52137,7 @@ local.testRunBrowser = function (evt) {\n\
                 )\n\
             );\n\
             eval( // jslint ignore:line\n\
-                document.querySelector(\"#outputCode1\").textContent.replace((\n\
-                    /^#!/\n\
-                ), \"//\")\n\
+                document.querySelector(\"#outputCode1\").textContent\n\
             );\n\
             document.querySelector(\"#coverageReportDiv1\").innerHTML = (\n\
                 local.istanbul.coverageReportCreate({\n\
