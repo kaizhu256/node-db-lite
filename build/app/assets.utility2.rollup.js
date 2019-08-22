@@ -37535,9 +37535,7 @@ if (!local.isBrowser) {\n\
 });\n\
 Object.assign(local, globalThis.domOnEventDelegateDict);\n\
 globalThis.domOnEventDelegateDict = local;\n\
-local.onEventDomDb = (\n\
-    local.db && local.db.onEventDomDb\n\
-);\n\
+local.onEventDomDb = local.db && local.db.onEventDomDb;\n\
 local.testRunBrowser = function (evt) {\n\
 /*\n\
  * this function will run browser-tests\n\
@@ -51904,9 +51902,7 @@ if (!local.isBrowser) {\n\
 });\n\
 Object.assign(local, globalThis.domOnEventDelegateDict);\n\
 globalThis.domOnEventDelegateDict = local;\n\
-local.onEventDomDb = (\n\
-    local.db && local.db.onEventDomDb\n\
-);\n\
+local.onEventDomDb = local.db && local.db.onEventDomDb;\n\
 local.testRunBrowser = function (evt) {\n\
 /*\n\
  * this function will run browser-tests\n\

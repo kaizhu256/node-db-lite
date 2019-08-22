@@ -317,9 +317,7 @@ if (!local.isBrowser) {
 });
 Object.assign(local, globalThis.domOnEventDelegateDict);
 globalThis.domOnEventDelegateDict = local;
-local.onEventDomDb = (
-    local.db && local.db.onEventDomDb
-);
+local.onEventDomDb = local.db && local.db.onEventDomDb;
 local.testRunBrowser = function (evt) {
 /*
  * this function will run browser-tests
@@ -339,6 +337,7 @@ local.testRunBrowser = function (evt) {
     case "dbResetButton1":
         local.db.onEventDomDb(event);
         break;
+    case "click.buttonEval1":
     case true:
         // try to eval input-code
         try {
@@ -850,7 +849,7 @@ gotoNext = function (err, data) {\n\
 };\n\
 gotoNext();\n\
 </textarea>\n\
-<button class="button" data-onevent="testRunBrowser" data-onevent-reset-output="1" id="buttonEval1">eval script</button><br>\n\
+<button class="button" data-onevent="testRunBrowser" id="buttonEval1">eval script</button><br>\n\
 <label>stderr and stdout</label>\n\
 <pre class="onevent-reset-output readonly textarea" id="outputStdout1" tabindex="0"></pre>\n\
 <!-- utility2-comment\n\

@@ -3,7 +3,7 @@
 <text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
 <tspan x="10" y="26"></tspan>
 
-<tspan x="10" y="42">\x1b[35m[MODE_BUILD=buildApidoc]\x1b[0m - 2019-08-22T04:22:40.562Z - npm-testing /home/travis/bu\</tspan>
+<tspan x="10" y="42">\x1b[35m[MODE_BUILD=buildApidoc]\x1b[0m - 2019-08-22T04:33:35.068Z - npm-testing /home/travis/bu\</tspan>
 <tspan x="10" y="58">ild/kaizhu256/node-db-lite</tspan>
 
 <tspan x="10" y="74"></tspan>
@@ -13,54 +13,54 @@
 <tspan x="10" y="106">buildApidoc - merged test-report from file /home/travis/build/kaizhu256/node-db-lite/tmp/build/t\</tspan>
 <tspan x="10" y="122">est-report.json</tspan>
 
-<tspan x="10" y="138">&gt; http-server listening on port 42786</tspan>
+<tspan x="10" y="138">&gt; http-server listening on port 49946</tspan>
 
 <tspan x="10" y="154">db - dropping database ...</tspan>
 
 <tspan x="10" y="170">apidocCreate - readExample /home/travis/build/kaizhu256/node-db-lite/package.json</tspan>
 
-<tspan x="10" y="186"></tspan>
+<tspan x="10" y="186">apidocCreate - readExample /home/travis/build/kaizhu256/node-db-lite/.gitignore</tspan>
 
-<tspan x="10" y="202">buildApidoc - merged test-report from file /home/travis/build/kaizhu256/node-db-lite/tmp/build/t\</tspan>
-<tspan x="10" y="218">est-report.json</tspan>
+<tspan x="10" y="202">apidocCreate - readExample /home/travis/build/kaizhu256/node-db-lite/lib.db.js</tspan>
 
-<tspan x="10" y="234">apidocCreate - readExample /home/travis/build/kaizhu256/node-db-lite/.gitignore</tspan>
+<tspan x="10" y="218">apidocCreate - readExample /home/travis/build/kaizhu256/node-db-lite/LICENSE</tspan>
 
-<tspan x="10" y="250">apidocCreate - readExample /home/travis/build/kaizhu256/node-db-lite/lib.db.js</tspan>
+<tspan x="10" y="234">apidocCreate - readExample /home/travis/build/kaizhu256/node-db-lite/npm_scripts.sh</tspan>
 
-<tspan x="10" y="266">apidocCreate - readExample /home/travis/build/kaizhu256/node-db-lite/LICENSE</tspan>
+<tspan x="10" y="250">apidocCreate - readExample /home/travis/build/kaizhu256/node-db-lite/package.json</tspan>
 
-<tspan x="10" y="282">apidocCreate - readExample /home/travis/build/kaizhu256/node-db-lite/npm_scripts.sh</tspan>
+<tspan x="10" y="266">apidocCreate - readExample /home/travis/build/kaizhu256/node-db-lite/package-lock.json</tspan>
 
-<tspan x="10" y="298">apidocCreate - readExample /home/travis/build/kaizhu256/node-db-lite/package.json</tspan>
+<tspan x="10" y="282">apidocCreate - readExample /home/travis/build/kaizhu256/node-db-lite/README.md</tspan>
 
-<tspan x="10" y="314">apidocCreate - readExample /home/travis/build/kaizhu256/node-db-lite/package-lock.json</tspan>
+<tspan x="10" y="298">apidocCreate - readExample /home/travis/build/kaizhu256/node-db-lite/test.js</tspan>
 
-<tspan x="10" y="330">apidocCreate - readExample /home/travis/build/kaizhu256/node-db-lite/README.md</tspan>
+<tspan x="10" y="314">apidocCreate - readExample /home/travis/build/kaizhu256/node-db-lite/.travis.yml</tspan>
 
-<tspan x="10" y="346">apidocCreate - readExample /home/travis/build/kaizhu256/node-db-lite/test.js</tspan>
+<tspan x="10" y="330">apidocCreate - requiring /home/travis/build/kaizhu256/node-db-lite ...</tspan>
 
-<tspan x="10" y="362">apidocCreate - readExample /home/travis/build/kaizhu256/node-db-lite/.travis.yml</tspan>
+<tspan x="10" y="346">apidocCreate - ... required /home/travis/build/kaizhu256/node-db-lite</tspan>
 
-<tspan x="10" y="378">apidocCreate - requiring /home/travis/build/kaizhu256/node-db-lite ...</tspan>
+<tspan x="10" y="362"></tspan>
 
-<tspan x="10" y="394">apidocCreate - ... required /home/travis/build/kaizhu256/node-db-lite</tspan>
+<tspan x="10" y="378">buildApidoc - merged test-report from file /home/travis/build/kaizhu256/node-db-lite/tmp/build/t\</tspan>
+<tspan x="10" y="394">est-report.json</tspan>
 
-<tspan x="10" y="410">jslint - 276ms /home/travis/build/kaizhu256/node-db-lite/README.md</tspan>
+<tspan x="10" y="410">created apidoc file /home/travis/build/kaizhu256/node-db-lite/apidoc.html</tspan>
 
-<tspan x="10" y="426">created apidoc file /home/travis/build/kaizhu256/node-db-lite/apidoc.html</tspan>
+<tspan x="10" y="426"></tspan>
 
-<tspan x="10" y="442"></tspan>
+<tspan x="10" y="442">testRunDefault - 423 ms - [node test-case 1 of 1 passed] - testCase_buildApidoc_default</tspan>
 
-<tspan x="10" y="458">testRunDefault - 437 ms - [node test-case 1 of 1 passed] - testCase_buildApidoc_default</tspan>
+<tspan x="10" y="458">jslint - 264ms /home/travis/build/kaizhu256/node-db-lite/README.md</tspan>
 
-<tspan x="10" y="474">jslint - 258ms /home/travis/build/kaizhu256/node-db-lite/lib.db.js</tspan>
+<tspan x="10" y="474">jslint - 243ms /home/travis/build/kaizhu256/node-db-lite/lib.db.js</tspan>
 
 <tspan x="10" y="490">jslint - 4ms /home/travis/build/kaizhu256/node-db-lite/npm_scripts.sh</tspan>
 
-<tspan x="10" y="506">jslint - 1ms /home/travis/build/kaizhu256/node-db-lite/package.json</tspan>
+<tspan x="10" y="506">jslint - 0ms /home/travis/build/kaizhu256/node-db-lite/package.json</tspan>
 
-<tspan x="10" y="522">jslint - 129ms /home/travis/build/kaizhu256/node-db-lite/test.js</tspan>
+<tspan x="10" y="522">jslint - 157ms /home/travis/build/kaizhu256/node-db-lite/test.js</tspan>
 
 <tspan x="10" y="538"></tspan>
 
@@ -71,22 +71,22 @@
 
 <tspan x="10" y="602">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="618">| test-report - buildApidoc - node - linux v12.9.0 - 2019-08-22T04:22:40.679Z</tspan>
+<tspan x="10" y="618">| test-report - buildApidoc - node - linux v12.9.0 - 2019-08-22T04:33:35.180Z</tspan>
 
-<tspan x="10" y="634">|     440 ms            0 failed        1 passed      |</tspan>
+<tspan x="10" y="634">|     423 ms            0 failed        1 passed      |</tspan>
 
 <tspan x="10" y="650">-------------------------------------------------------</tspan>
 
 <tspan x="10" y="666">| test-report - npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTM\</tspan>
-<tspan x="10" y="682">L, like Gecko) Chrome/61.0.3163.100 Electron/2.0.18 Safari/537.36 - 2019-08-22T04:22:32.710Z</tspan>
+<tspan x="10" y="682">L, like Gecko) Chrome/61.0.3163.100 Electron/2.0.18 Safari/537.36 - 2019-08-22T04:33:27.279Z</tspan>
 
-<tspan x="10" y="698">|    2007 ms            0 failed       11 passed      |</tspan>
+<tspan x="10" y="698">|    2005 ms            0 failed       11 passed      |</tspan>
 
 <tspan x="10" y="714">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="730">| test-report - npmTest - node - linux v12.9.0 - 2019-08-22T04:22:29.825Z</tspan>
+<tspan x="10" y="730">| test-report - npmTest - node - linux v12.9.0 - 2019-08-22T04:33:24.598Z</tspan>
 
-<tspan x="10" y="746">|    8040 ms            0 failed       17 passed      |</tspan>
+<tspan x="10" y="746">|    7879 ms            0 failed       17 passed      |</tspan>
 
 <tspan x="10" y="762">-------------------------------------------------------</tspan>
 
@@ -104,7 +104,7 @@
 
 <tspan x="10" y="874"></tspan>
 
-<tspan x="10" y="890">\x1b[35m[MODE_BUILD=buildApidoc]\x1b[0m - 2019-08-22T04:22:42.479Z - EXIT_CODE - 0</tspan>
+<tspan x="10" y="890">\x1b[35m[MODE_BUILD=buildApidoc]\x1b[0m - 2019-08-22T04:33:36.928Z - EXIT_CODE - 0</tspan>
 
 </text>
 </svg>
