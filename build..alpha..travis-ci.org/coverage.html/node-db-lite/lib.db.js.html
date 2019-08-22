@@ -279,7 +279,7 @@
 </script>
 <div class="header high">
     <h1 style="font-weight: bold;">
-        <a href="https://github.com/kaizhu256/node-db-lite">db-lite (2019.8.20)</a>
+        <a href="https://github.com/kaizhu256/node-db-lite">db-lite (2019.8.21)</a>
     </h1>
     <h1>Code coverage report for <span class="entity">node-db-lite/lib.db.js</span></h1>
     <table class="tableHeader">
@@ -294,10 +294,10 @@
     </thead>
     <tbody>
         <td>statements: 204<br>branches: 117<br>functions: 46</td>
-        <td>95.73%<br>(1053 / 1100)</td>
-        <td>95.73%<br>(471 / 492)</td>
-        <td>96.06%<br>(195 / 203)</td>
-        <td>95.73%<br>(1053 / 1100)</td>
+        <td>95.55%<br>(1051 / 1100)</td>
+        <td>95.53%<br>(470 / 492)</td>
+        <td>95.57%<br>(194 / 203)</td>
+        <td>95.55%<br>(1051 / 1100)</td>
     </tbody>
     </table>
     <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">node-db-lite/</a> &#187; lib.db.js</div>
@@ -2857,7 +2857,6 @@
 <a href="#L2551" id="L2551">2551</a>
 <a href="#L2552" id="L2552">2552</a>
 <a href="#L2553" id="L2553">2553</a>
-<a href="#L2554" id="L2554">2554</a>
 </td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2954,7 +2953,6 @@
 <span class="cline-any cline-yes">79</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -3906,8 +3904,8 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -5182,22 +5180,22 @@
 <span class="cline-any cline-yes">1358</span>
 <span class="cline-any cline-yes">1358</span>
 <span class="cline-any cline-yes">1358</span>
-<span class="cline-any cline-yes">149</span>
+<span class="cline-any cline-yes">148</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1209</span>
+<span class="cline-any cline-yes">1210</span>
 <span class="cline-any cline-yes">111</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1098</span>
+<span class="cline-any cline-yes">1099</span>
 <span class="cline-any cline-yes">119</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">979</span>
-<span class="cline-any cline-yes">979</span>
-<span class="cline-any cline-yes">979</span>
-<span class="cline-any cline-yes">521</span>
+<span class="cline-any cline-yes">980</span>
+<span class="cline-any cline-yes">980</span>
+<span class="cline-any cline-yes">980</span>
+<span class="cline-any cline-yes">522</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -5413,7 +5411,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js" tabIndex="0">//#!/usr/bin/env node
 /*
- * lib.db.js (2019.8.20)
+ * lib.db.js (2019.8.21)
  * https://github.com/kaizhu256/node-db-lite
  * this zero-dependency package will provide a persistent, in-browser database, with a working web-demo
  *
@@ -5507,7 +5505,6 @@
             return;
         }
 <span class="cstat-skip" title="statement not covered" >        err = (</span>
-            // ternary-operator
             (
                 message
                 &amp;&amp; typeof message.message === "string"
@@ -6458,9 +6455,9 @@ init = function () {
                 globalThis[storageDir] = req.result;
                 onError();
             };
-            req.onupgradeneeded = function () {
-                <span class="missing-if-branch" title="else path not taken" >E</span>if (!req.result.objectStoreNames.contains(storageDir)) {
-                    req.result.createObjectStore(storageDir);
+            req.onupgradeneeded = <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >                if (!req.result.objectStoreNames.contains(storageDir)) {</span>
+<span class="cstat-no" title="statement not covered" >                    req.result.createObjectStore(storageDir);</span>
                 }
             };
         } catch (ignore) {}
@@ -7968,7 +7965,7 @@ local.cliDict.dbTableRemove = <span class="fstat-skip" title="function not cover
 </table></pre>
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a> at Thu, 22 Aug 2019 07:40:00 GMT</div>
+    <div class="meta">Generated by <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a> at Thu, 22 Aug 2019 18:03:09 GMT</div>
 </div>
 </body>
 </html>
