@@ -62,7 +62,7 @@ this zero-dependency package will provide a persistent, in-browser database, wit
 
 #### changelog 2019.8.21
 - npm publish 2019.8.21
-- jslint - remove comments \/\/ newline, \/\/ ternary-operator
+- jslint - remove ternary-operator/newline comment preceding bra
 - update build
 - none
 
