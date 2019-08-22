@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- "assets.utility2.template.html" -->
-<title>db-lite (2018.12.30)</title>
+<title>db-lite (2019.8.20)</title>
 <style>
 /* jslint utility2:true */
 /*csslint
@@ -15,23 +15,25 @@
 }
 /* csslint ignore:end */
 @keyframes uiAnimateShake {
-    0%, 50% {
-        transform: translateX(10px);
-    }
-    25%, 75% {
-        transform: translateX(-10px);
-    }
-    100% {
-        transform: translateX(0);
-    }
+0%,
+50% {
+    transform: translateX(10px);
+}
+100% {
+    transform: translateX(0);
+}
+25%,
+75% {
+    transform: translateX(-10px);
+}
 }
 @keyframes uiAnimateSpin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+0% {
+    transform: rotate(0deg);
+}
+100% {
+    transform: rotate(360deg);
+}
 }
 a {
     overflow-wrap: break-word;
@@ -39,19 +41,21 @@ a {
 body {
     background: #eef;
     font-family: Arial, Helvetica, sans-serif;
+    font-size: small;
     margin: 0 40px;
 }
 body > div,
 body > form > div,
 body > form > input,
 body > form > pre,
-body > form > textarea,
 body > form > .button,
+body > form > .textarea,
 body > input,
 body > pre,
-body > textarea,
-body > .button {
+body > .button,
+body > .textarea {
     margin-bottom: 20px;
+    margin-top: 0;
 }
 body > form > input,
 body > form > .button,
@@ -59,50 +63,47 @@ body > input,
 body > .button {
     width: 20rem;
 }
-body > form > textarea,
-body > textarea {
+body > form > .textarea,
+body > .textarea {
     height: 10rem;
     width: 100%;
 }
-body > textarea[readonly] {
+body > .readonly {
     background: #ddd;
 }
 code,
 pre,
-textarea {
+.textarea {
     font-family: Consolas, Menlo, monospace;
-    font-size: small;
+    font-size: smaller;
 }
 pre {
     overflow-wrap: break-word;
     white-space: pre-wrap;
 }
-textarea {
-    overflow: auto;
-    white-space: pre;
-}
 .button {
-    background-color: #fff;
-    border: 1px solid;
-    border-bottom-color: rgb(186, 186, 186);
-    border-left-color: rgb(209, 209, 209);
-    border-radius: 4px;
-    border-right-color: rgb(209, 209, 209);
-    border-top-color: rgb(216, 216, 216);
-    color: #00d;
+    background: #ddd;
+    border: 1px solid #999;
+    color: #000;
     cursor: pointer;
     display: inline-block;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: normal;
-    margin: 0;
-    padding: 2px 7px 3px 7px;
+    padding: 2px 5px;
     text-align: center;
-    text-decoration: underline;
+    text-decoration: none;
+}
+.button:hover {
+    background: #bbb;
 }
 .colorError {
     color: #d00;
+}
+.textarea {
+    background: #fff;
+    border: 1px solid #999;
+    border-radius: 0;
+    cursor: auto;
+    overflow: auto;
+    padding: 2px;
 }
 .uiAnimateShake {
     animation-duration: 500ms;
@@ -128,13 +129,13 @@ textarea {
 <div id="ajaxProgressDiv1" style="background: transparent; height: 2px; left: 0px; margin: 0px; padding: 0px; position: fixed; top: 0px; transition: background 500ms, width 1500ms; width: 0%; z-index: 1;"></div>
 <div class="uiAnimateSpin" style="animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;"></div>
 <a class="zeroPixel" download="db.persistence.json" href="" id="dbExportA1"></a>
-<input class="zeroPixel" id="dbImportInput1" type="file">
+<input class="zeroPixel" data-onevent="onEventDomDb" data-onevent-db="dbImportInput" type="file">
 <script>
 /* jslint utility2:true */
 // init domOnEventWindowOnloadTimeElapsed
 (function () {
 /*
- * this function will measure and print the time-elapsed for window.onload
+ * this function will measure and print time-elapsed for window.onload
  */
     "use strict";
     if (window.domOnEventWindowOnloadTimeElapsed) {
@@ -157,11 +158,102 @@ textarea {
 
 
 
+// init domOnEventDelegateDict
+(function () {
+/*
+ * this function will handle delegated dom-event
+ */
+    "use strict";
+    var timerTimeoutDict;
+    if (window.domOnEventDelegateDict) {
+        return;
+    }
+    window.domOnEventDelegateDict = {};
+    timerTimeoutDict = {};
+    window.domOnEventDelegateDict.domOnEventDelegate = function (evt) {
+        evt.targetOnEvent = evt.target.closest(
+            "[data-onevent]"
+        );
+        if (
+            !evt.targetOnEvent
+            || evt.targetOnEvent.dataset.onevent === "domOnEventNop"
+            || evt.target.closest(
+                ".disabled, .readonly"
+            )
+        ) {
+            return;
+        }
+        // rate-limit high-frequency-event
+        switch (evt.type) {
+        case "keydown":
+        case "keyup":
+            // filter non-input keyboard-event
+            if (!evt.target.closest(
+                "input, option, select, textarea"
+            )) {
+                return;
+            }
+            if (timerTimeoutDict[evt.type] !== true) {
+                timerTimeoutDict[evt.type] = timerTimeoutDict[
+                    evt.type
+                ] || setTimeout(function () {
+                    timerTimeoutDict[evt.type] = true;
+                    window.domOnEventDelegateDict.domOnEventDelegate(evt);
+                }, 50);
+                return;
+            }
+            timerTimeoutDict[evt.type] = null;
+            break;
+        }
+        switch (evt.targetOnEvent.tagName) {
+        case "BUTTON":
+        case "FORM":
+            evt.preventDefault();
+            break;
+        }
+        evt.stopPropagation();
+        window.domOnEventDelegateDict[evt.targetOnEvent.dataset.onevent](
+            evt
+        );
+    };
+    window.domOnEventDelegateDict.domOnEventResetOutput = function () {
+        document.querySelectorAll(
+            ".onevent-reset-output"
+        ).forEach(function (elem) {
+            switch (elem.tagName) {
+            case "INPUT":
+            case "TEXTAREA":
+                elem.value = "";
+                break;
+            case "PRE":
+                elem.textContent = "";
+                break;
+            default:
+                elem.innerHTML = "";
+            }
+        });
+    };
+    // init event-handling
+    [
+        "change",
+        "click",
+        "keydown",
+        "submit"
+    ].forEach(function (eventType) {
+        document.addEventListener(
+            eventType,
+            window.domOnEventDelegateDict.domOnEventDelegate
+        );
+    });
+}());
+
+
+
 // init timerIntervalAjaxProgressUpdate
 (function () {
 /*
- * this function will increment the ajax-progress-bar
- * until the webpage has loaded
+ * this function will increment ajax-progress-bar
+ * until webpage has loaded
  */
     "use strict";
     var ajaxProgressDiv1;
@@ -219,21 +311,25 @@ textarea {
     if (window.domOnEventSelectAllWithinPre) {
         return;
     }
-    window.domOnEventSelectAllWithinPre = function (event) {
+    window.domOnEventSelectAllWithinPre = function (evt) {
         var range;
         var selection;
         if (
-            event
-            && event.key === "a"
-            && (event.ctrlKey || event.metaKey)
-            && event.target.closest("pre")
+            evt
+            && evt.key === "a"
+            && (evt.ctrlKey || evt.metaKey)
+            && evt.target.closest(
+                "pre"
+            )
         ) {
             range = document.createRange();
-            range.selectNodeContents(event.target.closest("pre"));
+            range.selectNodeContents(evt.target.closest(
+                "pre"
+            ));
             selection = window.getSelection();
             selection.removeAllRanges();
             selection.addRange(range);
-            event.preventDefault();
+            evt.preventDefault();
         }
     };
     // init event-handling
@@ -247,7 +343,7 @@ textarea {
 
     <a href="https://github.com/kaizhu256/node-db-lite" target="_blank">
 
-        db-lite (2018.12.30)
+        db-lite (2019.8.20)
 
     </a>
 
@@ -255,7 +351,7 @@ textarea {
 <h3>this zero-dependency package will provide a persistent, in-browser database, with a working web-demo</h3>
 
 <a class="button" download="" href="assets.app.js">download standalone app</a><br>
-<button class="button eventDelegateClick onreset" data-onevent="testRunBrowser" id="testRunButton1">run internal test</button><br>
+<button class="button" data-onevent="testRunBrowser" id="testRunButton1">run internal test</button><br>
 <div class="uiAnimateSlide" id="testReportDiv1" style="max-height: 100%;">
 
 
@@ -342,24 +438,17 @@ pre {
     white-space: pre-wrap;
 }
 .button {
-    background-color: #fff;
-    border: 1px solid;
-    border-bottom-color: rgb(186, 186, 186);
-    border-left-color: rgb(209, 209, 209);
-    border-radius: 4px;
-    border-right-color: rgb(209, 209, 209);
-    border-top-color: rgb(216, 216, 216);
-    color: #00d;
+    background: #ddd;
+    border: 1px solid #999;
+    color: #000;
     cursor: pointer;
     display: inline-block;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: normal;
-    margin: 0;
-    padding: 2px 7px 3px 7px;
+    padding: 2px 5px;
     text-align: center;
-    text-decoration: underline;
+    text-decoration: none;
+}
+.button:hover {
+    background: #bbb;
 }
 .colorError {
     color: #d00;
@@ -394,14 +483,14 @@ pre {
 /*csslint
 */
 .testReportDiv img {
-    border: 1px solid black;
+    border: 1px solid #999;
     margin: 5px 0 5px 0;
     max-height: 256px;
     max-width: 512px;
 }
 .testReportDiv pre {
     background: #fdd;
-    border-top: 1px solid black;
+    border-top: 1px solid #999;
     margin-bottom: 0;
     padding: 10px;
 }
@@ -410,7 +499,7 @@ pre {
     width: 120px;
 }
 .testReportDiv table {
-    border-top: 1px solid black;
+    border-top: 1px solid #999;
     text-align: left;
     width: 100%;
 }
@@ -425,7 +514,7 @@ pre {
 }
 .testReportDiv .platform {
     background: #fff;
-    border: 1px solid black;
+    border: 1px solid #999;
     margin-bottom: 20px;
     padding: 0 10px 10px 10px;
     text-align: left;
@@ -533,9 +622,9 @@ pre {
         );
     };
     window.domOnEventDelegateDict.domOnEventResetOutput = function () {
-        Array.from(document.querySelectorAll(
+        document.querySelectorAll(
             ".onevent-reset-output"
-        )).forEach(function (elem) {
+        ).forEach(function (elem) {
             switch (elem.tagName) {
             case "INPUT":
             case "TEXTAREA":
@@ -658,15 +747,15 @@ pre {
 <div class="testReportDiv">
 <h1>test-report for
     <a href="https://github.com/kaizhu256/node-db-lite">
-        db-lite (2018.12.30)
+        db-lite (2019.8.20)
     </a>
 </h1>
 <div class="platform summary">
 <h2>summary</h2>
 <h4>
     <span>version</span>-
-        2018.12.30<br>
-    <span>test date</span>- 2019-08-04T07:05:51.318Z<br>
+        2019.8.20<br>
+    <span>test date</span>- 2019-08-22T07:46:09.959Z<br>
     <span>commit info</span>-
         
         undefined<br>
@@ -682,7 +771,7 @@ pre {
     </tr>
 </thead>
 <tbody><tr>
-    <td>2010 ms</td>
+    <td>2006 ms</td>
     <td class="testPassed">0</td>
     <td>11</td>
     <td>0</td>
@@ -692,12 +781,12 @@ pre {
 
 <div class="platform">
 <h4>
-    1. browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Electron/2.0.18 Safari/537.36 - 2019-08-04T07:05:50.719Z<br>
+    1. browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Electron/2.0.18 Safari/537.36 - 2019-08-22T07:46:09.245Z<br>
     
     
-    <span>onload-time</span>- 759 ms<br>
+    <span>onload-time</span>- 793 ms<br>
     
-    <span>time-elapsed</span>- 2010 ms<br>
+    <span>time-elapsed</span>- 2006 ms<br>
     <span>tests failed</span>- 0<br>
     <span>tests passed</span>- 11<br>
     <span>tests pending</span>- 0<br>
@@ -713,49 +802,49 @@ pre {
 
 <tr>
     <td>1</td>
-    <td>7 ms</td>
+    <td>4 ms</td>
     <td class="testPassed">passed</td>
-    <td>testCase_dbLoad_error</td>
+    <td>testCase_dbLoad_err</td>
 </tr>
 
 <tr>
     <td>2</td>
-    <td>51 ms</td>
+    <td>47 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_crudGetManyByQuery</td>
 </tr>
 
 <tr>
     <td>3</td>
-    <td>10 ms</td>
+    <td>12 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_crudNullCase</td>
 </tr>
 
 <tr>
     <td>4</td>
-    <td>14 ms</td>
+    <td>8 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_crudXxxById</td>
 </tr>
 
 <tr>
     <td>5</td>
-    <td>9 ms</td>
+    <td>22 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_crudXxxByQuery</td>
 </tr>
 
 <tr>
     <td>6</td>
-    <td>1052 ms</td>
+    <td>1061 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_persistence</td>
 </tr>
 
 <tr>
     <td>7</td>
-    <td>2 ms</td>
+    <td>1 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_sizeLimit</td>
 </tr>
@@ -769,7 +858,7 @@ pre {
 
 <tr>
     <td>9</td>
-    <td>43 ms</td>
+    <td>2 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_onEventDomDb_default</td>
 </tr>
@@ -783,7 +872,7 @@ pre {
 
 <tr>
     <td>11</td>
-    <td>78 ms</td>
+    <td>63 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_storageXxx_misc</td>
 </tr>
@@ -807,52 +896,46 @@ pre {
 
 
 
-<button class="button eventDelegateClick" data-onevent="testRunBrowser" data-on-event-dom-db="dbResetButton1" id="dbResetButton1">
-    reset database
-</button><br>
-<button class="button eventDelegateClick" data-onevent="testRunBrowser" data-on-event-dom-db="dbExportButton1" id="dbExportButton1">
-    export database -&gt; file
-</button><br>
-<button class="button eventDelegateClick" data-onevent="testRunBrowser" data-on-event-dom-db="dbImportButton1" id="dbImportButton1">
-    import database &lt;- file
-</button><br>
+<button class="button" data-onevent="onEventDomDb" data-onevent-db="dbReset">reset database</button><br>
+<button class="button" data-onevent="onEventDomDb" data-onevent-db="dbExport">export database -&gt; file</button><br>
+<button class="button" data-onevent="onEventDomDb" data-onevent-db="dbImport">import database &lt;- file</button><br>
 <label>edit or paste script below to
     <a href="https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html" target="_blank">eval</a>
 </label>
-<textarea id="inputTextareaEval1">/*jslint browser: true, node: true*/
+<textarea class="textarea" data-onevent="testRunBrowser" id="inputTextarea1">/*jslint browser: true, node: true*/
 "use strict";
-var dbTable1, modeNext, onNext;
-modeNext = 0;
-onNext = function (error, data) {
-    modeNext = error
+var dbTable1, gotoState, gotoNext;
+gotoState = 0;
+gotoNext = function (err, data) {
+    gotoState = err
         ? Infinity
-        : modeNext + 1;
-    switch (modeNext) {
+        : gotoState + 1;
+    switch (gotoState) {
     case 1:
         dbTable1 = window.dbTable1 = window.utility2_db.dbTableCreateOne({
             name: "dbTable1"
-        }, onNext);
+        }, gotoNext);
         break;
     case 2:
-        dbTable1.idIndexCreate({ name: "field1" }, onNext);
+        dbTable1.idIndexCreate({ name: "field1" }, gotoNext);
         break;
     case 3:
-        dbTable1.crudSetOneById({ field1: "aa", field2: 1, field3: "foo" }, onNext);
+        dbTable1.crudSetOneById({ field1: "aa", field2: 1, field3: "foo" }, gotoNext);
         break;
     case 4:
-        dbTable1.crudSetOneById({ field1: "bb", field2: 2, field3: "bar" }, onNext);
+        dbTable1.crudSetOneById({ field1: "bb", field2: 2, field3: "bar" }, gotoNext);
         break;
     case 5:
-        dbTable1.crudSetOneById({ field1: "cc", field2: 3, field3: "baz" }, onNext);
+        dbTable1.crudSetOneById({ field1: "cc", field2: 3, field3: "baz" }, gotoNext);
         break;
     case 6:
-        dbTable1.crudRemoveOneById({ field1: "aa" }, onNext);
+        dbTable1.crudRemoveOneById({ field1: "aa" }, gotoNext);
         break;
     case 7:
-        dbTable1.crudUpdateOneById({ field1: "bb", field2: -1 }, onNext);
+        dbTable1.crudUpdateOneById({ field1: "bb", field2: -1 }, gotoNext);
         break;
     case 8:
-        dbTable1.crudSetOneById({ field2: Math.random() }, onNext);
+        dbTable1.crudSetOneById({ field2: Math.random() }, gotoNext);
         break;
     case 9:
         dbTable1.crudGetManyByQuery({
@@ -860,24 +943,44 @@ onNext = function (error, data) {
             query: { field2: { $gte: -Infinity, $lte: Infinity } },
             skip: 0,
             sort: [{ fieldName: "_timeUpdated", idDescending: true }]
-        }, onNext);
+        }, gotoNext);
         break;
     case 10:
         console.error(data);
-        dbTable1.crudCountAll(onNext);
+        dbTable1.crudCountAll(gotoNext);
         break;
     case 11:
         console.error("number of rows: " + data);
         break;
     default:
-        console.error(error.stack);
+        console.error(err.stack);
     }
 };
-onNext();
+gotoNext();
 </textarea>
-<button class="button eventDelegateClick oneval onreset" data-onevent="testRunBrowser" id="dbEvalButton1">eval script</button><br>
+<button class="button" data-onevent="testRunBrowser" id="buttonEval1">eval script</button><br>
 <label>stderr and stdout</label>
-<textarea class="resettable" id="outputStdoutTextarea1" readonly=""></textarea>
+<pre class="onevent-reset-output readonly textarea" id="outputStdout1" tabindex="0">db - dropping database ...
+testRunDefault - 11 ms - [browser test-case 1 of 11 passed] - testCase_dbLoad_err
+testRunDefault - 88 ms - [browser test-case 2 of 11 passed] - testCase_dbTable_crudGetManyByQuery
+testRunDefault - 102 ms - [browser test-case 3 of 11 passed] - testCase_dbTable_crudNullCase
+testRunDefault - 112 ms - [browser test-case 4 of 11 passed] - testCase_dbTable_crudXxxById
+testRunDefault - 135 ms - [browser test-case 5 of 11 passed] - testCase_dbTable_crudXxxByQuery
+testRunDefault - 149 ms - [browser test-case 6 of 11 passed] - testCase_dbTable_sizeLimit
+testRunDefault - 156 ms - [browser test-case 7 of 11 passed] - testCase_nop_default
+testRunDefault - 161 ms - [browser test-case 8 of 11 passed] - testCase_onEventDomDb_default
+testRunDefault - 166 ms - [browser test-case 9 of 11 passed] - testCase_sortCompare_default
+testRunDefault - 232 ms - [browser test-case 10 of 11 passed] - testCase_storageXxx_misc
+testRunDefault - 1199 ms - [browser test-case 11 of 11 passed] - testCase_dbTable_persistence
+----------|-----------|-----------|-----------|-----------|
+File      |   % Stmts |% Branches |   % Funcs |   % Lines |
+----------|-----------|-----------|-----------|-----------|
+----------|-----------|-----------|-----------|-----------|
+All files |       100 |       100 |       100 |       100 |
+----------|-----------|-----------|-----------|-----------|
+
+created coverage file /tmp/build/coverage.html/index.html
+</pre>
 
 
 

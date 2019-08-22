@@ -46,30 +46,30 @@
     // init function
     local.assertThrow = function (passed, message) {
     /*
-     * this function will throw the error <message> if <passed> is falsy
+     * this function will throw err.<message> if <passed> is falsy
      */
-        var error;
+        var err;
         if (passed) {
             return;
         }
-        error = (
-            // ternary-condition
+        err = (
+            // ternary-operator
             (
                 message
                 && typeof message.message === "string"
                 && typeof message.stack === "string"
             )
-            // if message is an error-object, then leave it as is
+            // if message is errObj, then leave as is
             ? message
             : new Error(
                 typeof message === "string"
-                // if message is a string, then leave it as is
+                // if message is a string, then leave as is
                 ? message
                 // else JSON.stringify message
                 : JSON.stringify(message, null, 4)
             )
         );
-        throw error;
+        throw err;
     };
     local.functionOrNop = function (fnc) {
     /*
@@ -97,7 +97,8 @@
      * null, undefined, or empty-string,
      * then overwrite them with items from <source>
      */
-        Object.keys(source).forEach(function (key) {
+        target = target || {};
+        Object.keys(source || {}).forEach(function (key) {
             if (
                 target[key] === null
                 || target[key] === undefined
@@ -106,6 +107,7 @@
                 target[key] = target[key] || source[key];
             }
         });
+        return target;
     };
     // require builtin
     if (!local.isBrowser) {
@@ -149,7 +151,9 @@
 // run shared js-env code - init-before
 (function () {
 // init local
-local = (globalThis.utility2 || require("utility2")).requireReadme();
+local = (
+    globalThis.utility2 || require("utility2")
+).requireReadme();
 globalThis.local = local;
 // init test
 local.testRunDefault(local);
@@ -159,48 +163,50 @@ local.testRunDefault(local);
 
 // run shared js-env code - function
 (function () {
-local.testCase_dbLoad_error = function (options, onError) {
+local.testCase_dbLoad_err = function (opt, onError) {
 /*
- * this function will test dbLoad's error handling-behavior
+ * this function will test dbLoad's err handling-behavior
  */
     local.testMock([
-        [local, {
-            storageKeys: function (fnc) {
-                fnc(local.errorDefault);
+        [
+            local, {
+                storageKeys: function (fnc) {
+                    fnc(local.errDefault);
+                }
             }
-        }]
+        ]
     ], function (onError) {
-        local.dbLoad(function (error) {
-            // validate error occurred
-            local.assertThrow(error, error);
+        local.dbLoad(function (err) {
+            // validate err occurred
+            local.assertThrow(err, err);
         });
-        onError(null, options);
+        onError(null, opt);
     }, onError);
 };
 
-local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
+local.testCase_dbTable_crudGetManyByQuery = function (opt, onError) {
 /*
  * this function will test dbTable's crudGetManyByQuery handling-behavior
  */
-    options = {};
+    opt = {};
     // test dbTableCreateOne's create handling-behavior
-    options.dbTable = local.dbTableCreateOne({
+    opt.dbTable = local.dbTableCreateOne({
         name: "testCase_dbTable_crudGetManyByQuery"
     });
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // test isDirty handling-behavior
-    options.dbTable.crudRemoveOneById(options.dbTable.crudSetOneById({
+    opt.dbTable.crudRemoveOneById(opt.dbTable.crudSetOneById({
         field1: "dirty"
     }));
     // test null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         // test shuffle handling-behavior
         shuffle: true
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
-    options.data = local.identity([
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
+    opt.data = ([
         [],
         [[], "", 0, {}, false, null, undefined],
         -0.5,
@@ -221,15 +227,15 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
             field1: element
         };
     });
-    options.data = options.data.concat(options.data.map(function (dbRow) {
+    opt.data = opt.data.concat(opt.data.map(function (dbRow) {
         return {
             field1: JSON.stringify(dbRow.field1)
         };
     }));
     // test dbTableCreateOne's crudSetManyById handling-behavior
-    options.data = options.dbTable.crudSetManyById(options.data);
+    opt.data = opt.dbTable.crudSetManyById(opt.data);
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 30);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 30);
     // validate data
     [
         [],
@@ -263,207 +269,260 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
         "true",
         undefined
     ].forEach(function (element, ii) {
-        local.assertJsonEqual(element, options.data[ii].field1);
+        local.assertJsonEqual(element, opt.data[ii].field1);
     });
     // test null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
-            field1: { $undefined: null}
+            field1: {
+                $undefined: null
+            }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $undefined: {}
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test $eq's boolean handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: true
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 1);
-    local.assertJsonEqual(options.data, [true]);
+    local.assertJsonEqual(opt.data.length, 1);
+    local.assertJsonEqual(opt.data, [
+        true
+    ]);
     // test $eq's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: null
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 7);
+    local.assertJsonEqual(opt.data.length, 7);
     local.assertJsonEqual(
-        options.data.slice(0, -1),
-        [null, null, null, null, null, null]
+        opt.data.slice(0, -1),
+        [
+            null, null, null, null, null, null
+        ]
     );
     // test $eq's number handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: 0
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 2);
-    local.assertJsonEqual(options.data.slice(0, -1), [0]);
+    local.assertJsonEqual(opt.data.length, 2);
+    local.assertJsonEqual(opt.data.slice(0, -1), [
+        0
+    ]);
     // test $eq's string handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: "{}"
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 1);
-    local.assertJsonEqual(options.data, ["{}"]);
+    local.assertJsonEqual(opt.data.length, 1);
+    local.assertJsonEqual(opt.data, [
+        "{}"
+    ]);
     // test $exists's false handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
-            field1: { $exists: false}
+            field1: {
+                $exists: false
+            }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 7);
+    local.assertJsonEqual(opt.data.length, 7);
     // test $exists's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $exists: null
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 7);
+    local.assertJsonEqual(opt.data.length, 7);
     // test $exists's true handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $exists: true
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 23);
+    local.assertJsonEqual(opt.data.length, 23);
     // test $gt's boolean handling-behavior
     // test $lt's boolean handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
-        query: {
-            field1: { $gt: false, $lt: true}
-        },
-        sort: [{
-            fieldName: "field1"
-        }]
-    });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
-    // test $gt's null-case handling-behavior
-    // test $lt's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $gt: false,
                 $lt: true
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
+    // test $gt's null-case handling-behavior
+    // test $lt's null-case handling-behavior
+    opt.data = opt.dbTable.crudGetManyByQuery({
+        query: {
+            field1: {
+                $gt: false,
+                $lt: true
+            }
+        },
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
+    });
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test $gt's number handling-behavior
     // test $lt's number handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $gt: -1,
                 $lt: 1
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 4);
-    local.assertJsonEqual(options.data.slice(0, -1), [-0.5, 0, 0.5]);
+    local.assertJsonEqual(opt.data.length, 4);
+    local.assertJsonEqual(opt.data.slice(0, -1), [
+        -0.5, 0, 0.5
+    ]);
     // test $gt's string handling-behavior
     // test $lt's string handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $gt: "false",
                 $lt: "true"
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 4);
-    local.assertJsonEqual(options.data, ["null", "null", "null", "null"]);
+    local.assertJsonEqual(opt.data.length, 4);
+    local.assertJsonEqual(opt.data, [
+        "null", "null", "null", "null"
+    ]);
     // test $gte's boolean handling-behavior
     // test $lte's boolean handling-behavior
     // test $ne's boolean handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
-            field1: { $gte: false, $lte: true, $ne: false}
+            field1: {
+                $gte: false,
+                $lte: true,
+                $ne: false
+            }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 2);
-    local.assertJsonEqual(options.data.slice(0, -1), [true]);
+    local.assertJsonEqual(opt.data.length, 2);
+    local.assertJsonEqual(opt.data.slice(0, -1), [
+        true
+    ]);
     // test $gte's null-case handling-behavior
     // test $lte's null-case handling-behavior
     // test $ne's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $gte: null,
@@ -471,18 +530,20 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
                 $ne: null
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 1);
-    local.assertJsonEqual(options.data.slice(0, -1), []);
+    local.assertJsonEqual(opt.data.length, 1);
+    local.assertJsonEqual(opt.data.slice(0, -1), []);
     // test $gte's number handling-behavior
     // test $lte's number handling-behavior
     // test $ne's number handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $gte: -1,
@@ -490,14 +551,18 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
                 $ne: 0
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 5);
-    local.assertJsonEqual(options.data.slice(0, -1), [-1, -0.5, 0.5, 1]);
+    local.assertJsonEqual(opt.data.length, 5);
+    local.assertJsonEqual(opt.data.slice(0, -1), [
+        -1, -0.5, 0.5, 1
+    ]);
     // test $gte's number handling-behavior
     // test $lte's number handling-behavior
     // test $ne's number handling-behavior
@@ -505,8 +570,10 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
     // test limit handling-behavior
     // test skip handling-behavior
     // test sort's isDescending handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
-        fieldList: ["field1"],
+    opt.data = opt.dbTable.crudGetManyByQuery({
+        fieldList: [
+            "field1"
+        ],
         limit: 2,
         query: {
             field1: {
@@ -516,19 +583,23 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
             }
         },
         skip: 2,
-        sort: [{
-            fieldName: "field1",
-            isDescending: true
-        }]
+        sort: [
+            {
+                fieldName: "field1",
+                isDescending: true
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 2);
-    local.assertJsonEqual(options.data.slice(), [0.5, -0.5]);
+    local.assertJsonEqual(opt.data.length, 2);
+    local.assertJsonEqual(opt.data.slice(), [
+        0.5, -0.5
+    ]);
     // test $gte's string handling-behavior
     // test $lte's string handling-behavior
     // test $ne's string handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $gte: "false",
@@ -536,112 +607,144 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
                 $ne: "null"
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 2);
-    local.assertJsonEqual(options.data, ["false", "true"]);
+    local.assertJsonEqual(opt.data.length, 2);
+    local.assertJsonEqual(opt.data, [
+        "false", "true"
+    ]);
     // test $in's list handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
-            field1: { $in: [true, 1]}
+            field1: {
+                $in: [
+                    true, 1
+                ]
+            }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 2);
-    local.assertJsonEqual(options.data, [true, 1]);
+    local.assertJsonEqual(opt.data.length, 2);
+    local.assertJsonEqual(opt.data, [
+        true, 1
+    ]);
     // test $in's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $in: null
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test $in's string handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $in: "0.5"
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 3);
-    local.assertJsonEqual(options.data.slice(0, -1), ["0", "0.5"]);
+    local.assertJsonEqual(opt.data.length, 3);
+    local.assertJsonEqual(opt.data.slice(0, -1), [
+        "0", "0.5"
+    ]);
     // test $nin's list handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
-            field1: { $nin: [0, null]}
+            field1: {
+                $nin: [
+                    0, null
+                ]
+            }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 22);
+    local.assertJsonEqual(opt.data.length, 22);
     // test $nin's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $nin: null
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test $nin's string handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $nin: "[[],\"\",0,1,{},false,null,true]"
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 4);
-    local.assertJsonEqual(options.data.slice(0, -1), ["-0.5", "-1", "0.5"]);
+    local.assertJsonEqual(opt.data.length, 4);
+    local.assertJsonEqual(opt.data.slice(0, -1), [
+        "-0.5", "-1", "0.5"
+    ]);
     // test $not's number handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
-            $not: {
+                $not: {
                     $gte: 0
                 }
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 26);
-    local.assertJsonEqual(options.data.slice(0, 15), [
+    local.assertJsonEqual(opt.data.length, 26);
+    local.assertJsonEqual(opt.data.slice(0, 15), [
         null,
         null,
         null,
@@ -659,7 +762,7 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
         "1"
     ]);
     // test $not's string handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $not: {
@@ -667,14 +770,16 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
                 }
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 17);
-    local.assertJsonEqual(options.data.slice(0, -1), [
+    local.assertJsonEqual(opt.data.length, 17);
+    local.assertJsonEqual(opt.data.slice(0, -1), [
         null,
         null,
         null,
@@ -693,618 +798,704 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
         {}
     ]);
     // test $or's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
-        query: { $or: null},
-        sort: [{
-            fieldName: "field1"
-        }]
+    opt.data = opt.dbTable.crudGetManyByQuery({
+        query: {
+            $or: null
+        },
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test $or's empty-list handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             $or: []
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test $or's list handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
-            $or: [{
-                field1: { $eq: -0.5}
-            }, {
-                field1: {
-                    $eq: 0
+            $or: [
+                {
+                    field1: {
+                        $eq: -0.5
+                    }
+                }, {
+                    field1: {
+                        $eq: 0
+                    }
+                }, {
+                    field1: {
+                        $eq: 0.5
+                    }
                 }
-            }, {
-                field1: {
-                    $eq: 0.5
-                }
-            }]
+            ]
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 4);
-    local.assertJsonEqual(options.data.slice(0, -1), [-0.5, 0, 0.5]);
+    local.assertJsonEqual(opt.data.length, 4);
+    local.assertJsonEqual(opt.data.slice(0, -1), [
+        -0.5, 0, 0.5
+    ]);
     // test $regex's regex handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
-            field1: { $regex: (
-                /1|true/
-            )}
+            field1: {
+                $regex: (
+                    /1|true/
+                )
+            }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 6);
-    local.assertJsonEqual(options.data, [true, -1, 1, "-1", "1", "true"]);
+    local.assertJsonEqual(opt.data.length, 6);
+    local.assertJsonEqual(opt.data, [
+        true, -1, 1, "-1", "1", "true"
+    ]);
     // test $regex's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $regex: null
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test $typeof's boolean handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
-            field1: { $typeof: "boolean"}
+            field1: {
+                $typeof: "boolean"
+            }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 3);
+    local.assertJsonEqual(opt.data.length, 3);
     // test $typeof's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $typeof: null
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test $typeof's number handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $typeof: "number"
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 6);
+    local.assertJsonEqual(opt.data.length, 6);
     // test $typeof's object handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $typeof: "object"
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 8);
+    local.assertJsonEqual(opt.data.length, 8);
     // test $typeof's string handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $typeof: "string"
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 15);
+    local.assertJsonEqual(opt.data.length, 15);
     // test $typeof's symbol handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $typeof: "symbol"
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test $typeof's undefined handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $typeof: "undefined"
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     onError();
 };
 
-local.testCase_dbTable_crudNullCase = function (options, onError) {
+local.testCase_dbTable_crudNullCase = function (opt, onError) {
 /*
  * this function will test dbTable's crud null-case handling-behavior
  */
-    options = {};
+    opt = {};
     // test dbTableCreateMany's null-case handling-behavior
     local.dbTableCreateMany();
     // test dbTableCreateOne's onError handling-behavior
-    options.dbTable = local.dbTableCreateOne({
+    opt.dbTable = local.dbTableCreateOne({
         name: "testCase_dbTable_crudNullCase"
     }, local.onErrorDefault);
     // test dbTableCreateOne's null-case handling-behavior
-    options.dbTable = local.dbTableCreateOne({
+    opt.dbTable = local.dbTableCreateOne({
         name: "testCase_dbTable_crudNullCase"
     });
     // test crudRemoveAll's null-case handling-behavior
-    options.dbTable.crudRemoveAll();
+    opt.dbTable.crudRemoveAll();
     // test cancel-pending-save handling-behavior
-    options.dbTable.save(local.nop);
+    opt.dbTable.save(local.nop);
     // test drop's null-case handling-behavior
-    options.dbTable.drop();
+    opt.dbTable.drop();
     // test idIndexCreate's null-case handling-behavior
-    options.dbTable.idIndexCreate({
+    opt.dbTable.idIndexCreate({
         name: "_id"
     });
     // test idIndexRemove's null-case handling-behavior
-    options.dbTable.idIndexRemove({
+    opt.dbTable.idIndexRemove({
         name: "_id"
     });
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // test crudCountManyByQuery's null-case handling-behavior
-    options.data = options.dbTable.crudCountManyByQuery();
+    opt.data = opt.dbTable.crudCountManyByQuery();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, 0);
+    local.assertJsonEqual(opt.data, 0);
     // test crudGetManyById's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyById();
+    opt.data = opt.dbTable.crudGetManyById();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data, []);
     // test crudGetManyByQuery's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery();
+    opt.data = opt.dbTable.crudGetManyByQuery();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data, []);
     // test crudGetOneById's null-case handling-behavior
-    options.data = options.dbTable.crudGetOneById();
+    opt.data = opt.dbTable.crudGetOneById();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, null);
+    local.assertJsonEqual(opt.data, null);
     // test crudGetOneByRandom's null-case handling-behavior
-    options.data = options.dbTable.crudGetOneByRandom();
+    opt.data = opt.dbTable.crudGetOneByRandom();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, null);
+    local.assertJsonEqual(opt.data, null);
     // test crudGetOneByQuery's null-case handling-behavior
-    options.data = options.dbTable.crudGetOneByQuery();
+    opt.data = opt.dbTable.crudGetOneByQuery();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, null);
+    local.assertJsonEqual(opt.data, null);
     // test crudRemoveManyById's null-case handling-behavior
-    options.data = options.dbTable.crudRemoveManyById();
+    opt.data = opt.dbTable.crudRemoveManyById();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data, []);
     // test crudRemoveManyByQuery's null-case handling-behavior
-    options.data = options.dbTable.crudRemoveManyByQuery();
+    opt.data = opt.dbTable.crudRemoveManyByQuery();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data, []);
     // test crudRemoveOneById's null-case handling-behavior
-    options.data = options.dbTable.crudRemoveOneById();
+    opt.data = opt.dbTable.crudRemoveOneById();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, null);
+    local.assertJsonEqual(opt.data, null);
     // test crudUpdateManyById's null-case handling-behavior
-    options.data = options.dbTable.crudUpdateManyById();
+    opt.data = opt.dbTable.crudUpdateManyById();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data, []);
     // test crudUpdateManyByQuery's null-case handling-behavior
-    options.data = options.dbTable.crudUpdateManyByQuery();
+    opt.data = opt.dbTable.crudUpdateManyByQuery();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data, []);
     // test crudSetOneById's and crudUpdateOneById's null-case handling-behavior
-    ["crudSetOneById", "crudUpdateOneById"].forEach(function (operation) {
-        options.data = options.dbTable[operation]();
+    [
+        "crudSetOneById", "crudUpdateOneById"
+    ].forEach(function (operation) {
+        opt.data = opt.dbTable[operation]();
         // validate dbRowCount
-        local.assertJsonEqual(options.dbTable.crudCountAll(), 1);
-        options._id = options.data._id;
+        local.assertJsonEqual(opt.dbTable.crudCountAll(), 1);
+        opt._id = opt.data._id;
         // validate timestamp
-        local.assertJsonEqual(options.data._timeCreated, options.data._timeUpdated);
+        local.assertJsonEqual(opt.data._timeCreated, opt.data._timeUpdated);
         // test crudRemoveOneById's soft-delete handling-behavior
-        options.data = options.dbTable.crudRemoveOneById(options);
+        opt.data = opt.dbTable.crudRemoveOneById(opt);
         // validate dbRowCount
-        local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+        local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
         // validate data
-        local.assertJsonEqual(options.data._id, options._id);
+        local.assertJsonEqual(opt.data._id, opt._id);
     });
     // test crudGetOneById's null-case handling-behavior
-    options.data = options.dbTable.crudGetOneById(options);
+    opt.data = opt.dbTable.crudGetOneById(opt);
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, null);
+    local.assertJsonEqual(opt.data, null);
     // test crudRemoveOneById's null-case handling-behavior
-    options.data = options.dbTable.crudRemoveOneById(options);
+    opt.data = opt.dbTable.crudRemoveOneById(opt);
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, null);
+    local.assertJsonEqual(opt.data, null);
     onError();
 };
 
-local.testCase_dbTable_crudXxxById = function (options, onError) {
+local.testCase_dbTable_crudXxxById = function (opt, onError) {
 /*
  * this function will test dbTable's crudXxxById handling-behavior
  */
-    options = {};
+    opt = {};
     // test dbTableCreateMany's create handling-behavior
-    options.dbTable = local.dbTableCreateMany([{
-        idIndexCreateList: [null],
-        idIndexRemoveList: [null],
-        name: "testCase_dbTable_crudXxxById"
-    }])[0];
+    opt.dbTable = local.dbTableCreateMany([
+        {
+            idIndexCreateList: [
+                null
+            ],
+            idIndexRemoveList: [
+                null
+            ],
+            name: "testCase_dbTable_crudXxxById"
+        }
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // test crudSetManyById's insert handling-behavior
-    options.data = options.dbTable.crudSetManyById([null, null]);
+    opt.data = opt.dbTable.crudSetManyById([
+        null, null
+    ]);
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 2);
     // validate data
-    local.assertJsonEqual(options.data.length, 2);
+    local.assertJsonEqual(opt.data.length, 2);
     // test crudRemoveManyById's soft-delete handling-behavior
-    options.data = options.dbTable.crudRemoveManyById(options.data);
+    opt.data = opt.dbTable.crudRemoveManyById(opt.data);
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data.length, 2);
+    local.assertJsonEqual(opt.data.length, 2);
     // test crudSetManyById's insert handling-behavior
-    options.data = options.dbTable.crudSetManyById([null, {
-        field1: 1,
-        field2: 2,
-        field3: 3
-    }])[1];
+    opt.data = opt.dbTable.crudSetManyById([
+        null, {
+            field1: 1,
+            field2: 2,
+            field3: 3
+        }
+    ])[1];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 2);
     // validate timestamp
-    local.assertJsonEqual(options.data._timeCreated, options.data._timeUpdated);
+    local.assertJsonEqual(opt.data._timeCreated, opt.data._timeUpdated);
     // validate data
-    local.assertJsonNotEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, undefined);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, 2);
-    local.assertJsonEqual(options.data.field3, 3);
+    local.assertJsonNotEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, undefined);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, 2);
+    local.assertJsonEqual(opt.data.field3, 3);
     // test idIndexCreate's create handling-behavior
-    // coverage-hack - $isRemoved
-    options.dbTable.crudSetOneById({
+    // hack-istanbul - $isRemoved
+    opt.dbTable.crudSetOneById({
         _id: "undefined"
     });
-    options.dbTable.crudRemoveOneById({
+    opt.dbTable.crudRemoveOneById({
         _id: "undefined"
     });
-    options._id = options.data._id;
-    options.dbTable.idIndexCreate({
+    opt._id = opt.data._id;
+    opt.dbTable.idIndexCreate({
         isInteger: true,
         name: "id2"
     });
     // test crudGetManyById's get handling-behavior
-    options.data = options.dbTable.crudGetManyById([{
-        _id: options._id
-    }])[0];
+    opt.data = opt.dbTable.crudGetManyById([
+        {
+            _id: opt._id
+        }
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 2);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonNotEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, 2);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonNotEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, 2);
     // test crudUpdateManyById's update handling-behavior
-    options.id2 = options.data.id2;
-    options.data = options.dbTable.crudUpdateManyById([{
-        id2: options.id2,
-        field2: NaN,
-        field3: [new Date(0)]
-    }])[0];
+    opt.id2 = opt.data.id2;
+    opt.data = opt.dbTable.crudUpdateManyById([
+        {
+            id2: opt.id2,
+            field2: NaN,
+            field3: [
+                new Date(0)
+            ]
+        }
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 2);
     // validate timestamp
-    local.assertThrow(options.data._timeCreated <= options.data._timeUpdated, options.data);
+    local.assertThrow(opt.data._timeCreated <= opt.data._timeUpdated, opt.data);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, ["1970-01-01T00:00:00.000Z"]);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, [
+        "1970-01-01T00:00:00.000Z"
+    ]);
     // test crudSetManyById's replace handling-behavior
-    options.data = options.dbTable.crudSetManyById([{
-        id2: options.id2
-    }])[0];
+    opt.data = opt.dbTable.crudSetManyById([
+        {
+            id2: opt.id2
+        }
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 2);
     // validate timestamp
-    local.assertJsonEqual(options.data._timeCreated, options.data._timeUpdated);
+    local.assertJsonEqual(opt.data._timeCreated, opt.data._timeUpdated);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, undefined);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, undefined);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     // test crudUpdateManyById's update handling-behavior
-    options.data = options.dbTable.crudUpdateManyById([{
-        id2: options.id2,
-        field1: 1
-    }])[0];
+    opt.data = opt.dbTable.crudUpdateManyById([
+        {
+            id2: opt.id2,
+            field1: 1
+        }
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 2);
     // validate timestamp
-    local.assertThrow(options.data._timeCreated <= options.data._timeUpdated, options.data);
+    local.assertThrow(opt.data._timeCreated <= opt.data._timeUpdated, opt.data);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     // test crudRemoveManyById's soft-delete handling-behavior
-    options.data = options.dbTable.crudRemoveManyById([options])[0];
+    opt.data = opt.dbTable.crudRemoveManyById([
+        opt
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 1);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 1);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     // test crudSetManyById's re-insert handling-behavior
-    options.data = options.dbTable.crudSetManyById([{
-        id2: options.id2
-    }])[0];
+    opt.data = opt.dbTable.crudSetManyById([
+        {
+            id2: opt.id2
+        }
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 2);
     // validate timestamp
-    local.assertJsonEqual(options.data._timeCreated, options.data._timeUpdated);
+    local.assertJsonEqual(opt.data._timeCreated, opt.data._timeUpdated);
     // validate data
-    local.assertJsonNotEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, undefined);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonNotEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, undefined);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     // test crudRemoveManyById's soft-delete handling-behavior
-    options._id = options.data._id;
-    options.data = options.dbTable.crudRemoveManyById([options])[0];
+    opt._id = opt.data._id;
+    opt.data = opt.dbTable.crudRemoveManyById([
+        opt
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 1);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 1);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, undefined);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, undefined);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     onError();
 };
 
-local.testCase_dbTable_crudXxxByQuery = function (options, onError) {
+local.testCase_dbTable_crudXxxByQuery = function (opt, onError) {
 /*
  * this function will test dbTable's crudXxxByQuery handling-behavior
  */
-    options = {};
+    opt = {};
     // test dbTableCreateMany's create handling-behavior
-    options.dbTable = local.dbTableCreateMany([{
-        idIndexCreateList: [null],
-        idIndexRemoveList: [null],
-        name: "testCase_dbTable_crudXxxByQuery"
-    }])[0];
+    opt.dbTable = local.dbTableCreateMany([
+        {
+            idIndexCreateList: [
+                null
+            ],
+            idIndexRemoveList: [
+                null
+            ],
+            name: "testCase_dbTable_crudXxxByQuery"
+        }
+    ])[0];
     // drop dbTable
-    options.dbTable.drop();
+    opt.dbTable.drop();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 0);
     // test crudSetManyById's insert handling-behavior
-    options.data = options.dbTable.crudSetManyById([null, null]);
+    opt.data = opt.dbTable.crudSetManyById([
+        null, null
+    ]);
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 2);
     // validate data
-    local.assertJsonEqual(options.data.length, 2);
+    local.assertJsonEqual(opt.data.length, 2);
     // test crudRemoveManyByQuery's soft-delete handling-behavior
-    options.data = options.dbTable.crudRemoveManyByQuery();
+    opt.data = opt.dbTable.crudRemoveManyByQuery();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 0);
     // validate data
-    local.assertJsonEqual(options.data.length, 2);
+    local.assertJsonEqual(opt.data.length, 2);
     // test crudSetManyById's insert handling-behavior
-    options.data = options.dbTable.crudSetManyById([null, {
-        field1: 1,
-        field2: 2,
-        field3: 3
-    }])[1];
+    opt.data = opt.dbTable.crudSetManyById([
+        null, {
+            field1: 1,
+            field2: 2,
+            field3: 3
+        }
+    ])[1];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 2);
     // validate timestamp
-    local.assertJsonEqual(options.data._timeCreated, options.data._timeUpdated);
+    local.assertJsonEqual(opt.data._timeCreated, opt.data._timeUpdated);
     // validate data
-    local.assertJsonNotEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, undefined);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, 2);
-    local.assertJsonEqual(options.data.field3, 3);
+    local.assertJsonNotEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, undefined);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, 2);
+    local.assertJsonEqual(opt.data.field3, 3);
     // test idIndexCreate's create handling-behavior
-    options._id = options.data._id;
-    options.dbTable.idIndexCreate({
+    opt._id = opt.data._id;
+    opt.dbTable.idIndexCreate({
         isInteger: true,
         name: "id2"
     });
     // test crudGetManyByQuery's get handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
-            _id: options._id
+            _id: opt._id
         }
     })[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 2);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonNotEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, 2);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonNotEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, 2);
     // test crudGetOneByQuery's get handling-behavior
-    options.data = options.dbTable.crudGetOneByQuery({
-        _id: options._id
+    opt.data = opt.dbTable.crudGetOneByQuery({
+        _id: opt._id
     });
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 2);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonNotEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, 2);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonNotEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, 2);
     // test crudUpdateManyByQuery's update handling-behavior
-    options.id2 = options.data.id2;
-    options.data = options.dbTable.crudUpdateManyByQuery({
-        id2: options.id2
+    opt.id2 = opt.data.id2;
+    opt.data = opt.dbTable.crudUpdateManyByQuery({
+        id2: opt.id2
     }, {
-        id2: options.id2,
+        id2: opt.id2,
         field2: NaN,
-        field3: [new Date(0)]
+        field3: [
+            new Date(0)
+        ]
     })[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 2);
     // validate timestamp
-    local.assertThrow(options.data._timeCreated <= options.data._timeUpdated, options.data);
+    local.assertThrow(opt.data._timeCreated <= opt.data._timeUpdated, opt.data);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, ["1970-01-01T00:00:00.000Z"]);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, [
+        "1970-01-01T00:00:00.000Z"
+    ]);
     // test crudSetManyById's replace handling-behavior
-    options.data = options.dbTable.crudSetManyById([{
-        id2: options.id2
-    }])[0];
+    opt.data = opt.dbTable.crudSetManyById([
+        {
+            id2: opt.id2
+        }
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 2);
     // validate timestamp
-    local.assertJsonEqual(options.data._timeCreated, options.data._timeUpdated);
+    local.assertJsonEqual(opt.data._timeCreated, opt.data._timeUpdated);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, undefined);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, undefined);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     // test crudUpdateManyByQuery's update handling-behavior
-    options.data = options.dbTable.crudUpdateManyByQuery({
-        id2: options.id2
+    opt.data = opt.dbTable.crudUpdateManyByQuery({
+        id2: opt.id2
     }, {
-        id2: options.id2,
+        id2: opt.id2,
         field1: 1
     })[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 2);
     // validate timestamp
-    local.assertThrow(options.data._timeCreated <= options.data._timeUpdated, options.data);
+    local.assertThrow(opt.data._timeCreated <= opt.data._timeUpdated, opt.data);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     // test crudRemoveManyByQuery's soft-delete handling-behavior
-    options.data = options.dbTable.crudRemoveManyByQuery({
-        _id: options._id
+    opt.data = opt.dbTable.crudRemoveManyByQuery({
+        _id: opt._id
     })[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 1);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 1);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     // test crudSetManyById's re-insert handling-behavior
-    options.data = options.dbTable.crudSetManyById([{
-        id2: options.id2
-    }])[0];
+    opt.data = opt.dbTable.crudSetManyById([
+        {
+            id2: opt.id2
+        }
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 2);
     // validate timestamp
-    local.assertJsonEqual(options.data._timeCreated, options.data._timeUpdated);
+    local.assertJsonEqual(opt.data._timeCreated, opt.data._timeUpdated);
     // validate data
-    local.assertJsonNotEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, undefined);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonNotEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, undefined);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     // test crudRemoveManyByQuery's soft-delete handling-behavior
-    options._id = options.data._id;
-    options.data = options.dbTable.crudRemoveManyByQuery({
-        _id: options._id
+    opt._id = opt.data._id;
+    opt.data = opt.dbTable.crudRemoveManyByQuery({
+        _id: opt._id
     })[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 1);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 1);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, undefined);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, undefined);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     onError();
 };
 
-local.testCase_dbTable_persistence = function (options, onError) {
+local.testCase_dbTable_persistence = function (opt, onError) {
 /*
  * this function will test dbTable's persistence handling-behavior
  */
-    options = {};
+    opt = {};
     // remove all dbRow's from db
     local.dbCrudRemoveAll();
     // drop db
@@ -1322,122 +1513,132 @@ local.testCase_dbTable_persistence = function (options, onError) {
         + "testCase_dbTable_persistence dbRowSet {\"_id\":\"id1\"}\n"
         + "undefined undefined undefined"
     );
-    options.dbTable = local.dbTableCreateOne({
+    opt.dbTable = local.dbTableCreateOne({
         name: "testCase_dbTable_persistence"
     });
-    options.data = local.dbExport();
+    opt.data = local.dbExport();
     // validate dbTable has idIndex._id
-    local.assertThrow(options.data.indexOf(
-        "testCase_dbTable_persistence idIndexCreate {\"isInteger\":false,\"name\":\"_id\"}"
-    ) >= 0, options.data);
+    local.assertThrow(opt.data.indexOf(
+        "testCase_dbTable_persistence idIndexCreate"
+        + " {\"isInteger\":false,\"name\":\"_id\"}"
+    ) >= 0, opt.data);
     // validate dbTable has idIndex.id2
-    local.assertThrow(options.data.indexOf(
-        "testCase_dbTable_persistence idIndexCreate {\"isInteger\":false,\"name\":\"id2\"}"
-    ) >= 0, options.data);
+    local.assertThrow(opt.data.indexOf(
+        "testCase_dbTable_persistence idIndexCreate"
+        + " {\"isInteger\":false,\"name\":\"id2\"}"
+    ) >= 0, opt.data);
     // validate dbTable has dbRow1
-    local.assertThrow(options.data.indexOf(
+    local.assertThrow(opt.data.indexOf(
         "testCase_dbTable_persistence dbRowSet {\"_id\":\"id1\","
-    ) >= 0, options.data);
+    ) >= 0, opt.data);
     // remove all dbRow's from dbTable
-    options.dbTable.crudRemoveAll();
-    options.data = options.dbTable.export();
+    opt.dbTable.crudRemoveAll();
+    opt.data = opt.dbTable.export();
     // validate dbTable has idIndex._id
-    local.assertThrow(options.data.indexOf(
-        "testCase_dbTable_persistence idIndexCreate {\"isInteger\":false,\"name\":\"_id\"}"
-    ) >= 0, options.data);
+    local.assertThrow(opt.data.indexOf(
+        "testCase_dbTable_persistence idIndexCreate"
+        + " {\"isInteger\":false,\"name\":\"_id\"}"
+    ) >= 0, opt.data);
     // validate dbTable has idIndex.id2
-    local.assertThrow(options.data.indexOf(
-        "testCase_dbTable_persistence idIndexCreate {\"isInteger\":false,\"name\":\"id2\"}"
-    ) >= 0, options.data);
+    local.assertThrow(opt.data.indexOf(
+        "testCase_dbTable_persistence idIndexCreate"
+        + " {\"isInteger\":false,\"name\":\"id2\"}"
+    ) >= 0, opt.data);
     // validate dbTable has no dbRow1
-    local.assertThrow(options.data.indexOf(
+    local.assertThrow(opt.data.indexOf(
         "testCase_dbTable_persistence dbRowSet {\"_id\":\"id1\","
-    ) < 0, options.data);
+    ) < 0, opt.data);
     // drop dbTable
-    options.dbTable.drop();
-    options.data = options.dbTable.export();
+    opt.dbTable.drop();
+    opt.data = opt.dbTable.export();
     // validate dbTable has idIndex._id
-    local.assertThrow(options.data.indexOf(
-        "testCase_dbTable_persistence idIndexCreate {\"isInteger\":false,\"name\":\"_id\"}"
-    ) >= 0, options.data);
+    local.assertThrow(opt.data.indexOf(
+        "testCase_dbTable_persistence idIndexCreate"
+        + " {\"isInteger\":false,\"name\":\"_id\"}"
+    ) >= 0, opt.data);
     // validate dbTable has no idIndex.id2
-    local.assertThrow(options.data.indexOf(
-        "testCase_dbTable_persistence idIndexCreate {\"isInteger\":false,\"name\":\"id2\"}"
-    ) < 0, options.data);
+    local.assertThrow(opt.data.indexOf(
+        "testCase_dbTable_persistence idIndexCreate"
+        + " {\"isInteger\":false,\"name\":\"id2\"}"
+    ) < 0, opt.data);
     // validate dbTable has no dbRow1
-    local.assertThrow(options.data.indexOf(
+    local.assertThrow(opt.data.indexOf(
         "testCase_dbTable_persistence dbRowSet {\"_id\":\"id1\","
-    ) < 0, options.data);
+    ) < 0, opt.data);
     // save db
-    options.dbTable.save(function (error) {
-        // validate no error occurred
-        local.assertThrow(!error, error);
+    opt.dbTable.save(function (err) {
+        // validate no err occurred
+        local.assertThrow(!err, err);
         // load db
         local.dbLoad(onError);
     });
 };
 
-local.testCase_dbTable_sizeLimit = function (options, onError) {
+local.testCase_dbTable_sizeLimit = function (opt, onError) {
 /*
  * this function will test dbTable's sizeLimit handling-behavior
  */
-    options = {};
-    options.dbTable = local.dbTableCreateOne({
+    opt = {};
+    opt.dbTable = local.dbTableCreateOne({
         name: "testCase_dbTable_sizeLimit",
         sizeLimit: 2
     });
-    options.dbTable.crudSetOneById({});
+    opt.dbTable.crudSetOneById({});
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 1);
-    options.dbTable.crudSetOneById({});
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 1);
+    opt.dbTable.crudSetOneById({});
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
-    options.dbTable.crudSetOneById({});
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 2);
+    opt.dbTable.crudSetOneById({});
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 2);
     onError();
 };
 
-local.testCase_onEventDomDb_default = function (options, onError) {
+local.testCase_onEventDomDb_default = function (opt, onError) {
 /*
  * this function will test onEventDomDb's default handling-behavior
  */
     if (!local.isBrowser) {
-        onError(null, options);
+        onError(null, opt);
         return;
     }
-    options = {};
-    options.addEventListener = local.nop;
-    options.click = local.nop;
-    options.files = [];
+    opt = {};
+    opt.addEventListener = local.nop;
+    opt.click = local.nop;
+    opt.files = [];
     local.testMock([
-        [document, {
-            querySelector: function () {
-                return options;
+        [
+            document, {
+                querySelector: function () {
+                    return opt;
+                }
             }
-        }],
-        [local, {
-            dbDrop: function (onError) {
-                onError();
-            },
-            dbExport: local.nop,
-            dbImport: local.nop
-        }],
-        [globalThis, {
-            FileReader: function () {
-                this.addEventListener = function (_, fnc) {
-                    fnc(_);
-                };
-                this.readAsText = local.nop;
-            },
-            setTimeout: function (fnc) {
-                fnc();
-            },
-            utility2: null,
-            utility2_dbSeedList: null,
-            utility2_onReadyAfter: null,
-            utility2_onReadyBefore: null
-        }]
+        ], [
+            local, {
+                dbDrop: function (onError) {
+                    onError();
+                },
+                dbExport: local.nop,
+                dbImport: local.nop
+            }
+        ], [
+            globalThis, {
+                FileReader: function () {
+                    this.addEventListener = function (_, fnc) {
+                        fnc(_);
+                    };
+                    this.readAsText = local.nop;
+                },
+                setTimeout: function (fnc) {
+                    fnc();
+                },
+                utility2: null,
+                utility2_dbSeedList: null,
+                utility2_onReadyAfter: null,
+                utility2_onReadyBefore: null
+            }
+        ]
     ], function (onError) {
         [
             "dbExportButton1",
@@ -1445,19 +1646,25 @@ local.testCase_onEventDomDb_default = function (options, onError) {
             "dbImportInput1",
             "dbResetButton1"
         ].forEach(function (id) {
-            ["change", "click"].forEach(function (type) {
-                [0, 1].forEach(function (ii) {
-                    options.files[0] = ii;
+            [
+                "change", "click"
+            ].forEach(function (type) {
+                [
+                    0, 1
+                ].forEach(function (ii) {
+                    opt.files[0] = ii;
                     local.onEventDomDb({
                         target: {
                             dataset: {},
-                            id: id
+                            id
                         },
-                        type: type
+                        type
                     });
-                    globalThis.utility2_dbSeedList = ii && [{
-                        name: "dbTable1"
-                    }];
+                    globalThis.utility2_dbSeedList = ii && [
+                        {
+                            name: "dbTable1"
+                        }
+                    ];
                 });
             });
         });
@@ -1465,12 +1672,12 @@ local.testCase_onEventDomDb_default = function (options, onError) {
     }, onError);
 };
 
-local.testCase_sortCompare_default = function (options, onError) {
+local.testCase_sortCompare_default = function (opt, onError) {
 /*
  * this function will test sortCompare's default handling-behavior
  */
-    options = {};
-    options.data = local.identity([
+    opt = {};
+    opt.data = ([
         undefined,
         [],
         "",
@@ -1479,22 +1686,22 @@ local.testCase_sortCompare_default = function (options, onError) {
         "a", "aa",
         false, false, null, null, true, true
     ]).sort();
-    options.data = options.data.sort(local.sortCompare);
-    local.assertJsonEqual(options.data.slice(0, -3), [
+    opt.data = opt.data.sort(local.sortCompare);
+    local.assertJsonEqual(opt.data.slice(0, -3), [
         null, null,
         false, false, true, true,
         -Infinity, -1, 0, 0, 1, Infinity,
         "", "a", "aa"
     ]);
-    options.data = options.data.reverse().sort(local.sortCompare);
-    local.assertJsonEqual(options.data.slice(0, -3), [
+    opt.data = opt.data.reverse().sort(local.sortCompare);
+    local.assertJsonEqual(opt.data.slice(0, -3), [
         null, null,
         false, false, true, true,
         -Infinity, -1, 0, 0, 1, Infinity,
         "", "a", "aa"
     ]);
-    // coverage-hack
-    options.data.forEach(function (aa) {
+    // hack-istanbul
+    opt.data.forEach(function (aa) {
         [{}, null, Symbol()].forEach(function (bb) {
             local.sortCompare(aa, bb);
             local.sortCompare(bb, aa);
@@ -1503,13 +1710,13 @@ local.testCase_sortCompare_default = function (options, onError) {
     onError();
 };
 
-local.testCase_storageXxx_misc = function (options, onError) {
+local.testCase_storageXxx_misc = function (opt, onError) {
 /*
  * this function will test storageXxx's misc handling-behavior
  */
     var onParallel;
-    // jslint-hack
-    local.nop(options);
+    // hack-jslint
+    local.nop(opt);
     onParallel = local.onParallel(onError);
     onParallel.counter += 1;
     // test storageInit's init handling-behavior
@@ -1540,7 +1747,4 @@ local.testCase_storageXxx_misc = function (options, onError) {
     onParallel();
 };
 }());
-
-
-
 }());

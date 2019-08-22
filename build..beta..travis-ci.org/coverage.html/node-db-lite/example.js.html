@@ -47,7 +47,7 @@
 .x-istanbul .cover-empty,
 .x-istanbul .cover-fill {
     background: white;
-    border: 1px solid #444;
+    border: 1px solid #999;
     display: inline-block;
     height: 12px;
 }
@@ -57,7 +57,7 @@
 }
 .x-istanbul .cover-fill {
     background: #ccc;
-    border-right: 1px solid #444;
+    border-right: 1px solid #999;
 }
 .x-istanbul .cover-full {
     border-right: none !important;
@@ -97,8 +97,8 @@
     text-decoration: none;
 }
 .x-istanbul .coverage .line-coverage {
-    border-left: 1px solid #666;
-    border-right: 1px solid #666;
+    border-left: 1px solid #999;
+    border-right: 1px solid #999;
     color: #777 !important;
     text-align: right;
 }
@@ -113,7 +113,7 @@
     width: 100%
 }
 .x-istanbul .coverage-summary td {
-    border: 1px solid #666;
+    border: 1px solid #999;
     margin: 0;
     padding: 5px;
     white-space: nowrap;
@@ -143,7 +143,7 @@
     padding: 20px;
 }
 .x-istanbul .footer {
-    border-top: 1px solid #666;
+    border-top: 1px solid #999;
 }
 .x-istanbul .fstat-no {
     background: #ffc520;
@@ -154,7 +154,7 @@
     color: #111 !important;
 }
 .x-istanbul .header {
-    border-bottom: 1px solid #666;
+    border-bottom: 1px solid #999;
     top: 0;
     width: 100%;
 }
@@ -176,7 +176,7 @@
 }
 .x-istanbul .metric {
     background: white;
-    border: 1px solid #333;
+    border: 1px solid #999;
     display: inline-block;
     padding: .3em;
 }
@@ -229,7 +229,7 @@
 }
 .x-istanbul .tableHeader td {
     background: #fff;
-    border: 1px solid #666;
+    border: 1px solid #999;
     padding: 5px;
 }
 .x-istanbul .tableHeader th {
@@ -249,27 +249,37 @@
     if (window.domOnEventSelectAllWithinPre) {
         return;
     }
-    window.domOnEventSelectAllWithinPre = function (event) {
+    window.domOnEventSelectAllWithinPre = function (evt) {
         var range;
         var selection;
-        if (event &&
-                event.key === "a" &&
-                (event.ctrlKey || event.metaKey) &&
-                event.target.closest("pre")) {
+        if (
+            evt
+            && evt.key === "a"
+            && (evt.ctrlKey || evt.metaKey)
+            && evt.target.closest(
+                "pre"
+            )
+        ) {
             range = document.createRange();
-            range.selectNodeContents(event.target.closest("pre"));
+            range.selectNodeContents(evt.target.closest(
+                "pre"
+            ));
             selection = window.getSelection();
             selection.removeAllRanges();
             selection.addRange(range);
-            event.preventDefault();
+            evt.preventDefault();
         }
     };
-    document.addEventListener("keydown", window.domOnEventSelectAllWithinPre);
+    // init event-handling
+    document.addEventListener(
+        "keydown",
+        window.domOnEventSelectAllWithinPre
+    );
 }());
 </script>
 <div class="header high">
     <h1 style="font-weight: bold;">
-        <a href="https://github.com/kaizhu256/node-db-lite">db-lite (2018.12.30)</a>
+        <a href="https://github.com/kaizhu256/node-db-lite">db-lite (2019.8.20)</a>
     </h1>
     <h1>Code coverage report for <span class="entity">node-db-lite/example.js</span></h1>
     <table class="tableHeader">
@@ -283,11 +293,11 @@
     </tr>
     </thead>
     <tbody>
-        <td>branches: 53<br>statements: 54<br>functions: 9</td>
-        <td>100%<br>(170 / 170)</td>
-        <td>100%<br>(115 / 115)</td>
-        <td>100%<br>(25 / 25)</td>
-        <td>100%<br>(170 / 170)</td>
+        <td>statements: 54<br>branches: 60<br>functions: 8</td>
+        <td>100%<br>(150 / 150)</td>
+        <td>100%<br>(96 / 96)</td>
+        <td>100%<br>(20 / 20)</td>
+        <td>100%<br>(150 / 150)</td>
     </tbody>
     </table>
     <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">node-db-lite/</a> &#187; example.js</div>
@@ -1192,6 +1202,52 @@
 <a href="#L896" id="L896">896</a>
 <a href="#L897" id="L897">897</a>
 <a href="#L898" id="L898">898</a>
+<a href="#L899" id="L899">899</a>
+<a href="#L900" id="L900">900</a>
+<a href="#L901" id="L901">901</a>
+<a href="#L902" id="L902">902</a>
+<a href="#L903" id="L903">903</a>
+<a href="#L904" id="L904">904</a>
+<a href="#L905" id="L905">905</a>
+<a href="#L906" id="L906">906</a>
+<a href="#L907" id="L907">907</a>
+<a href="#L908" id="L908">908</a>
+<a href="#L909" id="L909">909</a>
+<a href="#L910" id="L910">910</a>
+<a href="#L911" id="L911">911</a>
+<a href="#L912" id="L912">912</a>
+<a href="#L913" id="L913">913</a>
+<a href="#L914" id="L914">914</a>
+<a href="#L915" id="L915">915</a>
+<a href="#L916" id="L916">916</a>
+<a href="#L917" id="L917">917</a>
+<a href="#L918" id="L918">918</a>
+<a href="#L919" id="L919">919</a>
+<a href="#L920" id="L920">920</a>
+<a href="#L921" id="L921">921</a>
+<a href="#L922" id="L922">922</a>
+<a href="#L923" id="L923">923</a>
+<a href="#L924" id="L924">924</a>
+<a href="#L925" id="L925">925</a>
+<a href="#L926" id="L926">926</a>
+<a href="#L927" id="L927">927</a>
+<a href="#L928" id="L928">928</a>
+<a href="#L929" id="L929">929</a>
+<a href="#L930" id="L930">930</a>
+<a href="#L931" id="L931">931</a>
+<a href="#L932" id="L932">932</a>
+<a href="#L933" id="L933">933</a>
+<a href="#L934" id="L934">934</a>
+<a href="#L935" id="L935">935</a>
+<a href="#L936" id="L936">936</a>
+<a href="#L937" id="L937">937</a>
+<a href="#L938" id="L938">938</a>
+<a href="#L939" id="L939">939</a>
+<a href="#L940" id="L940">940</a>
+<a href="#L941" id="L941">941</a>
+<a href="#L942" id="L942">942</a>
+<a href="#L943" id="L943">943</a>
+<a href="#L944" id="L944">944</a>
 </td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1311,6 +1367,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
@@ -1376,26 +1438,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1408,6 +1450,27 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1416,6 +1479,7 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
@@ -1476,133 +1540,21 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">14</span>
 <span class="cline-any cline-yes">14</span>
-<span class="cline-any cline-yes">14</span>
-<span class="cline-any cline-yes">14</span>
-<span class="cline-any cline-yes">14</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">14</span>
 <span class="cline-any cline-yes">14</span>
@@ -1617,16 +1569,78 @@
 <span class="cline-any cline-yes">14</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">4</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2029,13 +2043,104 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2086,10 +2191,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js" tabIndex="0">&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
 &nbsp;
 &nbsp;
 &nbsp;
@@ -2197,9 +2305,9 @@ this script will run a web-demo of db-lite
 &nbsp;
 instruction
     1. save this script as example.js
-    2. run the shell-command:
+    2. run shell-command:
         $ npm install db-lite &amp;&amp; PORT=8081 node example.js
-    3. open a browser to http://127.0.0.1:8081 and play with the web-demo
+    3. open a browser to http://127.0.0.1:8081 and play with web-demo
     4. edit this script to suit your needs
 */
 &nbsp;
@@ -2253,30 +2361,30 @@ instruction
     // init function
     local.assertThrow = <span class="fstat-skip" title="function not covered" >function (passed, message) {</span>
     /*
-     * this function will throw the error &lt;message&gt; if &lt;passed&gt; is falsy
+     * this function will throw err.&lt;message&gt; if &lt;passed&gt; is falsy
      */
-<span class="cstat-skip" title="statement not covered" >        var error;</span>
+<span class="cstat-skip" title="statement not covered" >        var err;</span>
 <span class="cstat-skip" title="statement not covered" >        if (passed) {</span>
 <span class="cstat-skip" title="statement not covered" >            return;</span>
         }
-<span class="cstat-skip" title="statement not covered" >        error = (</span>
-            // ternary-condition
+<span class="cstat-skip" title="statement not covered" >        err = (</span>
+            // ternary-operator
             (
                 message
                 &amp;&amp; typeof message.message === "string"
                 &amp;&amp; typeof message.stack === "string"
             )
-            // if message is an error-object, then leave it as is
+            // if message is errObj, then leave as is
             ? message
             : new Error(
                 typeof message === "string"
-                // if message is a string, then leave it as is
+                // if message is a string, then leave as is
                 ? message
                 // else JSON.stringify message
                 : JSON.stringify(message, null, 4)
             )
         );
-<span class="cstat-skip" title="statement not covered" >        throw error;</span>
+<span class="cstat-skip" title="statement not covered" >        throw err;</span>
     };
     local.functionOrNop = <span class="fstat-skip" title="function not covered" >function (fnc) {</span>
     /*
@@ -2304,7 +2412,8 @@ instruction
      * null, undefined, or empty-string,
      * then overwrite them with items from &lt;source&gt;
      */
-<span class="cstat-skip" title="statement not covered" >        Object.keys(source).forEach(<span class="fstat-skip" title="function not covered" >function (key) {</span></span>
+<span class="cstat-skip" title="statement not covered" >        target = target || {};</span>
+<span class="cstat-skip" title="statement not covered" >        Object.keys(source || {}).forEach(<span class="fstat-skip" title="function not covered" >function (key) {</span></span>
 <span class="cstat-skip" title="statement not covered" >            if (</span>
                 target[key] === null
                 || target[key] === undefined
@@ -2313,6 +2422,7 @@ instruction
 <span class="cstat-skip" title="statement not covered" >                target[key] = target[key] || source[key];</span>
             }
         });
+<span class="cstat-skip" title="statement not covered" >        return target;</span>
     };
     // require builtin
     if (!local.isBrowser) {
@@ -2373,135 +2483,23 @@ globalThis.local = local;
 if (!local.isBrowser) {
     return;
 }
-local.testRunBrowser = function (event) {
-    <span class="skip-if-branch" title="else path not taken" >E</span>if (!event || (
-        event
-        &amp;&amp; event.currentTarget
-        &amp;&amp; event.currentTarget.className
-        &amp;&amp; event.currentTarget.className.includes
-        &amp;&amp; event.currentTarget.className.includes("onreset")
-    )) {
-        // reset output
-        Array.from(document.querySelectorAll(
-            "body &gt; .resettable"
-        )).forEach(function (element) {
-            switch (element.tagName) {
-<span class="branch-0 cbranch-skip" title="branch not covered" >            case "INPUT":</span>
-            case "TEXTAREA":
-                element.value = "";
-                break;
-<span class="branch-2 cbranch-skip" title="branch not covered" >            default:</span>
-<span class="cstat-skip" title="statement not covered" >                element.textContent = "";</span>
-            }
-        });
-    }
-    switch (event &amp;&amp; event.currentTarget &amp;&amp; event.currentTarget.id) {
-    case "testRunButton1":
-        // show tests
-        <span class="skip-if-branch" title="else path not taken" >E</span>if (document.querySelector(
-            "#testReportDiv1"
-        ).style.maxHeight === "0px") {
-            local.uiAnimateSlideDown(document.querySelector(
-                "#testReportDiv1"
-            ));
-            document.querySelector(
-                "#testRunButton1"
-            ).textContent = "hide internal test";
-            local.modeTest = 1;
-            local.testRunDefault(local);
-        // hide tests
-        } else {
-<span class="cstat-skip" title="statement not covered" >            local.uiAnimateSlideUp(document.querySelector(</span>
-                "#testReportDiv1"
-            ));
-<span class="cstat-skip" title="statement not covered" >            document.querySelector(</span>
-                "#testRunButton1"
-            ).textContent = "run internal test";
-        }
-        break;
-    /* validateLineSortedReset */
-    // custom-case
-<span class="branch-1 cbranch-skip" title="branch not covered" >    case "dbExportButton1":</span>
-<span class="branch-2 cbranch-skip" title="branch not covered" >    case "dbImportButton1":</span>
-<span class="branch-3 cbranch-skip" title="branch not covered" >    case "dbImportInput1":</span>
-<span class="branch-4 cbranch-skip" title="branch not covered" >    case "dbResetButton1":</span>
-<span class="cstat-skip" title="statement not covered" >        local.db.onEventDomDb(event);</span>
-<span class="cstat-skip" title="statement not covered" >        break;</span>
-    }
-    if (document.querySelector(
-        "#inputTextareaEval1"
-    ) &amp;&amp; (!event || (
-        event
-        &amp;&amp; event.currentTarget
-        &amp;&amp; event.currentTarget.className
-        &amp;&amp; event.currentTarget.className.includes
-        &amp;&amp; event.currentTarget.className.includes("oneval")
-    ))) {
-        // try to eval input-code
-        try {
-            eval(document.querySelector( // jslint ignore:line
-                "#inputTextareaEval1"
-            ).value);
-        } catch (errorCaught) {
-<span class="cstat-skip" title="statement not covered" >            console.error(errorCaught);</span>
-        }
-    }
-};
-&nbsp;
-local.uiEventDelegate = local.uiEventDelegate || function (event) {
-    // filter non-input keyup-event
-    event.targetOnEvent = event.target.closest("[data-onevent]");
-    <span class="skip-if-branch" title="if path not taken" >I</span>if (!event.targetOnEvent) {
+// log stderr and stdout to #outputStdout1
+["error", "log"].forEach(function (key) {
+    var argList;
+    var elem;
+    var fnc;
+    elem = document.querySelector(
+        "#outputStdout1"
+    );
+    <span class="skip-if-branch" title="if path not taken" >I</span>if (!elem) {
 <span class="cstat-skip" title="statement not covered" >        return;</span>
     }
-    // rate-limit keyup
-    <span class="skip-if-branch" title="if path not taken" >I</span>if (event.type === "keyup") {
-<span class="cstat-skip" title="statement not covered" >        local.uiEventDelegateKeyupEvent = event;</span>
-<span class="cstat-skip" title="statement not covered" >        if (local.uiEventDelegateKeyupTimerTimeout !== 2) {</span>
-<span class="cstat-skip" title="statement not covered" >            local.uiEventDelegateKeyupTimerTimeout = (</span>
-                local.uiEventDelegateKeyupTimerTimeout
-                || setTimeout(<span class="fstat-skip" title="function not covered" >function () {</span>
-<span class="cstat-skip" title="statement not covered" >                    local.uiEventDelegateKeyupTimerTimeout = 2;</span>
-<span class="cstat-skip" title="statement not covered" >                    local.uiEventDelegate(local.uiEventDelegateKeyupEvent);</span>
-                }, 100)
-            );
-<span class="cstat-skip" title="statement not covered" >            return;</span>
-        }
-<span class="cstat-skip" title="statement not covered" >        local.uiEventDelegateKeyupTimerTimeout = null;</span>
-<span class="cstat-skip" title="statement not covered" >        if (!event.target.closest("input, option, select, textarea")) {</span>
-<span class="cstat-skip" title="statement not covered" >            return;</span>
-        }
-    }
-    switch (event.targetOnEvent.tagName) {
-    case "BUTTON":
-    case "FORM":
-        event.preventDefault();
-        break;
-    }
-    event.stopPropagation();
-    local.uiEventListenerDict[event.targetOnEvent.dataset.onevent](event);
-};
-&nbsp;
-local.uiEventListenerDict = local.uiEventListenerDict || {};
-&nbsp;
-local.uiEventListenerDict.testRunBrowser = local.testRunBrowser;
-&nbsp;
-// log stderr and stdout to #outputStdoutTextarea1
-["error", "log"].forEach(function (key) {
-    console[key + "_original"] = console[key + "_original"] || console[key];
+    fnc = console[key];
     console[key] = function () {
-        var argList;
-        var element;
         argList = Array.from(arguments); // jslint ignore:line
-        console[key + "_original"].apply(console, argList);
-        element = document.querySelector(
-            "#outputStdoutTextarea1"
-        );
-        <span class="skip-if-branch" title="if path not taken" >I</span>if (!element) {
-<span class="cstat-skip" title="statement not covered" >            return;</span>
-        }
-        // append text to #outputStdoutTextarea1
-        element.value += argList.map(function (arg) {
+        fnc.apply(console, argList);
+        // append text to #outputStdout1
+        elem.textContent += argList.map(function (arg) {
             return (
                 typeof arg === "string"
                 ? arg
@@ -2511,19 +2509,81 @@ local.uiEventListenerDict.testRunBrowser = local.testRunBrowser;
             /\u001b\[\d*m/g
         ), "") + "\n";
         // scroll textarea to bottom
-        element.scrollTop = element.scrollHeight;
+        elem.scrollTop = elem.scrollHeight;
     };
 });
-// init event-handling
-["Change", "Click", "Keyup", "Submit"].forEach(function (eventType) {
-    Array.from(document.querySelectorAll(
-        ".eventDelegate" + eventType
-    )).forEach(function (element) {
-        element.addEventListener(eventType.toLowerCase(), local.uiEventDelegate);
-    });
+local.objectAssignDefault(local, globalThis.domOnEventDelegateDict);
+globalThis.domOnEventDelegateDict = local;
+local.onEventDomDb = local.db &amp;&amp; local.db.onEventDomDb;
+local.testRunBrowser = function (evt) {
+/*
+ * this function will run browser-tests
+ */
+    switch (
+        !evt.ctrlKey
+        &amp;&amp; !evt.metaKey
+        &amp;&amp; (
+            evt.modeInit
+            || (<span class="branch-3 cbranch-skip" title="branch not covered" >evt.type + "." + (evt.target &amp;&amp; evt.target.id))</span>
+        )
+    ) {
+    // custom-case
+<span class="branch-0 cbranch-skip" title="branch not covered" >    case "dbExportButton1":</span>
+<span class="branch-1 cbranch-skip" title="branch not covered" >    case "dbImportButton1":</span>
+<span class="branch-2 cbranch-skip" title="branch not covered" >    case "dbImportInput1":</span>
+<span class="branch-3 cbranch-skip" title="branch not covered" >    case "dbResetButton1":</span>
+<span class="cstat-skip" title="statement not covered" >        local.db.onEventDomDb(event);</span>
+<span class="cstat-skip" title="statement not covered" >        break;</span>
+<span class="branch-4 cbranch-skip" title="branch not covered" >    case "click.buttonEval1":</span>
+    case true:
+        // try to eval input-code
+        globalThis.domOnEventDelegateDict.domOnEventResetOutput();
+        try {
+            eval( // jslint ignore:line
+                document.querySelector("#inputTextarea1").value
+            );
+        } catch (errCaught) {
+<span class="cstat-skip" title="statement not covered" >            console.error(errCaught);</span>
+        }
+        break;
+    // run browser-tests
+<span class="branch-6 cbranch-skip" title="branch not covered" >    default:</span>
+<span class="cstat-skip" title="statement not covered" >        if (</span>
+            (evt.target &amp;&amp; evt.target.id) !== "testRunButton1"
+            &amp;&amp; !(evt.modeInit &amp;&amp; (
+                /\bmodeTest=1\b/
+            ).test(location.search))
+        ) {
+<span class="cstat-skip" title="statement not covered" >            return;</span>
+        }
+        // show browser-tests
+<span class="cstat-skip" title="statement not covered" >        if (document.querySelector(</span>
+            "#testReportDiv1"
+        ).style.maxHeight === "0px") {
+<span class="cstat-skip" title="statement not covered" >            globalThis.domOnEventDelegateDict.domOnEventResetOutput();</span>
+<span class="cstat-skip" title="statement not covered" >            local.uiAnimateSlideDown(document.querySelector(</span>
+                "#testReportDiv1"
+            ));
+<span class="cstat-skip" title="statement not covered" >            document.querySelector(</span>
+                "#testRunButton1"
+            ).textContent = "hide internal test";
+<span class="cstat-skip" title="statement not covered" >            local.modeTest = 1;</span>
+<span class="cstat-skip" title="statement not covered" >            local.testRunDefault(local);</span>
+<span class="cstat-skip" title="statement not covered" >            return;</span>
+        }
+        // hide browser-tests
+<span class="cstat-skip" title="statement not covered" >        local.uiAnimateSlideUp(document.querySelector(</span>
+            "#testReportDiv1"
+        ));
+<span class="cstat-skip" title="statement not covered" >        document.querySelector(</span>
+            "#testRunButton1"
+        ).textContent = "run internal test";
+    }
+};
+&nbsp;
+local.testRunBrowser({
+    modeInit: true
 });
-// run tests
-local.testRunBrowser();
 }());
 &nbsp;
 &nbsp;
@@ -2574,23 +2634,25 @@ local.assetsDict["/assets.index.template.html"] = '\
 }\n\
 /* csslint ignore:end */\n\
 @keyframes uiAnimateShake {\n\
-    0%, 50% {\n\
-        transform: translateX(10px);\n\
-    }\n\
-    25%, 75% {\n\
-        transform: translateX(-10px);\n\
-    }\n\
-    100% {\n\
-        transform: translateX(0);\n\
-    }\n\
+0%,\n\
+50% {\n\
+    transform: translateX(10px);\n\
+}\n\
+100% {\n\
+    transform: translateX(0);\n\
+}\n\
+25%,\n\
+75% {\n\
+    transform: translateX(-10px);\n\
+}\n\
 }\n\
 @keyframes uiAnimateSpin {\n\
-    0% {\n\
-        transform: rotate(0deg);\n\
-    }\n\
-    100% {\n\
-        transform: rotate(360deg);\n\
-    }\n\
+0% {\n\
+    transform: rotate(0deg);\n\
+}\n\
+100% {\n\
+    transform: rotate(360deg);\n\
+}\n\
 }\n\
 a {\n\
     overflow-wrap: break-word;\n\
@@ -2598,19 +2660,21 @@ a {\n\
 body {\n\
     background: #eef;\n\
     font-family: Arial, Helvetica, sans-serif;\n\
+    font-size: small;\n\
     margin: 0 40px;\n\
 }\n\
 body &gt; div,\n\
 body &gt; form &gt; div,\n\
 body &gt; form &gt; input,\n\
 body &gt; form &gt; pre,\n\
-body &gt; form &gt; textarea,\n\
 body &gt; form &gt; .button,\n\
+body &gt; form &gt; .textarea,\n\
 body &gt; input,\n\
 body &gt; pre,\n\
-body &gt; textarea,\n\
-body &gt; .button {\n\
+body &gt; .button,\n\
+body &gt; .textarea {\n\
     margin-bottom: 20px;\n\
+    margin-top: 0;\n\
 }\n\
 body &gt; form &gt; input,\n\
 body &gt; form &gt; .button,\n\
@@ -2618,50 +2682,47 @@ body &gt; input,\n\
 body &gt; .button {\n\
     width: 20rem;\n\
 }\n\
-body &gt; form &gt; textarea,\n\
-body &gt; textarea {\n\
+body &gt; form &gt; .textarea,\n\
+body &gt; .textarea {\n\
     height: 10rem;\n\
     width: 100%;\n\
 }\n\
-body &gt; textarea[readonly] {\n\
+body &gt; .readonly {\n\
     background: #ddd;\n\
 }\n\
 code,\n\
 pre,\n\
-textarea {\n\
+.textarea {\n\
     font-family: Consolas, Menlo, monospace;\n\
-    font-size: small;\n\
+    font-size: smaller;\n\
 }\n\
 pre {\n\
     overflow-wrap: break-word;\n\
     white-space: pre-wrap;\n\
 }\n\
-textarea {\n\
-    overflow: auto;\n\
-    white-space: pre;\n\
-}\n\
 .button {\n\
-    background-color: #fff;\n\
-    border: 1px solid;\n\
-    border-bottom-color: rgb(186, 186, 186);\n\
-    border-left-color: rgb(209, 209, 209);\n\
-    border-radius: 4px;\n\
-    border-right-color: rgb(209, 209, 209);\n\
-    border-top-color: rgb(216, 216, 216);\n\
-    color: #00d;\n\
+    background: #ddd;\n\
+    border: 1px solid #999;\n\
+    color: #000;\n\
     cursor: pointer;\n\
     display: inline-block;\n\
-    font-family: Arial, Helvetica, sans-serif;\n\
-    font-size: 12px;\n\
-    font-style: normal;\n\
-    font-weight: normal;\n\
-    margin: 0;\n\
-    padding: 2px 7px 3px 7px;\n\
+    padding: 2px 5px;\n\
     text-align: center;\n\
-    text-decoration: underline;\n\
+    text-decoration: none;\n\
+}\n\
+.button:hover {\n\
+    background: #bbb;\n\
 }\n\
 .colorError {\n\
     color: #d00;\n\
+}\n\
+.textarea {\n\
+    background: #fff;\n\
+    border: 1px solid #999;\n\
+    border-radius: 0;\n\
+    cursor: auto;\n\
+    overflow: auto;\n\
+    padding: 2px;\n\
 }\n\
 .uiAnimateShake {\n\
     animation-duration: 500ms;\n\
@@ -2687,13 +2748,13 @@ textarea {\n\
 &lt;div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 500ms, width 1500ms; width: 0%; z-index: 1;"&gt;&lt;/div&gt;\n\
 &lt;div class="uiAnimateSpin" style="animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;"&gt;&lt;/div&gt;\n\
 &lt;a class="zeroPixel" download="db.persistence.json" href="" id="dbExportA1"&gt;&lt;/a&gt;\n\
-&lt;input class="zeroPixel" id="dbImportInput1" type="file"&gt;\n\
+&lt;input class="zeroPixel" data-onevent="onEventDomDb" data-onevent-db="dbImportInput" type="file"&gt;\n\
 &lt;script&gt;\n\
 /* jslint utility2:true */\n\
 // init domOnEventWindowOnloadTimeElapsed\n\
 (function () {\n\
 /*\n\
- * this function will measure and print the time-elapsed for window.onload\n\
+ * this function will measure and print time-elapsed for window.onload\n\
  */\n\
     "use strict";\n\
     if (window.domOnEventWindowOnloadTimeElapsed) {\n\
@@ -2716,11 +2777,102 @@ textarea {\n\
 \n\
 \n\
 \n\
+// init domOnEventDelegateDict\n\
+(function () {\n\
+/*\n\
+ * this function will handle delegated dom-event\n\
+ */\n\
+    "use strict";\n\
+    var timerTimeoutDict;\n\
+    if (window.domOnEventDelegateDict) {\n\
+        return;\n\
+    }\n\
+    window.domOnEventDelegateDict = {};\n\
+    timerTimeoutDict = {};\n\
+    window.domOnEventDelegateDict.domOnEventDelegate = function (evt) {\n\
+        evt.targetOnEvent = evt.target.closest(\n\
+            "[data-onevent]"\n\
+        );\n\
+        if (\n\
+            !evt.targetOnEvent\n\
+            || evt.targetOnEvent.dataset.onevent === "domOnEventNop"\n\
+            || evt.target.closest(\n\
+                ".disabled, .readonly"\n\
+            )\n\
+        ) {\n\
+            return;\n\
+        }\n\
+        // rate-limit high-frequency-event\n\
+        switch (evt.type) {\n\
+        case "keydown":\n\
+        case "keyup":\n\
+            // filter non-input keyboard-event\n\
+            if (!evt.target.closest(\n\
+                "input, option, select, textarea"\n\
+            )) {\n\
+                return;\n\
+            }\n\
+            if (timerTimeoutDict[evt.type] !== true) {\n\
+                timerTimeoutDict[evt.type] = timerTimeoutDict[\n\
+                    evt.type\n\
+                ] || setTimeout(function () {\n\
+                    timerTimeoutDict[evt.type] = true;\n\
+                    window.domOnEventDelegateDict.domOnEventDelegate(evt);\n\
+                }, 50);\n\
+                return;\n\
+            }\n\
+            timerTimeoutDict[evt.type] = null;\n\
+            break;\n\
+        }\n\
+        switch (evt.targetOnEvent.tagName) {\n\
+        case "BUTTON":\n\
+        case "FORM":\n\
+            evt.preventDefault();\n\
+            break;\n\
+        }\n\
+        evt.stopPropagation();\n\
+        window.domOnEventDelegateDict[evt.targetOnEvent.dataset.onevent](\n\
+            evt\n\
+        );\n\
+    };\n\
+    window.domOnEventDelegateDict.domOnEventResetOutput = function () {\n\
+        document.querySelectorAll(\n\
+            ".onevent-reset-output"\n\
+        ).forEach(function (elem) {\n\
+            switch (elem.tagName) {\n\
+            case "INPUT":\n\
+            case "TEXTAREA":\n\
+                elem.value = "";\n\
+                break;\n\
+            case "PRE":\n\
+                elem.textContent = "";\n\
+                break;\n\
+            default:\n\
+                elem.innerHTML = "";\n\
+            }\n\
+        });\n\
+    };\n\
+    // init event-handling\n\
+    [\n\
+        "change",\n\
+        "click",\n\
+        "keydown",\n\
+        "submit"\n\
+    ].forEach(function (eventType) {\n\
+        document.addEventListener(\n\
+            eventType,\n\
+            window.domOnEventDelegateDict.domOnEventDelegate\n\
+        );\n\
+    });\n\
+}());\n\
+\n\
+\n\
+\n\
 // init timerIntervalAjaxProgressUpdate\n\
 (function () {\n\
 /*\n\
- * this function will increment the ajax-progress-bar\n\
- * until the webpage has loaded\n\
+ * this function will increment ajax-progress-bar\n\
+ * until webpage has loaded\n\
  */\n\
     "use strict";\n\
     var ajaxProgressDiv1;\n\
@@ -2778,21 +2930,25 @@ textarea {\n\
     if (window.domOnEventSelectAllWithinPre) {\n\
         return;\n\
     }\n\
-    window.domOnEventSelectAllWithinPre = function (event) {\n\
+    window.domOnEventSelectAllWithinPre = function (evt) {\n\
         var range;\n\
         var selection;\n\
         if (\n\
-            event\n\
-            &amp;&amp; event.key === "a"\n\
-            &amp;&amp; (event.ctrlKey || event.metaKey)\n\
-            &amp;&amp; event.target.closest("pre")\n\
+            evt\n\
+            &amp;&amp; evt.key === "a"\n\
+            &amp;&amp; (evt.ctrlKey || evt.metaKey)\n\
+            &amp;&amp; evt.target.closest(\n\
+                "pre"\n\
+            )\n\
         ) {\n\
             range = document.createRange();\n\
-            range.selectNodeContents(event.target.closest("pre"));\n\
+            range.selectNodeContents(evt.target.closest(\n\
+                "pre"\n\
+            ));\n\
             selection = window.getSelection();\n\
             selection.removeAllRanges();\n\
             selection.addRange(range);\n\
-            event.preventDefault();\n\
+            evt.preventDefault();\n\
         }\n\
     };\n\
     // init event-handling\n\
@@ -2819,62 +2975,56 @@ utility2-comment --&gt;\n\
 &lt;h3&gt;{{env.npm_package_description}}&lt;/h3&gt;\n\
 &lt;!-- utility2-comment\n\
 &lt;a class="button" download href="assets.app.js"&gt;download standalone app&lt;/a&gt;&lt;br&gt;\n\
-&lt;button class="button eventDelegateClick onreset" data-onevent="testRunBrowser" id="testRunButton1"&gt;run internal test&lt;/button&gt;&lt;br&gt;\n\
+&lt;button class="button" data-onevent="testRunBrowser" id="testRunButton1"&gt;run internal test&lt;/button&gt;&lt;br&gt;\n\
 &lt;div class="uiAnimateSlide" id="testReportDiv1" style="border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;"&gt;&lt;/div&gt;\n\
 utility2-comment --&gt;\n\
 \n\
 \n\
 \n\
-&lt;button class="button eventDelegateClick" data-onevent="testRunBrowser" data-on-event-dom-db="dbResetButton1" id="dbResetButton1"&gt;\n\
-    reset database\n\
-&lt;/button&gt;&lt;br&gt;\n\
-&lt;button class="button eventDelegateClick" data-onevent="testRunBrowser" data-on-event-dom-db="dbExportButton1" id="dbExportButton1"&gt;\n\
-    export database -&amp;gt; file\n\
-&lt;/button&gt;&lt;br&gt;\n\
-&lt;button class="button eventDelegateClick" data-onevent="testRunBrowser" data-on-event-dom-db="dbImportButton1" id="dbImportButton1"&gt;\n\
-    import database &amp;lt;- file\n\
-&lt;/button&gt;&lt;br&gt;\n\
+&lt;button class="button" data-onevent="onEventDomDb" data-onevent-db="dbReset"&gt;reset database&lt;/button&gt;&lt;br&gt;\n\
+&lt;button class="button" data-onevent="onEventDomDb" data-onevent-db="dbExport"&gt;export database -&amp;gt; file&lt;/button&gt;&lt;br&gt;\n\
+&lt;button class="button" data-onevent="onEventDomDb" data-onevent-db="dbImport"&gt;import database &amp;lt;- file&lt;/button&gt;&lt;br&gt;\n\
 &lt;label&gt;edit or paste script below to\n\
     &lt;a\n\
         href="https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html"\n\
         target="_blank"\n\
     &gt;eval&lt;/a&gt;\n\
 &lt;/label&gt;\n\
-&lt;textarea id="inputTextareaEval1"&gt;\n\
+&lt;textarea class="textarea" data-onevent="testRunBrowser" id="inputTextarea1"&gt;\n\
 /*jslint browser: true, node: true*/\n\
 "use strict";\n\
-var dbTable1, modeNext, onNext;\n\
-modeNext = 0;\n\
-onNext = function (error, data) {\n\
-    modeNext = error\n\
+var dbTable1, gotoState, gotoNext;\n\
+gotoState = 0;\n\
+gotoNext = function (err, data) {\n\
+    gotoState = err\n\
         ? Infinity\n\
-        : modeNext + 1;\n\
-    switch (modeNext) {\n\
+        : gotoState + 1;\n\
+    switch (gotoState) {\n\
     case 1:\n\
         dbTable1 = window.dbTable1 = window.utility2_db.dbTableCreateOne({\n\
             name: "dbTable1"\n\
-        }, onNext);\n\
+        }, gotoNext);\n\
         break;\n\
     case 2:\n\
-        dbTable1.idIndexCreate({ name: "field1" }, onNext);\n\
+        dbTable1.idIndexCreate({ name: "field1" }, gotoNext);\n\
         break;\n\
     case 3:\n\
-        dbTable1.crudSetOneById({ field1: "aa", field2: 1, field3: "foo" }, onNext);\n\
+        dbTable1.crudSetOneById({ field1: "aa", field2: 1, field3: "foo" }, gotoNext);\n\
         break;\n\
     case 4:\n\
-        dbTable1.crudSetOneById({ field1: "bb", field2: 2, field3: "bar" }, onNext);\n\
+        dbTable1.crudSetOneById({ field1: "bb", field2: 2, field3: "bar" }, gotoNext);\n\
         break;\n\
     case 5:\n\
-        dbTable1.crudSetOneById({ field1: "cc", field2: 3, field3: "baz" }, onNext);\n\
+        dbTable1.crudSetOneById({ field1: "cc", field2: 3, field3: "baz" }, gotoNext);\n\
         break;\n\
     case 6:\n\
-        dbTable1.crudRemoveOneById({ field1: "aa" }, onNext);\n\
+        dbTable1.crudRemoveOneById({ field1: "aa" }, gotoNext);\n\
         break;\n\
     case 7:\n\
-        dbTable1.crudUpdateOneById({ field1: "bb", field2: -1 }, onNext);\n\
+        dbTable1.crudUpdateOneById({ field1: "bb", field2: -1 }, gotoNext);\n\
         break;\n\
     case 8:\n\
-        dbTable1.crudSetOneById({ field2: Math.random() }, onNext);\n\
+        dbTable1.crudSetOneById({ field2: Math.random() }, gotoNext);\n\
         break;\n\
     case 9:\n\
         dbTable1.crudGetManyByQuery({\n\
@@ -2882,24 +3032,24 @@ onNext = function (error, data) {\n\
             query: { field2: { $gte: -Infinity, $lte: Infinity } },\n\
             skip: 0,\n\
             sort: [{ fieldName: "_timeUpdated", idDescending: true }]\n\
-        }, onNext);\n\
+        }, gotoNext);\n\
         break;\n\
     case 10:\n\
         console.error(data);\n\
-        dbTable1.crudCountAll(onNext);\n\
+        dbTable1.crudCountAll(gotoNext);\n\
         break;\n\
     case 11:\n\
         console.error("number of rows: " + data);\n\
         break;\n\
     default:\n\
-        console.error(error.stack);\n\
+        console.error(err.stack);\n\
     }\n\
 };\n\
-onNext();\n\
+gotoNext();\n\
 &lt;/textarea&gt;\n\
-&lt;button class="button eventDelegateClick oneval onreset" data-onevent="testRunBrowser" id="dbEvalButton1"&gt;eval script&lt;/button&gt;&lt;br&gt;\n\
+&lt;button class="button" data-onevent="testRunBrowser" id="buttonEval1"&gt;eval script&lt;/button&gt;&lt;br&gt;\n\
 &lt;label&gt;stderr and stdout&lt;/label&gt;\n\
-&lt;textarea class="resettable" id="outputStdoutTextarea1" readonly&gt;&lt;/textarea&gt;\n\
+&lt;pre class="onevent-reset-output readonly textarea" id="outputStdout1" tabindex="0"&gt;&lt;/pre&gt;\n\
 &lt;!-- utility2-comment\n\
 {{#if isRollup}}\n\
 &lt;script src="assets.app.js"&gt;&lt;/script&gt;\n\
@@ -2932,8 +3082,9 @@ local.assetsDict["/assets.db.js"] =
 ).replace((/^#!\//), "// ");
 /* jslint ignore:end */
 /* validateLineSortedReset */
-local.assetsDict["/"] = local.assetsDict["/assets.index.template.html"]
-.replace((
+local.assetsDict["/"] = local.assetsDict[
+    "/assets.index.template.html"
+].replace((
     /\{\{env\.(\w+?)\}\}/g
 ), function (match0, match1) {
     switch (match1) {
@@ -2971,26 +3122,23 @@ local.assetsDict["/index.html"] = local.assetsDict["/"];
 <span class="cstat-skip" title="statement not covered" >    return;</span>
 }
 <span class="cstat-skip" title="statement not covered" >process.env.PORT = process.env.PORT || "8081";</span>
-<span class="cstat-skip" title="statement not covered" >console.error("server starting on port " + process.env.PORT);</span>
-<span class="cstat-skip" title="statement not covered" >local.http.createServer(<span class="fstat-skip" title="function not covered" >function (request, response) {</span></span>
-<span class="cstat-skip" title="statement not covered" >    request.urlParsed = local.url.parse(request.url);</span>
-<span class="cstat-skip" title="statement not covered" >    if (local.assetsDict[request.urlParsed.pathname] !== undefined) {</span>
-<span class="cstat-skip" title="statement not covered" >        response.end(local.assetsDict[request.urlParsed.pathname]);</span>
+<span class="cstat-skip" title="statement not covered" >console.error("http-server listening on port " + process.env.PORT);</span>
+<span class="cstat-skip" title="statement not covered" >local.http.createServer(<span class="fstat-skip" title="function not covered" >function (req, res) {</span></span>
+<span class="cstat-skip" title="statement not covered" >    req.urlParsed = local.url.parse(req.url);</span>
+<span class="cstat-skip" title="statement not covered" >    if (local.assetsDict[req.urlParsed.pathname] !== undefined) {</span>
+<span class="cstat-skip" title="statement not covered" >        res.end(local.assetsDict[req.urlParsed.pathname]);</span>
 <span class="cstat-skip" title="statement not covered" >        return;</span>
     }
-<span class="cstat-skip" title="statement not covered" >    response.statusCode = 404;</span>
-<span class="cstat-skip" title="statement not covered" >    response.end();</span>
+<span class="cstat-skip" title="statement not covered" >    res.statusCode = 404;</span>
+<span class="cstat-skip" title="statement not covered" >    res.end();</span>
 }).listen(process.env.PORT);
 }());
-&nbsp;
-&nbsp;
-&nbsp;
 }());
 &nbsp;</pre></td></tr>
 </table></pre>
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a> at Sun, 30 Dec 2018 08:32:52 GMT</div>
+    <div class="meta">Generated by <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a> at Thu, 22 Aug 2019 07:47:13 GMT</div>
 </div>
 </body>
 </html>
