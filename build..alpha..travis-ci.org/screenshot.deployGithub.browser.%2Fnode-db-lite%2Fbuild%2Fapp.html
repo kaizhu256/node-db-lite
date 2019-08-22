@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -126,7 +127,7 @@ pre {
 </style>
 </head>
 <body>
-<div id="ajaxProgressDiv1" style="background: transparent; height: 2px; left: 0px; margin: 0px; padding: 0px; position: fixed; top: 0px; transition: background 500ms, width 1500ms; width: 0%; z-index: 1;"></div>
+<div id="ajaxProgressDiv1" style="background: rgb(221, 0, 0); height: 2px; left: 0px; margin: 0px; padding: 0px; position: fixed; top: 0px; transition: background 500ms, width 1500ms; width: 100%; z-index: 1;"></div>
 <div class="uiAnimateSpin" style="animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;"></div>
 <a class="zeroPixel" download="db.persistence.json" href="" id="dbExportA1"></a>
 <input class="zeroPixel" data-onevent="onEventDomDb" data-onevent-db="dbImportInput" type="file">
@@ -421,9 +422,7 @@ gotoNext();
 </textarea>
 <button class="button" data-onevent="testRunBrowser" id="buttonEval1">eval script</button><br>
 <label>stderr and stdout</label>
-<pre class="onevent-reset-output readonly textarea" id="outputStdout1" tabindex="0">db - dropping database ...
-domOnEventWindowOnloadTimeElapsed = 600
-</pre>
+<pre class="onevent-reset-output readonly textarea" id="outputStdout1" tabindex="0"></pre>
 
 
 
