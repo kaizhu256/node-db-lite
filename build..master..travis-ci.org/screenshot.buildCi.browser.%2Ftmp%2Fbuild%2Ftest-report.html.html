@@ -1,0 +1,829 @@
+<html><head></head><body><div class="testReportDiv">
+<style>
+/* jslint-utility2 */
+/*csslint
+*/
+/* jslint-ignore-begin */
+*,
+*:after,
+*:before {
+    box-sizing: border-box;
+}
+/* jslint-ignore-end */
+@keyframes uiAnimateShake {
+    0%, 50% {
+        transform: translateX(10px);
+    }
+    25%, 75% {
+        transform: translateX(-10px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+@keyframes uiAnimateSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+a {
+    overflow-wrap: break-word;
+}
+body > div,
+body > pre,
+body > textarea,
+body > .button {
+    margin-bottom: 20px;
+}
+body > textarea {
+    height: 10rem;
+    width: 100%;
+}
+body > textarea[readonly] {
+    background: #ddd;
+}
+body > .button {
+    width: 20rem;
+}
+code,
+pre,
+textarea {
+    font-family: Consolas, Menlo, monospace;
+    font-size: small;
+}
+pre {
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+}
+textarea {
+    overflow: auto;
+    white-space: pre;
+}
+.button {
+    background-color: #fff;
+    border: 1px solid;
+    border-bottom-color: rgb(186, 186, 186);
+    border-left-color: rgb(209, 209, 209);
+    border-radius: 4px;
+    border-right-color: rgb(209, 209, 209);
+    border-top-color: rgb(216, 216, 216);
+    color: #00d;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    margin: 0;
+    padding: 2px 7px 3px 7px;
+    text-align: center;
+    text-decoration: underline;
+}
+.colorError {
+    color: #d00;
+}
+.uiAnimateShake {
+    animation-duration: 500ms;
+    animation-name: uiAnimateShake;
+}
+.uiAnimateSlide {
+    overflow-y: hidden;
+    transition: max-height ease-in 250ms, min-height ease-in 250ms, padding-bottom ease-in 250ms, padding-top ease-in 250ms;
+}
+.utility2FooterDiv {
+    text-align: center;
+}
+.zeroPixel {
+    border: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    width: 0;
+}
+</style>
+<style>
+/* jslint-utility2 */
+/*csslint
+*/
+.testReportDiv {
+    font-family: Arial, Helvetica, sans-serif;
+}
+.testReportDiv img {
+    border: 1px solid black;
+    margin: 5px 0 5px 0;
+    max-height: 256px;
+    max-width: 512px;
+}
+.testReportDiv pre {
+    background: #fdd;
+    border-top: 1px solid black;
+    margin-bottom: 0;
+    padding: 10px;
+}
+.testReportDiv span {
+    display: inline-block;
+    width: 120px;
+}
+.testReportDiv table {
+    border-top: 1px solid black;
+    text-align: left;
+    width: 100%;
+}
+.testReportDiv table > tbody > tr:nth-child(odd) {
+    background: #bfb;
+}
+.testReportDiv .displayNone {
+    display: none;
+}
+.testReportDiv .footer {
+    text-align: center;
+}
+.testReportDiv .platform {
+    background: #fff;
+    border: 1px solid black;
+    margin-bottom: 20px;
+    padding: 0 10px 10px 10px;
+    text-align: left;
+}
+.testReportDiv .summary {
+    background: #bfb;
+}
+.testReportDiv .testFailed {
+    background: #f99;
+}
+.testReportDiv .testPending {
+    background: #99f;
+}
+</style>
+<h1>test-report for
+    <a href="https://github.com/kaizhu256/node-db-lite">
+        db-lite (v2018.4.23)
+    </a>
+</h1>
+<div class="platform summary">
+<h2>summary</h2>
+<h4>
+    <span>version</span>-
+        2018.4.23<br>
+    <span>test date</span>- 2018-04-25T12:22:42.148Z<br>
+    <span>commit info</span>-
+        
+        ea9b10971cbbf05834e582c7a5126a1d882a7344 - <br>
+        
+</h4>
+<table>
+<thead>
+    <tr>
+        <th>total time-elapsed</th>
+        <th>total tests failed</th>
+        <th>total tests passed</th>
+        <th>total tests pending</th>
+    </tr>
+</thead>
+<tbody><tr>
+    <td>88101 ms</td>
+    <td class="testPassed">0</td>
+    <td>69</td>
+    <td>0</td>
+</tr></tbody>
+</table>
+</div>
+
+<div class="platform">
+<h4>
+    1. buildApidoc - node - linux v10.0.0 - 2018-04-25T12:22:42.143Z<br>
+    
+    <a href="screenshot.buildApidoc.svg">
+        <img src="screenshot.buildApidoc.svg">
+    </a>
+    <br>
+    
+    <span>time-elapsed</span>- 1440 ms<br>
+    <span>tests failed</span>- 0<br>
+    <span>tests passed</span>- 1<br>
+    <span>tests pending</span>- 0<br>
+</h4>
+<table>
+<thead><tr>
+    <th>#</th>
+    <th>time-elapsed</th>
+    <th>status</th>
+    <th>test-case</th>
+</tr></thead>
+<tbody>
+
+<tr>
+    <td>1</td>
+    <td>214 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildApidoc_default</td>
+</tr>
+
+</tbody>
+</table>
+<pre class="displayNone">
+</pre>
+</div>
+
+<div class="platform">
+<h4>
+    2. npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Electron/1.7.13 Safari/537.36 - 2018-04-25T12:22:24.578Z<br>
+    
+    <a href="screenshot.npmTest.browser.%252F.png">
+        <img src="screenshot.npmTest.browser.%252F.png">
+    </a>
+    <br>
+    
+    <span>time-elapsed</span>- 19044 ms<br>
+    <span>tests failed</span>- 0<br>
+    <span>tests passed</span>- 17<br>
+    <span>tests pending</span>- 0<br>
+</h4>
+<table>
+<thead><tr>
+    <th>#</th>
+    <th>time-elapsed</th>
+    <th>status</th>
+    <th>test-case</th>
+</tr></thead>
+<tbody>
+
+<tr>
+    <td>2</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildApidoc_default</td>
+</tr>
+
+<tr>
+    <td>3</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildApp_default</td>
+</tr>
+
+<tr>
+    <td>4</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildCustomOrg_default</td>
+</tr>
+
+<tr>
+    <td>5</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildLib_default</td>
+</tr>
+
+<tr>
+    <td>6</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildReadme_default</td>
+</tr>
+
+<tr>
+    <td>7</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildTest_default</td>
+</tr>
+
+<tr>
+    <td>8</td>
+    <td>3 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_consoleLog_default</td>
+</tr>
+
+<tr>
+    <td>9</td>
+    <td>41 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_crudGetManyByQuery</td>
+</tr>
+
+<tr>
+    <td>10</td>
+    <td>8 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_crudNullCase</td>
+</tr>
+
+<tr>
+    <td>11</td>
+    <td>8 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_crudXxxById</td>
+</tr>
+
+<tr>
+    <td>12</td>
+    <td>7 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_crudXxxByQuery</td>
+</tr>
+
+<tr>
+    <td>13</td>
+    <td>1045 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_persistence</td>
+</tr>
+
+<tr>
+    <td>14</td>
+    <td>2 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_sizeLimit</td>
+</tr>
+
+<tr>
+    <td>15</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_nop_default</td>
+</tr>
+
+<tr>
+    <td>16</td>
+    <td>1 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_sortCompare_default</td>
+</tr>
+
+<tr>
+    <td>17</td>
+    <td>94 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_storageXxx_misc</td>
+</tr>
+
+<tr>
+    <td>18</td>
+    <td>43 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_webpage_default</td>
+</tr>
+
+</tbody>
+</table>
+<pre class="displayNone">
+</pre>
+</div>
+
+<div class="platform">
+<h4>
+    3. npmTest - node - linux v10.0.0 - 2018-04-25T12:22:22.175Z<br>
+    
+    <a href="screenshot.npmTest.svg">
+        <img src="screenshot.npmTest.svg">
+    </a>
+    <br>
+    
+    <span>time-elapsed</span>- 21095 ms<br>
+    <span>tests failed</span>- 0<br>
+    <span>tests passed</span>- 17<br>
+    <span>tests pending</span>- 0<br>
+</h4>
+<table>
+<thead><tr>
+    <th>#</th>
+    <th>time-elapsed</th>
+    <th>status</th>
+    <th>test-case</th>
+</tr></thead>
+<tbody>
+
+<tr>
+    <td>19</td>
+    <td>224 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildApidoc_default</td>
+</tr>
+
+<tr>
+    <td>20</td>
+    <td>6011 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildApp_default</td>
+</tr>
+
+<tr>
+    <td>21</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildCustomOrg_default</td>
+</tr>
+
+<tr>
+    <td>22</td>
+    <td>2 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildLib_default</td>
+</tr>
+
+<tr>
+    <td>23</td>
+    <td>4 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildReadme_default</td>
+</tr>
+
+<tr>
+    <td>24</td>
+    <td>1 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildTest_default</td>
+</tr>
+
+<tr>
+    <td>25</td>
+    <td>1 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_consoleLog_default</td>
+</tr>
+
+<tr>
+    <td>26</td>
+    <td>31 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_crudGetManyByQuery</td>
+</tr>
+
+<tr>
+    <td>27</td>
+    <td>5 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_crudNullCase</td>
+</tr>
+
+<tr>
+    <td>28</td>
+    <td>4 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_crudXxxById</td>
+</tr>
+
+<tr>
+    <td>29</td>
+    <td>5 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_crudXxxByQuery</td>
+</tr>
+
+<tr>
+    <td>30</td>
+    <td>1022 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_persistence</td>
+</tr>
+
+<tr>
+    <td>31</td>
+    <td>1 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_sizeLimit</td>
+</tr>
+
+<tr>
+    <td>32</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_nop_default</td>
+</tr>
+
+<tr>
+    <td>33</td>
+    <td>2 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_sortCompare_default</td>
+</tr>
+
+<tr>
+    <td>34</td>
+    <td>215 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_storageXxx_misc</td>
+</tr>
+
+<tr>
+    <td>35</td>
+    <td>16456 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_webpage_default</td>
+</tr>
+
+</tbody>
+</table>
+<pre class="displayNone">
+</pre>
+</div>
+
+<div class="platform">
+<h4>
+    4. npmTestPublished - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Electron/1.7.13 Safari/537.36 - 2018-04-25T12:21:17.828Z<br>
+    
+    <a href="screenshot.npmTestPublished.browser.%252F.png">
+        <img src="screenshot.npmTestPublished.browser.%252F.png">
+    </a>
+    <br>
+    
+    <span>time-elapsed</span>- 85802 ms<br>
+    <span>tests failed</span>- 0<br>
+    <span>tests passed</span>- 17<br>
+    <span>tests pending</span>- 0<br>
+</h4>
+<table>
+<thead><tr>
+    <th>#</th>
+    <th>time-elapsed</th>
+    <th>status</th>
+    <th>test-case</th>
+</tr></thead>
+<tbody>
+
+<tr>
+    <td>36</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildApidoc_default</td>
+</tr>
+
+<tr>
+    <td>37</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildApp_default</td>
+</tr>
+
+<tr>
+    <td>38</td>
+    <td>2 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildCustomOrg_default</td>
+</tr>
+
+<tr>
+    <td>39</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildLib_default</td>
+</tr>
+
+<tr>
+    <td>40</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildReadme_default</td>
+</tr>
+
+<tr>
+    <td>41</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildTest_default</td>
+</tr>
+
+<tr>
+    <td>42</td>
+    <td>4 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_consoleLog_default</td>
+</tr>
+
+<tr>
+    <td>43</td>
+    <td>48 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_crudGetManyByQuery</td>
+</tr>
+
+<tr>
+    <td>44</td>
+    <td>8 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_crudNullCase</td>
+</tr>
+
+<tr>
+    <td>45</td>
+    <td>11 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_crudXxxById</td>
+</tr>
+
+<tr>
+    <td>46</td>
+    <td>13 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_crudXxxByQuery</td>
+</tr>
+
+<tr>
+    <td>47</td>
+    <td>1497 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_persistence</td>
+</tr>
+
+<tr>
+    <td>48</td>
+    <td>1 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_sizeLimit</td>
+</tr>
+
+<tr>
+    <td>49</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_nop_default</td>
+</tr>
+
+<tr>
+    <td>50</td>
+    <td>1 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_sortCompare_default</td>
+</tr>
+
+<tr>
+    <td>51</td>
+    <td>93 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_storageXxx_misc</td>
+</tr>
+
+<tr>
+    <td>52</td>
+    <td>42 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_webpage_default</td>
+</tr>
+
+</tbody>
+</table>
+<pre class="displayNone">
+</pre>
+</div>
+
+<div class="platform">
+<h4>
+    5. npmTestPublished - node - linux v10.0.0 - 2018-04-25T12:21:14.991Z<br>
+    
+    <a href="screenshot.npmTestPublished.svg">
+        <img src="screenshot.npmTestPublished.svg">
+    </a>
+    <br>
+    
+    <span>time-elapsed</span>- 88101 ms<br>
+    <span>tests failed</span>- 0<br>
+    <span>tests passed</span>- 17<br>
+    <span>tests pending</span>- 0<br>
+</h4>
+<table>
+<thead><tr>
+    <th>#</th>
+    <th>time-elapsed</th>
+    <th>status</th>
+    <th>test-case</th>
+</tr></thead>
+<tbody>
+
+<tr>
+    <td>53</td>
+    <td>251 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildApidoc_default</td>
+</tr>
+
+<tr>
+    <td>54</td>
+    <td>5876 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildApp_default</td>
+</tr>
+
+<tr>
+    <td>55</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildCustomOrg_default</td>
+</tr>
+
+<tr>
+    <td>56</td>
+    <td>1 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildLib_default</td>
+</tr>
+
+<tr>
+    <td>57</td>
+    <td>3 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildReadme_default</td>
+</tr>
+
+<tr>
+    <td>58</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_buildTest_default</td>
+</tr>
+
+<tr>
+    <td>59</td>
+    <td>2 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_consoleLog_default</td>
+</tr>
+
+<tr>
+    <td>60</td>
+    <td>32 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_crudGetManyByQuery</td>
+</tr>
+
+<tr>
+    <td>61</td>
+    <td>5 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_crudNullCase</td>
+</tr>
+
+<tr>
+    <td>62</td>
+    <td>11 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_crudXxxById</td>
+</tr>
+
+<tr>
+    <td>63</td>
+    <td>4 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_crudXxxByQuery</td>
+</tr>
+
+<tr>
+    <td>64</td>
+    <td>1017 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_persistence</td>
+</tr>
+
+<tr>
+    <td>65</td>
+    <td>1 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_dbTable_sizeLimit</td>
+</tr>
+
+<tr>
+    <td>66</td>
+    <td>0 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_nop_default</td>
+</tr>
+
+<tr>
+    <td>67</td>
+    <td>2 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_sortCompare_default</td>
+</tr>
+
+<tr>
+    <td>68</td>
+    <td>209 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_storageXxx_misc</td>
+</tr>
+
+<tr>
+    <td>69</td>
+    <td>16743 ms</td>
+    <td class="testPassed">passed</td>
+    <td>testCase_webpage_default</td>
+</tr>
+
+</tbody>
+</table>
+<pre class="displayNone">
+</pre>
+</div>
+
+<div class="footer">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
+</body></html>
