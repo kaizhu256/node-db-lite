@@ -60,7 +60,6 @@
             return;
         }
         err = (
-            // ternary-operator
             (
                 message
                 && typeof message.message === "string"
@@ -230,7 +229,6 @@
             return;
         }
         err = (
-            // ternary-operator
             (
                 message
                 && typeof message.message === "string"
@@ -1587,7 +1585,6 @@ if (module === require.main && !globalThis.utility2_rollup) {
             return;
         }
         err = (
-            // ternary-operator
             (
                 message
                 && typeof message.message === "string"
@@ -4113,7 +4110,6 @@ if (module === require.main && !globalThis.utility2_rollup) {
             return;
         }
         err = (
-            // ternary-operator
             (
                 message
                 && typeof message.message === "string"
@@ -4327,7 +4323,6 @@ local.ajax = function (opt, onError) {
                 xhr.statusCode = xhr.statusCode || 500;
                 xhr.err.statusCode = xhr.statusCode;
                 tmp = (
-                    // ternary-operator
                     (
                         local.isBrowser
                         ? "browser"
@@ -5211,7 +5206,6 @@ local.githubCrudContentPutFile = function (opt, onError) {
                 message: opt.message,
                 // resolve file in url
                 url: (
-                    // ternary-operator
                     (
                         /\/$/
                     ).test(opt.url)
@@ -5524,7 +5518,6 @@ if (module === require.main && !globalThis.utility2_rollup) {
             return;
         }
         err = (
-            // ternary-operator
             (
                 message
                 && typeof message.message === "string"
@@ -6066,7 +6059,6 @@ local.instrumentInPackage = function (code, file) {
  * exists in the code
  */
     return (
-        // ternary-operator
         (
             process.env.npm_config_mode_coverage
             && code.indexOf("/* istanbul ignore all */\n") < 0 && (
@@ -18044,7 +18036,6 @@ if (module === require.main && !globalThis.utility2_rollup) {
             return;
         }
         err = (
-            // ternary-operator
             (
                 message
                 && typeof message.message === "string"
@@ -34173,7 +34164,6 @@ jslint_extra = function (source, opt, global_array) {
     // init
     line_ignore = null;
     lines = (
-        // ternary-operator
         Array.isArray(source)
         ? source
         : source.split(rx_crlf)
@@ -34333,7 +34323,6 @@ warn_at_extra = function (warning, warnings) {
     // expected_identifier_a: "Expected an identifier and instead saw '{a}'.",
     case "expected_identifier_a":
         if (!(
-            // newline
             (
                 /^\d+$/m
             ).test(warning.a)
@@ -35580,7 +35569,6 @@ if (module === require.main && !globalThis.utility2_rollup) {
             return;
         }
         err = (
-            // ternary-operator
             (
                 message
                 && typeof message.message === "string"
@@ -35972,7 +35960,6 @@ if (local.isBrowser) {
             return;
         }
         err = (
-            // ternary-operator
             (
                 message
                 && typeof message.message === "string"
@@ -36769,7 +36756,6 @@ if (local.isBrowser) {
             return;
         }
         err = (
-            // ternary-operator
             (
                 message
                 && typeof message.message === "string"
@@ -37372,7 +37358,6 @@ local.assetsDict["/assets.example.begin.js"] = '\
             return;\n\
         }\n\
         err = (\n\
-            // ternary-operator\n\
             (\n\
                 message\n\
                 && typeof message.message === "string"\n\
@@ -38529,7 +38514,6 @@ local.Blob = (
          */
         this.bff = local.bufferConcat(array.map(function (elem) {
             return (
-                // ternary-operator
                 (
                     typeof elem === "string"
                     || Object.prototype.toString.call(elem)
@@ -39123,7 +39107,6 @@ local.ajax = function (opt, onError) {
                 xhr.statusCode = xhr.statusCode || 500;
                 xhr.err.statusCode = xhr.statusCode;
                 tmp = (
-                    // ternary-operator
                     (
                         local.isBrowser
                         ? "browser"
@@ -40128,7 +40111,6 @@ local.bufferRandomBytes = function (length) {
  * filled with cryptographically-strong random-values
  */
     return (
-        // ternary-operator
         (
             typeof window === "object"
             && window.crypto
@@ -41281,7 +41263,6 @@ local.domStyleValidate = function () {
     );
     tmp = [];
     Array.from(
-        // ternary-operator
         (
             typeof document === "object"
             && document
@@ -43976,7 +43957,6 @@ local.testMock = function (mockList, onTestCase, onError) {
         // backup mock[0] into mock[2]
         Object.keys(mock[1]).forEach(function (key) {
             mock[2][key] = (
-                // ternary-operator
                 (
                     typeof process === "object"
                     && process.env === mock[0]
@@ -45392,7 +45372,6 @@ local.assetsDict["/assets.utility2.rollup.js"] = [
             return;
         }
         err = (
-            // ternary-operator
             (
                 message
                 && typeof message.message === "string"
@@ -47208,7 +47187,6 @@ local.apiAjax = function (that, opt, onError) {
     // init default
     local.objectSetDefault(opt, {
         inForm: (
-            // ternary-operator
             that._consumes0 === "multipart/form-data"
             ? new local.FormData()
             : ""
@@ -47221,7 +47199,6 @@ local.apiAjax = function (that, opt, onError) {
         headers: {},
         method: that._method,
         responseType: (
-            // ternary-operator
             that._consumes0.indexOf("application/octet-stream") === 0
             ? "arraybuffer"
             : ""
@@ -47244,7 +47221,6 @@ local.apiAjax = function (that, opt, onError) {
             case "multi":
                 tmp.forEach(function (value) {
                     opt[(
-                        // ternary-operator
                         schemaP.in === "formData"
                         ? "inForm"
                         : "inQuery"
@@ -49312,7 +49288,6 @@ local.swaggerJsonFromAjax = function (swaggerJson, opt) {
     isArray = Array.isArray(data);
     type = local.swaggerJsonFromPostBody(swaggerJson, {
         data: (
-            // ternary-operator
             isArray
             ? data[0]
             : data
@@ -49326,7 +49301,6 @@ local.swaggerJsonFromAjax = function (swaggerJson, opt) {
         in: "body",
         name: "body",
         schema: (
-            // ternary-operator
             isArray
             ? {
                 items: type,
@@ -50175,7 +50149,6 @@ local.swaggerValidateDataSchema = function (opt) {
         local.throwSwaggerError(!test && {
             data,
             errorType: (
-                // ternary-operator
                 schema.exclusiveMaximum
                 ? "numberExclusiveMaximum"
                 : "numberMaximum"
@@ -50192,7 +50165,6 @@ local.swaggerValidateDataSchema = function (opt) {
         local.throwSwaggerError(!test && {
             data,
             errorType: (
-                // ternary-operator
                 schema.exclusiveMinimum
                 ? "numberExclusiveMinimum"
                 : "numberMinimum"
@@ -51407,7 +51379,6 @@ local.uiRenderSchemaP = function (schemaP) {
             return {
                 id: local.idDomElementCreate("swgg_id_" + schemaP.name),
                 selected: (
-                    // ternary-operator
                     schemaP.enumDefault.indexOf(element) >= 0
                     ? "selected"
                     : ""
@@ -51417,7 +51388,6 @@ local.uiRenderSchemaP = function (schemaP) {
                     || local.schemaPType(schemaP)
                 ),
                 placeholder: (
-                    // ternary-operator
                     typeof element === "string"
                     ? element
                     : JSON.stringify(element)
@@ -51490,7 +51460,6 @@ local.uiRenderSchemaP = function (schemaP) {
     });
     if (schemaP.schema2.properties) {
         schemaP.schemaText = JSON.stringify((
-            // ternary-operator
             schemaP.type2 === "array"
             ? [
                 schemaP.schema2.properties
@@ -51691,7 +51660,6 @@ instruction\n\
             return;\n\
         }\n\
         err = (\n\
-            // ternary-operator\n\
             (\n\
                 message\n\
                 && typeof message.message === \"string\"\n\
@@ -53072,7 +53040,6 @@ local.assetsDict["/assets.utility2.test.js"] = "/* istanbul instrument in packag
             return;\n\
         }\n\
         err = (\n\
-            // ternary-operator\n\
             (\n\
                 message\n\
                 && typeof message.message === \"string\"\n\
