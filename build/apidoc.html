@@ -2279,7 +2279,23 @@ globalThis.utility2_serverRepl1 = require(&quot;net&quot;).createServer(function
     });
     return target;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+       }).join(&quot; &quot;).replace((
+           /\u001b\[\d*m/g
+       ), &quot;&quot;) + &quot;\n&quot;;
+       // scroll textarea to bottom
+       elem.scrollTop = elem.scrollHeight;
+   };
+});
+local.<span class="apidocCodeKeywordSpan">objectAssignDefault</span>(local, globalThis.domOnEventDelegateDict);
+globalThis.domOnEventDelegateDict = local;
+local.onEventDomDb = local.db &amp;&amp; local.db.onEventDomDb;
+local.testRunBrowser = function (evt) {
+/*
+* this function will run browser-tests
+*/
+   switch (
+...</pre></li>
     </ul>
 
 
@@ -2520,9 +2536,9 @@ case &quot;dbResetButton1&quot;:
 case &quot;click.buttonEval1&quot;:
 case true:
     // try to eval input-code
+    globalThis.domOnEventDelegateDict.domOnEventResetOutput();
     try {
         eval( // jslint ignore:line
-            document.querySelector(&quot;#inputTextarea1&quot;).value
 ...</pre></li>
     </ul>
 
