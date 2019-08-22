@@ -47,7 +47,7 @@
 .x-istanbul .cover-empty,
 .x-istanbul .cover-fill {
     background: white;
-    border: 1px solid #444;
+    border: 1px solid #999;
     display: inline-block;
     height: 12px;
 }
@@ -57,7 +57,7 @@
 }
 .x-istanbul .cover-fill {
     background: #ccc;
-    border-right: 1px solid #444;
+    border-right: 1px solid #999;
 }
 .x-istanbul .cover-full {
     border-right: none !important;
@@ -97,8 +97,8 @@
     text-decoration: none;
 }
 .x-istanbul .coverage .line-coverage {
-    border-left: 1px solid #666;
-    border-right: 1px solid #666;
+    border-left: 1px solid #999;
+    border-right: 1px solid #999;
     color: #777 !important;
     text-align: right;
 }
@@ -113,7 +113,7 @@
     width: 100%
 }
 .x-istanbul .coverage-summary td {
-    border: 1px solid #666;
+    border: 1px solid #999;
     margin: 0;
     padding: 5px;
     white-space: nowrap;
@@ -143,7 +143,7 @@
     padding: 20px;
 }
 .x-istanbul .footer {
-    border-top: 1px solid #666;
+    border-top: 1px solid #999;
 }
 .x-istanbul .fstat-no {
     background: #ffc520;
@@ -154,7 +154,7 @@
     color: #111 !important;
 }
 .x-istanbul .header {
-    border-bottom: 1px solid #666;
+    border-bottom: 1px solid #999;
     top: 0;
     width: 100%;
 }
@@ -176,7 +176,7 @@
 }
 .x-istanbul .metric {
     background: white;
-    border: 1px solid #333;
+    border: 1px solid #999;
     display: inline-block;
     padding: .3em;
 }
@@ -229,7 +229,7 @@
 }
 .x-istanbul .tableHeader td {
     background: #fff;
-    border: 1px solid #666;
+    border: 1px solid #999;
     padding: 5px;
 }
 .x-istanbul .tableHeader th {
@@ -249,27 +249,37 @@
     if (window.domOnEventSelectAllWithinPre) {
         return;
     }
-    window.domOnEventSelectAllWithinPre = function (event) {
+    window.domOnEventSelectAllWithinPre = function (evt) {
         var range;
         var selection;
-        if (event &&
-                event.key === "a" &&
-                (event.ctrlKey || event.metaKey) &&
-                event.target.closest("pre")) {
+        if (
+            evt
+            && evt.key === "a"
+            && (evt.ctrlKey || evt.metaKey)
+            && evt.target.closest(
+                "pre"
+            )
+        ) {
             range = document.createRange();
-            range.selectNodeContents(event.target.closest("pre"));
+            range.selectNodeContents(evt.target.closest(
+                "pre"
+            ));
             selection = window.getSelection();
             selection.removeAllRanges();
             selection.addRange(range);
-            event.preventDefault();
+            evt.preventDefault();
         }
     };
-    document.addEventListener("keydown", window.domOnEventSelectAllWithinPre);
+    // init event-handling
+    document.addEventListener(
+        "keydown",
+        window.domOnEventSelectAllWithinPre
+    );
 }());
 </script>
 <div class="header high">
     <h1 style="font-weight: bold;">
-        <a href="https://github.com/kaizhu256/node-db-lite">db-lite (2018.12.30)</a>
+        <a href="https://github.com/kaizhu256/node-db-lite">db-lite (2019.8.20)</a>
     </h1>
     <h1>Code coverage report for <span class="entity">node-db-lite/test.js</span></h1>
     <table class="tableHeader">
@@ -283,11 +293,11 @@
     </tr>
     </thead>
     <tbody>
-        <td>branches: 19<br>statements: 20<br>functions: 7</td>
-        <td>100%<br>(533 / 533)</td>
-        <td>100%<br>(33 / 33)</td>
-        <td>100%<br>(67 / 67)</td>
-        <td>100%<br>(533 / 533)</td>
+        <td>statements: 22<br>branches: 23<br>functions: 7</td>
+        <td>98.88%<br>(529 / 535)</td>
+        <td>100%<br>(37 / 37)</td>
+        <td>92.54%<br>(62 / 67)</td>
+        <td>98.88%<br>(529 / 535)</td>
     </tbody>
     </table>
     <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">node-db-lite/</a> &#187; test.js</div>
@@ -1842,6 +1852,210 @@
 <a href="#L1546" id="L1546">1546</a>
 <a href="#L1547" id="L1547">1547</a>
 <a href="#L1548" id="L1548">1548</a>
+<a href="#L1549" id="L1549">1549</a>
+<a href="#L1550" id="L1550">1550</a>
+<a href="#L1551" id="L1551">1551</a>
+<a href="#L1552" id="L1552">1552</a>
+<a href="#L1553" id="L1553">1553</a>
+<a href="#L1554" id="L1554">1554</a>
+<a href="#L1555" id="L1555">1555</a>
+<a href="#L1556" id="L1556">1556</a>
+<a href="#L1557" id="L1557">1557</a>
+<a href="#L1558" id="L1558">1558</a>
+<a href="#L1559" id="L1559">1559</a>
+<a href="#L1560" id="L1560">1560</a>
+<a href="#L1561" id="L1561">1561</a>
+<a href="#L1562" id="L1562">1562</a>
+<a href="#L1563" id="L1563">1563</a>
+<a href="#L1564" id="L1564">1564</a>
+<a href="#L1565" id="L1565">1565</a>
+<a href="#L1566" id="L1566">1566</a>
+<a href="#L1567" id="L1567">1567</a>
+<a href="#L1568" id="L1568">1568</a>
+<a href="#L1569" id="L1569">1569</a>
+<a href="#L1570" id="L1570">1570</a>
+<a href="#L1571" id="L1571">1571</a>
+<a href="#L1572" id="L1572">1572</a>
+<a href="#L1573" id="L1573">1573</a>
+<a href="#L1574" id="L1574">1574</a>
+<a href="#L1575" id="L1575">1575</a>
+<a href="#L1576" id="L1576">1576</a>
+<a href="#L1577" id="L1577">1577</a>
+<a href="#L1578" id="L1578">1578</a>
+<a href="#L1579" id="L1579">1579</a>
+<a href="#L1580" id="L1580">1580</a>
+<a href="#L1581" id="L1581">1581</a>
+<a href="#L1582" id="L1582">1582</a>
+<a href="#L1583" id="L1583">1583</a>
+<a href="#L1584" id="L1584">1584</a>
+<a href="#L1585" id="L1585">1585</a>
+<a href="#L1586" id="L1586">1586</a>
+<a href="#L1587" id="L1587">1587</a>
+<a href="#L1588" id="L1588">1588</a>
+<a href="#L1589" id="L1589">1589</a>
+<a href="#L1590" id="L1590">1590</a>
+<a href="#L1591" id="L1591">1591</a>
+<a href="#L1592" id="L1592">1592</a>
+<a href="#L1593" id="L1593">1593</a>
+<a href="#L1594" id="L1594">1594</a>
+<a href="#L1595" id="L1595">1595</a>
+<a href="#L1596" id="L1596">1596</a>
+<a href="#L1597" id="L1597">1597</a>
+<a href="#L1598" id="L1598">1598</a>
+<a href="#L1599" id="L1599">1599</a>
+<a href="#L1600" id="L1600">1600</a>
+<a href="#L1601" id="L1601">1601</a>
+<a href="#L1602" id="L1602">1602</a>
+<a href="#L1603" id="L1603">1603</a>
+<a href="#L1604" id="L1604">1604</a>
+<a href="#L1605" id="L1605">1605</a>
+<a href="#L1606" id="L1606">1606</a>
+<a href="#L1607" id="L1607">1607</a>
+<a href="#L1608" id="L1608">1608</a>
+<a href="#L1609" id="L1609">1609</a>
+<a href="#L1610" id="L1610">1610</a>
+<a href="#L1611" id="L1611">1611</a>
+<a href="#L1612" id="L1612">1612</a>
+<a href="#L1613" id="L1613">1613</a>
+<a href="#L1614" id="L1614">1614</a>
+<a href="#L1615" id="L1615">1615</a>
+<a href="#L1616" id="L1616">1616</a>
+<a href="#L1617" id="L1617">1617</a>
+<a href="#L1618" id="L1618">1618</a>
+<a href="#L1619" id="L1619">1619</a>
+<a href="#L1620" id="L1620">1620</a>
+<a href="#L1621" id="L1621">1621</a>
+<a href="#L1622" id="L1622">1622</a>
+<a href="#L1623" id="L1623">1623</a>
+<a href="#L1624" id="L1624">1624</a>
+<a href="#L1625" id="L1625">1625</a>
+<a href="#L1626" id="L1626">1626</a>
+<a href="#L1627" id="L1627">1627</a>
+<a href="#L1628" id="L1628">1628</a>
+<a href="#L1629" id="L1629">1629</a>
+<a href="#L1630" id="L1630">1630</a>
+<a href="#L1631" id="L1631">1631</a>
+<a href="#L1632" id="L1632">1632</a>
+<a href="#L1633" id="L1633">1633</a>
+<a href="#L1634" id="L1634">1634</a>
+<a href="#L1635" id="L1635">1635</a>
+<a href="#L1636" id="L1636">1636</a>
+<a href="#L1637" id="L1637">1637</a>
+<a href="#L1638" id="L1638">1638</a>
+<a href="#L1639" id="L1639">1639</a>
+<a href="#L1640" id="L1640">1640</a>
+<a href="#L1641" id="L1641">1641</a>
+<a href="#L1642" id="L1642">1642</a>
+<a href="#L1643" id="L1643">1643</a>
+<a href="#L1644" id="L1644">1644</a>
+<a href="#L1645" id="L1645">1645</a>
+<a href="#L1646" id="L1646">1646</a>
+<a href="#L1647" id="L1647">1647</a>
+<a href="#L1648" id="L1648">1648</a>
+<a href="#L1649" id="L1649">1649</a>
+<a href="#L1650" id="L1650">1650</a>
+<a href="#L1651" id="L1651">1651</a>
+<a href="#L1652" id="L1652">1652</a>
+<a href="#L1653" id="L1653">1653</a>
+<a href="#L1654" id="L1654">1654</a>
+<a href="#L1655" id="L1655">1655</a>
+<a href="#L1656" id="L1656">1656</a>
+<a href="#L1657" id="L1657">1657</a>
+<a href="#L1658" id="L1658">1658</a>
+<a href="#L1659" id="L1659">1659</a>
+<a href="#L1660" id="L1660">1660</a>
+<a href="#L1661" id="L1661">1661</a>
+<a href="#L1662" id="L1662">1662</a>
+<a href="#L1663" id="L1663">1663</a>
+<a href="#L1664" id="L1664">1664</a>
+<a href="#L1665" id="L1665">1665</a>
+<a href="#L1666" id="L1666">1666</a>
+<a href="#L1667" id="L1667">1667</a>
+<a href="#L1668" id="L1668">1668</a>
+<a href="#L1669" id="L1669">1669</a>
+<a href="#L1670" id="L1670">1670</a>
+<a href="#L1671" id="L1671">1671</a>
+<a href="#L1672" id="L1672">1672</a>
+<a href="#L1673" id="L1673">1673</a>
+<a href="#L1674" id="L1674">1674</a>
+<a href="#L1675" id="L1675">1675</a>
+<a href="#L1676" id="L1676">1676</a>
+<a href="#L1677" id="L1677">1677</a>
+<a href="#L1678" id="L1678">1678</a>
+<a href="#L1679" id="L1679">1679</a>
+<a href="#L1680" id="L1680">1680</a>
+<a href="#L1681" id="L1681">1681</a>
+<a href="#L1682" id="L1682">1682</a>
+<a href="#L1683" id="L1683">1683</a>
+<a href="#L1684" id="L1684">1684</a>
+<a href="#L1685" id="L1685">1685</a>
+<a href="#L1686" id="L1686">1686</a>
+<a href="#L1687" id="L1687">1687</a>
+<a href="#L1688" id="L1688">1688</a>
+<a href="#L1689" id="L1689">1689</a>
+<a href="#L1690" id="L1690">1690</a>
+<a href="#L1691" id="L1691">1691</a>
+<a href="#L1692" id="L1692">1692</a>
+<a href="#L1693" id="L1693">1693</a>
+<a href="#L1694" id="L1694">1694</a>
+<a href="#L1695" id="L1695">1695</a>
+<a href="#L1696" id="L1696">1696</a>
+<a href="#L1697" id="L1697">1697</a>
+<a href="#L1698" id="L1698">1698</a>
+<a href="#L1699" id="L1699">1699</a>
+<a href="#L1700" id="L1700">1700</a>
+<a href="#L1701" id="L1701">1701</a>
+<a href="#L1702" id="L1702">1702</a>
+<a href="#L1703" id="L1703">1703</a>
+<a href="#L1704" id="L1704">1704</a>
+<a href="#L1705" id="L1705">1705</a>
+<a href="#L1706" id="L1706">1706</a>
+<a href="#L1707" id="L1707">1707</a>
+<a href="#L1708" id="L1708">1708</a>
+<a href="#L1709" id="L1709">1709</a>
+<a href="#L1710" id="L1710">1710</a>
+<a href="#L1711" id="L1711">1711</a>
+<a href="#L1712" id="L1712">1712</a>
+<a href="#L1713" id="L1713">1713</a>
+<a href="#L1714" id="L1714">1714</a>
+<a href="#L1715" id="L1715">1715</a>
+<a href="#L1716" id="L1716">1716</a>
+<a href="#L1717" id="L1717">1717</a>
+<a href="#L1718" id="L1718">1718</a>
+<a href="#L1719" id="L1719">1719</a>
+<a href="#L1720" id="L1720">1720</a>
+<a href="#L1721" id="L1721">1721</a>
+<a href="#L1722" id="L1722">1722</a>
+<a href="#L1723" id="L1723">1723</a>
+<a href="#L1724" id="L1724">1724</a>
+<a href="#L1725" id="L1725">1725</a>
+<a href="#L1726" id="L1726">1726</a>
+<a href="#L1727" id="L1727">1727</a>
+<a href="#L1728" id="L1728">1728</a>
+<a href="#L1729" id="L1729">1729</a>
+<a href="#L1730" id="L1730">1730</a>
+<a href="#L1731" id="L1731">1731</a>
+<a href="#L1732" id="L1732">1732</a>
+<a href="#L1733" id="L1733">1733</a>
+<a href="#L1734" id="L1734">1734</a>
+<a href="#L1735" id="L1735">1735</a>
+<a href="#L1736" id="L1736">1736</a>
+<a href="#L1737" id="L1737">1737</a>
+<a href="#L1738" id="L1738">1738</a>
+<a href="#L1739" id="L1739">1739</a>
+<a href="#L1740" id="L1740">1740</a>
+<a href="#L1741" id="L1741">1741</a>
+<a href="#L1742" id="L1742">1742</a>
+<a href="#L1743" id="L1743">1743</a>
+<a href="#L1744" id="L1744">1744</a>
+<a href="#L1745" id="L1745">1745</a>
+<a href="#L1746" id="L1746">1746</a>
+<a href="#L1747" id="L1747">1747</a>
+<a href="#L1748" id="L1748">1748</a>
+<a href="#L1749" id="L1749">1749</a>
+<a href="#L1750" id="L1750">1750</a>
+<a href="#L1751" id="L1751">1751</a>
+<a href="#L1752" id="L1752">1752</a>
 </td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1943,6 +2157,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1950,6 +2165,7 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
@@ -1994,23 +2210,27 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2118,15 +2338,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2142,12 +2353,33 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2163,7 +2395,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2176,20 +2412,30 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2211,11 +2457,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">14</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2238,16 +2488,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2268,13 +2508,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2292,7 +2534,36 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2307,26 +2578,32 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2349,9 +2626,38 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2384,17 +2690,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4</span>
@@ -2402,20 +2697,26 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2430,7 +2731,15 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2452,10 +2761,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2470,7 +2783,11 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2515,6 +2832,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">34</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
@@ -2543,6 +2862,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2553,11 +2889,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2580,7 +2911,13 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2595,20 +2932,28 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2630,10 +2975,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2657,11 +3006,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">16</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2685,41 +3038,31 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2738,6 +3081,14 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2802,6 +3153,14 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4</span>
@@ -2842,10 +3201,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
@@ -2857,11 +3224,13 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
@@ -2886,9 +3255,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
@@ -2898,11 +3269,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
@@ -2913,10 +3288,14 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
@@ -2928,6 +3307,8 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2944,6 +3325,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
@@ -2953,6 +3336,8 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2969,6 +3354,8 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
@@ -2986,17 +3373,25 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
@@ -3008,11 +3403,13 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
@@ -3055,6 +3452,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -3062,6 +3460,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
@@ -3071,11 +3470,15 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
@@ -3116,9 +3519,11 @@
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
@@ -3175,7 +3580,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -3190,7 +3597,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -3205,7 +3614,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -3257,7 +3668,38 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -3265,41 +3707,20 @@
 <span class="cline-any cline-yes">4</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4</span>
 <span class="cline-any cline-yes">8</span>
-<span class="cline-any cline-yes">16</span>
-<span class="cline-any cline-yes">16</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -3386,9 +3807,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js" tabIndex="0">/* istanbul instrument in package db */
 /* istanbul ignore next */
 /* jslint utility2:true */
@@ -3437,30 +3855,30 @@
     // init function
     local.assertThrow = <span class="fstat-skip" title="function not covered" >function (passed, message) {</span>
     /*
-     * this function will throw the error &lt;message&gt; if &lt;passed&gt; is falsy
+     * this function will throw err.&lt;message&gt; if &lt;passed&gt; is falsy
      */
-<span class="cstat-skip" title="statement not covered" >        var error;</span>
+<span class="cstat-skip" title="statement not covered" >        var err;</span>
 <span class="cstat-skip" title="statement not covered" >        if (passed) {</span>
 <span class="cstat-skip" title="statement not covered" >            return;</span>
         }
-<span class="cstat-skip" title="statement not covered" >        error = (</span>
-            // ternary-condition
+<span class="cstat-skip" title="statement not covered" >        err = (</span>
+            // ternary-operator
             (
                 message
                 &amp;&amp; typeof message.message === "string"
                 &amp;&amp; typeof message.stack === "string"
             )
-            // if message is an error-object, then leave it as is
+            // if message is errObj, then leave as is
             ? message
             : new Error(
                 typeof message === "string"
-                // if message is a string, then leave it as is
+                // if message is a string, then leave as is
                 ? message
                 // else JSON.stringify message
                 : JSON.stringify(message, null, 4)
             )
         );
-<span class="cstat-skip" title="statement not covered" >        throw error;</span>
+<span class="cstat-skip" title="statement not covered" >        throw err;</span>
     };
     local.functionOrNop = <span class="fstat-skip" title="function not covered" >function (fnc) {</span>
     /*
@@ -3488,7 +3906,8 @@
      * null, undefined, or empty-string,
      * then overwrite them with items from &lt;source&gt;
      */
-<span class="cstat-skip" title="statement not covered" >        Object.keys(source).forEach(<span class="fstat-skip" title="function not covered" >function (key) {</span></span>
+<span class="cstat-skip" title="statement not covered" >        target = target || {};</span>
+<span class="cstat-skip" title="statement not covered" >        Object.keys(source || {}).forEach(<span class="fstat-skip" title="function not covered" >function (key) {</span></span>
 <span class="cstat-skip" title="statement not covered" >            if (</span>
                 target[key] === null
                 || target[key] === undefined
@@ -3497,6 +3916,7 @@
 <span class="cstat-skip" title="statement not covered" >                target[key] = target[key] || source[key];</span>
             }
         });
+<span class="cstat-skip" title="statement not covered" >        return target;</span>
     };
     // require builtin
     if (!local.isBrowser) {
@@ -3540,7 +3960,9 @@
 // run shared js-env code - init-before
 (function () {
 // init local
-local = (globalThis.utility2 || require("utility2")).requireReadme();
+local = (
+    globalThis.utility2 || require("utility2")
+).requireReadme();
 globalThis.local = local;
 // init test
 local.testRunDefault(local);
@@ -3550,48 +3972,50 @@ local.testRunDefault(local);
 &nbsp;
 // run shared js-env code - function
 (function () {
-local.testCase_dbLoad_error = function (options, onError) {
+local.testCase_dbLoad_err = function (opt, onError) {
 /*
- * this function will test dbLoad's error handling-behavior
+ * this function will test dbLoad's err handling-behavior
  */
     local.testMock([
-        [local, {
-            storageKeys: function (fnc) {
-                fnc(local.errorDefault);
+        [
+            local, {
+                storageKeys: function (fnc) {
+                    fnc(local.errDefault);
+                }
             }
-        }]
+        ]
     ], function (onError) {
-        local.dbLoad(function (error) {
-            // validate error occurred
-            local.assertThrow(error, error);
+        local.dbLoad(function (err) {
+            // validate err occurred
+            local.assertThrow(err, err);
         });
-        onError(null, options);
+        onError(null, opt);
     }, onError);
 };
 &nbsp;
-local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
+local.testCase_dbTable_crudGetManyByQuery = function (opt, onError) {
 /*
  * this function will test dbTable's crudGetManyByQuery handling-behavior
  */
-    options = {};
+    opt = {};
     // test dbTableCreateOne's create handling-behavior
-    options.dbTable = local.dbTableCreateOne({
+    opt.dbTable = local.dbTableCreateOne({
         name: "testCase_dbTable_crudGetManyByQuery"
     });
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // test isDirty handling-behavior
-    options.dbTable.crudRemoveOneById(options.dbTable.crudSetOneById({
+    opt.dbTable.crudRemoveOneById(opt.dbTable.crudSetOneById({
         field1: "dirty"
     }));
     // test null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         // test shuffle handling-behavior
         shuffle: true
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
-    options.data = local.identity([
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
+    opt.data = ([
         [],
         [[], "", 0, {}, false, null, undefined],
         -0.5,
@@ -3612,15 +4036,15 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
             field1: element
         };
     });
-    options.data = options.data.concat(options.data.map(function (dbRow) {
+    opt.data = opt.data.concat(opt.data.map(function (dbRow) {
         return {
             field1: JSON.stringify(dbRow.field1)
         };
     }));
     // test dbTableCreateOne's crudSetManyById handling-behavior
-    options.data = options.dbTable.crudSetManyById(options.data);
+    opt.data = opt.dbTable.crudSetManyById(opt.data);
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 30);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 30);
     // validate data
     [
         [],
@@ -3654,207 +4078,260 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
         "true",
         undefined
     ].forEach(function (element, ii) {
-        local.assertJsonEqual(element, options.data[ii].field1);
+        local.assertJsonEqual(element, opt.data[ii].field1);
     });
     // test null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
-            field1: { $undefined: null}
+            field1: {
+                $undefined: null
+            }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $undefined: {}
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test $eq's boolean handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: true
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 1);
-    local.assertJsonEqual(options.data, [true]);
+    local.assertJsonEqual(opt.data.length, 1);
+    local.assertJsonEqual(opt.data, [
+        true
+    ]);
     // test $eq's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: null
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 7);
+    local.assertJsonEqual(opt.data.length, 7);
     local.assertJsonEqual(
-        options.data.slice(0, -1),
-        [null, null, null, null, null, null]
+        opt.data.slice(0, -1),
+        [
+            null, null, null, null, null, null
+        ]
     );
     // test $eq's number handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: 0
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 2);
-    local.assertJsonEqual(options.data.slice(0, -1), [0]);
+    local.assertJsonEqual(opt.data.length, 2);
+    local.assertJsonEqual(opt.data.slice(0, -1), [
+        0
+    ]);
     // test $eq's string handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: "{}"
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 1);
-    local.assertJsonEqual(options.data, ["{}"]);
+    local.assertJsonEqual(opt.data.length, 1);
+    local.assertJsonEqual(opt.data, [
+        "{}"
+    ]);
     // test $exists's false handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
-            field1: { $exists: false}
+            field1: {
+                $exists: false
+            }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 7);
+    local.assertJsonEqual(opt.data.length, 7);
     // test $exists's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $exists: null
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 7);
+    local.assertJsonEqual(opt.data.length, 7);
     // test $exists's true handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $exists: true
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 23);
+    local.assertJsonEqual(opt.data.length, 23);
     // test $gt's boolean handling-behavior
     // test $lt's boolean handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
-        query: {
-            field1: { $gt: false, $lt: true}
-        },
-        sort: [{
-            fieldName: "field1"
-        }]
-    });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
-    // test $gt's null-case handling-behavior
-    // test $lt's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $gt: false,
                 $lt: true
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
+    // test $gt's null-case handling-behavior
+    // test $lt's null-case handling-behavior
+    opt.data = opt.dbTable.crudGetManyByQuery({
+        query: {
+            field1: {
+                $gt: false,
+                $lt: true
+            }
+        },
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
+    });
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test $gt's number handling-behavior
     // test $lt's number handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $gt: -1,
                 $lt: 1
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 4);
-    local.assertJsonEqual(options.data.slice(0, -1), [-0.5, 0, 0.5]);
+    local.assertJsonEqual(opt.data.length, 4);
+    local.assertJsonEqual(opt.data.slice(0, -1), [
+        -0.5, 0, 0.5
+    ]);
     // test $gt's string handling-behavior
     // test $lt's string handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $gt: "false",
                 $lt: "true"
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 4);
-    local.assertJsonEqual(options.data, ["null", "null", "null", "null"]);
+    local.assertJsonEqual(opt.data.length, 4);
+    local.assertJsonEqual(opt.data, [
+        "null", "null", "null", "null"
+    ]);
     // test $gte's boolean handling-behavior
     // test $lte's boolean handling-behavior
     // test $ne's boolean handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
-            field1: { $gte: false, $lte: true, $ne: false}
+            field1: {
+                $gte: false,
+                $lte: true,
+                $ne: false
+            }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 2);
-    local.assertJsonEqual(options.data.slice(0, -1), [true]);
+    local.assertJsonEqual(opt.data.length, 2);
+    local.assertJsonEqual(opt.data.slice(0, -1), [
+        true
+    ]);
     // test $gte's null-case handling-behavior
     // test $lte's null-case handling-behavior
     // test $ne's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $gte: null,
@@ -3862,18 +4339,20 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
                 $ne: null
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 1);
-    local.assertJsonEqual(options.data.slice(0, -1), []);
+    local.assertJsonEqual(opt.data.length, 1);
+    local.assertJsonEqual(opt.data.slice(0, -1), []);
     // test $gte's number handling-behavior
     // test $lte's number handling-behavior
     // test $ne's number handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $gte: -1,
@@ -3881,14 +4360,18 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
                 $ne: 0
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 5);
-    local.assertJsonEqual(options.data.slice(0, -1), [-1, -0.5, 0.5, 1]);
+    local.assertJsonEqual(opt.data.length, 5);
+    local.assertJsonEqual(opt.data.slice(0, -1), [
+        -1, -0.5, 0.5, 1
+    ]);
     // test $gte's number handling-behavior
     // test $lte's number handling-behavior
     // test $ne's number handling-behavior
@@ -3896,8 +4379,10 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
     // test limit handling-behavior
     // test skip handling-behavior
     // test sort's isDescending handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
-        fieldList: ["field1"],
+    opt.data = opt.dbTable.crudGetManyByQuery({
+        fieldList: [
+            "field1"
+        ],
         limit: 2,
         query: {
             field1: {
@@ -3907,19 +4392,23 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
             }
         },
         skip: 2,
-        sort: [{
-            fieldName: "field1",
-            isDescending: true
-        }]
+        sort: [
+            {
+                fieldName: "field1",
+                isDescending: true
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 2);
-    local.assertJsonEqual(options.data.slice(), [0.5, -0.5]);
+    local.assertJsonEqual(opt.data.length, 2);
+    local.assertJsonEqual(opt.data.slice(), [
+        0.5, -0.5
+    ]);
     // test $gte's string handling-behavior
     // test $lte's string handling-behavior
     // test $ne's string handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $gte: "false",
@@ -3927,112 +4416,144 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
                 $ne: "null"
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 2);
-    local.assertJsonEqual(options.data, ["false", "true"]);
+    local.assertJsonEqual(opt.data.length, 2);
+    local.assertJsonEqual(opt.data, [
+        "false", "true"
+    ]);
     // test $in's list handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
-            field1: { $in: [true, 1]}
+            field1: {
+                $in: [
+                    true, 1
+                ]
+            }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 2);
-    local.assertJsonEqual(options.data, [true, 1]);
+    local.assertJsonEqual(opt.data.length, 2);
+    local.assertJsonEqual(opt.data, [
+        true, 1
+    ]);
     // test $in's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $in: null
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test $in's string handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $in: "0.5"
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 3);
-    local.assertJsonEqual(options.data.slice(0, -1), ["0", "0.5"]);
+    local.assertJsonEqual(opt.data.length, 3);
+    local.assertJsonEqual(opt.data.slice(0, -1), [
+        "0", "0.5"
+    ]);
     // test $nin's list handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
-            field1: { $nin: [0, null]}
+            field1: {
+                $nin: [
+                    0, null
+                ]
+            }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 22);
+    local.assertJsonEqual(opt.data.length, 22);
     // test $nin's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $nin: null
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test $nin's string handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $nin: "[[],\"\",0,1,{},false,null,true]"
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 4);
-    local.assertJsonEqual(options.data.slice(0, -1), ["-0.5", "-1", "0.5"]);
+    local.assertJsonEqual(opt.data.length, 4);
+    local.assertJsonEqual(opt.data.slice(0, -1), [
+        "-0.5", "-1", "0.5"
+    ]);
     // test $not's number handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
-            $not: {
+                $not: {
                     $gte: 0
                 }
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 26);
-    local.assertJsonEqual(options.data.slice(0, 15), [
+    local.assertJsonEqual(opt.data.length, 26);
+    local.assertJsonEqual(opt.data.slice(0, 15), [
         null,
         null,
         null,
@@ -4050,7 +4571,7 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
         "1"
     ]);
     // test $not's string handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $not: {
@@ -4058,14 +4579,16 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
                 }
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 17);
-    local.assertJsonEqual(options.data.slice(0, -1), [
+    local.assertJsonEqual(opt.data.length, 17);
+    local.assertJsonEqual(opt.data.slice(0, -1), [
         null,
         null,
         null,
@@ -4084,618 +4607,704 @@ local.testCase_dbTable_crudGetManyByQuery = function (options, onError) {
         {}
     ]);
     // test $or's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
-        query: { $or: null},
-        sort: [{
-            fieldName: "field1"
-        }]
+    opt.data = opt.dbTable.crudGetManyByQuery({
+        query: {
+            $or: null
+        },
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test $or's empty-list handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             $or: []
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test $or's list handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
-            $or: [{
-                field1: { $eq: -0.5}
-            }, {
-                field1: {
-                    $eq: 0
+            $or: [
+                {
+                    field1: {
+                        $eq: -0.5
+                    }
+                }, {
+                    field1: {
+                        $eq: 0
+                    }
+                }, {
+                    field1: {
+                        $eq: 0.5
+                    }
                 }
-            }, {
-                field1: {
-                    $eq: 0.5
-                }
-            }]
+            ]
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 4);
-    local.assertJsonEqual(options.data.slice(0, -1), [-0.5, 0, 0.5]);
+    local.assertJsonEqual(opt.data.length, 4);
+    local.assertJsonEqual(opt.data.slice(0, -1), [
+        -0.5, 0, 0.5
+    ]);
     // test $regex's regex handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
-            field1: { $regex: (
-                /1|true/
-            )}
+            field1: {
+                $regex: (
+                    /1|true/
+                )
+            }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 6);
-    local.assertJsonEqual(options.data, [true, -1, 1, "-1", "1", "true"]);
+    local.assertJsonEqual(opt.data.length, 6);
+    local.assertJsonEqual(opt.data, [
+        true, -1, 1, "-1", "1", "true"
+    ]);
     // test $regex's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $regex: null
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test $typeof's boolean handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
-            field1: { $typeof: "boolean"}
+            field1: {
+                $typeof: "boolean"
+            }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 3);
+    local.assertJsonEqual(opt.data.length, 3);
     // test $typeof's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $typeof: null
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test $typeof's number handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $typeof: "number"
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 6);
+    local.assertJsonEqual(opt.data.length, 6);
     // test $typeof's object handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $typeof: "object"
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 8);
+    local.assertJsonEqual(opt.data.length, 8);
     // test $typeof's string handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $typeof: "string"
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     }).map(function (dbRow) {
         return dbRow.field1;
     });
-    local.assertJsonEqual(options.data.length, 15);
+    local.assertJsonEqual(opt.data.length, 15);
     // test $typeof's symbol handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $typeof: "symbol"
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     // test $typeof's undefined handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
             field1: {
                 $typeof: "undefined"
             }
         },
-        sort: [{
-            fieldName: "field1"
-        }]
+        sort: [
+            {
+                fieldName: "field1"
+            }
+        ]
     });
-    local.assertJsonEqual(options.data.length, 0);
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data.length, 0);
+    local.assertJsonEqual(opt.data, []);
     onError();
 };
 &nbsp;
-local.testCase_dbTable_crudNullCase = function (options, onError) {
+local.testCase_dbTable_crudNullCase = function (opt, onError) {
 /*
  * this function will test dbTable's crud null-case handling-behavior
  */
-    options = {};
+    opt = {};
     // test dbTableCreateMany's null-case handling-behavior
     local.dbTableCreateMany();
     // test dbTableCreateOne's onError handling-behavior
-    options.dbTable = local.dbTableCreateOne({
+    opt.dbTable = local.dbTableCreateOne({
         name: "testCase_dbTable_crudNullCase"
     }, local.onErrorDefault);
     // test dbTableCreateOne's null-case handling-behavior
-    options.dbTable = local.dbTableCreateOne({
+    opt.dbTable = local.dbTableCreateOne({
         name: "testCase_dbTable_crudNullCase"
     });
     // test crudRemoveAll's null-case handling-behavior
-    options.dbTable.crudRemoveAll();
+    opt.dbTable.crudRemoveAll();
     // test cancel-pending-save handling-behavior
-    options.dbTable.save(local.nop);
+    opt.dbTable.save(local.nop);
     // test drop's null-case handling-behavior
-    options.dbTable.drop();
+    opt.dbTable.drop();
     // test idIndexCreate's null-case handling-behavior
-    options.dbTable.idIndexCreate({
+    opt.dbTable.idIndexCreate({
         name: "_id"
     });
     // test idIndexRemove's null-case handling-behavior
-    options.dbTable.idIndexRemove({
+    opt.dbTable.idIndexRemove({
         name: "_id"
     });
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // test crudCountManyByQuery's null-case handling-behavior
-    options.data = options.dbTable.crudCountManyByQuery();
+    opt.data = opt.dbTable.crudCountManyByQuery();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, 0);
+    local.assertJsonEqual(opt.data, 0);
     // test crudGetManyById's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyById();
+    opt.data = opt.dbTable.crudGetManyById();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data, []);
     // test crudGetManyByQuery's null-case handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery();
+    opt.data = opt.dbTable.crudGetManyByQuery();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data, []);
     // test crudGetOneById's null-case handling-behavior
-    options.data = options.dbTable.crudGetOneById();
+    opt.data = opt.dbTable.crudGetOneById();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, null);
+    local.assertJsonEqual(opt.data, null);
     // test crudGetOneByRandom's null-case handling-behavior
-    options.data = options.dbTable.crudGetOneByRandom();
+    opt.data = opt.dbTable.crudGetOneByRandom();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, null);
+    local.assertJsonEqual(opt.data, null);
     // test crudGetOneByQuery's null-case handling-behavior
-    options.data = options.dbTable.crudGetOneByQuery();
+    opt.data = opt.dbTable.crudGetOneByQuery();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, null);
+    local.assertJsonEqual(opt.data, null);
     // test crudRemoveManyById's null-case handling-behavior
-    options.data = options.dbTable.crudRemoveManyById();
+    opt.data = opt.dbTable.crudRemoveManyById();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data, []);
     // test crudRemoveManyByQuery's null-case handling-behavior
-    options.data = options.dbTable.crudRemoveManyByQuery();
+    opt.data = opt.dbTable.crudRemoveManyByQuery();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data, []);
     // test crudRemoveOneById's null-case handling-behavior
-    options.data = options.dbTable.crudRemoveOneById();
+    opt.data = opt.dbTable.crudRemoveOneById();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, null);
+    local.assertJsonEqual(opt.data, null);
     // test crudUpdateManyById's null-case handling-behavior
-    options.data = options.dbTable.crudUpdateManyById();
+    opt.data = opt.dbTable.crudUpdateManyById();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data, []);
     // test crudUpdateManyByQuery's null-case handling-behavior
-    options.data = options.dbTable.crudUpdateManyByQuery();
+    opt.data = opt.dbTable.crudUpdateManyByQuery();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, []);
+    local.assertJsonEqual(opt.data, []);
     // test crudSetOneById's and crudUpdateOneById's null-case handling-behavior
-    ["crudSetOneById", "crudUpdateOneById"].forEach(function (operation) {
-        options.data = options.dbTable[operation]();
+    [
+        "crudSetOneById", "crudUpdateOneById"
+    ].forEach(function (operation) {
+        opt.data = opt.dbTable[operation]();
         // validate dbRowCount
-        local.assertJsonEqual(options.dbTable.crudCountAll(), 1);
-        options._id = options.data._id;
+        local.assertJsonEqual(opt.dbTable.crudCountAll(), 1);
+        opt._id = opt.data._id;
         // validate timestamp
-        local.assertJsonEqual(options.data._timeCreated, options.data._timeUpdated);
+        local.assertJsonEqual(opt.data._timeCreated, opt.data._timeUpdated);
         // test crudRemoveOneById's soft-delete handling-behavior
-        options.data = options.dbTable.crudRemoveOneById(options);
+        opt.data = opt.dbTable.crudRemoveOneById(opt);
         // validate dbRowCount
-        local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+        local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
         // validate data
-        local.assertJsonEqual(options.data._id, options._id);
+        local.assertJsonEqual(opt.data._id, opt._id);
     });
     // test crudGetOneById's null-case handling-behavior
-    options.data = options.dbTable.crudGetOneById(options);
+    opt.data = opt.dbTable.crudGetOneById(opt);
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, null);
+    local.assertJsonEqual(opt.data, null);
     // test crudRemoveOneById's null-case handling-behavior
-    options.data = options.dbTable.crudRemoveOneById(options);
+    opt.data = opt.dbTable.crudRemoveOneById(opt);
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data, null);
+    local.assertJsonEqual(opt.data, null);
     onError();
 };
 &nbsp;
-local.testCase_dbTable_crudXxxById = function (options, onError) {
+local.testCase_dbTable_crudXxxById = function (opt, onError) {
 /*
  * this function will test dbTable's crudXxxById handling-behavior
  */
-    options = {};
+    opt = {};
     // test dbTableCreateMany's create handling-behavior
-    options.dbTable = local.dbTableCreateMany([{
-        idIndexCreateList: [null],
-        idIndexRemoveList: [null],
-        name: "testCase_dbTable_crudXxxById"
-    }])[0];
+    opt.dbTable = local.dbTableCreateMany([
+        {
+            idIndexCreateList: [
+                null
+            ],
+            idIndexRemoveList: [
+                null
+            ],
+            name: "testCase_dbTable_crudXxxById"
+        }
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // test crudSetManyById's insert handling-behavior
-    options.data = options.dbTable.crudSetManyById([null, null]);
+    opt.data = opt.dbTable.crudSetManyById([
+        null, null
+    ]);
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 2);
     // validate data
-    local.assertJsonEqual(options.data.length, 2);
+    local.assertJsonEqual(opt.data.length, 2);
     // test crudRemoveManyById's soft-delete handling-behavior
-    options.data = options.dbTable.crudRemoveManyById(options.data);
+    opt.data = opt.dbTable.crudRemoveManyById(opt.data);
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 0);
     // validate data
-    local.assertJsonEqual(options.data.length, 2);
+    local.assertJsonEqual(opt.data.length, 2);
     // test crudSetManyById's insert handling-behavior
-    options.data = options.dbTable.crudSetManyById([null, {
-        field1: 1,
-        field2: 2,
-        field3: 3
-    }])[1];
+    opt.data = opt.dbTable.crudSetManyById([
+        null, {
+            field1: 1,
+            field2: 2,
+            field3: 3
+        }
+    ])[1];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 2);
     // validate timestamp
-    local.assertJsonEqual(options.data._timeCreated, options.data._timeUpdated);
+    local.assertJsonEqual(opt.data._timeCreated, opt.data._timeUpdated);
     // validate data
-    local.assertJsonNotEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, undefined);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, 2);
-    local.assertJsonEqual(options.data.field3, 3);
+    local.assertJsonNotEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, undefined);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, 2);
+    local.assertJsonEqual(opt.data.field3, 3);
     // test idIndexCreate's create handling-behavior
-    // coverage-hack - $isRemoved
-    options.dbTable.crudSetOneById({
+    // hack-istanbul - $isRemoved
+    opt.dbTable.crudSetOneById({
         _id: "undefined"
     });
-    options.dbTable.crudRemoveOneById({
+    opt.dbTable.crudRemoveOneById({
         _id: "undefined"
     });
-    options._id = options.data._id;
-    options.dbTable.idIndexCreate({
+    opt._id = opt.data._id;
+    opt.dbTable.idIndexCreate({
         isInteger: true,
         name: "id2"
     });
     // test crudGetManyById's get handling-behavior
-    options.data = options.dbTable.crudGetManyById([{
-        _id: options._id
-    }])[0];
+    opt.data = opt.dbTable.crudGetManyById([
+        {
+            _id: opt._id
+        }
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 2);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonNotEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, 2);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonNotEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, 2);
     // test crudUpdateManyById's update handling-behavior
-    options.id2 = options.data.id2;
-    options.data = options.dbTable.crudUpdateManyById([{
-        id2: options.id2,
-        field2: NaN,
-        field3: [new Date(0)]
-    }])[0];
+    opt.id2 = opt.data.id2;
+    opt.data = opt.dbTable.crudUpdateManyById([
+        {
+            id2: opt.id2,
+            field2: NaN,
+            field3: [
+                new Date(0)
+            ]
+        }
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 2);
     // validate timestamp
-    local.assertThrow(options.data._timeCreated &lt;= options.data._timeUpdated, options.data);
+    local.assertThrow(opt.data._timeCreated &lt;= opt.data._timeUpdated, opt.data);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, ["1970-01-01T00:00:00.000Z"]);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, [
+        "1970-01-01T00:00:00.000Z"
+    ]);
     // test crudSetManyById's replace handling-behavior
-    options.data = options.dbTable.crudSetManyById([{
-        id2: options.id2
-    }])[0];
+    opt.data = opt.dbTable.crudSetManyById([
+        {
+            id2: opt.id2
+        }
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 2);
     // validate timestamp
-    local.assertJsonEqual(options.data._timeCreated, options.data._timeUpdated);
+    local.assertJsonEqual(opt.data._timeCreated, opt.data._timeUpdated);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, undefined);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, undefined);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     // test crudUpdateManyById's update handling-behavior
-    options.data = options.dbTable.crudUpdateManyById([{
-        id2: options.id2,
-        field1: 1
-    }])[0];
+    opt.data = opt.dbTable.crudUpdateManyById([
+        {
+            id2: opt.id2,
+            field1: 1
+        }
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 2);
     // validate timestamp
-    local.assertThrow(options.data._timeCreated &lt;= options.data._timeUpdated, options.data);
+    local.assertThrow(opt.data._timeCreated &lt;= opt.data._timeUpdated, opt.data);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     // test crudRemoveManyById's soft-delete handling-behavior
-    options.data = options.dbTable.crudRemoveManyById([options])[0];
+    opt.data = opt.dbTable.crudRemoveManyById([
+        opt
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 1);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 1);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     // test crudSetManyById's re-insert handling-behavior
-    options.data = options.dbTable.crudSetManyById([{
-        id2: options.id2
-    }])[0];
+    opt.data = opt.dbTable.crudSetManyById([
+        {
+            id2: opt.id2
+        }
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 2);
     // validate timestamp
-    local.assertJsonEqual(options.data._timeCreated, options.data._timeUpdated);
+    local.assertJsonEqual(opt.data._timeCreated, opt.data._timeUpdated);
     // validate data
-    local.assertJsonNotEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, undefined);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonNotEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, undefined);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     // test crudRemoveManyById's soft-delete handling-behavior
-    options._id = options.data._id;
-    options.data = options.dbTable.crudRemoveManyById([options])[0];
+    opt._id = opt.data._id;
+    opt.data = opt.dbTable.crudRemoveManyById([
+        opt
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 1);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 1);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, undefined);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, undefined);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     onError();
 };
 &nbsp;
-local.testCase_dbTable_crudXxxByQuery = function (options, onError) {
+local.testCase_dbTable_crudXxxByQuery = function (opt, onError) {
 /*
  * this function will test dbTable's crudXxxByQuery handling-behavior
  */
-    options = {};
+    opt = {};
     // test dbTableCreateMany's create handling-behavior
-    options.dbTable = local.dbTableCreateMany([{
-        idIndexCreateList: [null],
-        idIndexRemoveList: [null],
-        name: "testCase_dbTable_crudXxxByQuery"
-    }])[0];
+    opt.dbTable = local.dbTableCreateMany([
+        {
+            idIndexCreateList: [
+                null
+            ],
+            idIndexRemoveList: [
+                null
+            ],
+            name: "testCase_dbTable_crudXxxByQuery"
+        }
+    ])[0];
     // drop dbTable
-    options.dbTable.drop();
+    opt.dbTable.drop();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 0);
     // test crudSetManyById's insert handling-behavior
-    options.data = options.dbTable.crudSetManyById([null, null]);
+    opt.data = opt.dbTable.crudSetManyById([
+        null, null
+    ]);
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 2);
     // validate data
-    local.assertJsonEqual(options.data.length, 2);
+    local.assertJsonEqual(opt.data.length, 2);
     // test crudRemoveManyByQuery's soft-delete handling-behavior
-    options.data = options.dbTable.crudRemoveManyByQuery();
+    opt.data = opt.dbTable.crudRemoveManyByQuery();
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 0);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 0);
     // validate data
-    local.assertJsonEqual(options.data.length, 2);
+    local.assertJsonEqual(opt.data.length, 2);
     // test crudSetManyById's insert handling-behavior
-    options.data = options.dbTable.crudSetManyById([null, {
-        field1: 1,
-        field2: 2,
-        field3: 3
-    }])[1];
+    opt.data = opt.dbTable.crudSetManyById([
+        null, {
+            field1: 1,
+            field2: 2,
+            field3: 3
+        }
+    ])[1];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 2);
     // validate timestamp
-    local.assertJsonEqual(options.data._timeCreated, options.data._timeUpdated);
+    local.assertJsonEqual(opt.data._timeCreated, opt.data._timeUpdated);
     // validate data
-    local.assertJsonNotEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, undefined);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, 2);
-    local.assertJsonEqual(options.data.field3, 3);
+    local.assertJsonNotEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, undefined);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, 2);
+    local.assertJsonEqual(opt.data.field3, 3);
     // test idIndexCreate's create handling-behavior
-    options._id = options.data._id;
-    options.dbTable.idIndexCreate({
+    opt._id = opt.data._id;
+    opt.dbTable.idIndexCreate({
         isInteger: true,
         name: "id2"
     });
     // test crudGetManyByQuery's get handling-behavior
-    options.data = options.dbTable.crudGetManyByQuery({
+    opt.data = opt.dbTable.crudGetManyByQuery({
         query: {
-            _id: options._id
+            _id: opt._id
         }
     })[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 2);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonNotEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, 2);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonNotEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, 2);
     // test crudGetOneByQuery's get handling-behavior
-    options.data = options.dbTable.crudGetOneByQuery({
-        _id: options._id
+    opt.data = opt.dbTable.crudGetOneByQuery({
+        _id: opt._id
     });
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 2);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonNotEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, 2);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonNotEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, 2);
     // test crudUpdateManyByQuery's update handling-behavior
-    options.id2 = options.data.id2;
-    options.data = options.dbTable.crudUpdateManyByQuery({
-        id2: options.id2
+    opt.id2 = opt.data.id2;
+    opt.data = opt.dbTable.crudUpdateManyByQuery({
+        id2: opt.id2
     }, {
-        id2: options.id2,
+        id2: opt.id2,
         field2: NaN,
-        field3: [new Date(0)]
+        field3: [
+            new Date(0)
+        ]
     })[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 2);
     // validate timestamp
-    local.assertThrow(options.data._timeCreated &lt;= options.data._timeUpdated, options.data);
+    local.assertThrow(opt.data._timeCreated &lt;= opt.data._timeUpdated, opt.data);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, ["1970-01-01T00:00:00.000Z"]);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, [
+        "1970-01-01T00:00:00.000Z"
+    ]);
     // test crudSetManyById's replace handling-behavior
-    options.data = options.dbTable.crudSetManyById([{
-        id2: options.id2
-    }])[0];
+    opt.data = opt.dbTable.crudSetManyById([
+        {
+            id2: opt.id2
+        }
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 2);
     // validate timestamp
-    local.assertJsonEqual(options.data._timeCreated, options.data._timeUpdated);
+    local.assertJsonEqual(opt.data._timeCreated, opt.data._timeUpdated);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, undefined);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, undefined);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     // test crudUpdateManyByQuery's update handling-behavior
-    options.data = options.dbTable.crudUpdateManyByQuery({
-        id2: options.id2
+    opt.data = opt.dbTable.crudUpdateManyByQuery({
+        id2: opt.id2
     }, {
-        id2: options.id2,
+        id2: opt.id2,
         field1: 1
     })[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 2);
     // validate timestamp
-    local.assertThrow(options.data._timeCreated &lt;= options.data._timeUpdated, options.data);
+    local.assertThrow(opt.data._timeCreated &lt;= opt.data._timeUpdated, opt.data);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     // test crudRemoveManyByQuery's soft-delete handling-behavior
-    options.data = options.dbTable.crudRemoveManyByQuery({
-        _id: options._id
+    opt.data = opt.dbTable.crudRemoveManyByQuery({
+        _id: opt._id
     })[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 1);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 1);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, 1);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, 1);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     // test crudSetManyById's re-insert handling-behavior
-    options.data = options.dbTable.crudSetManyById([{
-        id2: options.id2
-    }])[0];
+    opt.data = opt.dbTable.crudSetManyById([
+        {
+            id2: opt.id2
+        }
+    ])[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 2);
     // validate timestamp
-    local.assertJsonEqual(options.data._timeCreated, options.data._timeUpdated);
+    local.assertJsonEqual(opt.data._timeCreated, opt.data._timeUpdated);
     // validate data
-    local.assertJsonNotEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, undefined);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonNotEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, undefined);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     // test crudRemoveManyByQuery's soft-delete handling-behavior
-    options._id = options.data._id;
-    options.data = options.dbTable.crudRemoveManyByQuery({
-        _id: options._id
+    opt._id = opt.data._id;
+    opt.data = opt.dbTable.crudRemoveManyByQuery({
+        _id: opt._id
     })[0];
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountManyByQuery(), 1);
+    local.assertJsonEqual(opt.dbTable.crudCountManyByQuery(), 1);
     // validate data
-    local.assertJsonEqual(options.data._id, options._id);
-    local.assertJsonEqual(options.data.id2, options.id2);
-    local.assertJsonEqual(options.data.field1, undefined);
-    local.assertJsonEqual(options.data.field2, undefined);
-    local.assertJsonEqual(options.data.field3, undefined);
+    local.assertJsonEqual(opt.data._id, opt._id);
+    local.assertJsonEqual(opt.data.id2, opt.id2);
+    local.assertJsonEqual(opt.data.field1, undefined);
+    local.assertJsonEqual(opt.data.field2, undefined);
+    local.assertJsonEqual(opt.data.field3, undefined);
     onError();
 };
 &nbsp;
-local.testCase_dbTable_persistence = function (options, onError) {
+local.testCase_dbTable_persistence = function (opt, onError) {
 /*
  * this function will test dbTable's persistence handling-behavior
  */
-    options = {};
+    opt = {};
     // remove all dbRow's from db
     local.dbCrudRemoveAll();
     // drop db
@@ -4713,122 +5322,132 @@ local.testCase_dbTable_persistence = function (options, onError) {
         + "testCase_dbTable_persistence dbRowSet {\"_id\":\"id1\"}\n"
         + "undefined undefined undefined"
     );
-    options.dbTable = local.dbTableCreateOne({
+    opt.dbTable = local.dbTableCreateOne({
         name: "testCase_dbTable_persistence"
     });
-    options.data = local.dbExport();
+    opt.data = local.dbExport();
     // validate dbTable has idIndex._id
-    local.assertThrow(options.data.indexOf(
-        "testCase_dbTable_persistence idIndexCreate {\"isInteger\":false,\"name\":\"_id\"}"
-    ) &gt;= 0, options.data);
+    local.assertThrow(opt.data.indexOf(
+        "testCase_dbTable_persistence idIndexCreate"
+        + " {\"isInteger\":false,\"name\":\"_id\"}"
+    ) &gt;= 0, opt.data);
     // validate dbTable has idIndex.id2
-    local.assertThrow(options.data.indexOf(
-        "testCase_dbTable_persistence idIndexCreate {\"isInteger\":false,\"name\":\"id2\"}"
-    ) &gt;= 0, options.data);
+    local.assertThrow(opt.data.indexOf(
+        "testCase_dbTable_persistence idIndexCreate"
+        + " {\"isInteger\":false,\"name\":\"id2\"}"
+    ) &gt;= 0, opt.data);
     // validate dbTable has dbRow1
-    local.assertThrow(options.data.indexOf(
+    local.assertThrow(opt.data.indexOf(
         "testCase_dbTable_persistence dbRowSet {\"_id\":\"id1\","
-    ) &gt;= 0, options.data);
+    ) &gt;= 0, opt.data);
     // remove all dbRow's from dbTable
-    options.dbTable.crudRemoveAll();
-    options.data = options.dbTable.export();
+    opt.dbTable.crudRemoveAll();
+    opt.data = opt.dbTable.export();
     // validate dbTable has idIndex._id
-    local.assertThrow(options.data.indexOf(
-        "testCase_dbTable_persistence idIndexCreate {\"isInteger\":false,\"name\":\"_id\"}"
-    ) &gt;= 0, options.data);
+    local.assertThrow(opt.data.indexOf(
+        "testCase_dbTable_persistence idIndexCreate"
+        + " {\"isInteger\":false,\"name\":\"_id\"}"
+    ) &gt;= 0, opt.data);
     // validate dbTable has idIndex.id2
-    local.assertThrow(options.data.indexOf(
-        "testCase_dbTable_persistence idIndexCreate {\"isInteger\":false,\"name\":\"id2\"}"
-    ) &gt;= 0, options.data);
+    local.assertThrow(opt.data.indexOf(
+        "testCase_dbTable_persistence idIndexCreate"
+        + " {\"isInteger\":false,\"name\":\"id2\"}"
+    ) &gt;= 0, opt.data);
     // validate dbTable has no dbRow1
-    local.assertThrow(options.data.indexOf(
+    local.assertThrow(opt.data.indexOf(
         "testCase_dbTable_persistence dbRowSet {\"_id\":\"id1\","
-    ) &lt; 0, options.data);
+    ) &lt; 0, opt.data);
     // drop dbTable
-    options.dbTable.drop();
-    options.data = options.dbTable.export();
+    opt.dbTable.drop();
+    opt.data = opt.dbTable.export();
     // validate dbTable has idIndex._id
-    local.assertThrow(options.data.indexOf(
-        "testCase_dbTable_persistence idIndexCreate {\"isInteger\":false,\"name\":\"_id\"}"
-    ) &gt;= 0, options.data);
+    local.assertThrow(opt.data.indexOf(
+        "testCase_dbTable_persistence idIndexCreate"
+        + " {\"isInteger\":false,\"name\":\"_id\"}"
+    ) &gt;= 0, opt.data);
     // validate dbTable has no idIndex.id2
-    local.assertThrow(options.data.indexOf(
-        "testCase_dbTable_persistence idIndexCreate {\"isInteger\":false,\"name\":\"id2\"}"
-    ) &lt; 0, options.data);
+    local.assertThrow(opt.data.indexOf(
+        "testCase_dbTable_persistence idIndexCreate"
+        + " {\"isInteger\":false,\"name\":\"id2\"}"
+    ) &lt; 0, opt.data);
     // validate dbTable has no dbRow1
-    local.assertThrow(options.data.indexOf(
+    local.assertThrow(opt.data.indexOf(
         "testCase_dbTable_persistence dbRowSet {\"_id\":\"id1\","
-    ) &lt; 0, options.data);
+    ) &lt; 0, opt.data);
     // save db
-    options.dbTable.save(function (error) {
-        // validate no error occurred
-        local.assertThrow(!error, error);
+    opt.dbTable.save(function (err) {
+        // validate no err occurred
+        local.assertThrow(!err, err);
         // load db
         local.dbLoad(onError);
     });
 };
 &nbsp;
-local.testCase_dbTable_sizeLimit = function (options, onError) {
+local.testCase_dbTable_sizeLimit = function (opt, onError) {
 /*
  * this function will test dbTable's sizeLimit handling-behavior
  */
-    options = {};
-    options.dbTable = local.dbTableCreateOne({
+    opt = {};
+    opt.dbTable = local.dbTableCreateOne({
         name: "testCase_dbTable_sizeLimit",
         sizeLimit: 2
     });
-    options.dbTable.crudSetOneById({});
+    opt.dbTable.crudSetOneById({});
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 1);
-    options.dbTable.crudSetOneById({});
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 1);
+    opt.dbTable.crudSetOneById({});
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
-    options.dbTable.crudSetOneById({});
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 2);
+    opt.dbTable.crudSetOneById({});
     // validate dbRowCount
-    local.assertJsonEqual(options.dbTable.crudCountAll(), 2);
+    local.assertJsonEqual(opt.dbTable.crudCountAll(), 2);
     onError();
 };
 &nbsp;
-local.testCase_onEventDomDb_default = function (options, onError) {
+local.testCase_onEventDomDb_default = function (opt, onError) {
 /*
  * this function will test onEventDomDb's default handling-behavior
  */
     if (!local.isBrowser) {
-        onError(null, options);
+        onError(null, opt);
         return;
     }
-    options = {};
-    options.addEventListener = local.nop;
-    options.click = local.nop;
-    options.files = [];
+    opt = {};
+    opt.addEventListener = local.nop;
+    opt.click = local.nop;
+    opt.files = [];
     local.testMock([
-        [document, {
-            querySelector: function () {
-                return options;
+        [
+            document, {
+                querySelector: <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >                    return opt;</span>
+                }
             }
-        }],
-        [local, {
-            dbDrop: function (onError) {
-                onError();
-            },
-            dbExport: local.nop,
-            dbImport: local.nop
-        }],
-        [globalThis, {
-            FileReader: function () {
-                this.addEventListener = function (_, fnc) {
-                    fnc(_);
-                };
-                this.readAsText = local.nop;
-            },
-            setTimeout: function (fnc) {
-                fnc();
-            },
-            utility2: null,
-            utility2_dbSeedList: null,
-            utility2_onReadyAfter: null,
-            utility2_onReadyBefore: null
-        }]
+        ], [
+            local, {
+                dbDrop: <span class="fstat-no" title="function not covered" >function (onError) {</span>
+<span class="cstat-no" title="statement not covered" >                    onError();</span>
+                },
+                dbExport: local.nop,
+                dbImport: local.nop
+            }
+        ], [
+            globalThis, {
+                FileReader: <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >                    this.addEventListener = <span class="fstat-no" title="function not covered" >function (_, fnc) {</span></span>
+<span class="cstat-no" title="statement not covered" >                        fnc(_);</span>
+                    };
+<span class="cstat-no" title="statement not covered" >                    this.readAsText = local.nop;</span>
+                },
+                setTimeout: <span class="fstat-no" title="function not covered" >function (fnc) {</span>
+<span class="cstat-no" title="statement not covered" >                    fnc();</span>
+                },
+                utility2: null,
+                utility2_dbSeedList: null,
+                utility2_onReadyAfter: null,
+                utility2_onReadyBefore: null
+            }
+        ]
     ], function (onError) {
         [
             "dbExportButton1",
@@ -4836,19 +5455,25 @@ local.testCase_onEventDomDb_default = function (options, onError) {
             "dbImportInput1",
             "dbResetButton1"
         ].forEach(function (id) {
-            ["change", "click"].forEach(function (type) {
-                [0, 1].forEach(function (ii) {
-                    options.files[0] = ii;
+            [
+                "change", "click"
+            ].forEach(function (type) {
+                [
+                    0, 1
+                ].forEach(function (ii) {
+                    opt.files[0] = ii;
                     local.onEventDomDb({
                         target: {
                             dataset: {},
-                            id: id
+                            id
                         },
-                        type: type
+                        type
                     });
-                    globalThis.utility2_dbSeedList = ii &amp;&amp; [{
-                        name: "dbTable1"
-                    }];
+                    globalThis.utility2_dbSeedList = ii &amp;&amp; [
+                        {
+                            name: "dbTable1"
+                        }
+                    ];
                 });
             });
         });
@@ -4856,12 +5481,12 @@ local.testCase_onEventDomDb_default = function (options, onError) {
     }, onError);
 };
 &nbsp;
-local.testCase_sortCompare_default = function (options, onError) {
+local.testCase_sortCompare_default = function (opt, onError) {
 /*
  * this function will test sortCompare's default handling-behavior
  */
-    options = {};
-    options.data = local.identity([
+    opt = {};
+    opt.data = ([
         undefined,
         [],
         "",
@@ -4870,22 +5495,22 @@ local.testCase_sortCompare_default = function (options, onError) {
         "a", "aa",
         false, false, null, null, true, true
     ]).sort();
-    options.data = options.data.sort(local.sortCompare);
-    local.assertJsonEqual(options.data.slice(0, -3), [
+    opt.data = opt.data.sort(local.sortCompare);
+    local.assertJsonEqual(opt.data.slice(0, -3), [
         null, null,
         false, false, true, true,
         -Infinity, -1, 0, 0, 1, Infinity,
         "", "a", "aa"
     ]);
-    options.data = options.data.reverse().sort(local.sortCompare);
-    local.assertJsonEqual(options.data.slice(0, -3), [
+    opt.data = opt.data.reverse().sort(local.sortCompare);
+    local.assertJsonEqual(opt.data.slice(0, -3), [
         null, null,
         false, false, true, true,
         -Infinity, -1, 0, 0, 1, Infinity,
         "", "a", "aa"
     ]);
-    // coverage-hack
-    options.data.forEach(function (aa) {
+    // hack-istanbul
+    opt.data.forEach(function (aa) {
         [{}, null, Symbol()].forEach(function (bb) {
             local.sortCompare(aa, bb);
             local.sortCompare(bb, aa);
@@ -4894,13 +5519,13 @@ local.testCase_sortCompare_default = function (options, onError) {
     onError();
 };
 &nbsp;
-local.testCase_storageXxx_misc = function (options, onError) {
+local.testCase_storageXxx_misc = function (opt, onError) {
 /*
  * this function will test storageXxx's misc handling-behavior
  */
     var onParallel;
-    // jslint-hack
-    local.nop(options);
+    // hack-jslint
+    local.nop(opt);
     onParallel = local.onParallel(onError);
     onParallel.counter += 1;
     // test storageInit's init handling-behavior
@@ -4931,16 +5556,13 @@ local.testCase_storageXxx_misc = function (options, onError) {
     onParallel();
 };
 }());
-&nbsp;
-&nbsp;
-&nbsp;
 }());
 &nbsp;
 &nbsp;</pre></td></tr>
 </table></pre>
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a> at Sun, 30 Dec 2018 08:32:52 GMT</div>
+    <div class="meta">Generated by <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a> at Thu, 22 Aug 2019 07:47:13 GMT</div>
 </div>
 </body>
 </html>
