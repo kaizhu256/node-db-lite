@@ -56,11 +56,17 @@ this zero-dependency package will provide a persistent, in-browser database, wit
 [![apidoc](https://kaizhu256.github.io/node-db-lite/build/screenshot.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html)
 
 #### todo
+- fix IndexedDB in edge
+- deprecate and remove unnecessary stable-sort
 - none
 
-#### changelog 2018.12.30
-- npm publish 2018.12.30
-- fix ui buttons
+#### changelog 2019.8.20
+- npm publish 2019.8.20
+- fix demo
+- jslint - remove allow-method-chain-newline hack
+- jslint - refactor files to 80 chr column-limit
+- rename var request to req, response to res, local.errorDefault to local.errDefault, error to err, option to opt, event to evt, nextMiddleware to next
+- revamp ui event-handling with window.domOnEventDelegateDict
 - update build
 - none
 
@@ -70,7 +76,7 @@ this zero-dependency package will provide a persistent, in-browser database, wit
 
 
 # quickstart standalone app
-#### to run this example, follow the instruction in the script below
+#### to run this example, follow instruction in script below
 - [assets.app.js](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/assets.app.js)
 ```shell
 # example.sh
@@ -81,7 +87,7 @@ this zero-dependency package will provide a persistent, in-browser database, wit
 curl -O https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/app/assets.app.js
 # 2. run standalone app
 PORT=8081 node ./assets.app.js
-# 3. open a browser to http://127.0.0.1:8081 and play with the web-demo
+# 3. open a browser to http://127.0.0.1:8081 and play with web-demo
 # 4. edit file assets.app.js to suit your needs
 ```
 
@@ -96,7 +102,7 @@ PORT=8081 node ./assets.app.js
 # quickstart example.js
 [![screenshot](https://kaizhu256.github.io/node-db-lite/build/screenshot.testExampleJs.browser.%252F.png)](https://kaizhu256.github.io/node-db-lite/build/app/assets.example.html)
 
-#### to run this example, follow the instruction in the script below
+#### to run this example, follow instruction in script below
 - [example.js](https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/example.js)
 ```javascript
 /*
@@ -106,9 +112,9 @@ this script will run a web-demo of db-lite
 
 instruction
     1. save this script as example.js
-    2. run the shell-command:
+    2. run shell-command:
         $ npm install db-lite && PORT=8081 node example.js
-    3. open a browser to http://127.0.0.1:8081 and play with the web-demo
+    3. open a browser to http://127.0.0.1:8081 and play with web-demo
     4. edit this script to suit your needs
 */
 
@@ -162,30 +168,30 @@ instruction
     // init function
     local.assertThrow = function (passed, message) {
     /*
-     * this function will throw the error <message> if <passed> is falsy
+     * this function will throw err.<message> if <passed> is falsy
      */
-        var error;
+        var err;
         if (passed) {
             return;
         }
-        error = (
-            // ternary-condition
+        err = (
+            // ternary-operator
             (
                 message
                 && typeof message.message === "string"
                 && typeof message.stack === "string"
             )
-            // if message is an error-object, then leave it as is
+            // if message is errObj, then leave as is
             ? message
             : new Error(
                 typeof message === "string"
-                // if message is a string, then leave it as is
+                // if message is a string, then leave as is
                 ? message
                 // else JSON.stringify message
                 : JSON.stringify(message, null, 4)
             )
         );
-        throw error;
+        throw err;
     };
     local.functionOrNop = function (fnc) {
     /*
@@ -213,7 +219,8 @@ instruction
      * null, undefined, or empty-string,
      * then overwrite them with items from <source>
      */
-        Object.keys(source).forEach(function (key) {
+        target = target || {};
+        Object.keys(source || {}).forEach(function (key) {
             if (
                 target[key] === null
                 || target[key] === undefined
@@ -222,6 +229,7 @@ instruction
                 target[key] = target[key] || source[key];
             }
         });
+        return target;
     };
     // require builtin
     if (!local.isBrowser) {
@@ -282,135 +290,23 @@ globalThis.local = local;
 if (!local.isBrowser) {
     return;
 }
-local.testRunBrowser = function (event) {
-    if (!event || (
-        event
-        && event.currentTarget
-        && event.currentTarget.className
-        && event.currentTarget.className.includes
-        && event.currentTarget.className.includes("onreset")
-    )) {
-        // reset output
-        Array.from(document.querySelectorAll(
-            "body > .resettable"
-        )).forEach(function (element) {
-            switch (element.tagName) {
-            case "INPUT":
-            case "TEXTAREA":
-                element.value = "";
-                break;
-            default:
-                element.textContent = "";
-            }
-        });
-    }
-    switch (event && event.currentTarget && event.currentTarget.id) {
-    case "testRunButton1":
-        // show tests
-        if (document.querySelector(
-            "#testReportDiv1"
-        ).style.maxHeight === "0px") {
-            local.uiAnimateSlideDown(document.querySelector(
-                "#testReportDiv1"
-            ));
-            document.querySelector(
-                "#testRunButton1"
-            ).textContent = "hide internal test";
-            local.modeTest = 1;
-            local.testRunDefault(local);
-        // hide tests
-        } else {
-            local.uiAnimateSlideUp(document.querySelector(
-                "#testReportDiv1"
-            ));
-            document.querySelector(
-                "#testRunButton1"
-            ).textContent = "run internal test";
-        }
-        break;
-    /* validateLineSortedReset */
-    // custom-case
-    case "dbExportButton1":
-    case "dbImportButton1":
-    case "dbImportInput1":
-    case "dbResetButton1":
-        local.db.onEventDomDb(event);
-        break;
-    }
-    if (document.querySelector(
-        "#inputTextareaEval1"
-    ) && (!event || (
-        event
-        && event.currentTarget
-        && event.currentTarget.className
-        && event.currentTarget.className.includes
-        && event.currentTarget.className.includes("oneval")
-    ))) {
-        // try to eval input-code
-        try {
-            eval(document.querySelector( // jslint ignore:line
-                "#inputTextareaEval1"
-            ).value);
-        } catch (errorCaught) {
-            console.error(errorCaught);
-        }
-    }
-};
-
-local.uiEventDelegate = local.uiEventDelegate || function (event) {
-    // filter non-input keyup-event
-    event.targetOnEvent = event.target.closest("[data-onevent]");
-    if (!event.targetOnEvent) {
+// log stderr and stdout to #outputStdout1
+["error", "log"].forEach(function (key) {
+    var argList;
+    var elem;
+    var fnc;
+    elem = document.querySelector(
+        "#outputStdout1"
+    );
+    if (!elem) {
         return;
     }
-    // rate-limit keyup
-    if (event.type === "keyup") {
-        local.uiEventDelegateKeyupEvent = event;
-        if (local.uiEventDelegateKeyupTimerTimeout !== 2) {
-            local.uiEventDelegateKeyupTimerTimeout = (
-                local.uiEventDelegateKeyupTimerTimeout
-                || setTimeout(function () {
-                    local.uiEventDelegateKeyupTimerTimeout = 2;
-                    local.uiEventDelegate(local.uiEventDelegateKeyupEvent);
-                }, 100)
-            );
-            return;
-        }
-        local.uiEventDelegateKeyupTimerTimeout = null;
-        if (!event.target.closest("input, option, select, textarea")) {
-            return;
-        }
-    }
-    switch (event.targetOnEvent.tagName) {
-    case "BUTTON":
-    case "FORM":
-        event.preventDefault();
-        break;
-    }
-    event.stopPropagation();
-    local.uiEventListenerDict[event.targetOnEvent.dataset.onevent](event);
-};
-
-local.uiEventListenerDict = local.uiEventListenerDict || {};
-
-local.uiEventListenerDict.testRunBrowser = local.testRunBrowser;
-
-// log stderr and stdout to #outputStdoutTextarea1
-["error", "log"].forEach(function (key) {
-    console[key + "_original"] = console[key + "_original"] || console[key];
+    fnc = console[key];
     console[key] = function () {
-        var argList;
-        var element;
         argList = Array.from(arguments); // jslint ignore:line
-        console[key + "_original"].apply(console, argList);
-        element = document.querySelector(
-            "#outputStdoutTextarea1"
-        );
-        if (!element) {
-            return;
-        }
-        // append text to #outputStdoutTextarea1
-        element.value += argList.map(function (arg) {
+        fnc.apply(console, argList);
+        // append text to #outputStdout1
+        elem.textContent += argList.map(function (arg) {
             return (
                 typeof arg === "string"
                 ? arg
@@ -420,19 +316,81 @@ local.uiEventListenerDict.testRunBrowser = local.testRunBrowser;
             /\u001b\[\d*m/g
         ), "") + "\n";
         // scroll textarea to bottom
-        element.scrollTop = element.scrollHeight;
+        elem.scrollTop = elem.scrollHeight;
     };
 });
-// init event-handling
-["Change", "Click", "Keyup", "Submit"].forEach(function (eventType) {
-    Array.from(document.querySelectorAll(
-        ".eventDelegate" + eventType
-    )).forEach(function (element) {
-        element.addEventListener(eventType.toLowerCase(), local.uiEventDelegate);
-    });
+local.objectAssignDefault(local, globalThis.domOnEventDelegateDict);
+globalThis.domOnEventDelegateDict = local;
+local.onEventDomDb = local.db && local.db.onEventDomDb;
+local.testRunBrowser = function (evt) {
+/*
+ * this function will run browser-tests
+ */
+    switch (
+        !evt.ctrlKey
+        && !evt.metaKey
+        && (
+            evt.modeInit
+            || (evt.type + "." + (evt.target && evt.target.id))
+        )
+    ) {
+    // custom-case
+    case "dbExportButton1":
+    case "dbImportButton1":
+    case "dbImportInput1":
+    case "dbResetButton1":
+        local.db.onEventDomDb(event);
+        break;
+    case "click.buttonEval1":
+    case true:
+        // try to eval input-code
+        globalThis.domOnEventDelegateDict.domOnEventResetOutput();
+        try {
+            eval( // jslint ignore:line
+                document.querySelector("#inputTextarea1").value
+            );
+        } catch (errCaught) {
+            console.error(errCaught);
+        }
+        break;
+    // run browser-tests
+    default:
+        if (
+            (evt.target && evt.target.id) !== "testRunButton1"
+            && !(evt.modeInit && (
+                /\bmodeTest=1\b/
+            ).test(location.search))
+        ) {
+            return;
+        }
+        // show browser-tests
+        if (document.querySelector(
+            "#testReportDiv1"
+        ).style.maxHeight === "0px") {
+            globalThis.domOnEventDelegateDict.domOnEventResetOutput();
+            local.uiAnimateSlideDown(document.querySelector(
+                "#testReportDiv1"
+            ));
+            document.querySelector(
+                "#testRunButton1"
+            ).textContent = "hide internal test";
+            local.modeTest = 1;
+            local.testRunDefault(local);
+            return;
+        }
+        // hide browser-tests
+        local.uiAnimateSlideUp(document.querySelector(
+            "#testReportDiv1"
+        ));
+        document.querySelector(
+            "#testRunButton1"
+        ).textContent = "run internal test";
+    }
+};
+
+local.testRunBrowser({
+    modeInit: true
 });
-// run tests
-local.testRunBrowser();
 }());
 
 
@@ -483,23 +441,25 @@ local.assetsDict["/assets.index.template.html"] = '\
 }\n\
 /* csslint ignore:end */\n\
 @keyframes uiAnimateShake {\n\
-    0%, 50% {\n\
-        transform: translateX(10px);\n\
-    }\n\
-    25%, 75% {\n\
-        transform: translateX(-10px);\n\
-    }\n\
-    100% {\n\
-        transform: translateX(0);\n\
-    }\n\
+0%,\n\
+50% {\n\
+    transform: translateX(10px);\n\
+}\n\
+100% {\n\
+    transform: translateX(0);\n\
+}\n\
+25%,\n\
+75% {\n\
+    transform: translateX(-10px);\n\
+}\n\
 }\n\
 @keyframes uiAnimateSpin {\n\
-    0% {\n\
-        transform: rotate(0deg);\n\
-    }\n\
-    100% {\n\
-        transform: rotate(360deg);\n\
-    }\n\
+0% {\n\
+    transform: rotate(0deg);\n\
+}\n\
+100% {\n\
+    transform: rotate(360deg);\n\
+}\n\
 }\n\
 a {\n\
     overflow-wrap: break-word;\n\
@@ -507,19 +467,21 @@ a {\n\
 body {\n\
     background: #eef;\n\
     font-family: Arial, Helvetica, sans-serif;\n\
+    font-size: small;\n\
     margin: 0 40px;\n\
 }\n\
 body > div,\n\
 body > form > div,\n\
 body > form > input,\n\
 body > form > pre,\n\
-body > form > textarea,\n\
 body > form > .button,\n\
+body > form > .textarea,\n\
 body > input,\n\
 body > pre,\n\
-body > textarea,\n\
-body > .button {\n\
+body > .button,\n\
+body > .textarea {\n\
     margin-bottom: 20px;\n\
+    margin-top: 0;\n\
 }\n\
 body > form > input,\n\
 body > form > .button,\n\
@@ -527,50 +489,47 @@ body > input,\n\
 body > .button {\n\
     width: 20rem;\n\
 }\n\
-body > form > textarea,\n\
-body > textarea {\n\
+body > form > .textarea,\n\
+body > .textarea {\n\
     height: 10rem;\n\
     width: 100%;\n\
 }\n\
-body > textarea[readonly] {\n\
+body > .readonly {\n\
     background: #ddd;\n\
 }\n\
 code,\n\
 pre,\n\
-textarea {\n\
+.textarea {\n\
     font-family: Consolas, Menlo, monospace;\n\
-    font-size: small;\n\
+    font-size: smaller;\n\
 }\n\
 pre {\n\
     overflow-wrap: break-word;\n\
     white-space: pre-wrap;\n\
 }\n\
-textarea {\n\
-    overflow: auto;\n\
-    white-space: pre;\n\
-}\n\
 .button {\n\
-    background-color: #fff;\n\
-    border: 1px solid;\n\
-    border-bottom-color: rgb(186, 186, 186);\n\
-    border-left-color: rgb(209, 209, 209);\n\
-    border-radius: 4px;\n\
-    border-right-color: rgb(209, 209, 209);\n\
-    border-top-color: rgb(216, 216, 216);\n\
-    color: #00d;\n\
+    background: #ddd;\n\
+    border: 1px solid #999;\n\
+    color: #000;\n\
     cursor: pointer;\n\
     display: inline-block;\n\
-    font-family: Arial, Helvetica, sans-serif;\n\
-    font-size: 12px;\n\
-    font-style: normal;\n\
-    font-weight: normal;\n\
-    margin: 0;\n\
-    padding: 2px 7px 3px 7px;\n\
+    padding: 2px 5px;\n\
     text-align: center;\n\
-    text-decoration: underline;\n\
+    text-decoration: none;\n\
+}\n\
+.button:hover {\n\
+    background: #bbb;\n\
 }\n\
 .colorError {\n\
     color: #d00;\n\
+}\n\
+.textarea {\n\
+    background: #fff;\n\
+    border: 1px solid #999;\n\
+    border-radius: 0;\n\
+    cursor: auto;\n\
+    overflow: auto;\n\
+    padding: 2px;\n\
 }\n\
 .uiAnimateShake {\n\
     animation-duration: 500ms;\n\
@@ -596,13 +555,13 @@ textarea {\n\
 <div id="ajaxProgressDiv1" style="background: #d00; height: 2px; left: 0; margin: 0; padding: 0; position: fixed; top: 0; transition: background 500ms, width 1500ms; width: 0%; z-index: 1;"></div>\n\
 <div class="uiAnimateSpin" style="animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;"></div>\n\
 <a class="zeroPixel" download="db.persistence.json" href="" id="dbExportA1"></a>\n\
-<input class="zeroPixel" id="dbImportInput1" type="file">\n\
+<input class="zeroPixel" data-onevent="onEventDomDb" data-onevent-db="dbImportInput" type="file">\n\
 <script>\n\
 /* jslint utility2:true */\n\
 // init domOnEventWindowOnloadTimeElapsed\n\
 (function () {\n\
 /*\n\
- * this function will measure and print the time-elapsed for window.onload\n\
+ * this function will measure and print time-elapsed for window.onload\n\
  */\n\
     "use strict";\n\
     if (window.domOnEventWindowOnloadTimeElapsed) {\n\
@@ -625,11 +584,102 @@ textarea {\n\
 \n\
 \n\
 \n\
+// init domOnEventDelegateDict\n\
+(function () {\n\
+/*\n\
+ * this function will handle delegated dom-event\n\
+ */\n\
+    "use strict";\n\
+    var timerTimeoutDict;\n\
+    if (window.domOnEventDelegateDict) {\n\
+        return;\n\
+    }\n\
+    window.domOnEventDelegateDict = {};\n\
+    timerTimeoutDict = {};\n\
+    window.domOnEventDelegateDict.domOnEventDelegate = function (evt) {\n\
+        evt.targetOnEvent = evt.target.closest(\n\
+            "[data-onevent]"\n\
+        );\n\
+        if (\n\
+            !evt.targetOnEvent\n\
+            || evt.targetOnEvent.dataset.onevent === "domOnEventNop"\n\
+            || evt.target.closest(\n\
+                ".disabled, .readonly"\n\
+            )\n\
+        ) {\n\
+            return;\n\
+        }\n\
+        // rate-limit high-frequency-event\n\
+        switch (evt.type) {\n\
+        case "keydown":\n\
+        case "keyup":\n\
+            // filter non-input keyboard-event\n\
+            if (!evt.target.closest(\n\
+                "input, option, select, textarea"\n\
+            )) {\n\
+                return;\n\
+            }\n\
+            if (timerTimeoutDict[evt.type] !== true) {\n\
+                timerTimeoutDict[evt.type] = timerTimeoutDict[\n\
+                    evt.type\n\
+                ] || setTimeout(function () {\n\
+                    timerTimeoutDict[evt.type] = true;\n\
+                    window.domOnEventDelegateDict.domOnEventDelegate(evt);\n\
+                }, 50);\n\
+                return;\n\
+            }\n\
+            timerTimeoutDict[evt.type] = null;\n\
+            break;\n\
+        }\n\
+        switch (evt.targetOnEvent.tagName) {\n\
+        case "BUTTON":\n\
+        case "FORM":\n\
+            evt.preventDefault();\n\
+            break;\n\
+        }\n\
+        evt.stopPropagation();\n\
+        window.domOnEventDelegateDict[evt.targetOnEvent.dataset.onevent](\n\
+            evt\n\
+        );\n\
+    };\n\
+    window.domOnEventDelegateDict.domOnEventResetOutput = function () {\n\
+        document.querySelectorAll(\n\
+            ".onevent-reset-output"\n\
+        ).forEach(function (elem) {\n\
+            switch (elem.tagName) {\n\
+            case "INPUT":\n\
+            case "TEXTAREA":\n\
+                elem.value = "";\n\
+                break;\n\
+            case "PRE":\n\
+                elem.textContent = "";\n\
+                break;\n\
+            default:\n\
+                elem.innerHTML = "";\n\
+            }\n\
+        });\n\
+    };\n\
+    // init event-handling\n\
+    [\n\
+        "change",\n\
+        "click",\n\
+        "keydown",\n\
+        "submit"\n\
+    ].forEach(function (eventType) {\n\
+        document.addEventListener(\n\
+            eventType,\n\
+            window.domOnEventDelegateDict.domOnEventDelegate\n\
+        );\n\
+    });\n\
+}());\n\
+\n\
+\n\
+\n\
 // init timerIntervalAjaxProgressUpdate\n\
 (function () {\n\
 /*\n\
- * this function will increment the ajax-progress-bar\n\
- * until the webpage has loaded\n\
+ * this function will increment ajax-progress-bar\n\
+ * until webpage has loaded\n\
  */\n\
     "use strict";\n\
     var ajaxProgressDiv1;\n\
@@ -687,21 +737,25 @@ textarea {\n\
     if (window.domOnEventSelectAllWithinPre) {\n\
         return;\n\
     }\n\
-    window.domOnEventSelectAllWithinPre = function (event) {\n\
+    window.domOnEventSelectAllWithinPre = function (evt) {\n\
         var range;\n\
         var selection;\n\
         if (\n\
-            event\n\
-            && event.key === "a"\n\
-            && (event.ctrlKey || event.metaKey)\n\
-            && event.target.closest("pre")\n\
+            evt\n\
+            && evt.key === "a"\n\
+            && (evt.ctrlKey || evt.metaKey)\n\
+            && evt.target.closest(\n\
+                "pre"\n\
+            )\n\
         ) {\n\
             range = document.createRange();\n\
-            range.selectNodeContents(event.target.closest("pre"));\n\
+            range.selectNodeContents(evt.target.closest(\n\
+                "pre"\n\
+            ));\n\
             selection = window.getSelection();\n\
             selection.removeAllRanges();\n\
             selection.addRange(range);\n\
-            event.preventDefault();\n\
+            evt.preventDefault();\n\
         }\n\
     };\n\
     // init event-handling\n\
@@ -728,62 +782,56 @@ utility2-comment -->\n\
 <h3>{{env.npm_package_description}}</h3>\n\
 <!-- utility2-comment\n\
 <a class="button" download href="assets.app.js">download standalone app</a><br>\n\
-<button class="button eventDelegateClick onreset" data-onevent="testRunBrowser" id="testRunButton1">run internal test</button><br>\n\
+<button class="button" data-onevent="testRunBrowser" id="testRunButton1">run internal test</button><br>\n\
 <div class="uiAnimateSlide" id="testReportDiv1" style="border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;"></div>\n\
 utility2-comment -->\n\
 \n\
 \n\
 \n\
-<button class="button eventDelegateClick" data-onevent="testRunBrowser" data-on-event-dom-db="dbResetButton1" id="dbResetButton1">\n\
-    reset database\n\
-</button><br>\n\
-<button class="button eventDelegateClick" data-onevent="testRunBrowser" data-on-event-dom-db="dbExportButton1" id="dbExportButton1">\n\
-    export database -&gt; file\n\
-</button><br>\n\
-<button class="button eventDelegateClick" data-onevent="testRunBrowser" data-on-event-dom-db="dbImportButton1" id="dbImportButton1">\n\
-    import database &lt;- file\n\
-</button><br>\n\
+<button class="button" data-onevent="onEventDomDb" data-onevent-db="dbReset">reset database</button><br>\n\
+<button class="button" data-onevent="onEventDomDb" data-onevent-db="dbExport">export database -&gt; file</button><br>\n\
+<button class="button" data-onevent="onEventDomDb" data-onevent-db="dbImport">import database &lt;- file</button><br>\n\
 <label>edit or paste script below to\n\
     <a\n\
         href="https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html"\n\
         target="_blank"\n\
     >eval</a>\n\
 </label>\n\
-<textarea id="inputTextareaEval1">\n\
+<textarea class="textarea" data-onevent="testRunBrowser" id="inputTextarea1">\n\
 /*jslint browser: true, node: true*/\n\
 "use strict";\n\
-var dbTable1, modeNext, onNext;\n\
-modeNext = 0;\n\
-onNext = function (error, data) {\n\
-    modeNext = error\n\
+var dbTable1, gotoState, gotoNext;\n\
+gotoState = 0;\n\
+gotoNext = function (err, data) {\n\
+    gotoState = err\n\
         ? Infinity\n\
-        : modeNext + 1;\n\
-    switch (modeNext) {\n\
+        : gotoState + 1;\n\
+    switch (gotoState) {\n\
     case 1:\n\
         dbTable1 = window.dbTable1 = window.utility2_db.dbTableCreateOne({\n\
             name: "dbTable1"\n\
-        }, onNext);\n\
+        }, gotoNext);\n\
         break;\n\
     case 2:\n\
-        dbTable1.idIndexCreate({ name: "field1" }, onNext);\n\
+        dbTable1.idIndexCreate({ name: "field1" }, gotoNext);\n\
         break;\n\
     case 3:\n\
-        dbTable1.crudSetOneById({ field1: "aa", field2: 1, field3: "foo" }, onNext);\n\
+        dbTable1.crudSetOneById({ field1: "aa", field2: 1, field3: "foo" }, gotoNext);\n\
         break;\n\
     case 4:\n\
-        dbTable1.crudSetOneById({ field1: "bb", field2: 2, field3: "bar" }, onNext);\n\
+        dbTable1.crudSetOneById({ field1: "bb", field2: 2, field3: "bar" }, gotoNext);\n\
         break;\n\
     case 5:\n\
-        dbTable1.crudSetOneById({ field1: "cc", field2: 3, field3: "baz" }, onNext);\n\
+        dbTable1.crudSetOneById({ field1: "cc", field2: 3, field3: "baz" }, gotoNext);\n\
         break;\n\
     case 6:\n\
-        dbTable1.crudRemoveOneById({ field1: "aa" }, onNext);\n\
+        dbTable1.crudRemoveOneById({ field1: "aa" }, gotoNext);\n\
         break;\n\
     case 7:\n\
-        dbTable1.crudUpdateOneById({ field1: "bb", field2: -1 }, onNext);\n\
+        dbTable1.crudUpdateOneById({ field1: "bb", field2: -1 }, gotoNext);\n\
         break;\n\
     case 8:\n\
-        dbTable1.crudSetOneById({ field2: Math.random() }, onNext);\n\
+        dbTable1.crudSetOneById({ field2: Math.random() }, gotoNext);\n\
         break;\n\
     case 9:\n\
         dbTable1.crudGetManyByQuery({\n\
@@ -791,24 +839,24 @@ onNext = function (error, data) {\n\
             query: { field2: { $gte: -Infinity, $lte: Infinity } },\n\
             skip: 0,\n\
             sort: [{ fieldName: "_timeUpdated", idDescending: true }]\n\
-        }, onNext);\n\
+        }, gotoNext);\n\
         break;\n\
     case 10:\n\
         console.error(data);\n\
-        dbTable1.crudCountAll(onNext);\n\
+        dbTable1.crudCountAll(gotoNext);\n\
         break;\n\
     case 11:\n\
         console.error("number of rows: " + data);\n\
         break;\n\
     default:\n\
-        console.error(error.stack);\n\
+        console.error(err.stack);\n\
     }\n\
 };\n\
-onNext();\n\
+gotoNext();\n\
 </textarea>\n\
-<button class="button eventDelegateClick oneval onreset" data-onevent="testRunBrowser" id="dbEvalButton1">eval script</button><br>\n\
+<button class="button" data-onevent="testRunBrowser" id="buttonEval1">eval script</button><br>\n\
 <label>stderr and stdout</label>\n\
-<textarea class="resettable" id="outputStdoutTextarea1" readonly></textarea>\n\
+<pre class="onevent-reset-output readonly textarea" id="outputStdout1" tabindex="0"></pre>\n\
 <!-- utility2-comment\n\
 {{#if isRollup}}\n\
 <script src="assets.app.js"></script>\n\
@@ -841,8 +889,9 @@ local.assetsDict["/assets.db.js"] =
 ).replace((/^#!\//), "// ");
 /* jslint ignore:end */
 /* validateLineSortedReset */
-local.assetsDict["/"] = local.assetsDict["/assets.index.template.html"]
-.replace((
+local.assetsDict["/"] = local.assetsDict[
+    "/assets.index.template.html"
+].replace((
     /\{\{env\.(\w+?)\}\}/g
 ), function (match0, match1) {
     switch (match1) {
@@ -880,20 +929,17 @@ if (globalThis.utility2_serverHttp1) {
     return;
 }
 process.env.PORT = process.env.PORT || "8081";
-console.error("server starting on port " + process.env.PORT);
-local.http.createServer(function (request, response) {
-    request.urlParsed = local.url.parse(request.url);
-    if (local.assetsDict[request.urlParsed.pathname] !== undefined) {
-        response.end(local.assetsDict[request.urlParsed.pathname]);
+console.error("http-server listening on port " + process.env.PORT);
+local.http.createServer(function (req, res) {
+    req.urlParsed = local.url.parse(req.url);
+    if (local.assetsDict[req.urlParsed.pathname] !== undefined) {
+        res.end(local.assetsDict[req.urlParsed.pathname]);
         return;
     }
-    response.statusCode = 404;
-    response.end();
+    res.statusCode = 404;
+    res.end();
 }).listen(process.env.PORT);
 }());
-
-
-
 }());
 ```
 
@@ -957,7 +1003,7 @@ local.http.createServer(function (request, response) {
         "utility2": "kaizhu256/node-utility2#alpha"
     },
     "engines": {
-        "node": ">=8.0"
+        "node": ">=10.0"
     },
     "homepage": "https://github.com/kaizhu256/node-db-lite",
     "keywords": [
@@ -969,7 +1015,7 @@ local.http.createServer(function (request, response) {
     "license": "MIT",
     "main": "lib.db.js",
     "name": "db-lite",
-    "nameAliasPublish": "esdb nanodb nedb2",
+    "nameAliasPublish": "esdb nanodb",
     "nameLib": "db",
     "nameOriginal": "db-lite",
     "os": [
@@ -990,7 +1036,7 @@ local.http.createServer(function (request, response) {
         "test": "./npm_scripts.sh",
         "utility2": "./npm_scripts.sh"
     },
-    "version": "2018.12.30"
+    "version": "2019.8.20"
 }
 ```
 

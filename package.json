@@ -9,7 +9,7 @@
         "utility2": "kaizhu256/node-utility2#alpha"
     },
     "engines": {
-        "node": ">=8.0"
+        "node": ">=10.0"
     },
     "homepage": "https://github.com/kaizhu256/node-db-lite",
     "keywords": [
@@ -21,7 +21,7 @@
     "license": "MIT",
     "main": "lib.db.js",
     "name": "db-lite",
-    "nameAliasPublish": "esdb nanodb nedb2",
+    "nameAliasPublish": "esdb nanodb",
     "nameLib": "db",
     "nameOriginal": "db-lite",
     "os": [
@@ -42,5 +42,5 @@
         "test": "./npm_scripts.sh",
         "utility2": "./npm_scripts.sh"
     },
-    "version": "2018.12.30"
+    "version": "2019.8.20"
 }
