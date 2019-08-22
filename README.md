@@ -60,13 +60,9 @@ this zero-dependency package will provide a persistent, in-browser database, wit
 - deprecate and remove unnecessary stable-sort
 - none
 
-#### changelog 2019.8.20
-- npm publish 2019.8.20
-- fix demo
-- jslint - remove allow-method-chain-newline hack
-- jslint - refactor files to 80 chr column-limit
-- rename var request to req, response to res, local.errorDefault to local.errDefault, error to err, option to opt, event to evt, nextMiddleware to next
-- revamp ui event-handling with window.domOnEventDelegateDict
+#### changelog 2019.8.21
+- npm publish 2019.8.21
+- jslint - remove comments \/\/ newline, \/\/ ternary-operator
 - update build
 - none
 
@@ -175,7 +171,6 @@ instruction
             return;
         }
         err = (
-            // ternary-operator
             (
                 message
                 && typeof message.message === "string"
@@ -1036,7 +1031,7 @@ local.http.createServer(function (req, res) {
         "test": "./npm_scripts.sh",
         "utility2": "./npm_scripts.sh"
     },
-    "version": "2019.8.20"
+    "version": "2019.8.21"
 }
 ```
 

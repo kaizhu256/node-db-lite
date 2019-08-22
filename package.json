@@ -42,5 +42,5 @@
         "test": "./npm_scripts.sh",
         "utility2": "./npm_scripts.sh"
     },
-    "version": "2019.8.20"
+    "version": "2019.8.21"
 }
