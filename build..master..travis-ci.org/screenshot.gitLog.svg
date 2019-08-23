@@ -1,291 +1,354 @@
-<svg height="2318" width="720" xmlns="http://www.w3.org/2000/svg">
-<rect height="2318" fill="#555" width="720"></rect>
+<svg height="2830" width="720" xmlns="http://www.w3.org/2000/svg">
+<rect height="2830" fill="#555" width="720"></rect>
 <text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
-<tspan x="10" y="26">2018-04-22 16:49:56 +0800</tspan>
+<tspan x="10" y="26">2019-08-22 02:29:00 -0500</tspan>
 
-<tspan x="10" y="42">[npm publish] - npm publish v2018.4.23</tspan>
+<tspan x="10" y="42">[npm publish] - npm publish 2019.8.20</tspan>
 
-<tspan x="10" y="58">- update build</tspan>
+<tspan x="10" y="58">- fix demo</tspan>
 
-<tspan x="10" y="74"></tspan>
+<tspan x="10" y="74">- jslint - remove allow-method-chain-newline hack</tspan>
 
-<tspan x="10" y="90">2018-02-17 07:26:50 +0700</tspan>
+<tspan x="10" y="90">- jslint - refactor files to 80 chr column-limit</tspan>
 
-<tspan x="10" y="106">[npm publish] - npm publish v2018.2.16</tspan>
+<tspan x="10" y="106">- rename var request to req, response to res, local.errorDefault to local.errDefault, error to e\</tspan>
+<tspan x="10" y="122">rr, option to opt, event to evt, nextMiddleware to next</tspan>
 
-<tspan x="10" y="122">- update build</tspan>
+<tspan x="10" y="138">- revamp ui event-handling with window.domOnEventDelegateDict</tspan>
 
-<tspan x="10" y="138"></tspan>
+<tspan x="10" y="154">- update build</tspan>
 
-<tspan x="10" y="154">2017-12-05 00:29:28 +0700</tspan>
+<tspan x="10" y="170"></tspan>
 
-<tspan x="10" y="170">[npm publish] - npm publish 2017.12.4</tspan>
+<tspan x="10" y="186">2018-12-30 00:26:18 -0600</tspan>
 
-<tspan x="10" y="186">- change function setTimeoutOnError signature to function (onError, timeout, error, data)</tspan>
+<tspan x="10" y="202">[npm publish] - npm publish 2018.12.30</tspan>
 
-<tspan x="10" y="202"></tspan>
+<tspan x="10" y="218">- fix ui buttons</tspan>
 
-<tspan x="10" y="218">2017-11-08 00:51:36 +0800</tspan>
+<tspan x="10" y="234">- update build</tspan>
 
-<tspan x="10" y="234">[npm publish] - npm publish 2017.11.7</tspan>
+<tspan x="10" y="250"></tspan>
 
-<tspan x="10" y="250">- run tests with testRunInit instead of testRunAll</tspan>
+<tspan x="10" y="266">2018-12-29 18:03:55 -0600</tspan>
 
-<tspan x="10" y="266">- update build</tspan>
+<tspan x="10" y="282">[npm publish] - npm publish 2018.12.29</tspan>
 
-<tspan x="10" y="282"></tspan>
+<tspan x="10" y="298">- refactor files with new jslint (v2018.11.14)</tspan>
 
-<tspan x="10" y="298">2017-09-17 22:59:58 +0700</tspan>
+<tspan x="10" y="314">- update build</tspan>
 
-<tspan x="10" y="314">[npm publish] - npm publish 2017.9.16</tspan>
+<tspan x="10" y="330"></tspan>
 
-<tspan x="10" y="330">- add cli-help doc to README.md</tspan>
+<tspan x="10" y="346">2018-09-01 08:18:04 +0700</tspan>
 
-<tspan x="10" y="346"></tspan>
+<tspan x="10" y="362">[npm publish] - npm publish 2018.9.1</tspan>
 
-<tspan x="10" y="362">2017-07-25 14:47:03 +0800</tspan>
+<tspan x="10" y="378">- revamp bootstrap-mechanism before running tests</tspan>
 
-<tspan x="10" y="378">[npm publish] - npm publish 2017.7.24</tspan>
+<tspan x="10" y="394">- integrate function db.onEventDomDb with utility2_onReadyBefore</tspan>
 
-<tspan x="10" y="394">- update documentation</tspan>
+<tspan x="10" y="410">- add functions dbReset, dbSeed</tspan>
 
-<tspan x="10" y="410"></tspan>
+<tspan x="10" y="426"></tspan>
 
-<tspan x="10" y="426">2017-05-26 12:05:34 +0800</tspan>
+<tspan x="10" y="442">2018-08-06 02:21:32 +0700</tspan>
 
-<tspan x="10" y="442">[npm publish] - npm publish 2017.5.25</tspan>
+<tspan x="10" y="458">[npm publish] - npm publish 2018.8.5</tspan>
 
-<tspan x="10" y="458">- add $not query-operator and 'shuffle' param in function dbTable.prototype.crudGetManyByQuery</tspan>
+<tspan x="10" y="474">- migrate from modeJs -&gt; isBrowser</tspan>
 
-<tspan x="10" y="474">- add dbTable.sortDefault property</tspan>
+<tspan x="10" y="490">- update build</tspan>
 
-<tspan x="10" y="490">- deduplicate file assets.db.rollup.js</tspan>
+<tspan x="10" y="506">- none</tspan>
 
-<tspan x="10" y="506">- do not update _timeModified when importing data</tspan>
+<tspan x="10" y="522"></tspan>
 
-<tspan x="10" y="522">- fix stable-sort bug in v8</tspan>
+<tspan x="10" y="538">2018-04-22 16:49:56 +0800</tspan>
 
-<tspan x="10" y="538">- add README section 'internal screen-capture'</tspan>
+<tspan x="10" y="554">[npm publish] - npm publish v2018.4.23</tspan>
 
-<tspan x="10" y="554">- add README section 'quickstart standalone app'</tspan>
+<tspan x="10" y="570">- update build</tspan>
 
-<tspan x="10" y="570">- auto-create README section 'table of contents'</tspan>
+<tspan x="10" y="586"></tspan>
 
-<tspan x="10" y="586">- rename README section 'quickstart web example' -&gt; 'quickstart example.js'</tspan>
+<tspan x="10" y="602">2018-02-17 07:26:50 +0700</tspan>
 
-<tspan x="10" y="602"></tspan>
+<tspan x="10" y="618">[npm publish] - npm publish v2018.2.16</tspan>
 
-<tspan x="10" y="618">2017-03-30 21:50:17 +0800</tspan>
+<tspan x="10" y="634">- update build</tspan>
 
-<tspan x="10" y="634">[npm publish] - npm publish 2017.3.29</tspan>
+<tspan x="10" y="650"></tspan>
 
-<tspan x="10" y="650">- change function _DbTable.prototype.crudUpdateOneById to auto-insert missing record</tspan>
+<tspan x="10" y="666">2017-12-05 00:29:28 +0700</tspan>
 
-<tspan x="10" y="666">- add function _DbTable.prototype.crudGetOneByRandom</tspan>
+<tspan x="10" y="682">[npm publish] - npm publish 2017.12.4</tspan>
 
-<tspan x="10" y="682"></tspan>
+<tspan x="10" y="698">- change function setTimeoutOnError signature to function (onError, timeout, error, data)</tspan>
 
-<tspan x="10" y="698">2017-03-17 05:00:34 +0800</tspan>
+<tspan x="10" y="714"></tspan>
 
-<tspan x="10" y="714">[npm publish]</tspan>
+<tspan x="10" y="730">2017-11-08 00:51:36 +0800</tspan>
 
-<tspan x="10" y="730"></tspan>
+<tspan x="10" y="746">[npm publish] - npm publish 2017.11.7</tspan>
 
-<tspan x="10" y="746">2017-03-17 04:45:37 +0800</tspan>
+<tspan x="10" y="762">- run tests with testRunInit instead of testRunAll</tspan>
 
-<tspan x="10" y="762">[npm publish] - npm publish 2017.3.16</tspan>
+<tspan x="10" y="778">- update build</tspan>
 
-<tspan x="10" y="778">- remove build-function shBuildCiTestPre</tspan>
+<tspan x="10" y="794"></tspan>
 
-<tspan x="10" y="794">- rename name api-doc -&gt; apidoc</tspan>
+<tspan x="10" y="810">2017-09-17 22:59:58 +0700</tspan>
 
-<tspan x="10" y="810"></tspan>
+<tspan x="10" y="826">[npm publish] - npm publish 2017.9.16</tspan>
 
-<tspan x="10" y="826">2017-02-24 12:14:48 +0800</tspan>
+<tspan x="10" y="842">- add cli-help doc to README.md</tspan>
 
-<tspan x="10" y="842">- npm publish 2017.2.2</tspan>
+<tspan x="10" y="858"></tspan>
 
-<tspan x="10" y="858">- add ttl-cache</tspan>
+<tspan x="10" y="874">2017-07-25 14:47:03 +0800</tspan>
 
-<tspan x="10" y="874">- do not auto-uglify js-assets in production</tspan>
+<tspan x="10" y="890">[npm publish] - npm publish 2017.7.24</tspan>
 
-<tspan x="10" y="890">- replace env var npm_package_name with npm_package_nameAlias in istanbul code-coverage</tspan>
-
-<tspan x="10" y="906">- use async-api's in example.js</tspan>
+<tspan x="10" y="906">- update documentation</tspan>
 
 <tspan x="10" y="922"></tspan>
 
-<tspan x="10" y="938">2017-02-18 16:51:25 +0800</tspan>
+<tspan x="10" y="938">2017-05-26 12:05:34 +0800</tspan>
 
-<tspan x="10" y="954">- npm publish 2017.2.1</tspan>
+<tspan x="10" y="954">[npm publish] - npm publish 2017.5.25</tspan>
 
-<tspan x="10" y="970">- add file assets.db.rollup.js</tspan>
+<tspan x="10" y="970">- add $not query-operator and 'shuffle' param in function dbTable.prototype.crudGetManyByQuery</tspan>
 
-<tspan x="10" y="986">- revamp README.md</tspan>
+<tspan x="10" y="986">- add dbTable.sortDefault property</tspan>
 
-<tspan x="10" y="1002"></tspan>
+<tspan x="10" y="1002">- deduplicate file assets.db.rollup.js</tspan>
 
-<tspan x="10" y="1018">2016-12-13 21:52:24 +0800</tspan>
+<tspan x="10" y="1018">- do not update _timeModified when importing data</tspan>
 
-<tspan x="10" y="1034">- npm publish 2016.12.1</tspan>
+<tspan x="10" y="1034">- fix stable-sort bug in v8</tspan>
 
-<tspan x="10" y="1050">- fix persistence-cancel handling-behavior</tspan>
+<tspan x="10" y="1050">- add README section 'internal screen-capture'</tspan>
 
-<tspan x="10" y="1066">- rename function clear to crudRemoveAll</tspan>
+<tspan x="10" y="1066">- add README section 'quickstart standalone app'</tspan>
 
-<tspan x="10" y="1082">- rename function reset to drop</tspan>
+<tspan x="10" y="1082">- auto-create README section 'table of contents'</tspan>
 
-<tspan x="10" y="1098">- rename files index.* -&gt; lib.db.*</tspan>
+<tspan x="10" y="1098">- rename README section 'quickstart web example' -&gt; 'quickstart example.js'</tspan>
 
-<tspan x="10" y="1114">- rename field _timeModified -&gt; _timeUpdated</tspan>
+<tspan x="10" y="1114"></tspan>
 
-<tspan x="10" y="1130"></tspan>
+<tspan x="10" y="1130">2017-03-30 21:50:17 +0800</tspan>
 
-<tspan x="10" y="1146">2016-11-21 10:04:55 +0800</tspan>
+<tspan x="10" y="1146">[npm publish] - npm publish 2017.3.29</tspan>
 
-<tspan x="10" y="1162">- npm publish 2016.10.3</tspan>
+<tspan x="10" y="1162">- change function _DbTable.prototype.crudUpdateOneById to auto-insert missing record</tspan>
 
-<tspan x="10" y="1178">- re-implement persistence</tspan>
+<tspan x="10" y="1178">- add function _DbTable.prototype.crudGetOneByRandom</tspan>
 
 <tspan x="10" y="1194"></tspan>
 
-<tspan x="10" y="1210">2016-11-15 12:43:31 +0800</tspan>
+<tspan x="10" y="1210">2017-03-17 05:00:34 +0800</tspan>
 
-<tspan x="10" y="1226">- npm publish 2016.10.2</tspan>
+<tspan x="10" y="1226">[npm publish]</tspan>
 
-<tspan x="10" y="1242">- rewrite replacing trees with native javascript dict</tspan>
+<tspan x="10" y="1242"></tspan>
 
-<tspan x="10" y="1258">- fix function storageGetItem in node js-env</tspan>
+<tspan x="10" y="1258">2017-03-17 04:45:37 +0800</tspan>
 
-<tspan x="10" y="1274">- rename createdAt to _timeCreated and updatedAt to _timeModified</tspan>
+<tspan x="10" y="1274">[npm publish] - npm publish 2017.3.16</tspan>
 
-<tspan x="10" y="1290">- optimization - soft-delete dbRow's in dbTable, and mark it as dirty</tspan>
+<tspan x="10" y="1290">- remove build-function shBuildCiTestPre</tspan>
 
-<tspan x="10" y="1306">- function _DbTable.prototype.crudFindMany - add or operator</tspan>
+<tspan x="10" y="1306">- rename name api-doc -&gt; apidoc</tspan>
 
-<tspan x="10" y="1322">- function _DbTable.prototype.crudFindMany - add projection feature</tspan>
+<tspan x="10" y="1322"></tspan>
 
-<tspan x="10" y="1338">- README.md - add cdn-download links</tspan>
+<tspan x="10" y="1338">2017-02-24 12:14:48 +0800</tspan>
 
-<tspan x="10" y="1354">- README.md - replace alpha api-doc with beta api-doc</tspan>
+<tspan x="10" y="1354">- npm publish 2017.2.2</tspan>
 
-<tspan x="10" y="1370"></tspan>
+<tspan x="10" y="1370">- add ttl-cache</tspan>
 
-<tspan x="10" y="1386">2016-10-17 20:57:22 +0800</tspan>
+<tspan x="10" y="1386">- do not auto-uglify js-assets in production</tspan>
 
-<tspan x="10" y="1402">- npm publish 2016.10.1</tspan>
+<tspan x="10" y="1402">- replace env var npm_package_name with npm_package_nameAlias in istanbul code-coverage</tspan>
 
-<tspan x="10" y="1418">- migrate to db-lite</tspan>
+<tspan x="10" y="1418">- use async-api's in example.js</tspan>
 
-<tspan x="10" y="1434">- insert will auto-create missing non-sparse unique-keys</tspan>
+<tspan x="10" y="1434"></tspan>
 
-<tspan x="10" y="1450">- row-update always returns updated row</tspan>
+<tspan x="10" y="1450">2017-02-18 16:51:25 +0800</tspan>
 
-<tspan x="10" y="1466">- add integer parameter to dbIndex</tspan>
+<tspan x="10" y="1466">- npm publish 2017.2.1</tspan>
 
-<tspan x="10" y="1482">- add eval button to demo</tspan>
+<tspan x="10" y="1482">- add file assets.db.rollup.js</tspan>
 
-<tspan x="10" y="1498">- add 'hide internal test' button to demo</tspan>
+<tspan x="10" y="1498">- revamp README.md</tspan>
 
 <tspan x="10" y="1514"></tspan>
 
-<tspan x="10" y="1530">2016-10-02 11:58:01 +0800</tspan>
+<tspan x="10" y="1530">2016-12-13 21:52:24 +0800</tspan>
 
-<tspan x="10" y="1546">- npm publish 2016.9.1</tspan>
+<tspan x="10" y="1546">- npm publish 2016.12.1</tspan>
 
-<tspan x="10" y="1562">- make db always persistent</tspan>
+<tspan x="10" y="1562">- fix persistence-cancel handling-behavior</tspan>
 
-<tspan x="10" y="1578">- removed support for native-datetime (automatically converted to iso-string)</tspan>
+<tspan x="10" y="1578">- rename function clear to crudRemoveAll</tspan>
 
-<tspan x="10" y="1594">- tables automatically includes createdAt and updatedAt fields</tspan>
+<tspan x="10" y="1594">- rename function reset to drop</tspan>
 
-<tspan x="10" y="1610">- remove async dependency</tspan>
+<tspan x="10" y="1610">- rename files index.* -&gt; lib.db.*</tspan>
 
-<tspan x="10" y="1626">- remove localForage dependency</tspan>
+<tspan x="10" y="1626">- rename field _timeModified -&gt; _timeUpdated</tspan>
 
-<tspan x="10" y="1642">- remove underscore dependency</tspan>
+<tspan x="10" y="1642"></tspan>
 
-<tspan x="10" y="1658">- remove util dependency</tspan>
+<tspan x="10" y="1658">2016-11-21 10:04:55 +0800</tspan>
 
-<tspan x="10" y="1674"></tspan>
+<tspan x="10" y="1674">- npm publish 2016.10.3</tspan>
 
-<tspan x="10" y="1690">2016-08-26 09:00:11 +0800</tspan>
+<tspan x="10" y="1690">- re-implement persistence</tspan>
 
-<tspan x="10" y="1706">- npm publish 2016.8.3</tspan>
+<tspan x="10" y="1706"></tspan>
 
-<tspan x="10" y="1722">- fix npm-test for published package</tspan>
+<tspan x="10" y="1722">2016-11-15 12:43:31 +0800</tspan>
 
-<tspan x="10" y="1738"></tspan>
+<tspan x="10" y="1738">- npm publish 2016.10.2</tspan>
 
-<tspan x="10" y="1754">2016-08-25 21:34:33 +0800</tspan>
+<tspan x="10" y="1754">- rewrite replacing trees with native javascript dict</tspan>
 
-<tspan x="10" y="1770">- npm publish 2016.8.2</tspan>
+<tspan x="10" y="1770">- fix function storageGetItem in node js-env</tspan>
 
-<tspan x="10" y="1786">- disable test on published package in build</tspan>
+<tspan x="10" y="1786">- rename createdAt to _timeCreated and updatedAt to _timeModified</tspan>
 
-<tspan x="10" y="1802"></tspan>
+<tspan x="10" y="1802">- optimization - soft-delete dbRow's in dbTable, and mark it as dirty</tspan>
 
-<tspan x="10" y="1818">2016-08-25 21:10:59 +0800</tspan>
+<tspan x="10" y="1818">- function _DbTable.prototype.crudFindMany - add or operator</tspan>
 
-<tspan x="10" y="1834">- npm publish 2016.8.1</tspan>
+<tspan x="10" y="1834">- function _DbTable.prototype.crudFindMany - add projection feature</tspan>
 
-<tspan x="10" y="1850">- deploy live test-server to github and heroku</tspan>
+<tspan x="10" y="1850">- README.md - add cdn-download links</tspan>
 
-<tspan x="10" y="1866">- add functions Nedb.dbExport, Nedb.dbImport, Nedb.dbReset, Nedb.dbTableCreate, Nedb.dbTableDrop</tspan>
+<tspan x="10" y="1866">- README.md - replace alpha api-doc with beta api-doc</tspan>
 
-<tspan x="10" y="1882">- rename nedb-lite.js to index.js</tspan>
+<tspan x="10" y="1882"></tspan>
 
-<tspan x="10" y="1898"></tspan>
+<tspan x="10" y="1898">2016-10-17 20:57:22 +0800</tspan>
 
-<tspan x="10" y="1914">2016-06-12 03:35:05 +0300</tspan>
+<tspan x="10" y="1914">- npm publish 2016.10.1</tspan>
 
-<tspan x="10" y="1930">- npm publish 2016.5.1</tspan>
+<tspan x="10" y="1930">- migrate to db-lite</tspan>
 
-<tspan x="10" y="1946">- add rollup compatibility</tspan>
+<tspan x="10" y="1946">- insert will auto-create missing non-sparse unique-keys</tspan>
 
-<tspan x="10" y="1962"></tspan>
+<tspan x="10" y="1962">- row-update always returns updated row</tspan>
 
-<tspan x="10" y="1978">2016-05-12 20:47:05 +0300</tspan>
+<tspan x="10" y="1978">- add integer parameter to dbIndex</tspan>
 
-<tspan x="10" y="1994">- npm publish 2016.4.2</tspan>
+<tspan x="10" y="1994">- add eval button to demo</tspan>
 
-<tspan x="10" y="2010">- expose and document nedb's internal modules</tspan>
+<tspan x="10" y="2010">- add 'hide internal test' button to demo</tspan>
 
 <tspan x="10" y="2026"></tspan>
 
-<tspan x="10" y="2042">2016-03-19 16:53:29 +0800</tspan>
+<tspan x="10" y="2042">2016-10-02 11:58:01 +0800</tspan>
 
-<tspan x="10" y="2058">- npm publish 2016.1.3</tspan>
+<tspan x="10" y="2058">- npm publish 2016.9.1</tspan>
 
-<tspan x="10" y="2074">- add function Nedb.fileReset</tspan>
+<tspan x="10" y="2074">- make db always persistent</tspan>
 
-<tspan x="10" y="2090">- add property Nedb.fileDict, Nedb.storage</tspan>
+<tspan x="10" y="2090">- removed support for native-datetime (automatically converted to iso-string)</tspan>
 
-<tspan x="10" y="2106"></tspan>
+<tspan x="10" y="2106">- tables automatically includes createdAt and updatedAt fields</tspan>
 
-<tspan x="10" y="2122">2016-03-01 03:15:28 +0800</tspan>
+<tspan x="10" y="2122">- remove async dependency</tspan>
 
-<tspan x="10" y="2138">- npm publish 2016.1.2</tspan>
+<tspan x="10" y="2138">- remove localForage dependency</tspan>
 
-<tspan x="10" y="2154">- add cdn file-download link</tspan>
+<tspan x="10" y="2154">- remove underscore dependency</tspan>
 
-<tspan x="10" y="2170">- add nodejs win32 support</tspan>
+<tspan x="10" y="2170">- remove util dependency</tspan>
 
-<tspan x="10" y="2186">- add simple github test-server</tspan>
+<tspan x="10" y="2186"></tspan>
 
-<tspan x="10" y="2202">- rename index.js to nedb-lite.js</tspan>
+<tspan x="10" y="2202">2016-08-26 09:00:11 +0800</tspan>
 
-<tspan x="10" y="2218"></tspan>
+<tspan x="10" y="2218">- npm publish 2016.8.3</tspan>
 
-<tspan x="10" y="2234">2016-02-29 17:04:33 +0800</tspan>
+<tspan x="10" y="2234">- fix npm-test for published package</tspan>
 
-<tspan x="10" y="2250">- npm publish 2016.1.1</tspan>
+<tspan x="10" y="2250"></tspan>
 
-<tspan x="10" y="2266"></tspan>
+<tspan x="10" y="2266">2016-08-25 21:34:33 +0800</tspan>
 
-<tspan x="10" y="2282">2014-03-26 02:31:50 +0700</tspan>
+<tspan x="10" y="2282">- npm publish 2016.8.2</tspan>
 
-<tspan x="10" y="2298">add blank README.md</tspan>
+<tspan x="10" y="2298">- disable test on published package in build</tspan>
+
+<tspan x="10" y="2314"></tspan>
+
+<tspan x="10" y="2330">2016-08-25 21:10:59 +0800</tspan>
+
+<tspan x="10" y="2346">- npm publish 2016.8.1</tspan>
+
+<tspan x="10" y="2362">- deploy live test-server to github and heroku</tspan>
+
+<tspan x="10" y="2378">- add functions Nedb.dbExport, Nedb.dbImport, Nedb.dbReset, Nedb.dbTableCreate, Nedb.dbTableDrop</tspan>
+
+<tspan x="10" y="2394">- rename nedb-lite.js to index.js</tspan>
+
+<tspan x="10" y="2410"></tspan>
+
+<tspan x="10" y="2426">2016-06-12 03:35:05 +0300</tspan>
+
+<tspan x="10" y="2442">- npm publish 2016.5.1</tspan>
+
+<tspan x="10" y="2458">- add rollup compatibility</tspan>
+
+<tspan x="10" y="2474"></tspan>
+
+<tspan x="10" y="2490">2016-05-12 20:47:05 +0300</tspan>
+
+<tspan x="10" y="2506">- npm publish 2016.4.2</tspan>
+
+<tspan x="10" y="2522">- expose and document nedb's internal modules</tspan>
+
+<tspan x="10" y="2538"></tspan>
+
+<tspan x="10" y="2554">2016-03-19 16:53:29 +0800</tspan>
+
+<tspan x="10" y="2570">- npm publish 2016.1.3</tspan>
+
+<tspan x="10" y="2586">- add function Nedb.fileReset</tspan>
+
+<tspan x="10" y="2602">- add property Nedb.fileDict, Nedb.storage</tspan>
+
+<tspan x="10" y="2618"></tspan>
+
+<tspan x="10" y="2634">2016-03-01 03:15:28 +0800</tspan>
+
+<tspan x="10" y="2650">- npm publish 2016.1.2</tspan>
+
+<tspan x="10" y="2666">- add cdn file-download link</tspan>
+
+<tspan x="10" y="2682">- add nodejs win32 support</tspan>
+
+<tspan x="10" y="2698">- add simple github test-server</tspan>
+
+<tspan x="10" y="2714">- rename index.js to nedb-lite.js</tspan>
+
+<tspan x="10" y="2730"></tspan>
+
+<tspan x="10" y="2746">2016-02-29 17:04:33 +0800</tspan>
+
+<tspan x="10" y="2762">- npm publish 2016.1.1</tspan>
+
+<tspan x="10" y="2778"></tspan>
+
+<tspan x="10" y="2794">2014-03-26 02:31:50 +0700</tspan>
+
+<tspan x="10" y="2810">add blank README.md</tspan>
 
 </text>
 </svg>
