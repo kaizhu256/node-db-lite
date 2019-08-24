@@ -677,8 +677,8 @@ pre {\n\
  * until webpage has loaded\n\
  */\n\
     "use strict";\n\
+    var ajaxProgressBar;\n\
     var ajaxProgressDiv1;\n\
-    var ajaxProgressState;\n\
     var ajaxProgressUpdate;\n\
     if (\n\
         window.timerIntervalAjaxProgressUpdate\n\
@@ -694,7 +694,7 @@ pre {\n\
     setTimeout(function () {\n\
         ajaxProgressDiv1.style.width = "25%";\n\
     });\n\
-    ajaxProgressState = 0;\n\
+    ajaxProgressBar = 0;\n\
     ajaxProgressUpdate = (\n\
         window.local\n\
         && window.local.ajaxProgressUpdate\n\
@@ -708,9 +708,9 @@ pre {\n\
         }, 1000);\n\
     };\n\
     window.timerIntervalAjaxProgressUpdate = setInterval(function () {\n\
-        ajaxProgressState += 1;\n\
+        ajaxProgressBar += 1;\n\
         ajaxProgressDiv1.style.width = Math.max(\n\
-            100 - 75 * Math.exp(-0.125 * ajaxProgressState),\n\
+            100 - 75 * Math.exp(-0.125 * ajaxProgressBar),\n\
             ajaxProgressDiv1.style.width.slice(0, -1) | 0\n\
         ) + "%";\n\
     }, 1000);\n\
