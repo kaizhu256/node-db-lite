@@ -619,8 +619,8 @@ pre {
  * until webpage has loaded
  */
     "use strict";
-    var ajaxProgressBar;
     var ajaxProgressDiv1;
+    var ajaxProgressState;
     var ajaxProgressUpdate;
     if (
         window.timerIntervalAjaxProgressUpdate
@@ -636,7 +636,7 @@ pre {
     setTimeout(function () {
         ajaxProgressDiv1.style.width = "25%";
     });
-    ajaxProgressBar = 0;
+    ajaxProgressState = 0;
     ajaxProgressUpdate = (
         window.local
         && window.local.ajaxProgressUpdate
@@ -650,9 +650,9 @@ pre {
         }, 1000);
     };
     window.timerIntervalAjaxProgressUpdate = setInterval(function () {
-        ajaxProgressBar += 1;
+        ajaxProgressState += 1;
         ajaxProgressDiv1.style.width = Math.max(
-            100 - 75 * Math.exp(-0.125 * ajaxProgressBar),
+            100 - 75 * Math.exp(-0.125 * ajaxProgressState),
             ajaxProgressDiv1.style.width.slice(0, -1) | 0
         ) + "%";
     }, 1000);
