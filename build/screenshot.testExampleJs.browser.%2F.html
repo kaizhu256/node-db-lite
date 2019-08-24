@@ -257,8 +257,8 @@ pre {
  * until webpage has loaded
  */
     "use strict";
+    var ajaxProgressBar;
     var ajaxProgressDiv1;
-    var ajaxProgressState;
     var ajaxProgressUpdate;
     if (
         window.timerIntervalAjaxProgressUpdate
@@ -274,7 +274,7 @@ pre {
     setTimeout(function () {
         ajaxProgressDiv1.style.width = "25%";
     });
-    ajaxProgressState = 0;
+    ajaxProgressBar = 0;
     ajaxProgressUpdate = (
         window.local
         && window.local.ajaxProgressUpdate
@@ -288,9 +288,9 @@ pre {
         }, 1000);
     };
     window.timerIntervalAjaxProgressUpdate = setInterval(function () {
-        ajaxProgressState += 1;
+        ajaxProgressBar += 1;
         ajaxProgressDiv1.style.width = Math.max(
-            100 - 75 * Math.exp(-0.125 * ajaxProgressState),
+            100 - 75 * Math.exp(-0.125 * ajaxProgressBar),
             ajaxProgressDiv1.style.width.slice(0, -1) | 0
         ) + "%";
     }, 1000);
@@ -367,7 +367,7 @@ utility2-comment -->
 <button class="button" data-onevent="onEventDomDb" data-onevent-db="dbExport">export database -&gt; file</button><br>
 <button class="button" data-onevent="onEventDomDb" data-onevent-db="dbImport">import database &lt;- file</button><br>
 <label>edit or paste script below to
-    <a href="https://kaizhu256.github.io/node-db-lite/build..beta..travis-ci.org/apidoc.html" target="_blank">eval</a>
+    <a href="https://kaizhu256.github.io/node-db-lite/build..alpha..travis-ci.org/apidoc.html" target="_blank">eval</a>
 </label>
 <textarea class="textarea" data-onevent="testRunBrowser" id="inputTextarea1">/*jslint browser: true, node: true*/
 "use strict";

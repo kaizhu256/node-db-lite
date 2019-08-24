@@ -256,8 +256,8 @@ pre {
  * until webpage has loaded
  */
     "use strict";
+    var ajaxProgressBar;
     var ajaxProgressDiv1;
-    var ajaxProgressState;
     var ajaxProgressUpdate;
     if (
         window.timerIntervalAjaxProgressUpdate
@@ -273,7 +273,7 @@ pre {
     setTimeout(function () {
         ajaxProgressDiv1.style.width = "25%";
     });
-    ajaxProgressState = 0;
+    ajaxProgressBar = 0;
     ajaxProgressUpdate = (
         window.local
         && window.local.ajaxProgressUpdate
@@ -287,9 +287,9 @@ pre {
         }, 1000);
     };
     window.timerIntervalAjaxProgressUpdate = setInterval(function () {
-        ajaxProgressState += 1;
+        ajaxProgressBar += 1;
         ajaxProgressDiv1.style.width = Math.max(
-            100 - 75 * Math.exp(-0.125 * ajaxProgressState),
+            100 - 75 * Math.exp(-0.125 * ajaxProgressBar),
             ajaxProgressDiv1.style.width.slice(0, -1) | 0
         ) + "%";
     }, 1000);
@@ -661,8 +661,8 @@ pre {
  * until webpage has loaded
  */
     "use strict";
+    var ajaxProgressBar;
     var ajaxProgressDiv1;
-    var ajaxProgressState;
     var ajaxProgressUpdate;
     if (
         window.timerIntervalAjaxProgressUpdate
@@ -678,7 +678,7 @@ pre {
     setTimeout(function () {
         ajaxProgressDiv1.style.width = "25%";
     });
-    ajaxProgressState = 0;
+    ajaxProgressBar = 0;
     ajaxProgressUpdate = (
         window.local
         && window.local.ajaxProgressUpdate
@@ -692,9 +692,9 @@ pre {
         }, 1000);
     };
     window.timerIntervalAjaxProgressUpdate = setInterval(function () {
-        ajaxProgressState += 1;
+        ajaxProgressBar += 1;
         ajaxProgressDiv1.style.width = Math.max(
-            100 - 75 * Math.exp(-0.125 * ajaxProgressState),
+            100 - 75 * Math.exp(-0.125 * ajaxProgressBar),
             ajaxProgressDiv1.style.width.slice(0, -1) | 0
         ) + "%";
     }, 1000);
@@ -755,7 +755,7 @@ pre {
 <h4>
     <span>version</span>-
         2019.8.21<br>
-    <span>test date</span>- 2019-08-22T18:08:26.316Z<br>
+    <span>test date</span>- 2019-08-24T01:34:42.929Z<br>
     <span>commit info</span>-
         
         undefined<br>
@@ -771,7 +771,7 @@ pre {
     </tr>
 </thead>
 <tbody><tr>
-    <td>2005 ms</td>
+    <td>2006 ms</td>
     <td class="testPassed">0</td>
     <td>11</td>
     <td>0</td>
@@ -781,12 +781,12 @@ pre {
 
 <div class="platform">
 <h4>
-    1. browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Electron/2.0.18 Safari/537.36 - 2019-08-22T18:08:25.630Z<br>
+    1. browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Electron/2.0.18 Safari/537.36 - 2019-08-24T01:34:42.255Z<br>
     
     
-    <span>onload-time</span>- 798 ms<br>
+    <span>onload-time</span>- 710 ms<br>
     
-    <span>time-elapsed</span>- 2005 ms<br>
+    <span>time-elapsed</span>- 2006 ms<br>
     <span>tests failed</span>- 0<br>
     <span>tests passed</span>- 11<br>
     <span>tests pending</span>- 0<br>
@@ -802,42 +802,42 @@ pre {
 
 <tr>
     <td>1</td>
-    <td>4 ms</td>
+    <td>5 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbLoad_err</td>
 </tr>
 
 <tr>
     <td>2</td>
-    <td>42 ms</td>
+    <td>55 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_crudGetManyByQuery</td>
 </tr>
 
 <tr>
     <td>3</td>
-    <td>31 ms</td>
+    <td>6 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_crudNullCase</td>
 </tr>
 
 <tr>
     <td>4</td>
-    <td>35 ms</td>
+    <td>6 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_crudXxxById</td>
 </tr>
 
 <tr>
     <td>5</td>
-    <td>11 ms</td>
+    <td>9 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_crudXxxByQuery</td>
 </tr>
 
 <tr>
     <td>6</td>
-    <td>1037 ms</td>
+    <td>1035 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_dbTable_persistence</td>
 </tr>
@@ -858,7 +858,7 @@ pre {
 
 <tr>
     <td>9</td>
-    <td>1 ms</td>
+    <td>2 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_onEventDomDb_default</td>
 </tr>
@@ -872,7 +872,7 @@ pre {
 
 <tr>
     <td>11</td>
-    <td>37 ms</td>
+    <td>49 ms</td>
     <td class="testPassed">passed</td>
     <td>testCase_storageXxx_misc</td>
 </tr>
@@ -961,17 +961,17 @@ gotoNext();
 <button class="button" data-onevent="testRunBrowser" id="buttonEval1">eval script</button><br>
 <label>stderr and stdout</label>
 <pre class="onevent-reset-output readonly textarea" id="outputStdout1" tabindex="0">db - dropping database ...
-testRunDefault - 10 ms - [browser test-case 1 of 11 passed] - testCase_dbLoad_err
-testRunDefault - 76 ms - [browser test-case 2 of 11 passed] - testCase_dbTable_crudGetManyByQuery
-testRunDefault - 117 ms - [browser test-case 3 of 11 passed] - testCase_dbTable_crudNullCase
-testRunDefault - 169 ms - [browser test-case 4 of 11 passed] - testCase_dbTable_crudXxxById
-testRunDefault - 184 ms - [browser test-case 5 of 11 passed] - testCase_dbTable_crudXxxByQuery
-testRunDefault - 197 ms - [browser test-case 6 of 11 passed] - testCase_dbTable_sizeLimit
-testRunDefault - 201 ms - [browser test-case 7 of 11 passed] - testCase_nop_default
-testRunDefault - 205 ms - [browser test-case 8 of 11 passed] - testCase_onEventDomDb_default
-testRunDefault - 208 ms - [browser test-case 9 of 11 passed] - testCase_sortCompare_default
-testRunDefault - 247 ms - [browser test-case 10 of 11 passed] - testCase_storageXxx_misc
-testRunDefault - 1224 ms - [browser test-case 11 of 11 passed] - testCase_dbTable_persistence
+testRunDefault - 12 ms - [browser test-case 1 of 11 passed] - testCase_dbLoad_err
+testRunDefault - 79 ms - [browser test-case 2 of 11 passed] - testCase_dbTable_crudGetManyByQuery
+testRunDefault - 87 ms - [browser test-case 3 of 11 passed] - testCase_dbTable_crudNullCase
+testRunDefault - 95 ms - [browser test-case 4 of 11 passed] - testCase_dbTable_crudXxxById
+testRunDefault - 106 ms - [browser test-case 5 of 11 passed] - testCase_dbTable_crudXxxByQuery
+testRunDefault - 117 ms - [browser test-case 6 of 11 passed] - testCase_dbTable_sizeLimit
+testRunDefault - 119 ms - [browser test-case 7 of 11 passed] - testCase_nop_default
+testRunDefault - 123 ms - [browser test-case 8 of 11 passed] - testCase_onEventDomDb_default
+testRunDefault - 125 ms - [browser test-case 9 of 11 passed] - testCase_sortCompare_default
+testRunDefault - 176 ms - [browser test-case 10 of 11 passed] - testCase_storageXxx_misc
+testRunDefault - 1143 ms - [browser test-case 11 of 11 passed] - testCase_dbTable_persistence
 ----------|-----------|-----------|-----------|-----------|
 File      |   % Stmts |% Branches |   % Funcs |   % Lines |
 ----------|-----------|-----------|-----------|-----------|

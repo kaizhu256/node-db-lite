@@ -1,9 +1,9 @@
-<svg height="3742" width="720" xmlns="http://www.w3.org/2000/svg">
-<rect height="3742" fill="#555" width="720"></rect>
+<svg height="3166" width="720" xmlns="http://www.w3.org/2000/svg">
+<rect height="3166" fill="#555" width="720"></rect>
 <text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
 <tspan x="10" y="26"></tspan>
 
-<tspan x="10" y="42">\x1b[35m[MODE_BUILD=npmTest]\x1b[0m - 2019-08-23T16:23:01.966Z - npm-testing /home/travis/build/\</tspan>
+<tspan x="10" y="42">\x1b[35m[MODE_BUILD=npmTest]\x1b[0m - 2019-08-24T01:34:39.215Z - npm-testing /home/travis/build/\</tspan>
 <tspan x="10" y="58">kaizhu256/node-db-lite</tspan>
 
 <tspan x="10" y="74"></tspan>
@@ -23,380 +23,311 @@
 <tspan x="10" y="202">npmTest - merged test-report from file /home/travis/build/kaizhu256/node-db-lite/tmp/build/test-\</tspan>
 <tspan x="10" y="218">report.json</tspan>
 
-<tspan x="10" y="234">--- /home/travis/build/kaizhu256/node-db-lite/README.md.autofix.old	2019-08-23 16:23:02.75261945\</tspan>
-<tspan x="10" y="250">6 +0000</tspan>
+<tspan x="10" y="234">jslint - 276ms /home/travis/build/kaizhu256/node-db-lite/README.md</tspan>
 
-<tspan x="10" y="266">+++ /home/travis/build/kaizhu256/node-db-lite/README.md	2019-08-23 16:23:02.752619456 +0000</tspan>
+<tspan x="10" y="250">http-server listening on port 34703</tspan>
 
-<tspan x="10" y="282">@@ -175,7 +175,6 @@</tspan>
+<tspan x="10" y="266">db - dropping database ...</tspan>
 
-<tspan x="10" y="298">             return;</tspan>
+<tspan x="10" y="282">jslint - 381ms /home/travis/build/kaizhu256/node-db-lite/lib.db.js</tspan>
 
-<tspan x="10" y="314">         }</tspan>
+<tspan x="10" y="298">jslint - 14ms /home/travis/build/kaizhu256/node-db-lite/npm_scripts.sh</tspan>
 
-<tspan x="10" y="330">         err = (</tspan>
+<tspan x="10" y="314">jslint - 0ms /home/travis/build/kaizhu256/node-db-lite/package.json</tspan>
 
-<tspan x="10" y="346">-            // ternary-operator</tspan>
+<tspan x="10" y="330">jslint - 163ms /home/travis/build/kaizhu256/node-db-lite/test.js</tspan>
 
-<tspan x="10" y="362">             (</tspan>
+<tspan x="10" y="346">testRunDefault - 405 ms - [node test-case 1 of 17 passed] - testCase_buildApidoc_default</tspan>
 
-<tspan x="10" y="378">                 message</tspan>
+<tspan x="10" y="362">testRunDefault - 430 ms - [node test-case 2 of 17 passed] - testCase_buildLib_default</tspan>
 
-<tspan x="10" y="394">                 &amp;&amp; typeof message.message === "string"</tspan>
+<tspan x="10" y="378">testRunDefault - 434 ms - [node test-case 3 of 17 passed] - testCase_buildReadme_default</tspan>
 
-<tspan x="10" y="410">jslint-autofix - modified and saved file /home/travis/build/kaizhu256/node-db-lite/README.md</tspan>
+<tspan x="10" y="394">testRunDefault - 436 ms - [node test-case 4 of 17 passed] - testCase_buildTest_default</tspan>
 
-<tspan x="10" y="426">jslint - 237ms /home/travis/build/kaizhu256/node-db-lite/README.md</tspan>
+<tspan x="10" y="410">testRunDefault - 438 ms - [node test-case 5 of 17 passed] - testCase_dbLoad_err</tspan>
 
-<tspan x="10" y="442">http-server listening on port 61776</tspan>
+<tspan x="10" y="426">testRunDefault - 471 ms - [node test-case 6 of 17 passed] - testCase_dbTable_crudGetManyByQuery</tspan>
 
-<tspan x="10" y="458">db - dropping database ...</tspan>
+<tspan x="10" y="442">testRunDefault - 476 ms - [node test-case 7 of 17 passed] - testCase_dbTable_crudNullCase</tspan>
 
-<tspan x="10" y="474">--- /home/travis/build/kaizhu256/node-db-lite/lib.db.js.autofix.old	2019-08-23 16:23:03.07662395\</tspan>
-<tspan x="10" y="490">8 +0000</tspan>
+<tspan x="10" y="458">testRunDefault - 481 ms - [node test-case 8 of 17 passed] - testCase_dbTable_crudXxxById</tspan>
 
-<tspan x="10" y="506">+++ /home/travis/build/kaizhu256/node-db-lite/lib.db.js	2019-08-23 16:23:03.076623958 +0000</tspan>
+<tspan x="10" y="474">testRunDefault - 486 ms - [node test-case 9 of 17 passed] - testCase_dbTable_crudXxxByQuery</tspan>
 
-<tspan x="10" y="522">@@ -94,7 +94,6 @@</tspan>
+<tspan x="10" y="490">testRunDefault - 501 ms - [node test-case 10 of 17 passed] - testCase_dbTable_sizeLimit</tspan>
 
-<tspan x="10" y="538">             return;</tspan>
+<tspan x="10" y="506">testRunDefault - 501 ms - [node test-case 11 of 17 passed] - testCase_nop_default</tspan>
 
-<tspan x="10" y="554">         }</tspan>
+<tspan x="10" y="522">testRunDefault - 502 ms - [node test-case 12 of 17 passed] - testCase_onEventDomDb_default</tspan>
 
-<tspan x="10" y="570">         err = (</tspan>
+<tspan x="10" y="538">testRunDefault - 503 ms - [node test-case 13 of 17 passed] - testCase_sortCompare_default</tspan>
 
-<tspan x="10" y="586">-            // ternary-operator</tspan>
+<tspan x="10" y="554">testRunDefault - 628 ms - [node test-case 14 of 17 passed] - testCase_storageXxx_misc</tspan>
 
-<tspan x="10" y="602">             (</tspan>
+<tspan x="10" y="570">http-server listening on port 56311</tspan>
 
-<tspan x="10" y="618">                 message</tspan>
+<tspan x="10" y="586">Xlib:  extension "RANDR" missing on display ":99.0".</tspan>
 
-<tspan x="10" y="634">                 &amp;&amp; typeof message.message === "string"</tspan>
+<tspan x="10" y="602">[6598:0824/013441.602258:ERROR:bus.cc(395)] Failed to connect to the bus: Could not parse server\</tspan>
+<tspan x="10" y="618"> address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")</tspan>
 
-<tspan x="10" y="650">jslint-autofix - modified and saved file /home/travis/build/kaizhu256/node-db-lite/lib.db.js</tspan>
+<tspan x="10" y="634">[6598:0824/013441.629531:ERROR:bus.cc(395)] Failed to connect to the bus: Could not parse server\</tspan>
+<tspan x="10" y="650"> address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")</tspan>
 
-<tspan x="10" y="666">jslint - 318ms /home/travis/build/kaizhu256/node-db-lite/lib.db.js</tspan>
+<tspan x="10" y="666">[6656:0824/013441.779615:ERROR:sandbox_linux.cc(344)] InitializeSandbox() called with multiple t\</tspan>
+<tspan x="10" y="682">hreads in process gpu-process.</tspan>
 
-<tspan x="10" y="682">jslint - 11ms /home/travis/build/kaizhu256/node-db-lite/npm_scripts.sh</tspan>
+<tspan x="10" y="698">testRunDefault - 1507 ms - [node test-case 15 of 17 passed] - testCase_dbTable_persistence</tspan>
 
-<tspan x="10" y="698">jslint - 0ms /home/travis/build/kaizhu256/node-db-lite/package.json</tspan>
+<tspan x="10" y="714">[6598:0824/013442.020381:INFO:CONSOLE(188)] "%cElectron Security Warning (Insecure Content-Secur\</tspan>
+<tspan x="10" y="730">ity-Policy)", source: /home/travis/build/kaizhu256/node-db-lite/node_modules/electron-lite/exter\</tspan>
+<tspan x="10" y="746">nal/resources/electron.asar/renderer/security-warnings.js (188)</tspan>
 
-<tspan x="10" y="714">testRunDefault - 285 ms - [node test-case 1 of 17 passed] - testCase_buildApidoc_default</tspan>
+<tspan x="10" y="762">[6598:0824/013442.038106:INFO:CONSOLE(188)] "%cElectron Security Warning (Insecure Content-Secur\</tspan>
+<tspan x="10" y="778">ity-Policy)", source: /home/travis/build/kaizhu256/node-db-lite/node_modules/electron-lite/exter\</tspan>
+<tspan x="10" y="794">nal/resources/electron.asar/renderer/security-warnings.js (188)</tspan>
 
-<tspan x="10" y="730">testRunDefault - 308 ms - [node test-case 2 of 17 passed] - testCase_buildLib_default</tspan>
+<tspan x="10" y="810">[6598:0824/013442.851359:WARNING:quota_manager.cc(1629)] No storage quota provided in QuotaSetti\</tspan>
+<tspan x="10" y="826">ngs.</tspan>
 
-<tspan x="10" y="746">testRunDefault - 313 ms - [node test-case 3 of 17 passed] - testCase_buildReadme_default</tspan>
+<tspan x="10" y="842">[6598:0824/013442.867297:INFO:CONSOLE(8)] "db - dropping database ...", source: http://127.0.0.1\</tspan>
+<tspan x="10" y="858">:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="762">testRunDefault - 314 ms - [node test-case 4 of 17 passed] - testCase_buildTest_default</tspan>
+<tspan x="10" y="874">[6598:0824/013442.885863:INFO:CONSOLE(128)] "%cElectron Security Warning (Insecure Resources)", \</tspan>
+<tspan x="10" y="890">source: /home/travis/build/kaizhu256/node-db-lite/node_modules/electron-lite/external/resources/\</tspan>
+<tspan x="10" y="906">electron.asar/renderer/security-warnings.js (128)</tspan>
 
-<tspan x="10" y="778">testRunDefault - 316 ms - [node test-case 5 of 17 passed] - testCase_dbLoad_err</tspan>
+<tspan x="10" y="922">[6598:0824/013442.886806:INFO:CONSOLE(188)] "%cElectron Security Warning (Insecure Content-Secur\</tspan>
+<tspan x="10" y="938">ity-Policy)", source: /home/travis/build/kaizhu256/node-db-lite/node_modules/electron-lite/exter\</tspan>
+<tspan x="10" y="954">nal/resources/electron.asar/renderer/security-warnings.js (188)</tspan>
 
-<tspan x="10" y="794">--- /home/travis/build/kaizhu256/node-db-lite/test.js.autofix.old	2019-08-23 16:23:03.272626673 \</tspan>
-<tspan x="10" y="810">+0000</tspan>
+<tspan x="10" y="970">[6598:0824/013442.916649:INFO:CONSOLE(8)] "db - dropping database ...", source: http://127.0.0.1\</tspan>
+<tspan x="10" y="986">:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="826">+++ /home/travis/build/kaizhu256/node-db-lite/test.js	2019-08-23 16:23:03.272626673 +0000</tspan>
+<tspan x="10" y="1002">[6598:0824/013442.937662:INFO:CONSOLE(128)] "%cElectron Security Warning (Insecure Resources)", \</tspan>
+<tspan x="10" y="1018">source: /home/travis/build/kaizhu256/node-db-lite/node_modules/electron-lite/external/resources/\</tspan>
+<tspan x="10" y="1034">electron.asar/renderer/security-warnings.js (128)</tspan>
 
-<tspan x="10" y="842">@@ -53,7 +53,6 @@</tspan>
+<tspan x="10" y="1050">[6598:0824/013442.941376:INFO:CONSOLE(8)] "testRunDefault - 12 ms - [browser test-case 1 of 11 p\</tspan>
+<tspan x="10" y="1066">assed] - testCase_dbLoad_err", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="858">             return;</tspan>
+<tspan x="10" y="1082">[6598:0824/013442.956842:INFO:CONSOLE(188)] "%cElectron Security Warning (Insecure Content-Secur\</tspan>
+<tspan x="10" y="1098">ity-Policy)", source: /home/travis/build/kaizhu256/node-db-lite/node_modules/electron-lite/exter\</tspan>
+<tspan x="10" y="1114">nal/resources/electron.asar/renderer/security-warnings.js (188)</tspan>
 
-<tspan x="10" y="874">         }</tspan>
+<tspan x="10" y="1130">[6598:0824/013442.998909:INFO:CONSOLE(8)] "testRunDefault - 11 ms - [browser test-case 1 of 11 p\</tspan>
+<tspan x="10" y="1146">assed] - testCase_dbLoad_err", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="890">         err = (</tspan>
+<tspan x="10" y="1162">[6598:0824/013443.008573:INFO:CONSOLE(8)] "testRunDefault - 79 ms - [browser test-case 2 of 11 p\</tspan>
+<tspan x="10" y="1178">assed] - testCase_dbTable_crudGetManyByQuery", source: http://127.0.0.1:34703/assets.example.js \</tspan>
+<tspan x="10" y="1194">(8)</tspan>
 
-<tspan x="10" y="906">-            // ternary-operator</tspan>
+<tspan x="10" y="1210">[6598:0824/013443.016147:INFO:CONSOLE(8)] "testRunDefault - 87 ms - [browser test-case 3 of 11 p\</tspan>
+<tspan x="10" y="1226">assed] - testCase_dbTable_crudNullCase", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="922">             (</tspan>
+<tspan x="10" y="1242">[6598:0824/013443.024208:INFO:CONSOLE(8)] "testRunDefault - 95 ms - [browser test-case 4 of 11 p\</tspan>
+<tspan x="10" y="1258">assed] - testCase_dbTable_crudXxxById", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="938">                 message</tspan>
+<tspan x="10" y="1274">[6598:0824/013443.034676:INFO:CONSOLE(8)] "testRunDefault - 106 ms - [browser test-case 5 of 11 \</tspan>
+<tspan x="10" y="1290">passed] - testCase_dbTable_crudXxxByQuery", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="954">                 &amp;&amp; typeof message.message === "string"</tspan>
+<tspan x="10" y="1306">[6598:0824/013443.046366:INFO:CONSOLE(8)] "testRunDefault - 117 ms - [browser test-case 6 of 11 \</tspan>
+<tspan x="10" y="1322">passed] - testCase_dbTable_sizeLimit", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="970">jslint-autofix - modified and saved file /home/travis/build/kaizhu256/node-db-lite/test.js</tspan>
+<tspan x="10" y="1338">[6598:0824/013443.048134:INFO:CONSOLE(8)] "testRunDefault - 119 ms - [browser test-case 7 of 11 \</tspan>
+<tspan x="10" y="1354">passed] - testCase_nop_default", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="986">jslint - 185ms /home/travis/build/kaizhu256/node-db-lite/test.js</tspan>
+<tspan x="10" y="1370">[6598:0824/013443.051407:INFO:CONSOLE(8)] "testRunDefault - 123 ms - [browser test-case 8 of 11 \</tspan>
+<tspan x="10" y="1386">passed] - testCase_onEventDomDb_default", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="1002">testRunDefault - 353 ms - [node test-case 6 of 17 passed] - testCase_dbTable_crudGetManyByQuery</tspan>
+<tspan x="10" y="1402">[6598:0824/013443.054171:INFO:CONSOLE(8)] "testRunDefault - 125 ms - [browser test-case 9 of 11 \</tspan>
+<tspan x="10" y="1418">passed] - testCase_sortCompare_default", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="1018">testRunDefault - 361 ms - [node test-case 7 of 17 passed] - testCase_dbTable_crudNullCase</tspan>
+<tspan x="10" y="1434">[6598:0824/013443.104489:INFO:CONSOLE(8)] "testRunDefault - 176 ms - [browser test-case 10 of 11\</tspan>
+<tspan x="10" y="1450"> passed] - testCase_storageXxx_misc", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="1034">testRunDefault - 364 ms - [node test-case 8 of 17 passed] - testCase_dbTable_crudXxxById</tspan>
+<tspan x="10" y="1466">[6598:0824/013443.133798:INFO:CONSOLE(8)] "testRunDefault - 146 ms - [browser test-case 2 of 11 \</tspan>
+<tspan x="10" y="1482">passed] - testCase_dbTable_crudGetManyByQuery", source: http://127.0.0.1:34703/assets.example.js\</tspan>
+<tspan x="10" y="1498"> (8)</tspan>
 
-<tspan x="10" y="1050">testRunDefault - 368 ms - [node test-case 9 of 17 passed] - testCase_dbTable_crudXxxByQuery</tspan>
+<tspan x="10" y="1514">[6598:0824/013443.142881:INFO:CONSOLE(8)] "testRunDefault - 155 ms - [browser test-case 3 of 11 \</tspan>
+<tspan x="10" y="1530">passed] - testCase_dbTable_crudNullCase", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="1066">testRunDefault - 382 ms - [node test-case 10 of 17 passed] - testCase_dbTable_sizeLimit</tspan>
+<tspan x="10" y="1546">[6598:0824/013443.151908:INFO:CONSOLE(8)] "testRunDefault - 164 ms - [browser test-case 4 of 11 \</tspan>
+<tspan x="10" y="1562">passed] - testCase_dbTable_crudXxxById", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="1082">testRunDefault - 382 ms - [node test-case 11 of 17 passed] - testCase_nop_default</tspan>
+<tspan x="10" y="1578">[6598:0824/013443.164894:INFO:CONSOLE(8)] "testRunDefault - 177 ms - [browser test-case 5 of 11 \</tspan>
+<tspan x="10" y="1594">passed] - testCase_dbTable_crudXxxByQuery", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="1098">testRunDefault - 382 ms - [node test-case 12 of 17 passed] - testCase_onEventDomDb_default</tspan>
+<tspan x="10" y="1610">[6598:0824/013443.175798:INFO:CONSOLE(8)] "testRunDefault - 188 ms - [browser test-case 6 of 11 \</tspan>
+<tspan x="10" y="1626">passed] - testCase_dbTable_sizeLimit", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="1114">testRunDefault - 383 ms - [node test-case 13 of 17 passed] - testCase_sortCompare_default</tspan>
+<tspan x="10" y="1642">[6598:0824/013443.177386:INFO:CONSOLE(8)] "testRunDefault - 190 ms - [browser test-case 7 of 11 \</tspan>
+<tspan x="10" y="1658">passed] - testCase_nop_default", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="1130">testRunDefault - 483 ms - [node test-case 14 of 17 passed] - testCase_storageXxx_misc</tspan>
+<tspan x="10" y="1674">[6598:0824/013443.180824:INFO:CONSOLE(8)] "testRunDefault - 193 ms - [browser test-case 8 of 11 \</tspan>
+<tspan x="10" y="1690">passed] - testCase_onEventDomDb_default", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="1146">http-server listening on port 47290</tspan>
+<tspan x="10" y="1706">[6598:0824/013443.184233:INFO:CONSOLE(8)] "testRunDefault - 196 ms - [browser test-case 9 of 11 \</tspan>
+<tspan x="10" y="1722">passed] - testCase_sortCompare_default", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="1162">Xlib:  extension "RANDR" missing on display ":99.0".</tspan>
+<tspan x="10" y="1738">[6598:0824/013443.220953:INFO:CONSOLE(8)] "testRunDefault - 233 ms - [browser test-case 10 of 11\</tspan>
+<tspan x="10" y="1754"> passed] - testCase_storageXxx_misc", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="1178">[6570:0823/162304.106605:ERROR:bus.cc(395)] Failed to connect to the bus: Could not parse server\</tspan>
-<tspan x="10" y="1194"> address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")</tspan>
+<tspan x="10" y="1770">[6598:0824/013444.071824:INFO:CONSOLE(8)] "testRunDefault - 1143 ms - [browser test-case 11 of 1\</tspan>
+<tspan x="10" y="1786">1 passed] - testCase_dbTable_persistence", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="1210">[6570:0823/162304.127943:ERROR:bus.cc(395)] Failed to connect to the bus: Could not parse server\</tspan>
-<tspan x="10" y="1226"> address: Unknown address type (examples of valid types are "tcp" and on UNIX "unix")</tspan>
+<tspan x="10" y="1802">[6598:0824/013444.199669:INFO:CONSOLE(8)] "testRunDefault - 1212 ms - [browser test-case 11 of 1\</tspan>
+<tspan x="10" y="1818">1 passed] - testCase_dbTable_persistence", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="1242">[6630:0823/162304.268464:ERROR:sandbox_linux.cc(344)] InitializeSandbox() called with multiple t\</tspan>
-<tspan x="10" y="1258">hreads in process gpu-process.</tspan>
+<tspan x="10" y="1834">[6598:0824/013445.077760:INFO:CONSOLE(8)] "----------|-----------|-----------|-----------|------\</tspan>
+<tspan x="10" y="1850">-----|</tspan>
 
-<tspan x="10" y="1274">testRunDefault - 1387 ms - [node test-case 15 of 17 passed] - testCase_dbTable_persistence</tspan>
+<tspan x="10" y="1866">File      |   % Stmts |% Branches |   % Funcs |   % Lines |</tspan>
 
-<tspan x="10" y="1290">[6570:0823/162304.498311:INFO:CONSOLE(188)] "%cElectron Security Warning (Insecure Content-Secur\</tspan>
-<tspan x="10" y="1306">ity-Policy)", source: /home/travis/build/kaizhu256/node-db-lite/node_modules/electron-lite/exter\</tspan>
-<tspan x="10" y="1322">nal/resources/electron.asar/renderer/security-warnings.js (188)</tspan>
+<tspan x="10" y="1882">----------|-----------|-----------|-----------|-----------|</tspan>
 
-<tspan x="10" y="1338">[6570:0823/162304.505936:INFO:CONSOLE(188)] "%cElectron Security Warning (Insecure Content-Secur\</tspan>
-<tspan x="10" y="1354">ity-Policy)", source: /home/travis/build/kaizhu256/node-db-lite/node_modules/electron-lite/exter\</tspan>
-<tspan x="10" y="1370">nal/resources/electron.asar/renderer/security-warnings.js (188)</tspan>
+<tspan x="10" y="1898">----------|-----------|-----------|-----------|-----------|</tspan>
 
-<tspan x="10" y="1386">[6570:0823/162305.343209:WARNING:quota_manager.cc(1629)] No storage quota provided in QuotaSetti\</tspan>
-<tspan x="10" y="1402">ngs.</tspan>
+<tspan x="10" y="1914">All files |       100 |       100 |       100 |       100 |</tspan>
 
-<tspan x="10" y="1418">[6570:0823/162305.356395:INFO:CONSOLE(8)] "db - dropping database ...", source: http://127.0.0.1\</tspan>
-<tspan x="10" y="1434">:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="1930">----------|-----------|-----------|-----------|-----------|</tspan>
 
-<tspan x="10" y="1450">[6570:0823/162305.362963:INFO:CONSOLE(8)] "db - dropping database ...", source: http://127.0.0.1\</tspan>
-<tspan x="10" y="1466">:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="1946">", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="1482">[6570:0823/162305.374502:INFO:CONSOLE(128)] "%cElectron Security Warning (Insecure Resources)", \</tspan>
-<tspan x="10" y="1498">source: /home/travis/build/kaizhu256/node-db-lite/node_modules/electron-lite/external/resources/\</tspan>
-<tspan x="10" y="1514">electron.asar/renderer/security-warnings.js (128)</tspan>
+<tspan x="10" y="1962">[6598:0824/013445.088443:INFO:CONSOLE(8)] "created coverage file /tmp/build/coverage.html/index.\</tspan>
+<tspan x="10" y="1978">html", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="1530">[6570:0823/162305.375340:INFO:CONSOLE(188)] "%cElectron Security Warning (Insecure Content-Secur\</tspan>
-<tspan x="10" y="1546">ity-Policy)", source: /home/travis/build/kaizhu256/node-db-lite/node_modules/electron-lite/exter\</tspan>
-<tspan x="10" y="1562">nal/resources/electron.asar/renderer/security-warnings.js (188)</tspan>
+<tspan x="10" y="1994">[6598:0824/013445.206073:INFO:CONSOLE(8)] "----------|-----------|-----------|-----------|------\</tspan>
+<tspan x="10" y="2010">-----|</tspan>
 
-<tspan x="10" y="1578">[6570:0823/162305.396976:INFO:CONSOLE(128)] "%cElectron Security Warning (Insecure Resources)", \</tspan>
-<tspan x="10" y="1594">source: /home/travis/build/kaizhu256/node-db-lite/node_modules/electron-lite/external/resources/\</tspan>
-<tspan x="10" y="1610">electron.asar/renderer/security-warnings.js (128)</tspan>
+<tspan x="10" y="2026">File      |   % Stmts |% Branches |   % Funcs |   % Lines |</tspan>
 
-<tspan x="10" y="1626">[6570:0823/162305.397063:INFO:CONSOLE(188)] "%cElectron Security Warning (Insecure Content-Secur\</tspan>
-<tspan x="10" y="1642">ity-Policy)", source: /home/travis/build/kaizhu256/node-db-lite/node_modules/electron-lite/exter\</tspan>
-<tspan x="10" y="1658">nal/resources/electron.asar/renderer/security-warnings.js (188)</tspan>
+<tspan x="10" y="2042">----------|-----------|-----------|-----------|-----------|</tspan>
 
-<tspan x="10" y="1674">[6570:0823/162305.429286:INFO:CONSOLE(8)] "testRunDefault - 10 ms - [browser test-case 1 of 11 p\</tspan>
-<tspan x="10" y="1690">assed] - testCase_dbLoad_err", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2058">----------|-----------|-----------|-----------|-----------|</tspan>
 
-<tspan x="10" y="1706">[6570:0823/162305.439763:INFO:CONSOLE(8)] "testRunDefault - 14 ms - [browser test-case 1 of 11 p\</tspan>
-<tspan x="10" y="1722">assed] - testCase_dbLoad_err", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2074">All files |       100 |       100 |       100 |       100 |</tspan>
 
-<tspan x="10" y="1738">[6570:0823/162305.484121:INFO:CONSOLE(8)] "testRunDefault - 65 ms - [browser test-case 2 of 11 p\</tspan>
-<tspan x="10" y="1754">assed] - testCase_dbTable_crudGetManyByQuery", source: http://127.0.0.1:61776/assets.example.js \</tspan>
-<tspan x="10" y="1770">(8)</tspan>
+<tspan x="10" y="2090">----------|-----------|-----------|-----------|-----------|</tspan>
 
-<tspan x="10" y="1786">[6570:0823/162305.493557:INFO:CONSOLE(8)] "testRunDefault - 75 ms - [browser test-case 3 of 11 p\</tspan>
-<tspan x="10" y="1802">assed] - testCase_dbTable_crudNullCase", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2106">", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="1818">[6570:0823/162305.503285:INFO:CONSOLE(8)] "testRunDefault - 84 ms - [browser test-case 4 of 11 p\</tspan>
-<tspan x="10" y="1834">assed] - testCase_dbTable_crudXxxById", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2122">[6598:0824/013445.220428:INFO:CONSOLE(8)] "created coverage file /tmp/build/coverage.html/index.\</tspan>
+<tspan x="10" y="2138">html", source: http://127.0.0.1:34703/assets.example.js (8)</tspan>
 
-<tspan x="10" y="1850">[6570:0823/162305.509784:INFO:CONSOLE(8)] "testRunDefault - 84 ms - [browser test-case 2 of 11 p\</tspan>
-<tspan x="10" y="1866">assed] - testCase_dbTable_crudGetManyByQuery", source: http://127.0.0.1:61776/assets.example.js \</tspan>
-<tspan x="10" y="1882">(8)</tspan>
+<tspan x="10" y="2154">testRunDefault - 5046 ms - testCase pending - testCase_buildApp_default, testCase_webpage_defaul\</tspan>
+<tspan x="10" y="2170">t ...</tspan>
 
-<tspan x="10" y="1898">[6570:0823/162305.517866:INFO:CONSOLE(8)] "testRunDefault - 99 ms - [browser test-case 5 of 11 p\</tspan>
-<tspan x="10" y="1914">assed] - testCase_dbTable_crudXxxByQuery", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2186">testRunDefault - 6006 ms - [node test-case 16 of 17 passed] - testCase_buildApp_default</tspan>
 
-<tspan x="10" y="1930">[6570:0823/162305.518851:INFO:CONSOLE(8)] "testRunDefault - 93 ms - [browser test-case 3 of 11 p\</tspan>
-<tspan x="10" y="1946">assed] - testCase_dbTable_crudNullCase", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2202">[6598:0824/013447.876235:INFO:CONSOLE(8)] "null", source: http://127.0.0.1:34703/assets.example.\</tspan>
+<tspan x="10" y="2218">js (8)</tspan>
 
-<tspan x="10" y="1962">[6570:0823/162305.529609:INFO:CONSOLE(8)] "testRunDefault - 104 ms - [browser test-case 4 of 11 \</tspan>
-<tspan x="10" y="1978">passed] - testCase_dbTable_crudXxxById", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2234">[6598:0824/013448.050272:INFO:CONSOLE(8)] "Error: ENOENT: no such file or directory, rename '/ho\</tspan>
+<tspan x="10" y="2250">me/travis/build/kaizhu256/node-db-lite/tmp/electron.16cc142dee10.7686f0fee2963.html' -&gt; '/home/t\</tspan>
+<tspan x="10" y="2266">ravis/build/kaizhu256/node-db-lite/tmp/electron.html'", source: http://127.0.0.1:34703/assets.ex\</tspan>
+<tspan x="10" y="2282">ample.js (8)</tspan>
 
-<tspan x="10" y="1994">[6570:0823/162305.536017:INFO:CONSOLE(8)] "testRunDefault - 117 ms - [browser test-case 6 of 11 \</tspan>
-<tspan x="10" y="2010">passed] - testCase_dbTable_sizeLimit", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2298"></tspan>
 
-<tspan x="10" y="2026">[6570:0823/162305.543401:INFO:CONSOLE(8)] "testRunDefault - 117 ms - [browser test-case 5 of 11 \</tspan>
-<tspan x="10" y="2042">passed] - testCase_dbTable_crudXxxByQuery", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2314">browserTest - created screenshot file /home/travis/build/kaizhu256/node-db-lite/tmp/build/screen\</tspan>
+<tspan x="10" y="2330">shot.npmTest.browser.%2F.png</tspan>
 
-<tspan x="10" y="2058">[6570:0823/162305.549837:INFO:CONSOLE(8)] "testRunDefault - 131 ms - [browser test-case 7 of 11 \</tspan>
-<tspan x="10" y="2074">passed] - testCase_nop_default", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2346"></tspan>
 
-<tspan x="10" y="2090">[6570:0823/162305.555375:INFO:CONSOLE(8)] "testRunDefault - 129 ms - [browser test-case 6 of 11 \</tspan>
-<tspan x="10" y="2106">passed] - testCase_dbTable_sizeLimit", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2362">browserTest - created screenshot file /home/travis/build/kaizhu256/node-db-lite/tmp/build/screen\</tspan>
+<tspan x="10" y="2378">shot.npmTest.browser.%2F.html</tspan>
 
-<tspan x="10" y="2122">[6570:0823/162305.556733:INFO:CONSOLE(8)] "testRunDefault - 131 ms - [browser test-case 7 of 11 \</tspan>
-<tspan x="10" y="2138">passed] - testCase_nop_default", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2394"></tspan>
 
-<tspan x="10" y="2154">[6570:0823/162305.560313:INFO:CONSOLE(8)] "testRunDefault - 134 ms - [browser test-case 8 of 11 \</tspan>
-<tspan x="10" y="2170">passed] - testCase_onEventDomDb_default", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2410">browserTest - created screenshot file /home/travis/build/kaizhu256/node-db-lite/tmp/build/screen\</tspan>
+<tspan x="10" y="2426">shot.npmTest.browser.%2F.png</tspan>
 
-<tspan x="10" y="2186">[6570:0823/162305.565529:INFO:CONSOLE(8)] "testRunDefault - 139 ms - [browser test-case 9 of 11 \</tspan>
-<tspan x="10" y="2202">passed] - testCase_sortCompare_default", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2442"></tspan>
 
-<tspan x="10" y="2218">[6570:0823/162305.579566:INFO:CONSOLE(8)] "testRunDefault - 160 ms - [browser test-case 8 of 11 \</tspan>
-<tspan x="10" y="2234">passed] - testCase_onEventDomDb_default", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2458">browserTest - created screenshot file /home/travis/build/kaizhu256/node-db-lite/tmp/build/screen\</tspan>
+<tspan x="10" y="2474">shot.npmTest.browser.%2F.html</tspan>
 
-<tspan x="10" y="2250">[6570:0823/162305.586375:INFO:CONSOLE(8)] "testRunDefault - 166 ms - [browser test-case 9 of 11 \</tspan>
-<tspan x="10" y="2266">passed] - testCase_sortCompare_default", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2490">testRunDefault - 7792 ms - [node test-case 17 of 17 passed] - testCase_webpage_default</tspan>
 
-<tspan x="10" y="2282">[6570:0823/162305.625351:INFO:CONSOLE(8)] "testRunDefault - 199 ms - [browser test-case 10 of 11\</tspan>
-<tspan x="10" y="2298"> passed] - testCase_storageXxx_misc", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2506">-----------------|-----------|-----------|-----------|-----------|</tspan>
 
-<tspan x="10" y="2314">[6570:0823/162305.637552:INFO:CONSOLE(8)] "testRunDefault - 219 ms - [browser test-case 10 of 11\</tspan>
-<tspan x="10" y="2330"> passed] - testCase_storageXxx_misc", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2522">File             |   % Stmts |% Branches |   % Funcs |   % Lines |</tspan>
 
-<tspan x="10" y="2346">[6570:0823/162306.586617:INFO:CONSOLE(8)] "testRunDefault - 1161 ms - [browser test-case 11 of 1\</tspan>
-<tspan x="10" y="2362">1 passed] - testCase_dbTable_persistence", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2538">-----------------|-----------|-----------|-----------|-----------|</tspan>
 
-<tspan x="10" y="2378">[6570:0823/162306.587405:INFO:CONSOLE(8)] "testRunDefault - 1168 ms - [browser test-case 11 of 1\</tspan>
-<tspan x="10" y="2394">1 passed] - testCase_dbTable_persistence", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2554">   node-db-lite/ |     97.03 |     96.64 |     95.52 |     97.03 |</tspan>
 
-<tspan x="10" y="2410">[6570:0823/162307.593970:INFO:CONSOLE(8)] "----------|-----------|-----------|-----------|------\</tspan>
-<tspan x="10" y="2426">-----|</tspan>
+<tspan x="10" y="2570">      example.js |       100 |       100 |       100 |       100 |</tspan>
 
-<tspan x="10" y="2442">File      |   % Stmts |% Branches |   % Funcs |   % Lines |</tspan>
+<tspan x="10" y="2586">      lib.db.js  |     95.73 |     95.73 |     96.06 |     95.73 |</tspan>
 
-<tspan x="10" y="2458">----------|-----------|-----------|-----------|-----------|</tspan>
+<tspan x="10" y="2602">      test.js    |     98.88 |       100 |     92.54 |     98.88 |</tspan>
 
-<tspan x="10" y="2474">----------|-----------|-----------|-----------|-----------|</tspan>
+<tspan x="10" y="2618">-----------------|-----------|-----------|-----------|-----------|</tspan>
 
-<tspan x="10" y="2490">All files |       100 |       100 |       100 |       100 |</tspan>
+<tspan x="10" y="2634">All files        |     97.03 |     96.64 |     95.52 |     97.03 |</tspan>
 
-<tspan x="10" y="2506">----------|-----------|-----------|-----------|-----------|</tspan>
+<tspan x="10" y="2650">-----------------|-----------|-----------|-----------|-----------|</tspan>
 
-<tspan x="10" y="2522">", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2666"></tspan>
 
-<tspan x="10" y="2538">[6570:0823/162307.602493:INFO:CONSOLE(8)] "created coverage file /tmp/build/coverage.html/index.\</tspan>
-<tspan x="10" y="2554">html", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2682">created coverage file /home/travis/build/kaizhu256/node-db-lite/tmp/build/coverage.html/index.ht\</tspan>
+<tspan x="10" y="2698">ml</tspan>
 
-<tspan x="10" y="2570">[6570:0823/162307.606248:INFO:CONSOLE(8)] "----------|-----------|-----------|-----------|------\</tspan>
-<tspan x="10" y="2586">-----|</tspan>
+<tspan x="10" y="2714"></tspan>
 
-<tspan x="10" y="2602">File      |   % Stmts |% Branches |   % Funcs |   % Lines |</tspan>
+<tspan x="10" y="2730">npmTest - merged test-report from file /home/travis/build/kaizhu256/node-db-lite/tmp/build/test-\</tspan>
+<tspan x="10" y="2746">report.json</tspan>
 
-<tspan x="10" y="2618">----------|-----------|-----------|-----------|-----------|</tspan>
+<tspan x="10" y="2762"></tspan>
 
-<tspan x="10" y="2634">----------|-----------|-----------|-----------|-----------|</tspan>
+<tspan x="10" y="2778">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="2650">All files |       100 |       100 |       100 |       100 |</tspan>
+<tspan x="10" y="2794">| test-report - npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTM\</tspan>
+<tspan x="10" y="2810">L, like Gecko) Chrome/61.0.3163.100 Electron/2.0.18 Safari/537.36 - 2019-08-24T01:34:42.255Z</tspan>
 
-<tspan x="10" y="2666">----------|-----------|-----------|-----------|-----------|</tspan>
+<tspan x="10" y="2826">|    2006 ms            0 failed       11 passed      |</tspan>
 
-<tspan x="10" y="2682">", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2842">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="2698">[6570:0823/162307.618998:INFO:CONSOLE(8)] "created coverage file /tmp/build/coverage.html/index.\</tspan>
-<tspan x="10" y="2714">html", source: http://127.0.0.1:61776/assets.example.js (8)</tspan>
+<tspan x="10" y="2858">| test-report - npmTest - node - linux v12.9.0 - 2019-08-24T01:34:39.478Z</tspan>
 
-<tspan x="10" y="2730">testRunDefault - 5045 ms - testCase pending - testCase_buildApp_default, testCase_webpage_defaul\</tspan>
-<tspan x="10" y="2746">t ...</tspan>
+<tspan x="10" y="2874">|    7792 ms            0 failed       17 passed      |</tspan>
 
-<tspan x="10" y="2762">testRunDefault - 5885 ms - [node test-case 16 of 17 passed] - testCase_buildApp_default</tspan>
+<tspan x="10" y="2890">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="2778">[6570:0823/162310.365656:INFO:CONSOLE(8)] "null", source: http://127.0.0.1:61776/assets.example.\</tspan>
-<tspan x="10" y="2794">js (8)</tspan>
+<tspan x="10" y="2906">| test-report - npmTestPublished - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537\</tspan>
+<tspan x="10" y="2922">.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Electron/2.0.18 Safari/537.36 - 2019-08-24T01:33:44\</tspan>
+<tspan x="10" y="2938">.377Z</tspan>
 
-<tspan x="10" y="2810">[6570:0823/162310.378579:INFO:CONSOLE(8)] "Error: ENOENT: no such file or directory, rename '/ho\</tspan>
-<tspan x="10" y="2826">me/travis/build/kaizhu256/node-db-lite/tmp/electron.16cbf49d7a90.3e7e26c9b2c34.html' -&gt; '/home/t\</tspan>
-<tspan x="10" y="2842">ravis/build/kaizhu256/node-db-lite/tmp/electron.html'", source: http://127.0.0.1:61776/assets.ex\</tspan>
-<tspan x="10" y="2858">ample.js (8)</tspan>
+<tspan x="10" y="2954">|    2006 ms            0 failed       11 passed      |</tspan>
 
-<tspan x="10" y="2874"></tspan>
+<tspan x="10" y="2970">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="2890">browserTest - created screenshot file /home/travis/build/kaizhu256/node-db-lite/tmp/build/screen\</tspan>
-<tspan x="10" y="2906">shot.npmTest.browser.%2F.png</tspan>
+<tspan x="10" y="2986">| test-report - npmTestPublished - node - linux v12.9.0 - 2019-08-24T01:33:41.059Z</tspan>
 
-<tspan x="10" y="2922"></tspan>
+<tspan x="10" y="3002">|    8112 ms            0 failed       17 passed      |</tspan>
 
-<tspan x="10" y="2938">browserTest - created screenshot file /home/travis/build/kaizhu256/node-db-lite/tmp/build/screen\</tspan>
-<tspan x="10" y="2954">shot.npmTest.browser.%2F.html</tspan>
+<tspan x="10" y="3018">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="2970"></tspan>
+<tspan x="10" y="3034"></tspan>
 
-<tspan x="10" y="2986">browserTest - created screenshot file /home/travis/build/kaizhu256/node-db-lite/tmp/build/screen\</tspan>
-<tspan x="10" y="3002">shot.npmTest.browser.%2F.png</tspan>
+<tspan x="10" y="3050">created test-report file /home/travis/build/kaizhu256/node-db-lite/tmp/build/test-report.html</tspan>
 
-<tspan x="10" y="3018"></tspan>
+<tspan x="10" y="3066"></tspan>
 
-<tspan x="10" y="3034">browserTest - created screenshot file /home/travis/build/kaizhu256/node-db-lite/tmp/build/screen\</tspan>
-<tspan x="10" y="3050">shot.npmTest.browser.%2F.html</tspan>
+<tspan x="10" y="3082"></tspan>
 
-<tspan x="10" y="3066">testRunDefault - 7689 ms - [node test-case 17 of 17 passed] - testCase_webpage_default</tspan>
+<tspan x="10" y="3098">npmTest - 0 failed tests</tspan>
 
-<tspan x="10" y="3082">-----------------|-----------|-----------|-----------|-----------|</tspan>
+<tspan x="10" y="3114"></tspan>
 
-<tspan x="10" y="3098">File             |   % Stmts |% Branches |   % Funcs |   % Lines |</tspan>
+<tspan x="10" y="3130"></tspan>
 
-<tspan x="10" y="3114">-----------------|-----------|-----------|-----------|-----------|</tspan>
-
-<tspan x="10" y="3130">   node-db-lite/ |     97.03 |     96.64 |     95.52 |     97.03 |</tspan>
-
-<tspan x="10" y="3146">      example.js |       100 |       100 |       100 |       100 |</tspan>
-
-<tspan x="10" y="3162">      lib.db.js  |     95.73 |     95.73 |     96.06 |     95.73 |</tspan>
-
-<tspan x="10" y="3178">      test.js    |     98.88 |       100 |     92.54 |     98.88 |</tspan>
-
-<tspan x="10" y="3194">-----------------|-----------|-----------|-----------|-----------|</tspan>
-
-<tspan x="10" y="3210">All files        |     97.03 |     96.64 |     95.52 |     97.03 |</tspan>
-
-<tspan x="10" y="3226">-----------------|-----------|-----------|-----------|-----------|</tspan>
-
-<tspan x="10" y="3242"></tspan>
-
-<tspan x="10" y="3258">created coverage file /home/travis/build/kaizhu256/node-db-lite/tmp/build/coverage.html/index.ht\</tspan>
-<tspan x="10" y="3274">ml</tspan>
-
-<tspan x="10" y="3290"></tspan>
-
-<tspan x="10" y="3306">npmTest - merged test-report from file /home/travis/build/kaizhu256/node-db-lite/tmp/build/test-\</tspan>
-<tspan x="10" y="3322">report.json</tspan>
-
-<tspan x="10" y="3338"></tspan>
-
-<tspan x="10" y="3354">-------------------------------------------------------</tspan>
-
-<tspan x="10" y="3370">| test-report - npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTM\</tspan>
-<tspan x="10" y="3386">L, like Gecko) Chrome/61.0.3163.100 Electron/2.0.18 Safari/537.36 - 2019-08-23T16:23:04.732Z</tspan>
-
-<tspan x="10" y="3402">|    2005 ms            0 failed       11 passed      |</tspan>
-
-<tspan x="10" y="3418">-------------------------------------------------------</tspan>
-
-<tspan x="10" y="3434">| test-report - npmTest - node - linux v12.9.0 - 2019-08-23T16:23:02.258Z</tspan>
-
-<tspan x="10" y="3450">|    7690 ms            0 failed       17 passed      |</tspan>
-
-<tspan x="10" y="3466">-------------------------------------------------------</tspan>
-
-<tspan x="10" y="3482">| test-report - npmTestPublished - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537\</tspan>
-<tspan x="10" y="3498">.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Electron/2.0.18 Safari/537.36 - 2019-08-23T16:22:07\</tspan>
-<tspan x="10" y="3514">.669Z</tspan>
-
-<tspan x="10" y="3530">|    2006 ms            0 failed       11 passed      |</tspan>
-
-<tspan x="10" y="3546">-------------------------------------------------------</tspan>
-
-<tspan x="10" y="3562">| test-report - npmTestPublished - node - linux v12.9.0 - 2019-08-23T16:22:04.388Z</tspan>
-
-<tspan x="10" y="3578">|    8082 ms            0 failed       17 passed      |</tspan>
-
-<tspan x="10" y="3594">-------------------------------------------------------</tspan>
-
-<tspan x="10" y="3610"></tspan>
-
-<tspan x="10" y="3626">created test-report file /home/travis/build/kaizhu256/node-db-lite/tmp/build/test-report.html</tspan>
-
-<tspan x="10" y="3642"></tspan>
-
-<tspan x="10" y="3658"></tspan>
-
-<tspan x="10" y="3674">npmTest - 0 failed tests</tspan>
-
-<tspan x="10" y="3690"></tspan>
-
-<tspan x="10" y="3706"></tspan>
-
-<tspan x="10" y="3722">\x1b[35m[MODE_BUILD=npmTest]\x1b[0m - 2019-08-23T16:23:11.880Z - EXIT_CODE - 0</tspan>
+<tspan x="10" y="3146">\x1b[35m[MODE_BUILD=npmTest]\x1b[0m - 2019-08-24T01:34:49.379Z - EXIT_CODE - 0</tspan>
 
 </text>
 </svg>

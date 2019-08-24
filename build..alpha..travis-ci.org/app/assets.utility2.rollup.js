@@ -1491,7 +1491,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.lib.db.js */
 // usr/bin/env node
 /*
- * lib.db.js (2019.8.20)
+ * lib.db.js (2019.8.21)
  * https://github.com/kaizhu256/node-db-lite
  * this zero-dependency package will provide a persistent, in-browser database, with a working web-demo
  *
@@ -37164,8 +37164,8 @@ pre {\n\
  * until webpage has loaded\n\
  */\n\
     "use strict";\n\
+    var ajaxProgressBar;\n\
     var ajaxProgressDiv1;\n\
-    var ajaxProgressState;\n\
     var ajaxProgressUpdate;\n\
     if (\n\
         window.timerIntervalAjaxProgressUpdate\n\
@@ -37181,7 +37181,7 @@ pre {\n\
     setTimeout(function () {\n\
         ajaxProgressDiv1.style.width = "25%";\n\
     });\n\
-    ajaxProgressState = 0;\n\
+    ajaxProgressBar = 0;\n\
     ajaxProgressUpdate = (\n\
         window.local\n\
         && window.local.ajaxProgressUpdate\n\
@@ -37195,9 +37195,9 @@ pre {\n\
         }, 1000);\n\
     };\n\
     window.timerIntervalAjaxProgressUpdate = setInterval(function () {\n\
-        ajaxProgressState += 1;\n\
+        ajaxProgressBar += 1;\n\
         ajaxProgressDiv1.style.width = Math.max(\n\
-            100 - 75 * Math.exp(-0.125 * ajaxProgressState),\n\
+            100 - 75 * Math.exp(-0.125 * ajaxProgressBar),\n\
             ajaxProgressDiv1.style.width.slice(0, -1) | 0\n\
         ) + "%";\n\
     }, 1000);\n\
@@ -39371,7 +39371,7 @@ local.ajaxProgressUpdate = function () {
     var ajaxProgressDiv1;
     // init state
     local.ajaxProgressCounter = local.ajaxProgressCounter || 0;
-    local.ajaxProgressState = local.ajaxProgressState || 0;
+    local.ajaxProgressBar = local.ajaxProgressBar || 0;
     ajaxProgressDiv1 = (local.isBrowser && document.querySelector(
         "#ajaxProgressDiv1"
     )) || {
@@ -39396,11 +39396,11 @@ local.ajaxProgressUpdate = function () {
         // with successively smaller increments without ever reaching 100%
         if ((ajaxProgressDiv1.style.width.slice(0, -1) | 0) > 95) {
             ajaxProgressDiv1.style.width = "0%";
-            local.ajaxProgressState = 0;
+            local.ajaxProgressBar = 0;
         }
-        local.ajaxProgressState += 1;
+        local.ajaxProgressBar += 1;
         ajaxProgressDiv1.style.width = Math.max(
-            100 - 75 * Math.exp(-0.125 * local.ajaxProgressState),
+            100 - 75 * Math.exp(-0.125 * local.ajaxProgressBar),
             ajaxProgressDiv1.style.width.slice(0, -1) | 0
         ) + "%";
     } else {
@@ -39413,12 +39413,12 @@ local.ajaxProgressUpdate = function () {
     local.timerTimeoutAjaxProgressHide = setTimeout(function () {
         ajaxProgressDiv1.style.background = "transparent";
         local.ajaxProgressCounter = 0;
-        local.ajaxProgressState = 0;
+        local.ajaxProgressBar = 0;
         // reset ajaxProgress
         clearInterval(local.timerIntervalAjaxProgressHide);
         local.timerIntervalAjaxProgressHide = null;
         setTimeout(function () {
-            if (!local.ajaxProgressState) {
+            if (!local.ajaxProgressBar) {
                 ajaxProgressDiv1.style.width = "0%";
             }
         }, 500);
@@ -52279,8 +52279,8 @@ pre {\\n\\\n\
  * until webpage has loaded\\n\\\n\
  */\\n\\\n\
     \"use strict\";\\n\\\n\
+    var ajaxProgressBar;\\n\\\n\
     var ajaxProgressDiv1;\\n\\\n\
-    var ajaxProgressState;\\n\\\n\
     var ajaxProgressUpdate;\\n\\\n\
     if (\\n\\\n\
         window.timerIntervalAjaxProgressUpdate\\n\\\n\
@@ -52296,7 +52296,7 @@ pre {\\n\\\n\
     setTimeout(function () {\\n\\\n\
         ajaxProgressDiv1.style.width = \"25%\";\\n\\\n\
     });\\n\\\n\
-    ajaxProgressState = 0;\\n\\\n\
+    ajaxProgressBar = 0;\\n\\\n\
     ajaxProgressUpdate = (\\n\\\n\
         window.local\\n\\\n\
         && window.local.ajaxProgressUpdate\\n\\\n\
@@ -52310,9 +52310,9 @@ pre {\\n\\\n\
         }, 1000);\\n\\\n\
     };\\n\\\n\
     window.timerIntervalAjaxProgressUpdate = setInterval(function () {\\n\\\n\
-        ajaxProgressState += 1;\\n\\\n\
+        ajaxProgressBar += 1;\\n\\\n\
         ajaxProgressDiv1.style.width = Math.max(\\n\\\n\
-            100 - 75 * Math.exp(-0.125 * ajaxProgressState),\\n\\\n\
+            100 - 75 * Math.exp(-0.125 * ajaxProgressBar),\\n\\\n\
             ajaxProgressDiv1.style.width.slice(0, -1) | 0\\n\\\n\
         ) + \"%\";\\n\\\n\
     }, 1000);\\n\\\n\
@@ -52799,8 +52799,8 @@ pre {\n\
  * until webpage has loaded\n\
  */\n\
     \"use strict\";\n\
+    var ajaxProgressBar;\n\
     var ajaxProgressDiv1;\n\
-    var ajaxProgressState;\n\
     var ajaxProgressUpdate;\n\
     if (\n\
         window.timerIntervalAjaxProgressUpdate\n\
@@ -52816,7 +52816,7 @@ pre {\n\
     setTimeout(function () {\n\
         ajaxProgressDiv1.style.width = \"25%\";\n\
     });\n\
-    ajaxProgressState = 0;\n\
+    ajaxProgressBar = 0;\n\
     ajaxProgressUpdate = (\n\
         window.local\n\
         && window.local.ajaxProgressUpdate\n\
@@ -52830,9 +52830,9 @@ pre {\n\
         }, 1000);\n\
     };\n\
     window.timerIntervalAjaxProgressUpdate = setInterval(function () {\n\
-        ajaxProgressState += 1;\n\
+        ajaxProgressBar += 1;\n\
         ajaxProgressDiv1.style.width = Math.max(\n\
-            100 - 75 * Math.exp(-0.125 * ajaxProgressState),\n\
+            100 - 75 * Math.exp(-0.125 * ajaxProgressBar),\n\
             ajaxProgressDiv1.style.width.slice(0, -1) | 0\n\
         ) + \"%\";\n\
     }, 1000);\n\
@@ -53273,13 +53273,13 @@ local.testCase_ajaxProgressUpdate_default = function (opt, onError) {\n\
         [\n\
             local, {\n\
                 ajaxProgressCounter: 0,\n\
-                ajaxProgressState: 0\n\
+                ajaxProgressBar: 0\n\
             }\n\
         ], [\n\
             globalThis, {\n\
                 setTimeout: function (fnc) {\n\
                     opt += 1;\n\
-                    local.ajaxProgressState = opt % 3;\n\
+                    local.ajaxProgressBar = opt % 3;\n\
                     fnc();\n\
                 }\n\
             }\n\
@@ -53289,17 +53289,17 @@ local.testCase_ajaxProgressUpdate_default = function (opt, onError) {\n\
         local.ajaxProgressUpdate();\n\
         // validate data\n\
         local.assertJsonEqual(local.ajaxProgressCounter, 0);\n\
-        local.assertJsonEqual(local.ajaxProgressState, 2);\n\
+        local.assertJsonEqual(local.ajaxProgressBar, 2);\n\
         // update ajax-progress\n\
         local.ajaxProgressUpdate();\n\
         // validate data\n\
         local.assertJsonEqual(local.ajaxProgressCounter, 0);\n\
-        local.assertJsonEqual(local.ajaxProgressState, 1);\n\
+        local.assertJsonEqual(local.ajaxProgressBar, 1);\n\
         // update ajax-progress\n\
         local.ajaxProgressUpdate();\n\
         // validate data\n\
         local.assertJsonEqual(local.ajaxProgressCounter, 0);\n\
-        local.assertJsonEqual(local.ajaxProgressState, 0);\n\
+        local.assertJsonEqual(local.ajaxProgressBar, 0);\n\
         onError(null, opt);\n\
     }, onError);\n\
 };\n\
